@@ -13,8 +13,8 @@ dependencies:
 - topojson=1.7
 - pip
 - pip:
-  - git+https://github.com/drufat/triangle.git 	      #- python wrapper around Jonathan Richard Shewchuk's at rufat.be/triangle
-  - cjio==0.7.3			                                  #- python CLI to process and manipulate CityJSON files
+  - git+https://github.com/drufat/triangle.git         #- python wrapper around Jonathan Richard Shewchuk's at rufat.be/triangle
+  - cjio==0.7.3                                        #- python CLI to process and manipulate CityJSON files
   - overpass==0.7	
   - osm2geojson==0.2.4
-  - openlocationcode==1.0.1.	                        #- google 'plus codes' at https://github.com/google/open-location-code
+  - openlocationcode==1.0.1                            #- google 'plus codes' at https://github.com/google/open-location-code
