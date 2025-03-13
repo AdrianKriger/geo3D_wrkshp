@@ -1,16 +1,16 @@
 name: geo3D_wrkshp
 dependencies:
 - python=3.9
+- fiona=1.9.4
 - jupyter-book
 - jupyterlab
-- fiona=1.9.4
-- matplotlib
-- numpy
-- ghp-import
 - geopandas=0.13.2
 - mapbox_earcut=1.0.1
 - pydeck=0.8.0
 - topojson=1.7
+- matplotlib
+- numpy
+- ghp-import
 - pip
 - pip:
   - git+https://github.com/drufat/triangle.git         #- python wrapper around Jonathan Richard Shewchuk's at rufat.be/triangle
