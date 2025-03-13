@@ -1,2 +1,3 @@
-# geo3D_wrkshp
-geo3D workshop (tutorial-type) with Jupyter Book
+# *geo3D*. 3D City Models for Geography and Sustainable Development Education
+
+*geo3D* workshop (tutorial-type) with Jupyter Book
