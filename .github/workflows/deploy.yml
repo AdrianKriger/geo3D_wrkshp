@@ -33,8 +33,7 @@ jobs:
       - name: Build the book
         run: |
           jupyter-book build tutorial
-      # Deploy the book's HTML to gh-pages branch
-      - name: GitHub Pages action
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: tutorial/_build/html
+    # Deploy the book's HTML to GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
