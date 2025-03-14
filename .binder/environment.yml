@@ -13,7 +13,7 @@ dependencies:
 - ghp-import
 - pip
 - pip:
-  - git+https://github.com/drufat/triangle.git         #- python wrapper around Jonathan Richard Shewchuk's at rufat.be/triangle
+  - triangle==20230923        #- python wrapper around Jonathan Richard Shewchuk's at rufat.be/triangle
   - cjio==0.7.3                                        #- python CLI to process and manipulate CityJSON files
   - overpass==0.7
   - osm2geojson==0.2.4
