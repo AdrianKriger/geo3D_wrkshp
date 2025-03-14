@@ -1,5 +1,0 @@
-# After the workshop
-
-
-```{bibliography} 
-```
