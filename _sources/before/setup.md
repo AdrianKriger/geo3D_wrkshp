@@ -4,27 +4,27 @@
 :local:
 ```
 
-## Execute with a Binder deployment
+## a. Execute with a Binder deployment
 
 Binder is a cloud service that allows users to share reproducible interactive computing environments from code repositories. It is generally used to enable other users to easily run your own code through Jupyter notebooks. It is a really cool service offered for free by several organisations (MyBinder through Jupyter, etc.).
 
 Binder is probably the easiest way to execute notebooks in this repository, as you only have to do one click to arrive in a Jupyterlab with all the necessary libraries. However, the hardware resources of the public Binder are limited; it is not meant for more than 50 instances at a time. Processing power is also limited to 
 
-Each Notebook in the interactiveOnly, LoD1 3D City Model and Spatial Data Science sections, for example have a rocket icon 🚀 at the top, from which you can select the Binder button to just launch the particular Notebook on the Binder service.
+Each Notebook in the village and suburbs sections ([interactiveOnly](../notebooks/interactiveOnly), LoD1_3D_CityModel and CityJSONSpatialDataScience), have a rocket icon 🚀 at the top, from which you can select the Binder button to just launch the particular Notebook on the Binder service.
 
-Alternatively, you can also directly click on the Binder below button:
+Alternatively, to launch the entire geo3D_wrkshp GitHub repository; click on the Binder below button:
 
-Binder
+[![Binder](_static/launch-binder.svg)](https://mybinder.org/v2/gh/AdrianKriger/geo3D_wrkshp/HEAD)
 
-You can then navigate and choose a Notebook, using the file browser, on the left side of the Jupyterlab screen.
+Thereafter; navigate and choose a Notebook, using the file browser, on the left side of the Jupyterlab screen.
 
-## Execute on your own computer
+## b. Execute on your own computer
 
 Almost all parts of this tutorial were designed to run with limited computer resources, so it is possible to run on your laptop. It is not an easy one-click-push-button solution; as you will have to install the software environment yourself. 
 
 Steps to run this tutorial on your own computer are listed below and demonstrated through Linux commands only:
 ```python
-git clone the geo3D_wrkshp repository
+#- git clone the geo3D_wrkshp repository
 git clone git clone https://github.com/adriankriger/geo3D_wrkshp.git
 ```
 Install the required software environment with Conda. If you do not have Conda, install it by following these instructions (see here). Then create the environment, this can take a few minutes.

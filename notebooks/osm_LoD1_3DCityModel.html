@@ -61,7 +61,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Spatial Data Science with CityJSON" href="CityJSONspatialDataScience.html" />
-    <link rel="prev" title="Interactive pseudo-3D visualisation with Spatial Analysis" href="interactiveOnly.html" />
+    <link rel="prev" title="pseudo-3D visualisation with Spatial Analysis" href="interactiveOnly.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -181,7 +181,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">village</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="interactiveOnly.html">Interactive <em>pseudo</em>-3D visualisation with Spatial Analysis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="interactiveOnly.html"><em>pseudo</em>-3D visualisation with Spatial Analysis</a></li>
 
 
 </ul>
@@ -194,7 +194,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">After the workshop</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../after/ackn.html">After the workshop</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../after/libsPacs.html">Libraries and Packages</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../after/ref.html">References</a></li>
 </ul>
 
     </div>
@@ -249,7 +250,7 @@
       
       
       
-      <li><a href="https://mybinder.org/v2/gh/AdrianKriger/geo3D_wrkshp/HEAD/v2/gh/AdrianKriger/geo3D_wrkshp/main?urlpath=lab/tree/tutorial/notebooks/osm_LoD1_3DCityModel.ipynb" target="_blank"
+      <li><a href="https://mybinder.org/v2/gh/AdrianKriger/geo3D_wrkshp/v2/gh/AdrianKriger/geo3D_wrkshp/main?urlpath=lab/tree/tutorial/notebooks/osm_LoD1_3DCityModel.ipynb" target="_blank"
    class="btn btn-sm dropdown-item"
    title="Launch on Binder"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -423,13 +424,12 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="lod1-3d-city-model">
+  <section id="lod1-3d-city-model">
 <h1>LoD1 3D City Model<a class="headerlink" href="#lod1-3d-city-model" title="Link to this heading">#</a></h1>
-<p><strong>The purpose of this notebook is to walk a user through <a class="reference external" href="https://github.com/AdrianKriger/osm_LoD1_3DCityModel/tree/main/village_campus">osm_LoD1_3DCityModel</a>.</strong></p>
 <div class="alert alert-block alert-warning"><b>This notebook will:</b>
 <blockquote>
-<div><p><strong>1. allow the user to create a Level-of-Detail 1 (LoD1) <a class="reference external" href="https://en.wikipedia.org/wiki/3D_city_model">3D City Model</a>.</strong></p>
-<p><strong>2. propose several [Geography and Sustainable Development Education <em>conversation starters</em>] for Secondary and Tertiary level students</strong></p>
+<div><p><strong>1. allow the user to create a <a class="reference external" href="https://en.wikipedia.org/wiki/3D_city_model">Level-of-Detail 1 (LoD1) 3D City Model</a>.</strong></p>
+<p><strong>2. propose several Geography and Sustainable Development Education <em>conversation starters</em> for Secondary and Tertiary level students</strong></p>
 </div></blockquote>
 </div>
 <div class="alert alert-block alert-danger"><b></b>
@@ -489,7 +489,8 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#jparams = json.load(open(&#39;osm3DwStock_param.json&#39;))       </span>
-<span class="n">jparams</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;osm3DuEstate_param5m.json&#39;</span><span class="p">))</span>          
+<span class="n">jparams</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;osm3DuEstate_param5m.json&#39;</span><span class="p">))</span> 
+<span class="c1">#jparams = json.load(open(&#39;osm3DwEstate_param.json&#39;))      </span>
 </pre></div>
 </div>
 </div>
@@ -499,7 +500,7 @@ document.write(`
 <p><strong>PLEASE SUPPLY YOUR OWN <a class="reference external" href="https://wiki.openstreetmap.org/wiki/PBF_Format">osm.pbf</a>.</strong></p>
 <p><strong>Either crop an area directly from <a class="reference internal" href="#"><span class="xref myst">OpenStreetMap</span></a> with the <em><strong><a class="reference external" href="https://www.openstreetmap.org/export#map=3/0.70/22.15">official tool</a></strong></em>, select a predefined area <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Planet.osm">from any number of providers</a>, such as <em><strong><a class="reference external" href="https://download.geofabrik.de">Geofabrik</a></strong></em>, or…</strong></p>
 </div><div class="alert alert-block alert-success"><b></b>
-<p><strong>… download your own. Provincial extracts for South Africa are available here:</strong> <em><a class="reference external" href="http://download.openstreetmap.fr/extracts/africa/south_africa/">http://download.openstreetmap.fr/extracts/africa/south_africa/</a></em></div></p>
+<p><strong>… download your own. Provincial extracts for South Africa are available here:</strong> <em>http://download.openstreetmap.fr/extracts/africa/south_africa/</em></div></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- input OSM PBF file</span>
@@ -625,7 +626,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.076018
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.045845
 </pre></div>
 </div>
 </div>
@@ -1021,7 +1022,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 </div>
-<img src="data/proj.png" alt="proj" width="550" align="right"/>
+<img src="_static/proj.png" alt="proj" width="550" align="right"/>
 <br>
 <br>
 <p>We need the <em><strong>Projected</strong></em> Coordinate Reference System.</p>
@@ -1178,8 +1179,6 @@ Datum: World Geodetic System 1984 ensemble
 
 <span class="n">ts_copy</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">new_df1</span> <span class="o">=</span> <span class="n">ts_copy</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">ts_copy</span><span class="o">.</span><span class="n">overlaps</span><span class="p">(</span><span class="n">ts_copy</span><span class="o">.</span><span class="n">unary_union</span><span class="p">)]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1">#-- perhaps no union?</span>
-<span class="c1">#ts_copy.drop(ts_copy.index[ts_copy[&#39;building&#39;] == &#39;bridge&#39;], inplace = True)</span>
-<span class="c1">#ts_copy.drop(ts_copy.index[ts_copy[&#39;building&#39;] == &#39;roof&#39;], inplace = True)</span>
 
 <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">))))</span>
@@ -1187,7 +1186,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.367712
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.361124
 </pre></div>
 </div>
 </div>
@@ -1202,8 +1201,7 @@ Datum: World Geodetic System 1984 ensemble
 
 <span class="n">ts</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_df1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="n">new_df1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span><span class="c1">#, alpha=0.3)#, column=&#39;osm_building&#39;, legend=True)</span>
-
+    <span class="n">new_df1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
 <span class="c1">#-- save</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;./data/topologyFig&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 <span class="c1">#plt.show()</span>
@@ -1221,10 +1219,10 @@ Datum: World Geodetic System 1984 ensemble
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="text-center"><p><img alt="ue-error.png" src="notebooks/attachment:db8986e3-08a6-4545-83a0-dc2cfb2d1665.png" /></p></td>
+<tr class="row-even"><td class="text-center"><p><img alt="ue-error.png" src="../_images/ue-error.png" /></p></td>
 <td class="text-center"><p><strong>Typical challenges will be highlight in <em>Red</em>.</strong></p></td>
 </tr>
-<tr class="row-odd"><td class="text-center"><p><img alt="ue.png" src="notebooks/attachment:bb8b9228-ce4f-452f-80d7-fd9cc16094e9.png" /></p></td>
+<tr class="row-odd"><td class="text-center"><p><img alt="ue.png" src="../_images/ue.png" /></p></td>
 <td class="text-center"><p><strong>or none</strong></p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><br /> <strong>If you continue without fixing the challenges, the LoD1 City Model <em>will not be error free</em>.</strong></p></td>
@@ -1245,7 +1243,6 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- get the mean height of the bld</span>
 <span class="n">ts</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">rasterQuery</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">gt_forward</span><span class="p">,</span> <span class="n">rb</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">ts</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="c1">#ts.geometry = ts[&#39;geometry&#39;].apply(lambda geom: geom.geoms[0] if geom.geom_type == &quot;MultiPolygon&quot; else geom)</span>
 </pre></div>
 </div>
 </div>
@@ -1336,8 +1333,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># -- execute function. write geoJSON</span>
-<span class="c1">#city3D.write_geojson(ts, jparams, is_geojson=False)</span>
-<span class="n">city3D</span><span class="o">.</span><span class="n">write_geojson</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">jparams</span><span class="p">)</span><span class="c1">#, suburb=True)</span>
+<span class="n">city3D</span><span class="o">.</span><span class="n">write_geojson</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">jparams</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1385,7 +1381,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.066280
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.064724
 </pre></div>
 </div>
 </div>
@@ -1404,8 +1400,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#dis.sort_values(by = &#39;osm_building&#39;, inplace=True) </span>
-<span class="n">dis</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dis</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="c1">#dis.plot()</span>
 </pre></div>
 </div>
@@ -1639,16 +1634,6 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#pts = df3[[&#39;x&#39;, &#39;y&#39;]].values </span>
-<span class="c1">#A = dict(vertices=pts)</span>
-<span class="c1">#Tr = tr.triangulate(A)</span>
-<span class="c1">#len(ac)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">holes01</span> <span class="o">=</span> <span class="n">hs</span><span class="p">[[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 <span class="n">pts</span> <span class="o">=</span> <span class="n">df3</span><span class="p">[[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span> <span class="c1">#, &#39;z&#39;]].values</span>
 
@@ -1709,7 +1694,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <p><strong>If you parse the result of this notebook through <a class="reference external" href="http://geovalidation.bk.tudelft.nl/val3dity/">val3dity</a> it will return a report with an invalid <a class="reference external" href="https://www.cityjson.org/specs/1.1.1/#tinrelief">TINRelief</a> and error.</strong>
 <br>
 <br>
-<img src="./data/iso19107_error.jpg" width="550"/>
+<a class="reference internal" href="../_images/iso19107_error.jpg"><img alt="../_images/iso19107_error.jpg" src="../_images/iso19107_error.jpg" style="width: 550px;" /></a>
 <br>
 <br>
 <strong>This particular area contains Buildings with courtyards. The courtyards</strong> (polygons) <strong>are islands of terrain disconnected from the <em>larger</em> TINRelief</strong> (shell); <strong>thus the error<sup>*</sup>.</strong>
@@ -1720,7 +1705,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <p><em><strong>To understand the value and usefulness of a 3D City Model</strong></em>; parse the result of this Notebook through <a class="reference external" href="https://github.com/AdrianKriger/geo3D/blob/main/CityJSONspatialDataScience.ipynb">CityJSONspatialDataScience.ipynb</a> to workthrough an example of:</p>
 <ul class="simple">
 <li><p>population estimation and</p></li>
-<li><p>a calculation of [Building Volume per Capita]((<a class="reference external" href="https://www.researchgate.net/publication/343185735_Building_Volume_Per_Capita_BVPC_A_Spatially_Explicit_Measure_of_Inequality_Relevant_to_the_SDGs">https://www.researchgate.net/publication/343185735_Building_Volume_Per_Capita_BVPC_A_Spatially_Explicit_Measure_of_Inequality_Relevant_to_the_SDGs</a>)</p></li>
+<li><p>a calculation of [Building Volume per Capita]((https://www.researchgate.net/publication/343185735_Building_Volume_Per_Capita_BVPC_A_Spatially_Explicit_Measure_of_Inequality_Relevant_to_the_SDGs)</p></li>
 </ul>
 </div><p><em><strong>As always; you are welcome to raise an issue. I depend on you to help me improve.</strong></em></p>
 <p><a id='Section2'></a></p>
@@ -1777,7 +1762,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Interactive <em>pseudo</em>-3D visualisation with Spatial Analysis</p>
+        <p class="prev-next-title"><em>pseudo</em>-3D visualisation with Spatial Analysis</p>
       </div>
     </a>
     <a class="right-next"

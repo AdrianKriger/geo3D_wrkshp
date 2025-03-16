@@ -5,9 +5,8 @@
 With execution via Jupyter Notebook, *geo3D* provides an accessible and reproducible workflow, that *gives* students, educators and community organisations the ability to generate topologically correct Level-of-Detail 1 (LoD1) 3D models of their own  neighbourhoods, from an open geospatial data source; namely OpenStreetMap {cite}`osm2024`.
 
 %![lod1](./LoD1.png)
-```{figure} LoD1.png
+```{figure} _static/LoD1.png
 ---
-#height: 150px
 name: lod2-fig
 ---
 A LoD1 3D City Model of a peri-urban village; [Mamre](https://www.openstreetmap.org/relation/2198487).
