@@ -17,7 +17,7 @@ execute:
 # Add a launch button on a specific binder instance
 launch_buttons:
   notebook_interface: "jupyterlab"
-  binderhub_url: "https://mybinder.org/v2/gh/AdrianKriger/geo3D_wrkshp/HEAD"  # The URL for your BinderHub (e.g., https://mybinder.org)
+  binderhub_url: "https://mybinder.org/v2/gh/AdrianKriger/geo3D_wrkshp"  # The URL for your BinderHub (e.g., https://mybinder.org)
 
 # Define the name of the latex output file for PDF builds
 latex:
@@ -27,9 +27,6 @@ latex:
 # Add a bibtex file so that we can create citations
 bibtex_bibfiles:
   - after/references.bib
-sphinx:
-   config:
-        bibtex_reference_style: "author_year" 
 
 # Information about where the book exists on the web
 repository:
@@ -44,8 +41,13 @@ html:
   use_repository_button: true
  
 # html iframe images
-#parse:
-#  myst_enable_extensions:
-#    - html_admonition
-#    - html_image
+parse:
+  myst_enable_extensions:
+    - html_admonition
+    - html_image
+    
+sphinx:
+   config:
+        bibtex_reference_style: "author_year"
+        html_extra_path: ['./_static']
 

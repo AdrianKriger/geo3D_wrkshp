@@ -26,4 +26,5 @@ parts:
 
 - caption: After the workshop
   chapters:
-  - file: after/ackn
+  - file: after/libsPacs
+  - file: after/ref

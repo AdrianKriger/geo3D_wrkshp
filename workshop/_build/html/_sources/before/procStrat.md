@@ -3,7 +3,7 @@
 ```{contents}
 :local:
 ```
-## Processing Options
+## 1. Processing Options
 
 %<center>There are two processing options</center>
 
@@ -21,7 +21,7 @@
 %
 <p align="center"><b>within each processing option; there are two strategies</b></p>
 
-## Processing Strategies and Requirements
+## 2. Processing Strategies
 
 %| [Village](https://github.com/AdrianKriger/osm_LoD1_3DCityModel/tree/main/village_campus) | [Suburb](https://github.com/AdrianKriger/osm_LoD1_3DCityModel/tree/main/districts)|
 %| :-----: | :-----: |
@@ -53,7 +53,7 @@
 % </tr>
 %</table>
 
-## Data Sources
+## 3. Data Sources
 
 ### osm.pbf
 

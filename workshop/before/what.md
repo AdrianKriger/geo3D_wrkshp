@@ -1,3 +1,4 @@
+
 # What does *geo3D* do and why?
 
 The following section aims to explain what *geo3D* produces, the creation process, the necessary ingredients and the usefulness of the product.
@@ -6,7 +7,7 @@ The following section aims to explain what *geo3D* produces, the creation proces
 :local:
 ```
 
-## What does *geo3D* do?
+## 1. What does *geo3D* do?
 The primary product is a topologically correct Level of Detail 1 (LoD1) 3D City Model<sup>*</sup>. Secondary products include an application of spatial data science and an HTML-based visualisation. 
 
 %Our mission is to empower high school learning and community engagement by fostering effective communication and advocacy at the grassroots level.
@@ -14,7 +15,7 @@ The primary product is a topologically correct Level of Detail 1 (LoD1) 3D City 
 <sup>* ***the goal is a [Open Geospatial Consortium (OGC)](https://www.ogc.org/standard/citygml/) standard model that conforms to the [ISO 19107 spatial schema for 3D primitives](https://www.iso.org/standard/66175.html) [connecting and planar surfaces, correct orientation of the surfaces and watertight volumes]. If the result you achieve is not; you are welcome to raise an [issue](https://github.com/AdrianKriger/osm_LoD1_3DCityModel/issues).***
 
 
-### `geo3D` products
+### 2. `geo3D` products
 
 #### LoD1 3D City Models
 
@@ -33,9 +34,8 @@ The OSM tag `building:level` is taken as a [proxy for the height of a building](
 %%{width="650" height="350"}
 %**Figure 1** - The `osm_LoD1_3DCityModel` process.  *Image adapted from* {cite}`ledoux2021`.
 
-```{figure} extrusion_tuDelft.png
+```{figure} _static/extrusion_tuDelft.png
 ---
-#height: 150px
 name: extrusion-fig
 ---
 The `osm_LoD1_3DCityModel` process.  *Image adapted from* {cite}`ledoux2021`.
@@ -75,9 +75,8 @@ The LoD1 3D City Model (buildings and terrain) is encoded in the light-weight JS
 %%{width="650" height="350"}
 %**Figure 2** -  solid Building CityObjects connected to the terrain. *Image adapted from* {cite}`ledoux2021`.
 
-```{figure} objects_horizontal_view_solid_tuDelft.png
+```{figure} _static/objects_horizontal_view_solid_tuDelft.png
 ---
-#height: 150px
 name: profile-fig
 ---
 Solid Building CityObjects connected to the terrain. *Image adapted from* {cite}`ledoux2021`.
@@ -86,28 +85,31 @@ Solid Building CityObjects connected to the terrain. *Image adapted from* {cite}
 
 The Jupyter environment allows for extensive customisation and deep analysis through *spatial data science* {cite}`Gran2021`. [*geo3D*](https://github.com/AdrianKriger/geo3D/tree/main) estimates population and calculates Building Volume Per Capita (BVPC).
 
-While estimating population is well-known; BVPC is a fairly recent evaluation. BVPC attempts to integrate with several SDG’s most notably SGD11: developing sustainable cities and communities. BVPC represents the cubic meter of building per person. The value quantifies the amount of living space each person has in their home. BVPC can be used to evaluate overcrowding, and as a proxy for economic and housing inequality {cite}`ghosh2020`.
+While estimating population is well-known; BVPC is a fairly recent evaluation. BVPC builds on the work of and attempts to integrate with several Sustainable Development Goals (most notably: SDG 11: Developing sustainable cities and communities) {cite}`Reddy2015,UN2012b`. BVPC represents the cubic meter of building per person. The value quantifies the amount of living space each person has in their home. BVPC can be used to evaluate overcrowding, and as a proxy for economic and housing inequality {cite}`ghosh2020`.
 
 #### Interactive visualisation 
 
-Further; *geo3D* can produce a pseudo-3D HTML-based visualisation serves to facilitate engagement and understanding at a neighbourhood level. The `iframe` below illustrates building stock differentiated by colour. A school, housing, retail, healthcare and community focused facilities are easily identified while the tooltips highlight the underlying data. Additional features unique to an aoi can also be included. Here farmland, streams, recreational spaces and bus rapid transit routes have been added *- you are thus limited only through data and your imagination*. 
+Further; *geo3D* can produce a pseudo-3D HTML-based visualisation serves to facilitate engagement and understanding at a neighbourhood level. 
 
-%**To navigate on a laptop without a mouse**:
-%
-%- `trackpad left-click drag-left` and `-right`;
-%- `Ctrl left-click drag-up`, `-down`, `-left` and `-right` to rotate and so-on and
-%- `+` next to Backspace zoom-in and `-` next to `+` zoom-out.
-%
-%<iframe src="_static//interactiveOnly.html" style="width=400 height=250 border: none;"></iframe>
-%
-%```{iframe} _static/interactiveOnly.html
-%:width: 400
-%:height: 250
-%:frameborder: 0
+**To navigate on a laptop without a mouse**:
+
+- `trackpad left-click drag-left` and `-right`;
+- `Ctrl left-click drag-up`, `-down`, `-left` and `-right` to rotate and so-on and
+- `+` next to Backspace zoom-in and `-` next to `+` zoom-out.
+%<iframe src="_static/interactiveOnly.html" style="width=400 height=250 border: none;"></iframe>
+
+%```{raw} html
+%<iframe src="_static/interactiveOnly.html" style="width: 300; height: 200; border: none;"></iframe>
 %```
-%
-%The visualisation above employs the default [Carto Dark Matter](https://github.com/CartoDB/basemap-styles) basemap. [Pydeck](https://deckgl.readthedocs.io/en/latest/index.html) supports a number of [map_styles](https://deckgl.readthedocs.io/en/latest/deck.html) including the extensive [mapbox gallery](https://www.mapbox.com/gallery/) and [Maptiler](https://www.maptiler.com/) urls (e.g.: `https://api.maptiler.com/maps/{style}/style.json?key={your API key}`).
+%```{raw} html 
+%:file: _static/interactiveOnly.html
+%```
+%```{raw} html
+%<iframe src="_static/interactiveOnly.html" width="400" height="200"></iframe>
 
+<iframe src="../_static/interactiveOnly.html" width="800" height="350" frameborder="0"></iframe>
+
+The `iframe` above illustrates building stock differentiated by colour. A school, housing, retail, healthcare and community focused facilities are easily identified while the tooltips highlight the underlying data. Additional features unique to any area can also be included. Here farmland, streams, recreational spaces and bus rapid transit routes have been added *- you are thus limited only through data and your imagination*. 
 
 %<figure><center>
 %  <img src="{{site.baseurl | prepend: site.url}}/img/objects_horizontal_view_solid_tuDelft.png" alt="alt text" width="650" height="350">
@@ -118,7 +120,7 @@ Further; *geo3D* can produce a pseudo-3D HTML-based visualisation serves to faci
 %
 %A dynamic visualisation and spatial analysis is possible. [Interactive Visualisation](https://adriankriger.github.io/geo3D/docs/interactive/) and [Spatial Data Science](https://adriankriger.github.io/geo3D/docs/spatial/) discusses this further.
 %
-## Is it useful?
+## 3. Is it useful?
 
 A LoD1 City Model, while basic, offers many advantages over 2D datasets. These may be used for shadow analyses, line of sight predictions, advanced flood simulation, or more advanced quantitative evaluations such as estimating wind comfort factor and simulating noise propagation.
 
