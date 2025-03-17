@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>LoD1 3D City Model &#8212; geo3D</title>
+    <title>LoD1 Timing and Quality Considerations &#8212; geo3D</title>
   
   
   
@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -57,11 +57,11 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/osm_LoD1_3DCityModel';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/CityJSONLoD1_timing';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Spatial Data Science with CityJSON" href="CityJSONspatialDataScience.html" />
-    <link rel="prev" title="pseudo-3D visualisation with Spatial Analysis" href="interactiveOnly.html" />
+    <link rel="next" title="Libraries and Packages" href="../after/libsPacs.html" />
+    <link rel="prev" title="Challenge" href="../prob.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -175,6 +175,7 @@
         </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Before the workshop</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../video.html"><em>geo3D</em>. Lighting talk</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../before/what.html">What does <em>geo3D</em> do and why?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../before/procStrat.html">Processing Options, Strategies and Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../before/setup.html">Setup: how to run the tutorial</a></li>
@@ -184,14 +185,13 @@
 <li class="toctree-l1"><a class="reference internal" href="interactiveOnly.html"><em>pseudo</em>-3D visualisation with Spatial Analysis</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">suburb</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">LoD1 3D City Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="CityJSONspatialDataScience.html">Spatial Data Science with CityJSON</a></li>
-<li class="toctree-l1"><a class="reference internal" href="vil_CityJSONspatialDataScience.html">vil - Spatial Data Science with CityJSON</a></li>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="osm_LoD1_3DCityModel.html">LoD1 3D City Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../prob.html">Challenge</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LoD1 caveats</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="CityJSONLoD1_timing.html">LoD1 Timing and Quality Considerations</a></li>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">LoD1 Timing and Quality Considerations</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">After the workshop</span></p>
 <ul class="nav bd-sidenav">
@@ -251,7 +251,7 @@
       
       
       
-      <li><a href="https://mybinder.org/v2/gh/AdrianKriger/geo3D_wrkshp/v2/gh/AdrianKriger/geo3D_wrkshp/main?urlpath=lab/tree/tutorial/notebooks/osm_LoD1_3DCityModel.ipynb" target="_blank"
+      <li><a href="https://mybinder.org/v2/gh/AdrianKriger/geo3D_wrkshp/v2/gh/AdrianKriger/geo3D_wrkshp/main?urlpath=lab/tree/tutorial/notebooks/CityJSONLoD1_timing.ipynb" target="_blank"
    class="btn btn-sm dropdown-item"
    title="Launch on Binder"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -299,7 +299,7 @@
       
       
       
-      <li><a href="https://github.com/AdrianKriger/geo3D_wrkshp/issues/new?title=Issue%20on%20page%20%2Fnotebooks/osm_LoD1_3DCityModel.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/AdrianKriger/geo3D_wrkshp/issues/new?title=Issue%20on%20page%20%2Fnotebooks/CityJSONLoD1_timing.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -329,7 +329,7 @@
       
       
       
-      <li><a href="../_sources/notebooks/osm_LoD1_3DCityModel.ipynb" target="_blank"
+      <li><a href="../_sources/notebooks/CityJSONLoD1_timing.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -413,7 +413,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>LoD1 3D City Model</h1>
+    <h1>LoD1 Timing and Quality Considerations</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -423,8 +423,8 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-lod1-3d-city-model">1. Create LoD1 3D City Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#possible-secondary-and-tertiary-level-conversations-starters">2. Possible Secondary and Tertiary level <em>conversations starters</em>:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#timing">1. Timing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quality">2. Quality:</a></li>
 </ul>
             </nav>
         </div>
@@ -436,18 +436,18 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="lod1-3d-city-model">
-<h1>LoD1 3D City Model<a class="headerlink" href="#lod1-3d-city-model" title="Link to this heading">#</a></h1>
+  <section id="lod1-timing-and-quality-considerations">
+<h1>LoD1 Timing and Quality Considerations<a class="headerlink" href="#lod1-timing-and-quality-considerations" title="Link to this heading">#</a></h1>
 <p><a class="reference external" href="https://mybinder.org/v2/gh/AdrianKriger/geo3D_wrkshp/4d29f03808b8d5ae87ddcb205061557d804b4582?urlpath=lab%2Ftree%2Ftutorial%2Fnotebooks%2FinteractiveOnly.ipynb"><img alt="Binder" src="../_images/launch-binder1.svg" /></a></p>
 <div class="alert alert-block alert-warning"><b>This notebook will:</b>
 <blockquote>
-<div><p><strong>1. allow the user to create a <a class="reference external" href="https://en.wikipedia.org/wiki/3D_city_model">Level-of-Detail 1 (LoD1) 3D City Model</a>.</strong></p>
-<p><strong>2. propose several Geography and Sustainable Development Education <em>conversation starters</em> for Secondary and Tertiary level students</strong></p>
+<div><p><strong>illustrate how different resolution elevation models (25m, 15m and 5m DEM) affect;</strong></p>
+<blockquote>
+<div><p><strong>1) <code class="docutils literal notranslate"><span class="pre">osm_LoD1_3DCityModel.ipynb</span></code> timing and</strong><br>
+<strong>2) the quality</strong> <em>(holes and completness)</em> <strong>of a LoD1 3D City Model</strong></p>
 </div></blockquote>
-</div>
-<div class="alert alert-block alert-danger"><b></b>
-<p><em><strong>The <a class="reference external" href="https://github.com/AdrianKriger/geo3D/tree/main/suburb">suburb</a></strong></em> processing option is meant for areas with more than for <strong>2 500 buildings</strong>.</div></p>
-<div class="cell docutils container">
+</div></blockquote>
+</div><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
@@ -501,19 +501,13 @@ document.write(`
 <p><strong>A <code class="docutils literal notranslate"><span class="pre">parameter.json</span></code> defines the path and files</strong>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#jparams = json.load(open(&#39;osm3DwStock_param.json&#39;))       </span>
-<span class="c1">#jparams = json.load(open(&#39;osm3DuEstate_param5m.json&#39;)) </span>
-<span class="n">jparams</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;osm3DsRiver_param25m.json&#39;</span><span class="p">))</span>      
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#jparams = json.load(open(&#39;osm3DsRiver_param10m.json&#39;)) # 11 min 30 sec </span>
+<span class="c1">#jparams = json.load(open(&#39;osm3DsRiver_param15m.json&#39;))    #</span>
+<span class="n">jparams</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;osm3DsRiver_param25m.json&#39;</span><span class="p">))</span> <span class="c1"># 2 min 15 sec </span>
 </pre></div>
 </div>
 </div>
 </div>
-<p><strong>Harvest <a class="reference external" href="https://en.wikipedia.org/wiki/OpenStreetMap">OpenStreetMap</a></strong> - interogate an osm.pbf (<a class="reference external" href="https://wiki.openstreetmap.org/wiki/PBF_Format">“Protocolbuffer Binary Format”</a>) from within Jupyter and convert to .geojson.</p>
-<div class="alert alert-block alert-info"><b></b> 
-<p><strong>PLEASE SUPPLY YOUR OWN <a class="reference external" href="https://wiki.openstreetmap.org/wiki/PBF_Format">osm.pbf</a>.</strong></p>
-<p><strong>Either crop an area directly from <a class="reference internal" href="#"><span class="xref myst">OpenStreetMap</span></a> with the <em><strong><a class="reference external" href="https://www.openstreetmap.org/export#map=3/0.70/22.15">official tool</a></strong></em>, select a predefined area <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Planet.osm">from any number of providers</a>, such as <em><strong><a class="reference external" href="https://download.geofabrik.de">Geofabrik</a></strong></em>, or…</strong></p>
-</div><div class="alert alert-block alert-success"><b></b>
-<p><strong>… download your own. Provincial extracts for South Africa are available here:</strong> <em>http://download.openstreetmap.fr/extracts/africa/south_africa/</em></div></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- input OSM PBF file</span>
@@ -639,7 +633,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.603944
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.642046
 </pre></div>
 </div>
 </div>
@@ -991,154 +985,27 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># have a look</span>
-<span class="n">ts</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1">#ts.tail(2)</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>osm_id</th>
-      <th>osm_way_id</th>
-      <th>name</th>
-      <th>type</th>
-      <th>amenity</th>
-      <th>building</th>
-      <th>craft</th>
-      <th>historic</th>
-      <th>leisure</th>
-      <th>man_made</th>
-      <th>office</th>
-      <th>shop</th>
-      <th>sport</th>
-      <th>tourism</th>
-      <th>other_tags</th>
-      <th>geometry</th>
-      <th>tags</th>
-      <th>building:levels</th>
-      <th>building:part</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>4386</th>
-      <td>NaN</td>
-      <td>1313817370</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>yes</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>"building:levels"=&gt;"1","railway"=&gt;"workshop"</td>
-      <td>MULTIPOLYGON (((18.46209 -33.92551, 18.46194 -...</td>
-      <td>{'building:levels': '1', 'railway': 'workshop'}</td>
-      <td>1</td>
-      <td>None</td>
-    </tr>
-    <tr>
-      <th>4387</th>
-      <td>NaN</td>
-      <td>1313817371</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>yes</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>"building:levels"=&gt;"1","railway"=&gt;"workshop"</td>
-      <td>MULTIPOLYGON (((18.46101 -33.92611, 18.46102 -...</td>
-      <td>{'building:levels': '1', 'railway': 'workshop'}</td>
-      <td>1</td>
-      <td>None</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- coordinate reference system</span>
-<span class="n">ts</span><span class="o">.</span><span class="n">crs</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Geographic 2D CRS: EPSG:4326&gt;
-Name: WGS 84
-Axis Info [ellipsoidal]:
-- Lat[north]: Geodetic latitude (degree)
-- Lon[east]: Geodetic longitude (degree)
-Area of Use:
-- name: World.
-- bounds: (-180.0, -90.0, 180.0, 90.0)
-Datum: World Geodetic System 1984 ensemble
-- Ellipsoid: WGS 84
-- Prime Meridian: Greenwich
+<span class="c1">#ts.crs</span>
 </pre></div>
 </div>
 </div>
 </div>
-<img src="_static/proj.png" alt="proj" width="550" align="right"/>
-<br>
-<br>
-<p>We need the <em><strong>Projected</strong></em> Coordinate Reference System.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- estimate utm: internal geopandas function</span>
-<span class="n">ts</span><span class="o">.</span><span class="n">estimate_utm_crs</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Projected CRS: EPSG:32734&gt;
-Name: WGS 84 / UTM zone 34S
-Axis Info [cartesian]:
-- E[east]: Easting (metre)
-- N[north]: Northing (metre)
-Area of Use:
-- name: Between 18°E and 24°E, southern hemisphere between 80°S and equator, onshore and offshore. Angola. Botswana. Democratic Republic of the Congo (Zaire). Namibia. South Africa. Zambia.
-- bounds: (18.0, -80.0, 24.0, 0.0)
-Coordinate Operation:
-- name: UTM zone 34S
-- method: Transverse Mercator
-Datum: World Geodetic System 1984 ensemble
-- Ellipsoid: WGS 84
-- Prime Meridian: Greenwich
+<span class="c1">#ts.estimate_utm_crs()</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="alert alert-block alert-danger"><b>Your Participation! </b>
-<p><strong>Fill in the proper <code class="docutils literal notranslate"><span class="pre">espg</span></code> in the <em><code class="docutils literal notranslate"><span class="pre">cell</span></code></em> below</strong> </div></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- fill &lt;Projected CRS: EPSG:32734&gt; from above here epsg = EPSG:32734</span>
@@ -1157,9 +1024,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 </div>
-<section id="create-lod1-3d-city-model">
-<h2>1. Create LoD1 3D City Model<a class="headerlink" href="#create-lod1-3d-city-model" title="Link to this heading">#</a></h2>
-<p><strong>Now we process.</strong></p>
+<p><strong>Create LoD1 3D City Model</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">aoibuffer</span> <span class="o">=</span> <span class="n">aoi</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -1273,7 +1138,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:11.061229
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:10.980226
 </pre></div>
 </div>
 </div>
@@ -1299,33 +1164,7 @@ Datum: World Geodetic System 1984 ensemble
 <img alt="../_images/ae7735c533ccd2befd36ab04decce25238566e359390d4459b819e4776f01de6.png" src="../_images/ae7735c533ccd2befd36ab04decce25238566e359390d4459b819e4776f01de6.png" />
 </div>
 </div>
-<div class="pst-scrollable-table-container"><table class="table">
-<thead>
-<tr class="row-odd"><th class="head text-center"><p></p></th>
-<th class="head text-center"><p></p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td class="text-center"><p><img alt="ue-error.png" src="../_images/ue-error.png" /></p></td>
-<td class="text-center"><p><strong>Typical challenges will be highlight in <em>Red</em>.</strong></p></td>
-</tr>
-<tr class="row-odd"><td class="text-center"><p><img alt="ue.png" src="../_images/ue.png" /></p></td>
-<td class="text-center"><p><strong>or none</strong></p></td>
-</tr>
-<tr class="row-even"><td class="text-center"><p><br /> <strong>If you continue without fixing the challenges, the LoD1 City Model <em>will not be error free</em>.</strong></p></td>
-<td class="text-center"><p><br /> <strong>Our goal is a topologically correct surface.</strong></p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<h2><center>There may still be potential challenges.<br> Please ensure the quality of the value-added product and the source data.</center></h2>
-<p><strong>If necessary; edit <a class="reference external" href="https://www.openstreetmap.org/about">OpenStreetMap</a> and fix the challenge please.</strong></p>
-<div class="alert alert-block alert-warning"><b></b>
-<p>And remember.<br />
-Many <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Planet.osm">Planet.osm mirrors</a> (like the one recommended above) release a <em><strong>fresh <code class="docutils literal notranslate"><span class="pre">.osm.pbf</span></code> EVERYDAY!</strong></em><br />
-Give the OpenStreetMap server <em><strong>at least a day</strong></em> before attempting the process again.</p>
-<p><strong>Alchemy is a process. Please be patient.</strong></p>
-</div><div class="cell docutils container">
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- get the mean height of the bld</span>
 <span class="n">ts</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">rasterQuery</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">gt_forward</span><span class="p">,</span> <span class="n">rb</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
@@ -1432,9 +1271,6 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 </div>
-<div class="alert alert-block alert-warning"><b>Calculate building height:</b> 
-<p>We assume a building level is 2.8 meters high and add another 1.3 meters (to account for the roof) and create a new attribute <code class="docutils literal notranslate"><span class="pre">height</span></code>.</div></p>
-<p>The Python code to execute the <code class="docutils literal notranslate"><span class="pre">.writejson</span></code> function is in the <code class="docutils literal notranslate"><span class="pre">city3D.py</span></code> script</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># -- execute function. write geoJSON</span>
@@ -1486,7 +1322,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.483599
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.377343
 </pre></div>
 </div>
 </div>
@@ -1602,7 +1438,8 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </table>
 </div></div></div>
 </div>
-<p><strong>prepare the elevation for the TIN</strong></p>
+<section id="timing">
+<h2>1. Timing<a class="headerlink" href="#timing" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- </span>
@@ -1637,7 +1474,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 
 <span class="c1"># Use STRtree for efficient spatial lookup instead of .within()</span>
 <span class="n">tree</span> <span class="o">=</span> <span class="n">STRtree</span><span class="p">(</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">)</span>
-<span class="n">possible_matches</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">_symdiff</span><span class="o">.</span><span class="n">unary_union</span><span class="p">)</span>  <span class="c1"># Faster than looping over individual geometries</span>
+<span class="n">possible_matches</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">_symdiff</span><span class="o">.</span><span class="n">unary_union</span><span class="p">)</span>                              <span class="c1">#- Faster than looping over individual geometries</span>
 <span class="c1"># Filter candidate points with actual within() check</span>
 <span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">possible_matches</span><span class="p">]</span>
 <span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">gdf</span><span class="o">.</span><span class="n">within</span><span class="p">(</span><span class="n">_symdiff</span><span class="o">.</span><span class="n">unary_union</span><span class="p">)]</span>
@@ -1652,11 +1489,24 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:01:51.472741
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:01:51.482967
 </pre></div>
 </div>
 </div>
 </div>
+<div class="alert alert-block alert-info"><b>Why is this process taking so long?</b></div>
+<a class="reference internal image-reference" href="../_images/symDiff.png"><img alt="proj" class="align-right" src="../_images/symDiff.png" style="width: 550px;" />
+</a>
+<p><strong>What are we doing and why?</strong>
+<br> <br></p>
+<blockquote>
+<div><p><strong>LoD1</strong>: we only need the surface of the Earth where <br>there are no buildings.<br></p>
+<p><strong>Symetric Difference</strong>: we are removing all the points <br> we harvested from the DEM that fall inside a building</p>
+<p>These are essentially <strong>spatial queries</strong> <br><em>—specifically spatial indexing and filtering</em><br></p>
+<blockquote>
+<div><p><code class="docutils literal notranslate"><span class="pre">pyarrow</span></code> and <code class="docutils literal notranslate"><span class="pre">shapely.points_from_xy</span></code> <br> for parallelized and vectorised reading and <code class="docutils literal notranslate"><span class="pre">STRtree</span></code> for efficient spatial lookup</p>
+</div></blockquote>
+</div></blockquote>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dis</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
@@ -1863,44 +1713,37 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 <div class="alert alert-block alert-info"><b></b> 
 <p><strong>Go over to <a class="reference external" href="https://ninja.cityjson.org/#">Ninja the online CityJSON viewer</a> and explore!</strong></p>
-</div><p><strong>You are welcome to further investigate the quality of a 3D Model.</strong></p>
-<p><strong>The <a class="reference external" href="http://geovalidation.bk.tudelft.nl/val3dity/">val3dity</a> web app will test CityJSON geometric primitives.</strong></p>
-<p><strong>If you parse the result of this notebook through <a class="reference external" href="http://geovalidation.bk.tudelft.nl/val3dity/">val3dity</a> it will return a report with an invalid <a class="reference external" href="https://www.cityjson.org/specs/1.1.1/#tinrelief">TINRelief</a> and error.</strong>
-<br>
-<br>
-<a class="reference internal" href="../_images/iso19107_error.jpg"><img alt="../_images/iso19107_error.jpg" src="../_images/iso19107_error.jpg" style="width: 550px;" /></a>
-<br>
-<br>
-<strong>This particular area contains Buildings with courtyards. The courtyards</strong> (polygons) <strong>are islands of terrain disconnected from the <em>larger</em> TINRelief</strong> (shell); <strong>thus the error<sup>*</sup>.</strong>
-<br>
-<br>
-<sup>* <sub><em><strong>Don’t take my word for it. Test and see for yourself!</strong></em> <code class="docutils literal notranslate"><span class="pre">osm3Dsaao_param.json</span></code> (South African Royal Observatory, Cape Town) will produce a 100% topologically correct <a class="reference external" href="https://www.ogc.org/standard/citygml/">Open Geospatial Consortium (OGC)</a> standard LoD1 3D model that conforms to the <a class="reference external" href="https://www.iso.org/standard/66175.html">ISO 19107 spatial schema for 3D primatives</a> <em>[connecting and planar surfaces, correct orientation of the surfaces and watertight volumes]</em></sub></p>
-<div class="alert alert-block alert-warning"><b>NOW</b><br><br>
-<p><em><strong>To understand the value and usefulness of a 3D City Model</strong></em>; parse the result of this Notebook through <a class="reference external" href="https://github.com/AdrianKriger/geo3D/blob/main/CityJSONspatialDataScience.ipynb">CityJSONspatialDataScience.ipynb</a> to workthrough an example of:</p>
-<ul class="simple">
-<li><p>population estimation and</p></li>
-<li><p>a calculation of [Building Volume per Capita]((https://www.researchgate.net/publication/343185735_Building_Volume_Per_Capita_BVPC_A_Spatially_Explicit_Measure_of_Inequality_Relevant_to_the_SDGs)</p></li>
-</ul>
-</div><p><em><strong>As always; you are welcome to raise an issue. I depend on you to help me improve.</strong></em></p>
-</section>
-<section id="possible-secondary-and-tertiary-level-conversations-starters">
-<h2>2. Possible Secondary and Tertiary level <em>conversations starters</em>:<a class="headerlink" href="#possible-secondary-and-tertiary-level-conversations-starters" title="Link to this heading">#</a></h2>
-<div class="alert alert-block alert-success"><b>communicate and exchange ideas and understanding</b></div><div class="pst-scrollable-table-container"><table class="table">
+</div></section>
+<section id="quality">
+<h2>2. Quality:<a class="headerlink" href="#quality" title="Link to this heading">#</a></h2>
+<div class="alert alert-block alert-danger"><b>WARNING:</b>  
+<p><em><strong>Lower resolution Elevation Models can leave gaps!</strong></em></div></p>
+<div class="pst-scrollable-table-container"><table class="table">
 <thead>
-<tr class="row-odd"><th class="head"><p><strong>Topic</strong></p></th>
-<th class="head"><p><strong>Secondary Level Questions</strong></p></th>
-<th class="head"><p><strong>Tertiary Level Questions</strong></p></th>
+<tr class="row-odd"><th class="head text-center"><p></p></th>
+<th class="head text-center"><p></p></th>
+<th class="head text-center"><p></p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><strong>Geography</strong></p></td>
-<td><p>- Talk about the main difference between a globe and a map, and why we use map projections to represent the Earth on a flat surface<br>- Explain why different map projections are used for different purposes. For example, why might a Mercator projection be useful for navigation, but not for comparing the sizes of countries?</p></td>
-<td><p>- Discuss why it is necessary to convert geographic coordinates (latitude and longitude) to a projected coordinate system in the context of the geospatial sciences. What are some potential issues if this conversion is not done? <br>- How does geodesy contribute to the geospatial sciences?</p></td>
+<tr class="row-even"><td class="text-center"><p><strong>25m</strong></p></td>
+<td class="text-center"><p><img alt="25.png" src="../_images/25.png" /></p></td>
+<td class="text-center"><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong>15m</strong></p></td>
+<td class="text-center"><p><img alt="15.png" src="../_images/25.png" /></p></td>
+<td class="text-center"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><strong>10m</strong></p></td>
+<td class="text-center"><p><img alt="10.png" src="../_images/10.png" /></p></td>
+<td class="text-center"><p></p></td>
 </tr>
 </tbody>
 </table>
 </div>
-</section>
+<div class="alert alert-block alert-success"><b></b>
+<p><strong>Higher resolution Elevation Models do solve the challenge.</strong></p>
+</div></section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1934,20 +1777,20 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="interactiveOnly.html"
+       href="../prob.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><em>pseudo</em>-3D visualisation with Spatial Analysis</p>
+        <p class="prev-next-title">Challenge</p>
       </div>
     </a>
     <a class="right-next"
-       href="CityJSONspatialDataScience.html"
+       href="../after/libsPacs.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Spatial Data Science with CityJSON</p>
+        <p class="prev-next-title">Libraries and Packages</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1967,8 +1810,8 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-lod1-3d-city-model">1. Create LoD1 3D City Model</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#possible-secondary-and-tertiary-level-conversations-starters">2. Possible Secondary and Tertiary level <em>conversations starters</em>:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#timing">1. Timing</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quality">2. Quality:</a></li>
 </ul>
   </nav></div>
 
