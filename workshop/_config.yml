@@ -12,7 +12,7 @@ author: arkriger
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
 execute:
-  execute_notebooks: force
+  execute_notebooks: 'off'
   
 # Add a launch button on a specific binder instance
 launch_buttons:

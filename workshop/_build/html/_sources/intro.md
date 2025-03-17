@@ -7,7 +7,7 @@ With execution via Jupyter Notebook, *geo3D* provides an accessible and reproduc
 %![lod1](./LoD1.png)
 ```{figure} _static/LoD1.png
 ---
-name: lod2-fig
+name: lod1-fig
 ---
 A LoD1 3D City Model of a peri-urban village; [Mamre](https://www.openstreetmap.org/relation/2198487).
 ```
