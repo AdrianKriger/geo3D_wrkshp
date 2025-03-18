@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -60,7 +60,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/CityJSONspatialDataScience';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="vil - Spatial Data Science with CityJSON" href="vil_CityJSONspatialDataScience.html" />
+    <link rel="next" title="LoD1 Timing and Quality Considerations" href="CityJSONLoD1timing.html" />
     <link rel="prev" title="LoD1 3D City Model" href="osm_LoD1_3DCityModel.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -175,6 +175,7 @@
         </ul>
         <p aria-level="2" class="caption" role="heading"><span class="caption-text">Before the workshop</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../video.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../before/what.html">What does <em>geo3D</em> do and why?</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../before/procStrat.html">Processing Options, Strategies and Requirements</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../before/setup.html">Setup: how to run the tutorial</a></li>
@@ -187,11 +188,10 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="osm_LoD1_3DCityModel.html">LoD1 3D City Model</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Spatial Data Science with CityJSON</a></li>
-<li class="toctree-l1"><a class="reference internal" href="vil_CityJSONspatialDataScience.html">vil - Spatial Data Science with CityJSON</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LoD1 caveats</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="CityJSONLoD1_timing.html">LoD1 Timing and Quality Considerations</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CityJSONLoD1timing.html">LoD1 Timing and Quality Considerations</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">After the workshop</span></p>
 <ul class="nav bd-sidenav">
@@ -238,37 +238,6 @@
         <div class="header-article-item">
 
 <div class="article-header-buttons">
-
-
-
-
-
-<div class="dropdown dropdown-launch-buttons">
-  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Launch interactive content">
-    <i class="fas fa-rocket"></i>
-  </button>
-  <ul class="dropdown-menu">
-      
-      
-      
-      <li><a href="https://mybinder.org/v2/gh/AdrianKriger/geo3D_wrkshp/v2/gh/AdrianKriger/geo3D_wrkshp/main?urlpath=lab/tree/tutorial/notebooks/CityJSONspatialDataScience.ipynb" target="_blank"
-   class="btn btn-sm dropdown-item"
-   title="Launch on Binder"
-   data-bs-placement="left" data-bs-toggle="tooltip"
->
-  
-
-<span class="btn__icon-container">
-  
-    <img alt="Binder logo" src="../_static/images/logo_binder.svg">
-  </span>
-<span class="btn__text-container">Binder</span>
-</a>
-</li>
-      
-  </ul>
-</div>
-
 
 
 
@@ -446,6 +415,7 @@ document.write(`
                   
   <section id="spatial-data-science-with-cityjson">
 <h1>Spatial Data Science with CityJSON<a class="headerlink" href="#spatial-data-science-with-cityjson" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://2i2c.mybinder.org/v2/gh/AdrianKriger/geo3D_wrkshp/HEAD?urlpath=%2Fdoc%2Ftree%2Fworkshop%2Fnotebooks%2FCityJSONspatialDataScience.ipynb"><img alt="Binder" src="../_images/launch-binder1.svg" /></a></p>
 <p>The purpose of this Notebook is to <em><strong>work with</strong></em> the product of <a class="reference external" href="https://github.com/AdrianKriger/osm_LoD1_3DCityModel">osm_LoD1_3DCityModel</a>; a previously created CityJSON city model.</p>
 <div class="alert alert-block alert-warning"><b>This notebook will:</b>
 <blockquote>
@@ -873,7 +843,7 @@ Name: count, dtype: int64
 <blockquote>
 <div><ul class="simple">
 <li><p>University owed: is tagged <code class="docutils literal notranslate"><span class="pre">building:dormitory</span></code> with <code class="docutils literal notranslate"><span class="pre">residential:university</span></code> and harvests the <code class="docutils literal notranslate"><span class="pre">beds</span></code> or <code class="docutils literal notranslate"><span class="pre">rooms</span></code> <em>‘key:value’</em> pair.</p></li>
-<li><p>Private for-profit: is tagged <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> or <code class="docutils literal notranslate"><span class="pre">:dormitory</span></code> with <code class="docutils literal notranslate"><span class="pre">residential:university</span></code> and then harvests the <code class="docutils literal notranslate"><span class="pre">building:flats</span></code> or <code class="docutils literal notranslate"><span class="pre">:rooms</span></code> <em>‘key:value’</em> pair <em>(the number of units)</em> to calculate <code class="docutils literal notranslate"><span class="pre">*1</span></code> people per apartment; if <code class="docutils literal notranslate"><span class="pre">level:</span> <span class="pre">&gt;</span> <span class="pre">1</span></code> else <code class="docutils literal notranslate"><span class="pre">*3</span></code> people in a house share.</p></li>
+<li><p>Private for-profit: is tagged <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> or <code class="docutils literal notranslate"><span class="pre">:dormitory</span></code> with <code class="docutils literal notranslate"><span class="pre">residential:student</span></code> and then harvests the <code class="docutils literal notranslate"><span class="pre">building:flats</span></code> or <code class="docutils literal notranslate"><span class="pre">:rooms</span></code> <em>‘key:value’</em> pair <em>(the number of units)</em> to calculate <code class="docutils literal notranslate"><span class="pre">*1</span></code> people per apartment; if <code class="docutils literal notranslate"><span class="pre">level:</span> <span class="pre">&gt;</span> <span class="pre">1</span></code> else <code class="docutils literal notranslate"><span class="pre">*3</span></code> people in a house share.</p></li>
 </ul>
 </div></blockquote>
 <p><strong>The tagging scheme and numbers is based on <em>how your community is mapped</em> and local knowledge</strong></p>
@@ -1197,7 +1167,7 @@ INFORMAL: Population:  30  with Building Volume Per Capita (BVPC) 96.626
 <p>These are LoD1 3D City Models and works well in these types of areas.<br />
 LoD2 would offer a more representative BVpC <a class="reference external" href="https://www.researchgate.net/publication/343185735_Building_Volume_Per_Capita_BVPC_A_Spatially_Explicit_Measure_of_Inequality_Relevant_to_the_SDGs">(Ghosh, T; et al. 2020)</a> value; when the complexity of the built environment increases.</p>
 <p>Think about a <code class="docutils literal notranslate"><span class="pre">house</span></code> with living space in the roof structure, so called <em>‘attic living’</em>, or an <code class="docutils literal notranslate"><span class="pre">apartment</span></code> / <code class="docutils literal notranslate"><span class="pre">residential</span></code> building with different levels, loft apartments and/or units in the turrets of a <code class="docutils literal notranslate"><span class="pre">building</span></code>.</p>
-<p><em><strong>consider</strong></em>: <em><strong><a class="reference external" href="https://adriankriger.github.io/geo3D/">geo3D</a></strong></em> seperates <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Tag:building%3Dcabin">building:cabin</a> from <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> to more precisely represent informal structures which typical do not have roof trussess but account for <a class="reference external" href="https://en.wikipedia.org/wiki/Public_housing">social housing</a> that does</div></div></p>
+<p><em><strong>consider</strong></em>: <em><strong><a class="reference external" href="https://adriankriger.github.io/geo3D/">geo3D</a></strong></em> seperates <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Tag:building%3Dcabin">building:cabin</a> from <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> to more precisely represent informal structures which typical do not have roof trussess but account for <a class="reference external" href="https://en.wikipedia.org/wiki/Public_housing">social housing</a> that does</div></p>
 </section>
 </section>
 <section id="interactive-visualization">
@@ -87216,11 +87186,11 @@ LoD2 would offer a more representative BVpC <a class="reference external" href="
       </div>
     </a>
     <a class="right-next"
-       href="vil_CityJSONspatialDataScience.html"
+       href="CityJSONLoD1timing.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">vil - Spatial Data Science with CityJSON</p>
+        <p class="prev-next-title">LoD1 Timing and Quality Considerations</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

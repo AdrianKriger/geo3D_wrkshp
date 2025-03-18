@@ -18,15 +18,11 @@ parts:
 - caption: suburb
   chapters:
   - file: notebooks/osm_LoD1_3DCityModel
-#  - file: notebooks/CityJSONspatialDataScience
-  - file: prob
-#  - file: notebooks/sub_CityJSONspatialDataScience
-#  - file: notebooks/vil_CityJSONspatialDataScience
-
+  - file: notebooks/CityJSONspatialDataScience
 
 - caption: LoD1 caveats
   chapters:
-  - file: notebooks/CityJSONLoD1_timing
+  - file: notebooks/CityJSONLoD1timing
 
 - caption: After the workshop
   chapters:
