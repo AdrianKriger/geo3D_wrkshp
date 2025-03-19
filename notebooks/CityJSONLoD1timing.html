@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -407,7 +407,7 @@ document.write(`
                   
   <section id="lod1-timing-and-quality-considerations">
 <h1>LoD1 Timing and Quality Considerations<a class="headerlink" href="#lod1-timing-and-quality-considerations" title="Link to this heading">#</a></h1>
-<p><a class="reference external" href="https://2i2c.mybinder.org/v2/gh/AdrianKriger/geo3D_wrkshp/HEAD?urlpath=%2Fdoc%2Ftree%2Fworkshop%2Fnotebooks%2FCityJSONLoD1timing.ipynb"><img alt="Binder" src="../_images/launch-binder1.svg" /></a></p>
+<p><a class="reference external" href="https://mybinder.org/v2/gh/AdrianKriger/geo3D_wrkshp/HEAD?urlpath=%2Fdoc%2Ftree%2Fworkshop%2Fnotebooks%2CityJSONLoD1timing.ipynb"><img alt="Binder" src="../_images/launch-binder1.svg" /></a></p>
 <div class="alert alert-block alert-warning"><b>This notebook will:</b>
 <blockquote>
 <div><p><strong>illustrate how different resolution elevation models (25m, 15m and 5m DEM) affect;</strong></p>
@@ -436,7 +436,7 @@ document.write(`
 <span class="kn">import</span><span class="w"> </span><span class="nn">topojson</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tp</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">polygon</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Point</span><span class="p">,</span> <span class="n">Polygon</span> <span class="c1">#, LineString, , MultiPolygon, LinearRing, shape, mapping</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Point</span><span class="p">,</span> <span class="n">Polygon</span> 
 <span class="kn">from</span><span class="w"> </span><span class="nn">shapely.ops</span><span class="w"> </span><span class="kn">import</span> <span class="n">snap</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">shapely.ops</span><span class="w"> </span><span class="kn">import</span> <span class="n">transform</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">shapely.strtree</span><span class="w"> </span><span class="kn">import</span> <span class="n">STRtree</span>
@@ -461,7 +461,8 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Tstart</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -470,8 +471,8 @@ document.write(`
 <p><strong>A <code class="docutils literal notranslate"><span class="pre">parameter.json</span></code> defines the path and files</strong>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#jparams = json.load(open(&#39;osm3DsRiver_param10m.json&#39;)) # 11 min 30 sec </span>
-<span class="c1">#jparams = json.load(open(&#39;osm3DsRiver_param15m.json&#39;)) #</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#jparams = json.load(open(&#39;osm3DsRiver_param10m.json&#39;))  # 11 min 30 sec </span>
+<span class="c1">#jparams = json.load(open(&#39;osm3DsRiver_param15m.json&#39;))  # 5 min 20 sec</span>
 <span class="n">jparams</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;osm3DsRiver_param25m.json&#39;</span><span class="p">))</span>  <span class="c1"># 2 min 13 sec </span>
 </pre></div>
 </div>
@@ -602,7 +603,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.573574
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.553150
 </pre></div>
 </div>
 </div>
@@ -953,30 +954,6 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># have a look</span>
-<span class="c1">#ts.tail(2)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- coordinate reference system</span>
-<span class="c1">#ts.crs</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- estimate utm: internal geopandas function</span>
-<span class="c1">#ts.estimate_utm_crs()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- fill &lt;Projected CRS: EPSG:32734&gt; from above here epsg = EPSG:32734</span>
 <span class="n">epsg</span> <span class="o">=</span> <span class="s1">&#39;EPSG:32734&#39;</span>
 </pre></div>
@@ -1003,21 +980,9 @@ document.write(`
         <span class="k">return</span> <span class="n">row</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="n">cap_style</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">join_style</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="n">aoibuffer</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">aoibuffer</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">buffer01</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="c1">##- orient segments and simplify topology</span>
-<span class="c1">#topo = tp.Topology(aoibuffer, prequantize=False, winding_order=&#39;CCW_CW&#39;)</span>
-<span class="c1">#with np.errstate(invalid=&#39;ignore&#39;):</span>
-    <span class="c1">#aoibuffer = topo.toposimplify(0.25).to_gdf()</span>
     
 <span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="n">aoibuffer</span><span class="o">.</span><span class="n">total_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">250</span><span class="p">,</span> <span class="n">aoibuffer</span><span class="o">.</span><span class="n">total_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">250</span><span class="p">,</span> 
           <span class="n">aoibuffer</span><span class="o">.</span><span class="n">total_bounds</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="mi">250</span><span class="p">,</span> <span class="n">aoibuffer</span><span class="o">.</span><span class="n">total_bounds</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="mi">250</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#extent</span>
 </pre></div>
 </div>
 </div>
@@ -1038,18 +1003,6 @@ document.write(`
                     <span class="c1">#-- outputBounds=[minX, minY, maxX, maxY]</span>
                     <span class="n">outputBounds</span> <span class="o">=</span> <span class="p">[</span><span class="n">extent</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">extent</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">extent</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">extent</span><span class="p">[</span><span class="mi">3</span><span class="p">]])</span>
 <span class="n">OutTile</span> <span class="o">=</span> <span class="kc">None</span> 
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># raster to xyz</span>
-<span class="c1">#xyz = gdal.Translate(jparams[&#39;xyz&#39;], </span>
-<span class="c1">#                     jparams[&#39;projClip_raster&#39;],</span>
-<span class="c1">#                     format = &#39;XYZ&#39;)#, </span>
-<span class="c1">#                     #noData = float(0))</span>
-<span class="c1">#xyz = None</span>
 </pre></div>
 </div>
 </div>
@@ -1129,7 +1082,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:10.879517
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:10.892106
 </pre></div>
 </div>
 </div>
@@ -1313,7 +1266,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.386487
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.376884
 </pre></div>
 </div>
 </div>
@@ -1485,7 +1438,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:01:49.909368
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:01:50.443943
 </pre></div>
 </div>
 </div>
@@ -1500,7 +1453,7 @@ document.write(`
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="text-center"><p><strong>LoD1</strong>: we only need the surface of the  <br> Earth where there are no buildings.<br><br> <strong>Symetric Difference</strong>: we are removing all the points harvested from the DEM that fall inside a building. <br><br> These are essentially <strong>spatial queries</strong> <br> <em>—specifically spatial indexing and filtering</em>. <br><br> <code class="docutils literal notranslate"><span class="pre">shapely.points_from_xy</span></code>for <br> parallelized and vectorised reading <br> and <code class="docutils literal notranslate"><span class="pre">STRtree</span></code> for efficient spatial operations</p></td>
+<tr class="row-even"><td class="text-center"><p><strong>LoD1</strong>: we only need the surface of the  <br> Earth where there are no buildings.<br><br> <strong>Symetric Difference</strong>: we are removing all the points, harvested from the DEM, that fall inside a building. <br><br> These are essentially <strong>spatial queries</strong> <br> <em>—specifically spatial indexing and filtering</em>. <br><br>  Here we execute <code class="docutils literal notranslate"><span class="pre">STRtree</span></code> for efficient spatial operations</p></td>
 <td class="text-center"><p><img alt="symDiff.png" src="../_images/symDiff.png" /></p></td>
 </tr>
 </tbody>
@@ -1508,9 +1461,7 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">##&lt;img src=&quot;_static/symDiff.png&quot; alt=&quot;proj&quot; width=&quot;550&quot; align=&quot;right&quot;/&gt;</span>
-
-<span class="n">dis</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dis</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1729,9 +1680,6 @@ document.write(`
 <tr class="row-even"><td class="text-center"><p><strong>25m</strong></p></td>
 <td class="text-center"><p><img alt="25.png" src="../_images/25.png" /></p></td>
 </tr>
-<tr class="row-odd"><td class="text-center"><p><strong>15m</strong></p></td>
-<td class="text-center"><p><img alt="15.png" src="../_images/25.png" /></p></td>
-</tr>
 </tbody>
 </table>
 </div>
@@ -1745,11 +1693,27 @@ document.write(`
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="text-center"><p><strong>10m</strong></p></td>
+<tr class="row-even"><td class="text-center"><p><strong>15m</strong></p></td>
+<td class="text-center"><p><img alt="15.png" src="../_images/15.png" /></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><strong>10m</strong></p></td>
 <td class="text-center"><p><img alt="10.png" src="../_images/10.png" /></p></td>
 </tr>
 </tbody>
 </table>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Tend</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">Tend</span> <span class="o">-</span> <span class="n">Tstart</span><span class="p">))))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:02:11.957594
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 </section>
@@ -1844,7 +1808,7 @@ By arkriger
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2025.
       <br/>
     
   </p>

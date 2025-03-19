@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -415,7 +415,7 @@ document.write(`
                   
   <section id="spatial-data-science-with-cityjson">
 <h1>Spatial Data Science with CityJSON<a class="headerlink" href="#spatial-data-science-with-cityjson" title="Link to this heading">#</a></h1>
-<p><a class="reference external" href="https://2i2c.mybinder.org/v2/gh/AdrianKriger/geo3D_wrkshp/HEAD?urlpath=%2Fdoc%2Ftree%2Fworkshop%2Fnotebooks%2FCityJSONspatialDataScience.ipynb"><img alt="Binder" src="../_images/launch-binder1.svg" /></a></p>
+<p><a class="reference external" href="https://mybinder.org/v2/gh/AdrianKriger/geo3D_wrkshp/HEAD?urlpath=%2Fdoc%2Ftree%2Fworkshop%2Fnotebooks%2CityJSONspatialDataScience.ipynb"><img alt="Binder" src="../_images/launch-binder1.svg" /></a></p>
 <p>The purpose of this Notebook is to <em><strong>work with</strong></em> the product of <a class="reference external" href="https://github.com/AdrianKriger/osm_LoD1_3DCityModel">osm_LoD1_3DCityModel</a>; a previously created CityJSON city model.</p>
 <div class="alert alert-block alert-warning"><b>This notebook will:</b>
 <blockquote>
@@ -815,16 +815,16 @@ Name: count, dtype: int64
 </div>
 <p><strong>This area is urban with single and 2-storey level housing units. To estimate population is thus pretty straight forward.</strong></p>
 <div class="alert alert-block alert-info"><b>We start with local knowledge.</b></div>
-<p><strong>On average there are roughly <code class="docutils literal notranslate"><span class="pre">4</span></code> people per <code class="docutils literal notranslate"><span class="pre">building:house</span></code> in this area.</strong></p>
-<p><strong><a class="reference external" href="https://en.wikipedia.org/wiki/Public_housing">social housing</a></strong> is tagged <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> with the <code class="docutils literal notranslate"><span class="pre">3</span></code> people per building or <code class="docutils literal notranslate"><span class="pre">building:flats</span> <span class="pre">*</span> <span class="pre">3</span></code> if the building is an <em>apartment-type</em> complex</p>
+<p><strong>On average there are roughly <code class="docutils literal notranslate"><span class="pre">5</span></code> people per <code class="docutils literal notranslate"><span class="pre">building:house</span></code> in this area.</strong></p>
+<p><strong><a class="reference external" href="https://en.wikipedia.org/wiki/Public_housing">social housing</a></strong> is tagged <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> with the <code class="docutils literal notranslate"><span class="pre">4</span></code> people per building or <code class="docutils literal notranslate"><span class="pre">building:flats</span> <span class="pre">*</span> <span class="pre">4</span></code> if the building is an <em>apartment-type</em> complex</p>
 <div class="alert alert-block alert-danger"><b>Your Participation! </b>
 <p>We will execute the calculation programmatically. <strong>Fill in the relevant variables in the <em><code class="docutils literal notranslate"><span class="pre">cell</span></code></em> below</strong> </div></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- average number of residents per formal house</span>
-<span class="n">f_house</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">f_house</span> <span class="o">=</span> <span class="mi">5</span>
 <span class="c1">#- average number of residents per informal structure</span>
-<span class="n">inf_structure</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="n">inf_structure</span> <span class="o">=</span> <span class="mi">4</span>
 </pre></div>
 </div>
 </div>
@@ -834,7 +834,7 @@ Name: count, dtype: int64
 <ul class="simple">
 <li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Public_housing">social housing</a> is tagged <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> with the number of occupants iether the number of informal structure occupants or <code class="docutils literal notranslate"><span class="pre">building:flats</span> <span class="pre">*</span> <span class="pre">inf_structure</span></code></p></li>
 <li><p>A <code class="docutils literal notranslate"><span class="pre">social_facility</span></code> (carehome, shelter, etc.) harvests the beds <code class="docutils literal notranslate"><span class="pre">key:value</span></code> pair.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">building:apartment</span></code> harvests the <code class="docutils literal notranslate"><span class="pre">building:flats</span></code> <code class="docutils literal notranslate"><span class="pre">key:value</span></code> pair (the number of units) to calculate <code class="docutils literal notranslate"><span class="pre">*3</span></code> people per per apartment.</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">building:apartment</span></code> harvests the <code class="docutils literal notranslate"><span class="pre">building:flats</span></code> <code class="docutils literal notranslate"><span class="pre">key:value</span></code> pair (the number of units) to calculate <code class="docutils literal notranslate"><span class="pre">*4</span></code> people per per apartment.</p>
 <ul>
 <li><p><em><strong>Student accomodation</strong></em>:</p></li>
 </ul>
@@ -843,7 +843,7 @@ Name: count, dtype: int64
 <blockquote>
 <div><ul class="simple">
 <li><p>University owed: is tagged <code class="docutils literal notranslate"><span class="pre">building:dormitory</span></code> with <code class="docutils literal notranslate"><span class="pre">residential:university</span></code> and harvests the <code class="docutils literal notranslate"><span class="pre">beds</span></code> or <code class="docutils literal notranslate"><span class="pre">rooms</span></code> <em>‘key:value’</em> pair.</p></li>
-<li><p>Private for-profit: is tagged <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> or <code class="docutils literal notranslate"><span class="pre">:dormitory</span></code> with <code class="docutils literal notranslate"><span class="pre">residential:student</span></code> and then harvests the <code class="docutils literal notranslate"><span class="pre">building:flats</span></code> or <code class="docutils literal notranslate"><span class="pre">:rooms</span></code> <em>‘key:value’</em> pair <em>(the number of units)</em> to calculate <code class="docutils literal notranslate"><span class="pre">*1</span></code> people per apartment; if <code class="docutils literal notranslate"><span class="pre">level:</span> <span class="pre">&gt;</span> <span class="pre">1</span></code> else <code class="docutils literal notranslate"><span class="pre">*3</span></code> people in a house share.</p></li>
+<li><p>Private for-profit: is tagged <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> or <code class="docutils literal notranslate"><span class="pre">:dormitory</span></code> with <code class="docutils literal notranslate"><span class="pre">residential:student</span></code> and then harvests the <code class="docutils literal notranslate"><span class="pre">building:flats</span></code> or <code class="docutils literal notranslate"><span class="pre">:rooms</span></code> <em><code class="docutils literal notranslate"><span class="pre">key:value</span></code></em> pair <em>(the number of units)</em> to calculate <code class="docutils literal notranslate"><span class="pre">*1</span></code> people per apartment; if <code class="docutils literal notranslate"><span class="pre">level:</span> <span class="pre">&gt;</span> <span class="pre">1</span></code> else <code class="docutils literal notranslate"><span class="pre">*3</span></code> people in a house share.</p></li>
 </ul>
 </div></blockquote>
 <p><strong>The tagging scheme and numbers is based on <em>how your community is mapped</em> and local knowledge</strong></p>
@@ -880,7 +880,7 @@ Name: count, dtype: int64
                 
     <span class="c1">#- formal apartment</span>
     <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;apartments&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:flats&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span>
+        <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:flats&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span>
         
     <span class="c1">#- private student residence </span>
     <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;student&#39;</span><span class="p">:</span>
@@ -906,22 +906,24 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The estimated population is: 6730
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The estimated population is: 8273
 </pre></div>
 </div>
 </div>
 </div>
 <p><strong><a class="reference external" href="https://www.statssa.gov.za">Statistics South Africa (STATSA)</a> does not typically release official statistics at a suburb level but <a class="reference external" href="https://www.capetown.gov.za/Family%20and%20home/education-and-research-materials/data-statistics-and-research/cape-town-census">City of Cape Town</a> generously publishes suburb profiles as Open Data.<br />
-These numbers are based on disaggregated <a class="reference external" href="https://www.statssa.gov.za">Statistics South Africa (STATSA)</a> <a class="reference external" href="https://www.statssa.gov.za/?page_id=3839">Census 2011</a>.</strong></p>
-<p><strong>Woodstock 12 656</strong> (6 577: salt river and 9 207: observatory).</p>
+These numbers are based on disaggregated <a class="reference external" href="https://www.statssa.gov.za">STATSA</a> <a class="reference external" href="https://www.statssa.gov.za/?page_id=3839">Census 2011</a>.</strong></p>
+<p><strong>Salt River: 6 577</strong> (with its neighbours Woodstock: 12 656 and Observatory: 9 207).</p>
 <p>We can calculate the annual population growth rate using the formula for <strong><a class="reference external" href="https://databank.worldbank.org/metadataglossary/health-nutrition-and-population-statistics/series/SP.POP.GROW">Annual population growth</a>:</strong></p>
-<p>$$r = \frac{\ln{[\frac{End Population}{Start Population}}]}{n} * 100 = \frac{\ln{[\frac{17 062}{9345}}]}{12} * 100   = 2.49%$$</p>
+<p>$$
+r = \frac{\ln{[\frac{End Population}{Start Population}}]}{n} * 100 = \frac{\ln{[\frac{8 273}{6 577}}]}{12} * 100   = 1,91%
+$$</p>
 <div class="alert alert-block alert-danger"><b>Your Participation! </b>
 <p>It is possible to execute the calculation programmatically. <strong>Fill in the relevant variables in the <em><code class="docutils literal notranslate"><span class="pre">cell</span></code></em> below</strong> </div></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- previous population</span>
-<span class="n">start_population</span> <span class="o">=</span> <span class="mi">12656</span>
+<span class="n">start_population</span> <span class="o">=</span> <span class="mi">6577</span>
 
 <span class="c1">#- period in years from the previous census</span>
 <span class="n">years</span> <span class="o">=</span> <span class="mi">12</span>
@@ -938,13 +940,15 @@ These numbers are based on disaggregated <a class="reference external" href="htt
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>population growth rate of approximately: -5.26 %
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>population growth rate of approximately: 1.91 %
 </pre></div>
 </div>
 </div>
 </div>
 <p>To conclude; we can project into the future with a very basic formula to estimate the population <em>x</em>-years from now:</p>
-<p>$$p  = P_o * (1 + r)^{t} = p = 17062 * (1 + 0.0248)^{10}  = 21 818$$</p>
+<p>$$
+p  = P_o * (1 + r)^{t} = p = 8273 * (1 + 0.0191)^{10}  = 9 997
+$$</p>
 <div class="alert alert-block alert-danger"><b>Your Participation! </b>
 <p>It is possible to execute the calculation programmatically. <strong>Fill in the variables in the <em><code class="docutils literal notranslate"><span class="pre">cell</span></code></em> below</strong> </div></p>
 <div class="cell docutils container">
@@ -964,7 +968,7 @@ These numbers are based on disaggregated <a class="reference external" href="htt
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated population 10 years from now: 3919
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated population 10 years from now: 9997
 </pre></div>
 </div>
 </div>
@@ -1055,10 +1059,10 @@ These numbers are based on disaggregated <a class="reference external" href="htt
       <td>0</td>
       <td>0</td>
       <td>POLYGON ((265631.976 6242700.339, 265622.494 6...</td>
-      <td>4</td>
+      <td>5</td>
       <td>151.280498</td>
       <td>620.250042</td>
-      <td>155.062510</td>
+      <td>124.050008</td>
     </tr>
     <tr>
       <th>1307654033</th>
@@ -1079,10 +1083,10 @@ These numbers are based on disaggregated <a class="reference external" href="htt
       <td>0</td>
       <td>0</td>
       <td>POLYGON ((265631.976 6242700.339, 265633.540 6...</td>
-      <td>4</td>
+      <td>5</td>
       <td>197.021823</td>
       <td>807.789474</td>
-      <td>201.947368</td>
+      <td>161.557895</td>
     </tr>
   </tbody>
 </table>
@@ -1099,10 +1103,10 @@ These numbers are based on disaggregated <a class="reference external" href="htt
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>count    992.000000
 mean            inf
 std             NaN
-min       26.640456
-25%       79.904048
-50%       92.239829
-75%      124.011529
+min       21.312365
+25%       63.900314
+50%       73.791863
+75%       99.001121
 max             inf
 Name: bvpc, dtype: float64
 </pre></div>
@@ -1118,14 +1122,14 @@ Name: bvpc, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 133.299
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 108.437
 </pre></div>
 </div>
 </div>
 </div>
 <div class="alert alert-block alert-info"><b></b>
 <p><strong>This BVPC value is general.</strong></p>
-<p>We can seperate <code class="docutils literal notranslate"><span class="pre">building:house</span></code> from <code class="docutils literal notranslate"><span class="pre">building:cabin</span></code> and <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> to undertand the differences between <em><strong>formal and informal</strong></em> housing in this area.</p>
+<p>We can seperate <code class="docutils literal notranslate"><span class="pre">building:house</span></code> from <code class="docutils literal notranslate"><span class="pre">building:cabin</span></code> and <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> to understand the differences between <em><strong>formal and informal</strong></em> housing in this area.</p>
 <p><strong>We want to understand the living space <em>(the cubic-meter BVPC value)</em> each person has in thier home</strong></p>
 </div><div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1154,7 +1158,7 @@ Name: bvpc, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FORMAL: Population:  3824  with Building Volume Per Capita (BVPC): 107.682
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FORMAL: Population:  4780  with Building Volume Per Capita (BVPC): 86.146
 
 STUDENT RESIDENCE: Population:  1115  with Building Volume Per Capita (BVPC): 139.952
 
@@ -1248,7 +1252,7 @@ LoD2 would offer a more representative BVpC <a class="reference external" href="
     <span class="k">if</span> <span class="n">bld</span> <span class="o">==</span> <span class="s1">&#39;clinic&#39;</span> <span class="ow">or</span> <span class="n">bld</span> <span class="o">==</span> <span class="s1">&#39;doctors&#39;</span> <span class="ow">or</span> <span class="n">bld</span> <span class="o">==</span> <span class="s1">&#39;hospital&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">[</span><span class="mi">89</span><span class="p">,</span> <span class="mi">182</span><span class="p">,</span> <span class="mi">178</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">bld</span> <span class="o">==</span> <span class="s1">&#39;community_centre&#39;</span> <span class="ow">or</span> <span class="n">bld</span> <span class="o">==</span> <span class="s1">&#39;service&#39;</span> <span class="ow">or</span> <span class="n">bld</span> <span class="o">==</span>  <span class="s1">&#39;post_office&#39;</span> <span class="ow">or</span> <span class="n">bld</span> <span class="o">==</span> <span class="s1">&#39;hall&#39;</span> \
-    <span class="ow">or</span> <span class="n">bld</span> <span class="o">==</span>  <span class="s1">&#39;townhall&#39;</span> <span class="ow">or</span> <span class="n">bld</span> <span class="o">==</span> <span class="s1">&#39;police&#39;</span> <span class="ow">or</span> <span class="n">bld</span> <span class="o">==</span>  <span class="s1">&#39;library&#39;</span><span class="p">:</span>
+    <span class="ow">or</span> <span class="n">bld</span> <span class="o">==</span>  <span class="s1">&#39;townhall&#39;</span> <span class="ow">or</span> <span class="n">bld</span> <span class="o">==</span> <span class="s1">&#39;police&#39;</span> <span class="ow">or</span> <span class="n">bld</span> <span class="o">==</span>  <span class="s1">&#39;library&#39;</span> <span class="ow">or</span> <span class="n">bld</span> <span class="o">==</span> <span class="s1">&#39;civic&#39;</span> <span class="ow">or</span> <span class="n">bld</span> <span class="o">==</span> <span class="s1">&#39;fire_station&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">[</span><span class="mi">181</span><span class="p">,</span> <span class="mi">182</span><span class="p">,</span> <span class="mi">89</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">bld</span> <span class="o">==</span> <span class="s1">&#39;warehouse&#39;</span> <span class="ow">or</span> <span class="n">bld</span> <span class="o">==</span> <span class="s1">&#39;industrial&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="p">[</span><span class="mi">193</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">193</span><span class="p">]</span>
@@ -1492,7 +1496,7 @@ LoD2 would offer a more representative BVpC <a class="reference external" href="
         1
       ],
       &quot;getPolygon&quot;: &quot;@@=-&quot;,
-      &quot;id&quot;: &quot;6ab85a7b-14f8-49a4-818e-9d43ddf8ee33&quot;,
+      &quot;id&quot;: &quot;1f4cc9bd-9a90-4117-a62a-24dcdc0c21bb&quot;,
       &quot;stroked&quot;: false
     },
     {
@@ -87068,7 +87072,7 @@ LoD2 would offer a more representative BVpC <a class="reference external" href="
       &quot;getFillColor&quot;: &quot;@@=color&quot;,
       &quot;getLineColor&quot;: &quot;@@=color&quot;,
       &quot;getPolygon&quot;: &quot;@@=geometry.coordinates&quot;,
-      &quot;id&quot;: &quot;9b9e7a7a-86b2-497d-884c-cee5d466851c&quot;,
+      &quot;id&quot;: &quot;8ccf4d63-8efa-4445-a6d3-1745d69147cd&quot;,
       &quot;opacity&quot;: 0.3,
       &quot;pickable&quot;: true,
       &quot;stroked&quot;: false,
@@ -87244,7 +87248,7 @@ By arkriger
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2025.
       <br/>
     
   </p>
