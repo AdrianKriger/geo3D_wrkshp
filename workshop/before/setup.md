@@ -8,15 +8,15 @@
 
 Binder is a cloud service that allows users to share reproducible interactive computing environments from code repositories. It is generally used to enable other users to easily run your own code through Jupyter notebooks. It is a really cool service offered for free by several organisations (MyBinder through Jupyter, etc.).
 
-Binder is probably the easiest way to execute notebooks in this repository, as you only have to do one click to arrive in a Jupyterlab with all the necessary libraries. However, the hardware resources of the public Binder are limited; it is not meant for more than 50 instances at a time. Processing power is also limited to 
+Binder is probably the easiest way to execute notebooks in this repository, as you only have to do one click to arrive in a Jupyterlab with all the necessary libraries. However, its public resources are limited, supporting only some *'tens'* (not hundreds) of instances at a time with restricted processing power. The primary purpose of this functionality here; is to demonstrate the plug-and-play nature of *geo3D*. 
 
-Each Notebook in the village and suburbs sections ([interactiveOnly](../notebooks/interactiveOnly), LoD1_3D_CityModel and CityJSONSpatialDataScience), have a rocket icon 🚀 at the top, from which you can select the Binder button to just launch the particular Notebook on the Binder service.
+Each Notebook in the village and suburbs sections ([interactiveOnly](../notebooks/interactiveOnly), [LoD1_3D_CityModel](../notebooks/osm_LoD1_3DCityModel) and [CityJSONSpatialDataScience](../notebooks/CityJSONspatialDataScience)) have a Binder icon, from which to launch the **that particular** notebook on the Binder service.
 
-Alternatively, to launch the entire geo3D_wrkshp GitHub repository; click on the Binder below button:
+Alternatively, to launch the **entire** `geo3D_wrkshp` GitHub repository; click on the Binder below button:
 
 [![Binder](_static/launch-binder.svg)](https://mybinder.org/v2/gh/AdrianKriger/geo3D_wrkshp/HEAD)
 
-Thereafter; navigate and choose a Notebook, using the file browser, on the left side of the Jupyterlab screen.
+Thereafter; navigate and choose a notebook, using the file browser, on the left side of the Jupyterlab screen.
 
 ## b. Execute on your own computer
 
@@ -36,5 +36,5 @@ Launch a Jupyterlab notebook server from the `geo3D_wrkshp` environment.
 conda activate geo3D_wrkshp
 jupyter lab
 ```
-Open a web browser and connect to the Jupyterlab provided URL (you should see it in the jupyter lab command outputs), something like: http://localhost:8888/lab?token=42fac6733c6854578b981bca3abf5152.
-Navigate to foss4g-2022/tutorial/pangeo101/ using the file browser on the left side of the Jupyterlab screen.
+Open a web browser and connect to the Jupyterlab provided URL (you should see it in the jupyter lab command outputs), something like: `http://localhost:8888/lab?token=42fac6733c6854578b981bca3abf5152`
+Navigate to geo3D_wrkshp/workshop/notebooks/ using the file browser on the left side of the Jupyterlab screen.
