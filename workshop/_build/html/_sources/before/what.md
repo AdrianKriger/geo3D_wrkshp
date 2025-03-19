@@ -122,7 +122,7 @@ The `iframe` above illustrates building stock differentiated by colour. A school
 %
 ## 3. Is it useful?
 
-A LoD1 City Model, while basic, offers many advantages over 2D datasets. These may be used for shadow analyses, line of sight predictions, advanced flood simulation, or more advanced quantitative evaluations such as estimating wind comfort factor and simulating noise propagation.
+A LoD1 City Model, while basic, offers many advantages over 2D datasets. These may be used for shadow analyses, line of sight predictions, advanced flood simulation, or more advanced quantitative evaluations such as estimating wind comfort factor and simulating noise propagation {cite}`Biljecki2015`.
 
 As *geo3D* illustrates population estimation and the calculation of BVPC are also possible.
 
