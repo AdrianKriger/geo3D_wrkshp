@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -1453,7 +1453,7 @@ document.write(`
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="text-center"><p><strong>LoD1</strong>: we only need the surface of the  <br> Earth where there are no buildings.<br><br> <strong>Symetric Difference</strong>: we are removing all the points, harvested from the DEM, that fall inside a building. <br><br> These are essentially <strong>spatial queries</strong> <br> <em>—specifically spatial indexing and filtering</em>. <br><br>  Here we execute <code class="docutils literal notranslate"><span class="pre">STRtree</span></code> for efficient spatial operations</p></td>
+<tr class="row-even"><td class="text-center"><p><strong>LoD1</strong>: we only need the surface of the  <br> Earth where there are no buildings.<br><br> <strong>Symetric Difference</strong>: we are removing all the points, harvested from the DEM, that fall inside a building. <br><br> These are essentially <strong>spatial queries</strong> <br> <em>—specifically spatial indexing and filtering</em>. <br><br>  Here we execute <code class="docutils literal notranslate"><span class="pre">STRtree</span></code> for efficient spatial operations. <br><br>  The greater the number of points <em>(higher resolution elevation model)</em> and the higher the number of buildings the longer the process will take!</p></td>
 <td class="text-center"><p><img alt="symDiff.png" src="../_images/symDiff.png" /></p></td>
 </tr>
 </tbody>
@@ -1702,15 +1702,51 @@ document.write(`
 </tbody>
 </table>
 </div>
+<div class="alert alert-block alert-info"><b>Why is this happening?</b> 
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p></p></th>
+<th class="head text-center"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><strong>What do we</strong> <em>(in the geospatial community)</em> <strong>mean  when we say; <br><br> “3D”?</strong></p></td>
+<td class="text-center"><p><img alt="3dgis.png" src="../_images/_3DGIS.png" /></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p></p></th>
+<th class="head text-center"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>We model terrain (a raster DEM) as a 2D surface imbeded in 3D space. <br><br> Each ‘xy’ coordinate (pixel) only has one ‘z’ height. This is typically called <strong>2.5D modelling</strong>. <br><br> Notice that <em>‘truthfully’</em> representing objects connected to a ground surface is impossible. A wall for example could never be straight but have to deviate from the vertical. <br><br> This is why a DEM is often defined as the surface of the earth free of man-made and natural features</p></td>
+<td class="text-center"><p><img alt="25D.png" src="../_images/_25D.png" /></p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p>To represent a surface <em>‘truthfully’</em> we can employ <strong>2.75D modeling</strong>. <br><br> The challenge with this solution is; it models the exterior only and it is one surface where objects are one feature. <br><br> A 3D mesh is a 2.75D surface and while traditionally a CAD tool its foray into GIS is recent</p></td>
+<td class="text-center"><p><img alt="275D.png" src="../_images/_275D.png" /></p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p>Full volumetric <strong>3D modeling</strong>, like a 3D City Model, is actually a 2.5D surface including volumetric 3D objects. <br><br>We can estimate BVPC from these models because we can calculate the volume of a structure</p></td>
+<td class="text-center"><p><img alt="3D.png" src="../_images/_3D.png" /></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="alert alert-block alert-info"><b>Why is this important?</b> 
+</div><p>We model terrain seperately from the objects (trees, buildings, etc) connected to it.</p>
+<p>We remove the buildings, roads, trees, etc. <em>—we cut them out as we did above–</em> and due to how <em>geo3D</em> creates a city model (terrain modelled seperate from the buildings); the resolution of the raster DEM can create challanges.</p>
+<div class="alert alert-block alert-success"><b></b>
+<p><strong>The challenge is overcome with a finer resolution elevation model.</strong></p>
+</div>
+<p>In this particular case a 15m DEM easily solves the challange.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Tend</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">Tend</span> <span class="o">-</span> <span class="n">Tstart</span><span class="p">))))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:02:11.957594
 </pre></div>
 </div>
 </div>
@@ -1808,7 +1844,7 @@ By arkriger
 
   <p class="copyright">
     
-      © Copyright 2025.
+      © Copyright 2023-2025.
       <br/>
     
   </p>
