@@ -20,20 +20,25 @@ Thereafter; navigate and choose a notebook, using the file browser, on the left 
 
 ## b. Execute on your own computer
 
-Almost all parts of this tutorial were designed to run with limited computer resources, so it is possible to run on your laptop. It is not an easy one-click-push-button solution; as you will have to install the software environment yourself. 
+Almost all parts of this tutorial were designed to run with limited computer resources, so it is possible to run on your laptop. It is not an easy *'one-click-push-button*' solution. You will have to install the software environment yourself. 
 
-Steps to run this tutorial on your own computer are listed below and demonstrated through Linux commands only:
+The 4 steps to run this tutorial on your own computer are listed below and demonstrated through Linux commands only:
+
 ```python
-#- git clone the geo3D_wrkshp repository
-git clone git clone https://github.com/adriankriger/geo3D_wrkshp.git
+#- i. git clone the geo3D_wrkshp repository
+git clone git clone https://github.com/adriankriger/geo3D_wrkshp.git you/might/want/to/indicate/a/specific/path/ ... to clone into
+cd /into/the/specific/path ... if included above
 ```
-Install the required software environment with Conda. If you do not have Conda, install it by following these instructions (see here). Then create the environment, this can take a few minutes.
+Install the required software environment with Mini / Anaconda. If you have neither; a lightweight Miniconda installation might be better than the preconfigured Anaconda. Miniconda install  instructions can be found ([here](https://www.anaconda.com/docs/getting-started/miniconda/install)). Then create the environment, this may take several minutes.
 ```python
+#- ii. create geo3D_wrkshp environment
 conda env create -n geo3D_wrkshp -f geo3D_wrkshp/.binder/environment.yml
 ```
 Launch a Jupyterlab notebook server from the `geo3D_wrkshp` environment.
 ```python
+#- iii. activate geo3D_wrkshp environment
 conda activate geo3D_wrkshp
+#- iv. launch jupyter lab
 jupyter lab
 ```
 Open a web browser and connect to the Jupyterlab provided URL (you should see it in the jupyter lab command outputs), something like: `http://localhost:8888/lab?token=42fac6733c6854578b981bca3abf5152`

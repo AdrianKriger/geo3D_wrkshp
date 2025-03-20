@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -424,18 +424,22 @@ document.write(`
 </section>
 <section id="b-execute-on-your-own-computer">
 <h2><a class="toc-backref" href="#id2" role="doc-backlink">b. Execute on your own computer</a><a class="headerlink" href="#b-execute-on-your-own-computer" title="Link to this heading">#</a></h2>
-<p>Almost all parts of this tutorial were designed to run with limited computer resources, so it is possible to run on your laptop. It is not an easy one-click-push-button solution; as you will have to install the software environment yourself.</p>
-<p>Steps to run this tutorial on your own computer are listed below and demonstrated through Linux commands only:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#- git clone the geo3D_wrkshp repository</span>
-<span class="n">git</span> <span class="n">clone</span> <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">adriankriger</span><span class="o">/</span><span class="n">geo3D_wrkshp</span><span class="o">.</span><span class="n">git</span>
+<p>Almost all parts of this tutorial were designed to run with limited computer resources, so it is possible to run on your laptop. It is not an easy <em>‘one-click-push-button</em>’ solution. You will have to install the software environment yourself.</p>
+<p>The 4 steps to run this tutorial on your own computer are listed below and demonstrated through Linux commands only:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#- i. git clone the geo3D_wrkshp repository</span>
+<span class="n">git</span> <span class="n">clone</span> <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">adriankriger</span><span class="o">/</span><span class="n">geo3D_wrkshp</span><span class="o">.</span><span class="n">git</span> <span class="n">you</span><span class="o">/</span><span class="n">might</span><span class="o">/</span><span class="n">want</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">indicate</span><span class="o">/</span><span class="n">a</span><span class="o">/</span><span class="n">specific</span><span class="o">/</span><span class="n">path</span><span class="o">/</span> <span class="o">...</span> <span class="n">to</span> <span class="n">clone</span> <span class="n">into</span>
+<span class="n">cd</span> <span class="o">/</span><span class="n">into</span><span class="o">/</span><span class="n">the</span><span class="o">/</span><span class="n">specific</span><span class="o">/</span><span class="n">path</span> <span class="o">...</span> <span class="k">if</span> <span class="n">included</span> <span class="n">above</span>
 </pre></div>
 </div>
-<p>Install the required software environment with Conda. If you do not have Conda, install it by following these instructions (see here). Then create the environment, this can take a few minutes.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">env</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">geo3D_wrkshp</span> <span class="o">-</span><span class="n">f</span> <span class="n">geo3D_wrkshp</span><span class="o">/.</span><span class="n">binder</span><span class="o">/</span><span class="n">environment</span><span class="o">.</span><span class="n">yml</span>
+<p>Install the required software environment with Mini / Anaconda. If you have neither; a lightweight Miniconda installation might be better than the preconfigured Anaconda. Miniconda install  instructions can be found (<a class="reference external" href="https://www.anaconda.com/docs/getting-started/miniconda/install">here</a>). Then create the environment, this may take several minutes.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#- ii. create geo3D_wrkshp environment</span>
+<span class="n">conda</span> <span class="n">env</span> <span class="n">create</span> <span class="o">-</span><span class="n">n</span> <span class="n">geo3D_wrkshp</span> <span class="o">-</span><span class="n">f</span> <span class="n">geo3D_wrkshp</span><span class="o">/.</span><span class="n">binder</span><span class="o">/</span><span class="n">environment</span><span class="o">.</span><span class="n">yml</span>
 </pre></div>
 </div>
 <p>Launch a Jupyterlab notebook server from the <code class="docutils literal notranslate"><span class="pre">geo3D_wrkshp</span></code> environment.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">activate</span> <span class="n">geo3D_wrkshp</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#- iii. activate geo3D_wrkshp environment</span>
+<span class="n">conda</span> <span class="n">activate</span> <span class="n">geo3D_wrkshp</span>
+<span class="c1">#- iv. launch jupyter lab</span>
 <span class="n">jupyter</span> <span class="n">lab</span>
 </pre></div>
 </div>
@@ -534,7 +538,7 @@ By arkriger
 
   <p class="copyright">
     
-      © Copyright 2025.
+      © Copyright 2023-2025.
       <br/>
     
   </p>
