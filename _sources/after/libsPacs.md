@@ -4,7 +4,7 @@ While *geo3D* uses the essential python libraries and packages typically used in
 
 i. `Triangle `
 
-A LoD1 3D Model is based on a triangulated irregular network (TIN) data-structure. A TIN is a collection of connected 3D triangles that form a continuous closed surface. osm_LoD1_3DCityModel creates a TIN with the python implementation of Jonathan Richard Shewchuk’s Triangle and uses a special algorithm called a Constrained Delaunay triangulation {cite}`Dzhelil2020,shewchuk96b`.
+A LoD1 3D Model is based on a triangulated irregular network (TIN) data-structure. A TIN is a collection of connected 3D triangles that form a continuous closed surface {cite}`terrainbook`. osm_LoD1_3DCityModel creates a TIN with the python implementation of Jonathan Richard Shewchuk’s Triangle and uses a special algorithm called a Constrained Delaunay triangulation {cite}`Dzhelil2020,shewchuk96b`.
 
 ii. `pydeck`
 
