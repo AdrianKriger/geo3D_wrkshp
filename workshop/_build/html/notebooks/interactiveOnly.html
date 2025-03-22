@@ -57,6 +57,8 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/interactiveOnly';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -406,7 +408,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="pseudo-3d-visualisation-with-spatial-analysis">
+  <section class="tex2jax_ignore mathjax_ignore" id="pseudo-3d-visualisation-with-spatial-analysis">
 <h1><em>pseudo</em>-3D visualisation with Spatial Analysis<a class="headerlink" href="#pseudo-3d-visualisation-with-spatial-analysis" title="Link to this heading">#</a></h1>
 <p><a class="reference external" href="https://mybinder.org/v2/gh/AdrianKriger/geo3D_wrkshp/HEAD?urlpath=%2Fdoc%2Ftree%2Fworkshop%2Fnotebooks%252interactiveOnly.ipynb"><img alt="Binder" src="../_images/launch-binder1.svg" /></a></p>
 <div class="alert alert-block alert-warning"><b>This notebook will:</b>
@@ -448498,7 +448500,8 @@ Name: count, dtype: int64
 </div>
 <p><strong>The official <a class="reference external" href="https://www.statssa.gov.za/?page_id=4286&amp;amp;id=291">STATSSA 2011 census figure</a>, for this community, is 9048.</strong></p>
 <p>We can calculate the annual population growth rate using the formula for <strong><a class="reference external" href="https://databank.worldbank.org/metadataglossary/health-nutrition-and-population-statistics/series/SP.POP.GROW">Annual population growth</a>:</strong></p>
-<p>$$r = \frac{\ln{[\frac{End Population}{Start Population}}]}{n} * 100 = \frac{\ln{[\frac{10 736}{9048}}]}{12} * 100   = 1.43%$$</p>
+<div class="math notranslate nohighlight">
+\[r = \frac{\ln{[\frac{End Population}{Start Population}}]}{n} * 100 = \frac{\ln{[\frac{10 736}{9048}}]}{12} * 100   = 1.43\%\]</div>
 <div class="alert alert-block alert-danger"><b>Your Participation! </b>
 <p>It is possible to execute the calculation programmatically. <strong>Fill in the relevant variables in the <em><code class="docutils literal notranslate"><span class="pre">cell</span></code></em> below</strong> </div></p>
 <div class="cell docutils container">
@@ -448527,7 +448530,8 @@ Name: count, dtype: int64
 </div>
 </div>
 <p>To conclude; we can project into the future with a very basic formula to estimate the population <em>x</em>-years from now:</p>
-<p>$$p  = P_o * (1 + r)^{t} = p = 10736 * (1 + 0.0143)^{10}  = 12 368$$</p>
+<div class="math notranslate nohighlight">
+\[p  = P_o * (1 + r)^{t} = p = 10736 * (1 + 0.0143)^{10}  = 12 368\]</div>
 <div class="alert alert-block alert-danger"><b>Your Participation! </b>
 <p>It is possible to execute the calculation programmatically. <strong>Fill in the variables in the <em><code class="docutils literal notranslate"><span class="pre">cell</span></code></em> below</strong> </div></p>
 <div class="cell docutils container">
