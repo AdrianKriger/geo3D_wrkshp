@@ -1,7 +1,7 @@
 name: geo3D_wrkshp
 channels:
-  - conda-forge           #- prioritizing conda-forge
-  - defaults
+- conda-forge           #- prioritizing conda-forge
+- defaults
 dependencies:
 - python=3.9
 - fiona=1.9.4
