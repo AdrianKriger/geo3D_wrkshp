@@ -6,7 +6,7 @@
 
 ## a. Execute with a Binder deployment
 
-Binder is a cloud service that allows users to share reproducible interactive computing environments from code repositories. It is generally used to enable other users to easily run your own code through Jupyter notebooks. It is a really cool service offered for free by several organisations (MyBinder through Jupyter, etc.).
+Binder is a cloud service that allows users to share reproducible interactive computing environments from code repositories. It is generally used to enable other users to easily run your code through Jupyter notebooks. It is a really cool service offered for free by several organisations (MyBinder through Jupyter, etc.).
 
 Binder is probably the easiest way to execute notebooks in this repository, as you only have to do one click to arrive in a Jupyterlab with all the necessary libraries. However, its public resources are limited, supporting only some *'tens'* (not hundreds) of instances at a time with restricted processing power. The primary purpose of this functionality here; is to demonstrate the plug-and-play nature of *geo3D*. 
 
@@ -26,13 +26,13 @@ The 4 steps to run this tutorial on your own computer are listed below and demon
 
 ```python
 #- i. git clone the geo3D_wrkshp repository
-git clone git clone https://github.com/adriankriger/geo3D_wrkshp.git you/might/want/to/indicate/a/specific/path/ ... to clone into
+git clone https://github.com/adriankriger/geo3D_wrkshp.git you/might/want/to/indicate/a/specific/path/to/clone/into
 cd /into/the/specific/path ... if included above
 ```
 Install the required software environment with Mini / Anaconda. If you have neither; a lightweight Miniconda installation might be better than the preconfigured Anaconda. Miniconda install  instructions can be found ([here](https://www.anaconda.com/docs/getting-started/miniconda/install)). Then create the environment, this may take several minutes.
 ```python
 #- ii. create geo3D_wrkshp environment
-conda env create -n geo3D_wrkshp -f geo3D_wrkshp/.binder/environment.yml
+conda env create -n geo3D_wrkshp -f environment.yml
 ```
 Launch a Jupyterlab notebook server from the `geo3D_wrkshp` environment.
 ```python
