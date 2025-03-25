@@ -42,4 +42,5 @@ conda activate geo3D_wrkshp
 jupyter lab
 ```
 Open a web browser and connect to the Jupyterlab provided URL (you should see it in the jupyter lab command outputs), something like: `http://localhost:8888/lab?token=42fac6733c6854578b981bca3abf5152`
+
 Navigate to geo3D_wrkshp/workshop/notebooks/ using the file browser on the left side of the Jupyterlab screen.
