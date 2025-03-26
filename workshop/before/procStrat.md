@@ -58,7 +58,7 @@
 ### osm.pbf
 
 OSM Proto-buff files can be harvested from a number of sources. Either crop an area directly from OpenStreetMap with the [official tool](https://www.openstreetmap.org/export#map=3/0.70/22.15), select a predefined area [from any number of providers](https://wiki.openstreetmap.org/wiki/Planet.osm), such as [Geofabrik](https://download.geofabrik.de), or... download your own.  
-e.g.: Provincial extracts for South Africa are available here: http://download.openstreetmap.fr/extracts/africa/south_africa/
+e.g.: Provincial extracts for South Africa are available here: [http://download.openstreetmap.fr/extracts/africa/south_africa/](http://download.openstreetmap.fr/extracts/africa/south_africa/)
 
 ### raster DEM
 
