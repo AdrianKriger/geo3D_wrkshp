@@ -776,6 +776,14 @@ document.write(`
 </div>
 </div>
 </div>
+<div class="alert alert-block alert-info"><b>Craveat</b> 
+<p>Besides the spatial aspect <em>(the geometry)</em> that defines the shape of a feature <a class="reference internal" href="#"><span class="xref myst">OpenStreetMap</span></a> is a rich source of data. We have already introduced the standard and well-know <code class="docutils literal notranslate"><span class="pre">building=*</span></code> and <code class="docutils literal notranslate"><span class="pre">building:levels=*</span></code><sup>*</sup>.</p>
+<p>In urban areas many buildings, due to their age and the nature of change, are no longer used for the purposes intended. Consider warehouses along a waterfront that have transformed from storage to apartments or offices as an example.</p>
+<p>To account for refurbishment <em>–be as representative as possible–</em> and conform to the <strong><a class="reference external" href="https://wiki.openstreetmap.org/wiki/Beginners%27_guide">OpenStreetMap Guide</a></strong> we typically tag these:<br />
+<code class="docutils literal notranslate"><span class="pre">building=*</span></code> <em>~ the original purpose</em> <code class="docutils literal notranslate"><span class="pre">+</span></code> <code class="docutils literal notranslate"><span class="pre">building:use=*</span></code> <em>~ the current use</em><sup>**</sup>.</p>
+</div>
+<p><sup>*<sub>Have a look at <code class="docutils literal notranslate"><span class="pre">cell</span> <span class="pre">11</span></code> for a few more; such as: <code class="docutils literal notranslate"><span class="pre">amenity=*</span></code>, <code class="docutils literal notranslate"><span class="pre">social_facility=*</span></code> and the components of <code class="docutils literal notranslate"><span class="pre">addr=*</span></code>.</sub><br />
+<sup>**<sub>Furthermore; <em>geo3D</em> classifies <strong>social housing, social facilities</strong> (care home, shelter, etc.) <strong>and informal housing</strong> (backyard dwelling, shack, etc.) as <code class="docutils literal notranslate"><span class="pre">building</span> <span class="pre">/</span> <span class="pre">:use=residential</span></code>. <strong>Student accomodation</strong> includes the <code class="docutils literal notranslate"><span class="pre">residential=student</span></code> tag</sub></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- some data wrangling to account for when building:use is different from the original purpose </span>
@@ -798,7 +806,14 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># colour buildings based on use / amenity</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#-- colour the building stock based on building:type</span>
+
+<span class="c1">## while we can color with a built-in pydeck function</span>
+<span class="c1">#color_lookup = pdk.data_utils.assign_random_colors(df2[&#39;building&#39;])</span>
+ <span class="c1"># Assign a color</span>
+<span class="c1">#df2[&#39;color&#39;] = df2.apply(lambda row: color_lookup.get(row[&#39;building&#39;]), axis=1)</span>
+
+<span class="c1">## we define specific colors</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">color</span><span class="p">(</span><span class="n">bld</span><span class="p">):</span>
     <span class="c1">#- formal house</span>
     <span class="k">if</span> <span class="n">bld</span> <span class="o">==</span> <span class="s1">&#39;house&#39;</span> <span class="ow">or</span> <span class="n">bld</span> <span class="o">==</span> <span class="s1">&#39;semidetached_house&#39;</span> <span class="ow">or</span> <span class="n">bld</span> <span class="o">==</span> <span class="s1">&#39;terrace&#39;</span><span class="p">:</span> <span class="c1">#- add maisonette, duplex, etc. </span>
@@ -2185,7 +2200,7 @@ document.write(`
       &quot;filled&quot;: true,
       &quot;getFillColor&quot;: &quot;@@=[14, 140, 58]&quot;,
       &quot;getLineColor&quot;: &quot;@@=[14, 140, 58]&quot;,
-      &quot;id&quot;: &quot;71d79f8c-5e8a-4277-9e84-fbd72ffcfe0c&quot;,
+      &quot;id&quot;: &quot;140c796f-14a7-4680-9592-1ae07337676e&quot;,
       &quot;opacity&quot;: 0.5,
       &quot;stroked&quot;: false,
       &quot;wireframe&quot;: true
@@ -2199,7 +2214,7 @@ document.write(`
       &quot;filled&quot;: true,
       &quot;getFillColor&quot;: &quot;@@=[170, 83, 3]&quot;,
       &quot;getLineColor&quot;: &quot;@@=[170, 83, 3]&quot;,
-      &quot;id&quot;: &quot;81386407-1ba9-40c9-a584-3e788fbb1861&quot;,
+      &quot;id&quot;: &quot;2237a967-0e50-42b9-98de-f6d32ab5bfbe&quot;,
       &quot;opacity&quot;: 0.2,
       &quot;stroked&quot;: false,
       &quot;wireframe&quot;: true
@@ -4812,7 +4827,7 @@ document.write(`
       &quot;filled&quot;: true,
       &quot;getFillColor&quot;: &quot;@@=[35, 35, 142]&quot;,
       &quot;getLineColor&quot;: &quot;@@=[35, 35, 142]&quot;,
-      &quot;id&quot;: &quot;1b7db517-2ecc-4e04-a72d-d3761d6ae39a&quot;,
+      &quot;id&quot;: &quot;9aeaefc3-0f07-4597-9353-343eeba68902&quot;,
       &quot;opacity&quot;: 0.8,
       &quot;stroked&quot;: false,
       &quot;wireframe&quot;: true
@@ -238690,7 +238705,7 @@ document.write(`
       &quot;getColor&quot;: &quot;@@=colour&quot;,
       &quot;getPath&quot;: &quot;@@=path&quot;,
       &quot;getWidth&quot;: 5,
-      &quot;id&quot;: &quot;8227b64b-3199-4fe8-8168-119e321130d4&quot;,
+      &quot;id&quot;: &quot;98bbe8d7-edc4-42fb-a0d3-9b7e58c0b9f7&quot;,
       &quot;pickable&quot;: false
     },
     {
@@ -456328,7 +456343,7 @@ document.write(`
       &quot;getFillColor&quot;: &quot;@@=fill_color&quot;,
       &quot;getLineColor&quot;: &quot;@@=fill_color&quot;,
       &quot;getPolygon&quot;: &quot;@@=geometry.coordinates&quot;,
-      &quot;id&quot;: &quot;d76ca914-596b-4dd6-b54e-8e4c3828879d&quot;,
+      &quot;id&quot;: &quot;2b7ec414-ed30-4955-8a71-2e3ef74d2044&quot;,
       &quot;opacity&quot;: 0.3,
       &quot;pickable&quot;: true,
       &quot;stroked&quot;: false,
@@ -457239,7 +457254,7 @@ LoD2 would offer a more representative BVpC <a class="reference external" href="
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:56.197697
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:28.775900
 </pre></div>
 </div>
 </div>
