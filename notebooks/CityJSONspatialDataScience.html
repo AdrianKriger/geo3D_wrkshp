@@ -825,7 +825,7 @@ Name: count, dtype: int64
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- average number of residents per formal house</span>
 <span class="n">f_house</span> <span class="o">=</span> <span class="mi">5</span>
-<span class="c1">#- average number of residents per informal structure</span>
+<span class="c1">#- average number of residents per informal structure / social housing</span>
 <span class="n">inf_structure</span> <span class="o">=</span> <span class="mi">4</span>
 </pre></div>
 </div>
@@ -848,8 +848,8 @@ Name: count, dtype: int64
 <li><p>Private for-profit: is tagged <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> or <code class="docutils literal notranslate"><span class="pre">:dormitory</span></code> with <code class="docutils literal notranslate"><span class="pre">residential:student</span></code> and then harvests the <code class="docutils literal notranslate"><span class="pre">building:flats</span></code> or <code class="docutils literal notranslate"><span class="pre">:rooms</span></code> <em><code class="docutils literal notranslate"><span class="pre">key:value</span></code></em> pair <em>(the number of units)</em> to calculate <code class="docutils literal notranslate"><span class="pre">*1</span></code> people per apartment; if <code class="docutils literal notranslate"><span class="pre">level:</span> <span class="pre">&gt;</span> <span class="pre">1</span></code> else <code class="docutils literal notranslate"><span class="pre">*3</span></code> people in a house share.</p></li>
 </ul>
 </div></blockquote>
-<p><strong>The tagging scheme and numbers is based on <em>how your community is mapped</em> and local knowledge</strong></p>
-</div><div class="cell docutils container">
+<p><strong>The tagging scheme and numbers is based on <em>how your community is mapped</em> <em>(please follow the <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Beginners%27_guide">Guide</a>)</em> and local knowledge</strong></div></p>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">gdf_pop</span><span class="o">.</span><span class="n">columns</span>
 
