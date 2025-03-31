@@ -8,7 +8,7 @@
 
 Binder is a cloud service that allows users to share reproducible interactive computing environments from code repositories. It is generally used to enable other users to easily run your code through Jupyter notebooks. It is a really cool service offered for free by several organisations (MyBinder through Jupyter, etc.).
 
-Binder is probably the easiest way to execute notebooks in this repository, as you only have to do one click to arrive in a Jupyterlab with all the necessary libraries. However, its public resources are limited, supporting only some *'tens'* (not hundreds) of instances at a time with restricted processing power. The primary purpose of this functionality here; is to demonstrate the plug-and-play nature of *geo3D*. 
+Binder is probably the easiest way to execute notebooks in this repository, as you only have to do one click to arrive in a Jupyterlab with all the necessary libraries. However, its public resources are limited, supporting only some *'tens'* (less than 30) of instances at a time with restricted processing power. The primary purpose of this functionality here; is to demonstrate the plug-and-play nature of *geo3D*. 
 
 Each Notebook in the village and suburbs sections ([interactiveOnly](../notebooks/interactiveOnly), [LoD1_3D_CityModel](../notebooks/osm_LoD1_3DCityModel) and [CityJSONSpatialDataScience](../notebooks/CityJSONspatialDataScience)) have a Binder icon, from which to launch the **that particular** notebook on the Binder service.
 
