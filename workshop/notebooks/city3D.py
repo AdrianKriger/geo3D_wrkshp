@@ -28,6 +28,8 @@ from shapely.ops import transform
 
 import pyproj
 
+from osgeo import gdal
+
 from openlocationcode import openlocationcode as olc
 
 from cjio import cityjson, geom_help

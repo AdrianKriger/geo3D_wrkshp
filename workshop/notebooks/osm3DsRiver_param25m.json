@@ -3,8 +3,6 @@
     "FocusArea": "Salt River",
     "osm_type": "relation",
     
-    "crs": "EPSG:32734",
-
     "ori-gjson_out": "./data/fp-sr.geojson",
     "gjson-proj_out": "./data/fp_proj-sr.geojson",
     "osm_bldings": "./data/fp_proj_z-sr.geojson",
@@ -15,8 +13,6 @@
     "in_raster": "./raster/LO19_050M_3318CD.tif",
     "nodata": 3.402823466385289e+38,
     "projClip_raster": "./raster/3318CDclip_utm34s.tif",
-
-    "xyz": "./data/rasElevSR.xyz",
     
     "cjsn_out": "./result/citjsn_sr3d.json",
     

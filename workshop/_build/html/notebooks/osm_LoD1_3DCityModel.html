@@ -411,7 +411,7 @@ document.write(`
 <div class="alert alert-block alert-warning"><b>This notebook will:</b>
 <blockquote>
 <div><p><strong>1. allow the user to create a <a class="reference external" href="https://en.wikipedia.org/wiki/3D_city_model">Level-of-Detail 1 (LoD1) 3D City Model</a>.</strong></p>
-<p><strong>2. propose several Geography and Sustainable Development Education <em>conversation starters</em> for Secondary and Tertiary level students</strong></p>
+<p><strong>2. propose Geography and Sustainable Development Education <em>conversation starters</em> for Secondary and Tertiary level students</strong></p>
 </div></blockquote>
 </div>
 <div class="alert alert-block alert-danger"><b></b>
@@ -463,7 +463,8 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Tstart</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
 <span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -610,7 +611,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.600211
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.612737
 </pre></div>
 </div>
 </div>
@@ -1189,31 +1190,6 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 </div>
-<p><strong>prepare to harvest elevation</strong></p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set the path to the projected, cliped elevation</span>
-<span class="n">src_filename</span> <span class="o">=</span> <span class="n">jparams</span><span class="p">[</span><span class="s1">&#39;projClip_raster&#39;</span><span class="p">]</span>
-
-<span class="n">src_ds</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">src_filename</span><span class="p">)</span> 
-<span class="n">gt_forward</span> <span class="o">=</span> <span class="n">src_ds</span><span class="o">.</span><span class="n">GetGeoTransform</span><span class="p">()</span>
-<span class="n">rb</span> <span class="o">=</span> <span class="n">src_ds</span><span class="o">.</span><span class="n">GetRasterBand</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-
-<span class="k">def</span><span class="w"> </span><span class="nf">rasterQuery</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">gt_forward</span><span class="p">,</span> <span class="n">rb</span><span class="p">):</span>
-
-    <span class="n">mx</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">representative_point</span><span class="p">()</span><span class="o">.</span><span class="n">x</span>
-    <span class="n">my</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">representative_point</span><span class="p">()</span><span class="o">.</span><span class="n">y</span>
-    
-    <span class="n">px</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">mx</span> <span class="o">-</span> <span class="n">gt_forward</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">gt_forward</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-    <span class="n">py</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">my</span> <span class="o">-</span> <span class="n">gt_forward</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">/</span> <span class="n">gt_forward</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
-
-    <span class="n">intval</span> <span class="o">=</span> <span class="n">rb</span><span class="o">.</span><span class="n">ReadAsArray</span><span class="p">(</span><span class="n">px</span><span class="p">,</span> <span class="n">py</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
- 
-    <span class="k">return</span> <span class="n">intval</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-</pre></div>
-</div>
-</div>
-</div>
 <p><strong>Buildings</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1242,7 +1218,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:11.015559
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:10.858450
 </pre></div>
 </div>
 </div>
@@ -1287,16 +1263,40 @@ Datum: World Geodetic System 1984 ensemble
 </tbody>
 </table>
 </div>
-<h2><center>There may still be potential challenges.<br> Please ensure the quality of the value-added product and the source data.</center></h2>
+<div class="alert alert-block alert-info"><b>Why are we doing this?</b> 
+<p>If you continue without fixing the challenges, the LoD1 3D City Model will <strong>NOT</strong> conform to the  <a class="reference external" href="https://www.iso.org/standard/66175.html">ISO 19107 spatial schema for 3D primatives</a>.<br />
+It is possible to create a very high quality product from minimal resources.<br />
+Please create a product of the highest quality that can be used for</p>
+</div>
 <p><strong>If necessary; edit <a class="reference external" href="https://www.openstreetmap.org/about">OpenStreetMap</a> and fix the challenge please.</strong></p>
 <div class="alert alert-block alert-warning"><b></b>
 <p>And remember.<br />
-Many <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Planet.osm">Planet.osm mirrors</a> (like the one recommended above) release a <em><strong>fresh <code class="docutils literal notranslate"><span class="pre">.osm.pbf</span></code> EVERYDAY!</strong></em><br />
+Many <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Planet.osm">Planet.osm mirrors</a> release a <em><strong>fresh <code class="docutils literal notranslate"><span class="pre">.osm.pbf</span></code> EVERYDAY!</strong></em><br />
 Give the OpenStreetMap server <em><strong>at least a day</strong></em> before attempting the process again.</p>
 <p><strong>Alchemy is a process. Please be patient.</strong></p>
 </div><div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- get the mean height of the bld</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- get the mean height of each building</span>
+
+<span class="c1"># set the path to the projected, cliped elevation</span>
+<span class="n">src_filename</span> <span class="o">=</span> <span class="n">jparams</span><span class="p">[</span><span class="s1">&#39;projClip_raster&#39;</span><span class="p">]</span>
+
+<span class="n">src_ds</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">src_filename</span><span class="p">)</span> 
+<span class="n">gt_forward</span> <span class="o">=</span> <span class="n">src_ds</span><span class="o">.</span><span class="n">GetGeoTransform</span><span class="p">()</span>
+<span class="n">rb</span> <span class="o">=</span> <span class="n">src_ds</span><span class="o">.</span><span class="n">GetRasterBand</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">rasterQuery</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">gt_forward</span><span class="p">,</span> <span class="n">rb</span><span class="p">):</span>
+
+    <span class="n">mx</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">representative_point</span><span class="p">()</span><span class="o">.</span><span class="n">x</span>
+    <span class="n">my</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">representative_point</span><span class="p">()</span><span class="o">.</span><span class="n">y</span>
+    
+    <span class="n">px</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">mx</span> <span class="o">-</span> <span class="n">gt_forward</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">gt_forward</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">py</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">my</span> <span class="o">-</span> <span class="n">gt_forward</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">/</span> <span class="n">gt_forward</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+
+    <span class="n">intval</span> <span class="o">=</span> <span class="n">rb</span><span class="o">.</span><span class="n">ReadAsArray</span><span class="p">(</span><span class="n">px</span><span class="p">,</span> <span class="n">py</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+ 
+    <span class="k">return</span> <span class="n">intval</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
 <span class="n">ts</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">rasterQuery</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">geometry</span><span class="p">,</span> <span class="n">gt_forward</span><span class="p">,</span> <span class="n">rb</span><span class="p">),</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
 <span class="n">ts</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
@@ -1449,7 +1449,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.383796
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.370644
 </pre></div>
 </div>
 </div>
@@ -1620,7 +1620,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:01:50.351851
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:01:51.158072
 </pre></div>
 </div>
 </div>
@@ -1835,8 +1835,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <li><p>population estimation and</p></li>
 <li><p>a calculation of [Building Volume per Capita]((https://www.researchgate.net/publication/343185735_Building_Volume_Per_Capita_BVPC_A_Spatially_Explicit_Measure_of_Inequality_Relevant_to_the_SDGs)</p></li>
 </ul>
-</div><p><em><strong>As always; you are welcome to raise an issue. I depend on you to help me improve.</strong></em></p>
-</section>
+</div></section>
 <section id="possible-secondary-and-tertiary-level-conversations-starters">
 <h2>2. Possible Secondary and Tertiary level <em>conversations starters</em>:<a class="headerlink" href="#possible-secondary-and-tertiary-level-conversations-starters" title="Link to this heading">#</a></h2>
 <div class="alert alert-block alert-success"><b>communicate and exchange ideas and understanding</b></div><div class="pst-scrollable-table-container"><table class="table">
@@ -1853,6 +1852,14 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </tr>
 </tbody>
 </table>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Tend</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">Tend</span> <span class="o">-</span> <span class="n">Tstart</span><span class="p">))))</span>
+</pre></div>
+</div>
+</div>
 </div>
 </section>
 </section>
