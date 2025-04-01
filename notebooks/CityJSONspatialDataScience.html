@@ -983,7 +983,7 @@ p  = P_o * (1 + r)^{t} = p = 8273 * (1 + 0.0191)^{10}  = 9 997
 </section>
 <section id="building-volume-per-capita-bvpc">
 <h3>Building Volume Per Capita (BVPC)<a class="headerlink" href="#building-volume-per-capita-bvpc" title="Link to this heading">#</a></h3>
-<div class="alert alert-block alert-success"><b>BVPC: </b> total building volume divided by sum of population of a community</div><div class="cell docutils container">
+<div class="alert alert-block alert-success"><b>BVPC: </b> total building volume divided by population of a community</div><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;area&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">area</span><span class="c1">#\.map(lambda p: p.area)</span>
 <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;volume&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;area&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;building_height&#39;</span><span class="p">]</span>
