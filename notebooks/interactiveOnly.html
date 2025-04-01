@@ -457293,7 +457293,7 @@ The goal is to be as representative as possible.</p>
 <div class="alert alert-block alert-warning"><b>  </b> 
 <p>And remember to give the OpenStreetMap server at least a day before attempting the process again.</p>
 <p><strong>Alchemy is a process. Please be patient.</strong></p>
-</div><div class="alert alert-block alert-success"><b>BVPC = total population of a community divided by sum of building volume</b></div><div class="cell docutils container">
+</div><div class="alert alert-block alert-success"><b>BVPC = total building volume divided by sum of population of a community</b></div><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- area and volume</span>
 <span class="n">gdf2</span><span class="p">[</span><span class="s1">&#39;area&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf2</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">area</span>
@@ -457310,7 +457310,6 @@ The goal is to be as representative as possible.</p>
 <span class="p">]</span>
  
 <span class="n">gdf2</span><span class="p">[</span><span class="s1">&#39;bvpc&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">gdf2</span><span class="p">[</span><span class="s1">&#39;volume&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">gdf2</span><span class="p">[</span><span class="s1">&#39;pop&#39;</span><span class="p">]</span> 
-
 <span class="n">gdf2</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
