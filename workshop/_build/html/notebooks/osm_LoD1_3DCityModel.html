@@ -1408,7 +1408,8 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- prepare building dataset. remove skywalk and bld:roof</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
 <span class="n">dis</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">jparams</span><span class="p">[</span><span class="s1">&#39;osm_bldings&#39;</span><span class="p">])</span>                   
 <span class="n">dis</span><span class="o">.</span><span class="n">set_crs</span><span class="p">(</span><span class="n">epsg</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">epsg</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">:]),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_override</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>

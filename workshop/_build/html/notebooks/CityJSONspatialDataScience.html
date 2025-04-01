@@ -506,9 +506,13 @@ textures = False
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
 <span class="c1">#- remove the first feature: the terrain</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>            
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> 
 
-<span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="p">[</span><span class="n">shape</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;footprint&quot;</span><span class="p">)],</span> <span class="n">crs</span><span class="o">=</span><span class="n">jparams</span><span class="p">[</span><span class="s1">&#39;crs&#39;</span><span class="p">])</span>
+<span class="c1">#- harvest the crs</span>
+<span class="n">theinfo</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">get_info</span><span class="p">()</span>
+<span class="n">crs</span> <span class="o">=</span> <span class="n">theinfo</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="p">[</span><span class="n">shape</span><span class="p">(</span><span class="n">d</span><span class="p">)</span> <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;footprint&quot;</span><span class="p">)],</span> <span class="n">crs</span><span class="o">=</span><span class="n">crs</span><span class="p">[</span><span class="mi">7</span><span class="p">:])</span><span class="c1">#jparams[&#39;crs&#39;])</span>
 </pre></div>
 </div>
 </div>
@@ -603,10 +607,8 @@ textures = False
 </div></div></div>
 </div>
 <div class="alert alert-block alert-info"><b>Craveat</b> 
-<p>This community <em>(Woodstock, Salt River and Observatory)</em> is the second oldest community in South Africa. The buildings are old. Many have been repurposed. To account for refurbishment <em>–be as representative as possible–</em> and conform to the <strong><a class="reference external" href="https://wiki.openstreetmap.org/wiki/Beginners%27_guide">OpenStreetMap Guide</a></strong> we typically tag these:<br />
-<code class="docutils literal notranslate"><span class="pre">building=*</span></code> <em>~ the original purpose</em> <code class="docutils literal notranslate"><span class="pre">+</span></code> <code class="docutils literal notranslate"><span class="pre">building:use=*</span></code> <em>~ the current use</em>.</p>
-<p>Furthermore; tagging in this community identifies <strong>social housing, social facilities</strong> (care home, shelter, etc.) <strong>and informal housing</strong> (backyard dwelling, shack, etc.) as <code class="docutils literal notranslate"><span class="pre">building</span> <span class="pre">/</span> <span class="pre">:use=residential</span></code>. <strong>Student accomodation</strong> includes the <code class="docutils literal notranslate"><span class="pre">residential=student</span></code> tag</p>
-</div><div class="cell docutils container">
+<p>This community <em>(Woodstock, Salt River and Observatory)</em> is the second oldest community in South Africa. The buildings are old. Many have been repurposed. To account for refurbishment <em>–be as representative as possible–</em> and conform to the <strong><a class="reference external" href="https://wiki.openstreetmap.org/wiki/Beginners%27_guide">OpenStreetMap Guide</a></strong> we typically tag these:  <code class="docutils literal notranslate"><span class="pre">building=*</span></code> <em>~ the original purpose</em> <code class="docutils literal notranslate"><span class="pre">+</span></code> <code class="docutils literal notranslate"><span class="pre">building:use=*</span></code> <em>~ the current use</em>.</p>
+  </div><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- to account for idiosyncratic mapping: replace building= (old function) if building:use= (new purpose) is present</span>
 <span class="n">gdf2</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -619,7 +621,8 @@ textures = False
     <span class="n">gdf2</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df_res</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_res</span><span class="p">[</span><span class="s1">&#39;building:use&#39;</span><span class="p">]</span> 
 
 <span class="c1">#- 2</span>
-<span class="c1">#gdf2 = gdf.copy()</span>
+<span class="c1">#- similarly; private student accomodation is typically `building:residential` + `residential=student`.</span>
+<span class="c1">#- we want to seperate student accommodation from formal and informal housing.</span>
 <span class="k">if</span> <span class="s1">&#39;residential&#39;</span> <span class="ow">in</span> <span class="n">gdf</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
     <span class="n">df_res</span> <span class="o">=</span> <span class="n">gdf2</span><span class="p">[</span><span class="n">gdf2</span><span class="p">[</span><span class="s1">&#39;residential&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;student&#39;</span><span class="p">]</span>
     <span class="c1">#df_res = df2[df2[&#39;building:use&#39;] != None]</span>
@@ -980,7 +983,7 @@ p  = P_o * (1 + r)^{t} = p = 8273 * (1 + 0.0191)^{10}  = 9 997
 </section>
 <section id="building-volume-per-capita-bvpc">
 <h3>Building Volume Per Capita (BVPC)<a class="headerlink" href="#building-volume-per-capita-bvpc" title="Link to this heading">#</a></h3>
-<div class="alert alert-block alert-success"><b>BVPC: </b> total population of a community divided by sum of building volume</div><div class="cell docutils container">
+<div class="alert alert-block alert-success"><b>BVPC: </b> total building volume divided by sum of population of a community</div><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;area&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">area</span><span class="c1">#\.map(lambda p: p.area)</span>
 <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;volume&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;area&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;building_height&#39;</span><span class="p">]</span>
@@ -996,7 +999,6 @@ p  = P_o * (1 + r)^{t} = p = 8273 * (1 + 0.0191)^{10}  = 9 997
 <span class="p">]</span>
 
 <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;bvpc&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;volume&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;pop&#39;</span><span class="p">]</span>
-
 <span class="n">gdf_pop</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1172,7 +1174,7 @@ INFORMAL: Population:  30  with Building Volume Per Capita (BVPC) 96.626
 </div>
 </div>
 <div class="alert alert-block alert-danger"><b>Warning: </b>
-<p>These are LoD1 3D City Models and works well in these types of areas.<br />
+<p>These are LoD1 3D City Models.<br />
 LoD2 would offer a more representative BVpC <a class="reference external" href="https://www.researchgate.net/publication/343185735_Building_Volume_Per_Capita_BVPC_A_Spatially_Explicit_Measure_of_Inequality_Relevant_to_the_SDGs">(Ghosh, T; et al. 2020)</a> value; when the complexity of the built environment increases.</p>
 <p>Think about a <code class="docutils literal notranslate"><span class="pre">house</span></code> with living space in the roof structure, so called <em>‘attic living’</em>, or an <code class="docutils literal notranslate"><span class="pre">apartment</span></code> / <code class="docutils literal notranslate"><span class="pre">residential</span></code> building with different levels, loft apartments and/or units in the turrets of a <code class="docutils literal notranslate"><span class="pre">building</span></code>.</p>
 <p><em><strong>consider</strong></em>: <em><strong><a class="reference external" href="https://adriankriger.github.io/geo3D/">geo3D</a></strong></em> seperates <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Tag:building%3Dcabin">building:cabin</a> from <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> to more precisely represent informal structures which typical do not have roof trussess but account for <a class="reference external" href="https://en.wikipedia.org/wiki/Public_housing">social housing</a> that does</div></p>
@@ -1500,7 +1502,7 @@ LoD2 would offer a more representative BVpC <a class="reference external" href="
         1
       ],
       &quot;getPolygon&quot;: &quot;@@=-&quot;,
-      &quot;id&quot;: &quot;1f4cc9bd-9a90-4117-a62a-24dcdc0c21bb&quot;,
+      &quot;id&quot;: &quot;0253b306-23ed-4d38-90d0-bca0ed7498ac&quot;,
       &quot;stroked&quot;: false
     },
     {
@@ -6208,9 +6210,9 @@ LoD2 would offer a more representative BVpC <a class="reference external" href="
           &quot;building:use&quot;: null,
           &quot;building_height&quot;: 6.9,
           &quot;color&quot;: [
-            255,
-            255,
-            204
+            181,
+            182,
+            89
           ],
           &quot;geometry&quot;: {
             &quot;coordinates&quot;: [
@@ -12930,9 +12932,9 @@ LoD2 would offer a more representative BVpC <a class="reference external" href="
           &quot;building:use&quot;: null,
           &quot;building_height&quot;: 9.7,
           &quot;color&quot;: [
-            255,
-            255,
-            204
+            181,
+            182,
+            89
           ],
           &quot;geometry&quot;: {
             &quot;coordinates&quot;: [
@@ -49534,9 +49536,9 @@ LoD2 would offer a more representative BVpC <a class="reference external" href="
           &quot;building:use&quot;: null,
           &quot;building_height&quot;: 6.9,
           &quot;color&quot;: [
-            255,
-            255,
-            204
+            181,
+            182,
+            89
           ],
           &quot;geometry&quot;: {
             &quot;coordinates&quot;: [
@@ -87076,7 +87078,7 @@ LoD2 would offer a more representative BVpC <a class="reference external" href="
       &quot;getFillColor&quot;: &quot;@@=color&quot;,
       &quot;getLineColor&quot;: &quot;@@=color&quot;,
       &quot;getPolygon&quot;: &quot;@@=geometry.coordinates&quot;,
-      &quot;id&quot;: &quot;8ccf4d63-8efa-4445-a6d3-1745d69147cd&quot;,
+      &quot;id&quot;: &quot;60e23a27-e7a1-4bf5-928d-05b36fbca4d1&quot;,
       &quot;opacity&quot;: 0.3,
       &quot;pickable&quot;: true,
       &quot;stroked&quot;: false,
