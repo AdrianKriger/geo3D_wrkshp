@@ -23,8 +23,8 @@
     "cjsn_emailAddress": "adrian8kriger@gmail.com", 
     "cjsn_website": "www.linkedin.com/in/adrian-kriger", 
     "cjsn_contactType": "private",
-	"cjsn_+meta-description": "Chief Directorate: National Geo-Spatial Information",
-	"cjsn_+meta-sourceSpatialResolution": "25 meter bare-earth DEM",
+    "cjsn_+meta-description": "Chief Directorate: National Geo-Spatial Information",
+    "cjsn_+meta-sourceSpatialResolution": "25 meter bare-earth DEM",
     "cjsn_+meta-sourceReferenceSystem": "urn:ogc:def:crs:EPSG:20481",
     "cjsn_+meta-sourceCitation":"http://www.ngi.gov.za/",
     
