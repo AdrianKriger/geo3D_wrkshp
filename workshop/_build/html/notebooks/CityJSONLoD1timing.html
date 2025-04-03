@@ -393,7 +393,7 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#timing">1. Timing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quality">2. Quality:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quality">2. Quality</a></li>
 </ul>
             </nav>
         </div>
@@ -413,7 +413,7 @@ document.write(`
 <div><p><strong>illustrate how different resolution elevation models (25m, 15m and 5m DEM) affect;</strong></p>
 <blockquote>
 <div><p><strong>1) <code class="docutils literal notranslate"><span class="pre">osm_LoD1_3DCityModel.ipynb</span></code> timing and</strong><br>
-<strong>2) the quality</strong> <em>(holes and completness)</em> <strong>of a LoD1 3D City Model</strong></p>
+<strong>2) the quality</strong> <em>(holes and completeness)</em> <strong>of a LoD1 3D City Model</strong></p>
 </div></blockquote>
 </div></blockquote>
 </div><div class="cell docutils container">
@@ -603,7 +603,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.553150
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.597831
 </pre></div>
 </div>
 </div>
@@ -1082,7 +1082,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:10.892106
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:11.017629
 </pre></div>
 </div>
 </div>
@@ -1093,19 +1093,16 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#%matplotlib</span>
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">))</span>
+<span class="c1">#fig, ax = plt.subplots(figsize=(11, 11))</span>
 
-<span class="n">ts</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
-<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_df1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="n">new_df1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+<span class="c1">#ts.plot(ax=ax, facecolor=&#39;none&#39;, edgecolor=&#39;purple&#39;, alpha=0.2)</span>
+<span class="c1">#if len(new_df1) &gt; 0:</span>
+<span class="c1">#    new_df1.plot(ax=ax, edgecolor=&#39;red&#39;, facecolor=&#39;none&#39;)</span>
 <span class="c1">#-- save</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;./data/topologyFig&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+<span class="c1">#plt.savefig(&#39;./data/topologyFig&#39;, dpi=300)</span>
 <span class="c1">#plt.show()</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../_images/ae7735c533ccd2befd36ab04decce25238566e359390d4459b819e4776f01de6.png" src="../_images/ae7735c533ccd2befd36ab04decce25238566e359390d4459b819e4776f01de6.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -1266,7 +1263,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.376884
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.373666
 </pre></div>
 </div>
 </div>
@@ -1438,7 +1435,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:01:50.443943
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:01:50.715027
 </pre></div>
 </div>
 </div>
@@ -1453,7 +1450,7 @@ document.write(`
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="text-center"><p><strong>LoD1</strong>: we only need the surface of the  <br> Earth where there are no buildings.<br><br> <strong>Symetric Difference</strong>: we are removing all the points, harvested from the DEM, that fall inside a building. <br><br> These are essentially <strong>spatial queries</strong> <br> <em>—specifically spatial indexing and filtering</em>. <br><br>  Here we execute <code class="docutils literal notranslate"><span class="pre">STRtree</span></code> for efficient spatial operations. <br><br>  The greater the number of points <em>(higher resolution elevation model)</em> and the higher the number of buildings the longer the process will take!</p></td>
+<tr class="row-even"><td class="text-center"><p><strong>LoD1</strong>: we only need the surface of the  <br> Earth where there are no buildings.<br><br> <strong>Symmetric Difference</strong>: we are removing all the points, harvested from the DEM, that fall inside a building. <br><br> These are essentially <strong>spatial queries</strong> <br> <em>—specifically spatial indexing and filtering</em>. <br><br>  Here we execute <code class="docutils literal notranslate"><span class="pre">STRtree</span></code> for efficient spatial operations. <br><br>  The greater the number of points <em>(higher resolution elevation model)</em> and the higher the number of buildings the longer the process will take!</p></td>
 <td class="text-center"><p><img alt="symDiff.png" src="../_images/symDiff.png" /></p></td>
 </tr>
 </tbody>
@@ -1665,9 +1662,22 @@ document.write(`
 </div>
 <div class="alert alert-block alert-info"><b></b> 
 <p><strong>Go over to <a class="reference external" href="https://ninja.cityjson.org/#">Ninja the online CityJSON viewer</a> and explore!</strong></p>
-</div></section>
+</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Tend</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">Tend</span> <span class="o">-</span> <span class="n">Tstart</span><span class="p">))))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:02:10.001567
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="quality">
-<h2>2. Quality:<a class="headerlink" href="#quality" title="Link to this heading">#</a></h2>
+<h2>2. Quality<a class="headerlink" href="#quality" title="Link to this heading">#</a></h2>
 <div class="alert alert-block alert-danger"><b>WARNING:</b>  
 <p><em><strong>Lower resolution Elevation Models can leave gaps!</strong></em></div></p>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -1724,13 +1734,13 @@ document.write(`
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="text-center"><p>We model terrain (a raster DEM) as a 2D surface imbeded in 3D space. <br><br> Each ‘xy’ coordinate (pixel) only has one ‘z’ height. This is typically called <strong>2.5D modelling</strong>. <br><br> Notice that <em>‘truthfully’</em> representing objects connected to a ground surface is impossible. A wall for example could never be straight but have to deviate from the vertical. <br><br> This is why a DEM is often defined as the surface of the earth free of man-made and natural features</p></td>
+<tr class="row-even"><td class="text-center"><p>We model terrain (a raster DEM) as a 2D surface imbedded in 3D space. <br><br> Each ‘xy’ coordinate (pixel) only has one ‘z’ height. This is typically called <strong>2.5D modelling</strong>. <br><br> Notice that <em>‘truthfully’</em> representing objects connected to a ground surface is impossible. A wall for example could never be straight but have to deviate from the vertical. <br><br> This is why a DEM is often defined as the surface of the earth free of man-made and natural features</p></td>
 <td class="text-center"><p><img alt="25D.png" src="../_images/_25D.png" /></p></td>
 </tr>
-<tr class="row-odd"><td class="text-center"><p>To represent a surface <em>‘truthfully’</em> we can employ <strong>2.75D modeling</strong>. <br><br> The challenge with this solution is; it models the exterior only and it is one surface where objects are one feature. <br><br> A 3D mesh is a 2.75D surface and while traditionally a CAD tool its foray into GIS is recent</p></td>
+<tr class="row-odd"><td class="text-center"><p>To represent a surface <em>‘truthfully’</em> we can employ <strong>2.75D modelling</strong>. <br><br> The challenge with this solution is; it models the exterior only and it is one surface where objects are one feature. <br><br> A 3D mesh is a 2.75D surface and while traditionally a CAD tool its foray into GIS is recent</p></td>
 <td class="text-center"><p><img alt="275D.png" src="../_images/_275D.png" /></p></td>
 </tr>
-<tr class="row-even"><td class="text-center"><p>Full volumetric <strong>3D modeling</strong>, like a 3D City Model, is actually a 2.5D surface including volumetric 3D objects. <br><br>We can estimate BVPC from these models because we can calculate the volume of a structure</p></td>
+<tr class="row-even"><td class="text-center"><p>Full volumetric <strong>3D modelling</strong>, like a 3D City Model, is actually a 2.5D surface including volumetric 3D objects. <br><br>We can estimate BVPC from these models because we can calculate the volume of a structure</p></td>
 <td class="text-center"><p><img alt="3D.png" src="../_images/_3D.png" /></p></td>
 </tr>
 </tbody>
@@ -1743,14 +1753,6 @@ document.write(`
 <p><strong>The challenge is overcome with a finer resolution elevation model.</strong></p>
 </div>
 <p>In this particular case a 15m DEM easily solves the challange.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Tend</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">Tend</span> <span class="o">-</span> <span class="n">Tstart</span><span class="p">))))</span>
-</pre></div>
-</div>
-</div>
-</div>
 </section>
 </section>
 
@@ -1819,7 +1821,7 @@ document.write(`
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#timing">1. Timing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quality">2. Quality:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quality">2. Quality</a></li>
 </ul>
   </nav></div>
 
