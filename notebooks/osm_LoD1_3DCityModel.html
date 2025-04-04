@@ -625,7 +625,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.612737
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.593398
 </pre></div>
 </div>
 </div>
@@ -1232,7 +1232,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:10.858450
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:10.888184
 </pre></div>
 </div>
 </div>
@@ -1464,7 +1464,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.370644
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.371471
 </pre></div>
 </div>
 </div>
@@ -1635,7 +1635,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:01:51.158072
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:01:50.160963
 </pre></div>
 </div>
 </div>
@@ -1818,7 +1818,9 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># -- execute function. create CityJSON</span>
-<span class="n">city3D</span><span class="o">.</span><span class="n">output_cityjson</span><span class="p">(</span><span class="n">extent</span><span class="p">,</span> <span class="n">minz</span><span class="p">,</span> <span class="n">maxz</span><span class="p">,</span> <span class="n">terrTin</span><span class="p">,</span> <span class="n">pv_pts</span><span class="p">,</span> <span class="n">jparams</span><span class="p">,</span> <span class="n">min_zbld</span><span class="p">,</span> <span class="n">acoi</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span> 
+<span class="n">crs</span> <span class="o">=</span> <span class="n">epsg</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span>
+
+<span class="n">city3D</span><span class="o">.</span><span class="n">output_cityjson</span><span class="p">(</span><span class="n">extent</span><span class="p">,</span> <span class="n">minz</span><span class="p">,</span> <span class="n">maxz</span><span class="p">,</span> <span class="n">terrTin</span><span class="p">,</span> <span class="n">pv_pts</span><span class="p">,</span> <span class="n">jparams</span><span class="p">,</span> <span class="n">min_zbld</span><span class="p">,</span> <span class="n">acoi</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">crs</span><span class="p">)</span> 
 </pre></div>
 </div>
 </div>
@@ -1872,6 +1874,11 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Tend</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">Tend</span> <span class="o">-</span> <span class="n">Tstart</span><span class="p">))))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:02:11.100947
 </pre></div>
 </div>
 </div>
