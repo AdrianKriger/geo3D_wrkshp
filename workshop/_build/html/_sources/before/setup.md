@@ -1,10 +1,12 @@
-# Setup: how to run the tutorial
+# Setup and content
 
 ```{contents}
 :local:
 ```
 
-## a. Execute with a Binder deployment
+## How to run the tutorial
+
+### Execute with a Binder deployment
 
 Binder is a cloud service that allows users to share reproducible interactive computing environments from code repositories. It is generally used to enable other users to easily run your code through Jupyter notebooks. It is a really cool service offered for free by several organisations (MyBinder through Jupyter, etc.).
 
@@ -18,7 +20,7 @@ Alternatively, to launch the **entire** `geo3D_wrkshp` GitHub repository; click 
 
 Thereafter; navigate and choose a notebook, using the file browser, on the left side of the Jupyterlab screen.
 
-## b. Execute on your own computer
+### Execute on your own computer
 
 Almost all parts of this tutorial were designed to run with limited computer resources, so it is possible to run on your laptop. It is not an easy *'one-click-push-button*' solution. You will have to install the software environment yourself. 
 
@@ -44,3 +46,12 @@ jupyter lab
 Open a web browser and connect to the Jupyterlab provided URL (you should see it in the jupyter lab command outputs), something like: `http://localhost:8888/lab?token=42fac6733c6854578b981bca3abf5152`. 
 
 Navigate to geo3D_wrkshp/workshop/notebooks/ using the file browser on the left side of the Jupyterlab screen.
+
+##  Tutorial content
+
+```{figure} _static/wrkshpContent.png
+---
+name: content-fig
+---
+```
+
