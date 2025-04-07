@@ -14,7 +14,7 @@ Binder is probably the easiest way to execute notebooks in this repository, as y
 
 Each Notebook in the village and suburbs sections ([interactiveOnly](../notebooks/interactiveOnly), [LoD1_3D_CityModel](../notebooks/osm_LoD1_3DCityModel) and [CityJSONSpatialDataScience](../notebooks/CityJSONspatialDataScience)) have a Binder icon, from which to launch the **that particular** notebook on the Binder service.
 
-Alternatively, to launch the **entire** `geo3D_wrkshp` GitHub repository; click on the Binder below button:
+Alternatively, to launch the **entire** `geo3D_wrkshp` GitHub repository; click on the launch Binder icon below:
 
 [![Binder](_static/launch-binder.svg)](https://mybinder.org/v2/gh/AdrianKriger/geo3D_wrkshp/HEAD)
 
@@ -22,7 +22,7 @@ Thereafter; navigate and choose a notebook, using the file browser, on the left 
 
 ### Execute on your own computer
 
-Almost all parts of this tutorial were designed to run with limited computer resources, so it is possible to run on your laptop. It is not an easy *'one-click-push-button*' solution. You will have to install the software environment yourself. 
+All parts of this tutorial were designed to run with limited computer resources, so it is possible to run on your laptop. It is not an easy *'one-click-push-button*' solution. You will have to install the software environment yourself. 
 
 The 4 steps to run this tutorial on your own computer are listed below and demonstrated through Linux commands only:
 
