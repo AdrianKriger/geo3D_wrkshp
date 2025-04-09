@@ -618,7 +618,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.601687
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.543407
 </pre></div>
 </div>
 </div>
@@ -1097,7 +1097,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:11.092979
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:11.059488
 </pre></div>
 </div>
 </div>
@@ -1278,7 +1278,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.390944
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.365914
 </pre></div>
 </div>
 </div>
@@ -1450,7 +1450,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:04:57.772683
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:04:56.923432
 </pre></div>
 </div>
 </div>
@@ -1520,29 +1520,6 @@ document.write(`
   </thead>
   <tbody>
     <tr>
-      <th>1374</th>
-      <td>1313817369</td>
-      <td>NaN</td>
-      <td>yes</td>
-      <td>NaN</td>
-      <td>1</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>{'type': 'Polygon', 'coordinates': [[[265391.2...</td>
-      <td>CJX7X4XW+X3V</td>
-      <td>3.99</td>
-      <td>NaN</td>
-      <td>4.1</td>
-      <td>8.09</td>
-      <td>POLYGON ((265391.259 6243162.292, 265394.599 6...</td>
-      <td>265385.145162</td>
-      <td>6.243178e+06</td>
-    </tr>
-    <tr>
       <th>1375</th>
       <td>1313817370</td>
       <td>NaN</td>
@@ -1557,10 +1534,10 @@ document.write(`
       <td>NaN</td>
       <td>{'type': 'Polygon', 'coordinates': [[[265395.6...</td>
       <td>CJXCXHX5+XCW</td>
-      <td>3.90</td>
+      <td>3.9</td>
       <td>NaN</td>
       <td>4.1</td>
-      <td>8.00</td>
+      <td>8.0</td>
       <td>POLYGON ((265395.618 6243201.900, 265382.518 6...</td>
       <td>265388.558568</td>
       <td>6.243198e+06</td>
@@ -1580,10 +1557,10 @@ document.write(`
       <td>NaN</td>
       <td>{'type': 'Polygon', 'coordinates': [[[265297.7...</td>
       <td>CFX3XHX5+XVV</td>
-      <td>4.40</td>
+      <td>4.4</td>
       <td>NaN</td>
       <td>4.1</td>
-      <td>8.50</td>
+      <td>8.5</td>
       <td>POLYGON ((265297.730 6243132.831, 265344.795 6...</td>
       <td>265321.559683</td>
       <td>6.243133e+06</td>
@@ -1634,13 +1611,6 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#terrTin</span>
-</pre></div>
-</div>
-</div>
-</div>
 <p><strong>CityJSON</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1651,19 +1621,14 @@ document.write(`
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#min_zbld</span>
-</pre></div>
-</div>
-</div>
-</div>
 <div class="alert alert-block alert-warning"><b>create CityJSON</b> </div>
 <p>The Python code to execute the <code class="docutils literal notranslate"><span class="pre">.output_cityjson</span></code> function is in the <code class="docutils literal notranslate"><span class="pre">city3D.py</span></code> script</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># -- execute function. create CityJSON</span>
-<span class="n">city3D</span><span class="o">.</span><span class="n">output_cityjson</span><span class="p">(</span><span class="n">extent</span><span class="p">,</span> <span class="n">minz</span><span class="p">,</span> <span class="n">maxz</span><span class="p">,</span> <span class="n">terrTin</span><span class="p">,</span> <span class="n">pv_pts</span><span class="p">,</span> <span class="n">jparams</span><span class="p">,</span> <span class="n">min_zbld</span><span class="p">,</span> <span class="n">acoi</span><span class="p">,</span> <span class="n">result</span><span class="p">)</span> 
+<span class="n">crs</span> <span class="o">=</span> <span class="n">epsg</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span>
+
+<span class="n">city3D</span><span class="o">.</span><span class="n">output_cityjson</span><span class="p">(</span><span class="n">extent</span><span class="p">,</span> <span class="n">minz</span><span class="p">,</span> <span class="n">maxz</span><span class="p">,</span> <span class="n">terrTin</span><span class="p">,</span> <span class="n">pv_pts</span><span class="p">,</span> <span class="n">jparams</span><span class="p">,</span> <span class="n">min_zbld</span><span class="p">,</span> <span class="n">acoi</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">crs</span><span class="p">)</span> 
 </pre></div>
 </div>
 </div>
@@ -1685,7 +1650,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:05:18.022026
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:05:17.446738
 </pre></div>
 </div>
 </div>
