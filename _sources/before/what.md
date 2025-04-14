@@ -126,6 +126,8 @@ A LoD1 City Model, while basic, offers many advantages over 2D datasets. These m
 
 As *geo3D* illustrates population estimation and the calculation of BVPC are also possible.
 
-With the coming revolution in air traffic control, to accommodate newer forms of air services (delivery drones and urban air mobility), an accurate *digital* representation of the built environment will become crucial. A 3D City Model is one component for the effective air space management of the future.
+With the coming revolution in air traffic control, to accommodate newer forms of air services (delivery drones and urban air mobility), an accurate *digital* representation of the built environment will become crucial. A 3D City Model is one component for the effective air space management of the future<sup>**</sup>.
 
 Challenges do exist. Of primary concern are errors in the source data that propagate to the generated 3D model. Care must be taken to ensure the quality of both the vector building outlines and raster DEM.
+
+<sup>** ***have a look at [RefMap](https://www.refmap.eu); next generation multi-scale aviation planning where Computational Fluid Dynamic (CFD) simulations --that employ 3D City Models-- use environmental data, such as wind and noise, to optimise flight trajectories.***
