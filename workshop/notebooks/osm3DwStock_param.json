@@ -22,8 +22,8 @@
     "cjsn_emailAddress": "adrian8kriger@gmail.com", 
     "cjsn_website": "www.linkedin.com/in/adrian-kriger", 
     "cjsn_contactType": "private",
-	"cjsn_+meta-description": "City of Cape Town",
-	"cjsn_+meta-sourceSpatialResolution": "5 meter bare-earth DEM",
+    "cjsn_+meta-description": "City of Cape Town",
+     "cjsn_+meta-sourceSpatialResolution": "5 meter bare-earth DEM",
     "cjsn_+meta-sourceReferenceSystem": "urn:ogc:def:crs:EPSG:20482",
     "cjsn_+meta-sourceCitation": "https://odp-cctegis.opendata.arcgis.com/documents/cctegis::ground-level-map-5m-dem-cct-glm-2019/about?path=",
     
