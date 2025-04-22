@@ -35,7 +35,7 @@
 
 | osm_LoD1_3DCityModel | interactiveOnly |
 | :-----: | :-----: |
-| <strong>Product:</strong> An <a href="https://www.ogc.org/standard/citygml/">Open Geospatial Consortium (OGC) </a> standard LoD1 3D model adhering to the <a href="https://www.iso.org/standard/66175.html">International Standards Organisation (ISO19107) </a> scheme for 3D primitives. <br><br> These simulation-ready models provide quantitative insights with such use cases as estimating noise propagation, energy demand and wind comfort factor. | <strong>Product:</strong> A colorised pseudo-3D HTML-based visualisation. <br><br> The visualisation is for user interaction, navigation, and sharing, promoting community engagement and understanding |
+| <strong>Product:</strong> An <a href="https://www.ogc.org/standard/citygml/">Open Geospatial Consortium (OGC) </a> standard LoD1 3D model adhering to the <a href="https://www.iso.org/standard/66175.html">International Standards Organisation (ISO19107) </a> scheme for 3D primitives. <br><br>These simulation-ready models provide quantitative insights with such use cases as estimating noise propagation, energy demand and wind comfort factor. | <strong>Product:</strong> A colorised pseudo-3D HTML-based visualisation. <br><br><br>  The visualisation is for user interaction, navigation, and sharing, promoting community engagement and understanding |
 <strong>a raster DEM is necessary</strong> | | %<strong>nothing is necessary</strong> |
 
 %<table>
