@@ -1465,7 +1465,7 @@ document.write(`
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="text-center"><p><strong>LoD1</strong>: we only need the surface of the  <br> Earth where there are no buildings.<br><br> <strong>Symmetric Difference</strong>: we are removing all the points, harvested from the DEM, that fall inside a building. <br><br> These are essentially <strong>spatial queries</strong> <br> <em>—specifically spatial indexing and filtering</em>. <br><br>  Here we execute <code class="docutils literal notranslate"><span class="pre">STRtree</span></code> for efficient spatial operations. <br><br>  The greater the number of points <em>(higher resolution elevation model)</em> and the higher the number of buildings the longer the process will take!</p></td>
+<tr class="row-even"><td class="text-center"><p><strong>LoD1</strong>: we only need the surface of the  <br> Earth where there are no buildings.<br><br> <strong>Symmetric Difference</strong>: we are removing all the points, harvested from the DEM, that fall inside a building. <br><br> These are essentially <strong>spatial queries</strong> <br> <em>—specifically spatial indexing and filtering</em>. <br><br>  Here we execute <code class="docutils literal notranslate"><span class="pre">SRTree</span></code> for efficient spatial operations. <br><br>  The greater the number of points <em>(higher resolution elevation model)</em> and the higher the number of buildings the longer the process will take!</p></td>
 <td class="text-center"><p><img alt="symDiff.png" src="../_images/symDiff.png" /></p></td>
 </tr>
 </tbody>

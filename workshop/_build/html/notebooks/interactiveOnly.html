@@ -474,7 +474,7 @@ document.write(`
 <h2>1. Interactive Visualization<a class="headerlink" href="#interactive-visualization" title="Link to this heading">#</a></h2>
 <p><strong>Harvest <a class="reference external" href="https://en.wikipedia.org/wiki/OpenStreetMap">OpenStreetMap</a></strong> - Query the <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Overpass_API">Overpass API</a> from within Jupyter and convert to .geojson.</p>
 <div class="alert alert-block alert-info"><b>Set an area-of-interest:</b> 
-<p>This is done: <code class="docutils literal notranslate"><span class="pre">large</span></code> area -&gt; <code class="docutils literal notranslate"><span class="pre">focus</span></code> area or State (Province) -&gt; Village (neighourhood / campus)</p>
+<p>This is done: <code class="docutils literal notranslate"><span class="pre">large</span></code> area -&gt; <code class="docutils literal notranslate"><span class="pre">focus</span></code> area or State (Province) -&gt; Village (neighborhood / campus)</p>
 </div><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">large</span> <span class="o">=</span> <span class="s1">&#39;Western Cape&#39;</span>
@@ -778,7 +778,7 @@ document.write(`
 </div>
 <div class="alert alert-block alert-info"><b>Caveat</b> 
 <p>Besides the spatial aspect <em>(the geometry)</em> that defines the shape of a feature <a class="reference internal" href="#"><span class="xref myst">OpenStreetMap</span></a> is a rich source of data. We have already introduced the standard and well-know <code class="docutils literal notranslate"><span class="pre">building=*</span></code> and <code class="docutils literal notranslate"><span class="pre">building:levels=*</span></code>. We now introduce another<sup>*</sup>.</p>
-<p>In urban areas many buildings, due to their age and the nature of change, are no longer used for their intended purpose. Consider how warehouses along a waterfront that have transformed from storage to apartments or offices as an example.</p>
+<p>In urban areas many buildings, due to their age and the nature of change, are no longer used for their intended purpose. Consider warehouses along a waterfront that have transformed from storage to apartments or offices as an example.</p>
 <p>To account for refurbishment <em>–be as representative as possible–</em> and conform to the <strong><a class="reference external" href="https://wiki.openstreetmap.org/wiki/Beginners%27_guide">OpenStreetMap Guide</a></strong> we typically tag these:<br />
 <code class="docutils literal notranslate"><span class="pre">building=*</span></code> <em>~ the original purpose</em> <code class="docutils literal notranslate"><span class="pre">+</span></code> <code class="docutils literal notranslate"><span class="pre">building:use=*</span></code> <em>~ the current use</em>.</p>
 </div>
