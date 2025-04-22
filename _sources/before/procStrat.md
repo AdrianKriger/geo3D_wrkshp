@@ -13,10 +13,15 @@
 %| :-----: | :-----: |
 %| If your Area-of-Interest (aoi) has **less than** <br /> **2 500** buildings, you are welcome to choose [village](https://github.com/AdrianKriger/geo3D/tree/main/village) | Please choose [suburb](https://github.com/AdrianKriger/geo3D/tree/main/suburb) if your aoi **has more than 2 500** buildings |
 
+%| Village | Suburb |
+%| :-----: | :-----: |
+%| village is designed for extremely focused analysis at a **neighbourhood** level.  <br /> These are areas with no more than 2 500 buildings | For **larger** areas with more <br /> than 2 500 buildings; such as suburbs, census wards or tracts; please execute suburb.|
+%| <strong>nothing is necessary</strong>  <br /> village harvests [OSM contributions](https://www.openstreetmap.org/about) via [overpass-turbo](https://wiki.openstreetmap.org/wiki/Overpass_turbo) in [GeoJSON](https://geojson.org/) format | an <strong>osm.pbf is necessary</strong>  <br /> With more substantial volumes of data;<br />suburbs extracts the necessary building outlines from the [osm.pbf format](https://wiki.openstreetmap.org/wiki/PBF_Format) (Protocolbuffer Binary Format)|
+
 | Village | Suburb |
 | :-----: | :-----: |
 | village is designed for extremely focused analysis at a **neighbourhood** level.  <br /> These are areas with no more than 2 500 buildings | For **larger** areas with more <br /> than 2 500 buildings; such as suburbs, census wards or tracts; please execute suburb.|
-| <strong>nothing is necessary</strong>  <br /> village harvests [OSM contributions](https://www.openstreetmap.org/about) via [overpass-turbo](https://wiki.openstreetmap.org/wiki/Overpass_turbo) in [GeoJSON](https://geojson.org/) format | an <strong>osm.pbf is necessary</strong>  <br /> With more substantial volumes of data;<br />suburbs extracts the necessary building outlines from the [osm.pbf format](https://wiki.openstreetmap.org/wiki/PBF_Format) (Protocolbuffer Binary Format)|
+|  <br /> village harvests [OSM contributions](https://www.openstreetmap.org/about) via [overpass-turbo](https://wiki.openstreetmap.org/wiki/Overpass_turbo) in [GeoJSON](https://geojson.org/) format | an <strong>osm.pbf is necessary</strong>  <br /> With more substantial volumes of data;<br />suburbs extracts the necessary building outlines from the [osm.pbf format](https://wiki.openstreetmap.org/wiki/PBF_Format) (Protocolbuffer Binary Format)|
 
 %
 <p align="center"><b>within each processing option; there are two strategies</b></p>
@@ -31,7 +36,7 @@
 | osm_LoD1_3DCityModel | interactiveOnly |
 | :-----: | :-----: |
 | <strong>Product:</strong> An <a href="https://www.ogc.org/standard/citygml/">Open Geospatial Consortium (OGC) </a> standard LoD1 3D model adhering to the <a href="https://www.iso.org/standard/66175.html">International Standards Organisation (ISO19107) </a> scheme for 3D primitives. <br><br> These simulation-ready models provide quantitative insights with such use cases as estimating noise propagation, energy demand and wind comfort factor. | <strong>Product:</strong> A colorised pseudo-3D HTML-based visualisation. <br><br> The visualisation is for user interaction, navigation, and sharing, promoting community engagement and understanding |
-<strong>a raster DEM is necessary</strong> | <strong>nothing is necessary</strong> |
+<strong>a raster DEM is necessary</strong> | | %<strong>nothing is necessary</strong> |
 
 %<table>
 %  <tr>
