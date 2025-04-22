@@ -89270,12 +89270,12 @@
           "coordinates": [
             [
               [
-                18.4832008,
+                18.4832007,
                 -33.51822
               ],
               [
-                18.4830302,
-                -33.5182386
+                18.4830305,
+                -33.5182383
               ],
               [
                 18.4830404,
@@ -89294,7 +89294,7 @@
                 -33.5182635
               ],
               [
-                18.4832008,
+                18.4832007,
                 -33.51822
               ]
             ]
@@ -89308,12 +89308,12 @@
         "coordinates": [
           [
             [
-              18.4832008,
+              18.4832007,
               -33.51822
             ],
             [
-              18.4830302,
-              -33.5182386
+              18.4830305,
+              -33.5182383
             ],
             [
               18.4830404,
@@ -89332,7 +89332,7 @@
               -33.5182635
             ],
             [
-              18.4832008,
+              18.4832007,
               -33.51822
             ]
           ]
@@ -89666,9 +89666,9 @@
       "type": "Feature",
       "properties": {
         "osm_id": 904152405,
-        "building": "house",
+        "building": "cabin",
         "building:levels": "1",
-        "address": "21 Akkerboom Avenue Mamre 7347 Cape Town",
+        "address": null,
         "footprint": {
           "type": "Polygon",
           "coordinates": [
@@ -89713,7 +89713,7 @@
           ]
         },
         "plus_code": "4FRWFFJM+X32",
-        "building_height": 4.1
+        "building_height": 2.8
       },
       "geometry": {
         "type": "Polygon",
@@ -89754,6 +89754,136 @@
             [
               18.4827086,
               -33.5176185
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "osm_id": 904152408,
+        "building": "cabin",
+        "building:levels": "1",
+        "address": null,
+        "footprint": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                18.4828369,
+                -33.5180383
+              ],
+              [
+                18.4827532,
+                -33.5180474
+              ],
+              [
+                18.4827611,
+                -33.5180978
+              ],
+              [
+                18.4828448,
+                -33.5180888
+              ],
+              [
+                18.4828369,
+                -33.5180383
+              ]
+            ]
+          ]
+        },
+        "plus_code": "4FRWFFJM+Q4F",
+        "building_height": 2.8
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              18.4828369,
+              -33.5180383
+            ],
+            [
+              18.4827532,
+              -33.5180474
+            ],
+            [
+              18.4827611,
+              -33.5180978
+            ],
+            [
+              18.4828448,
+              -33.5180888
+            ],
+            [
+              18.4828369,
+              -33.5180383
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "osm_id": 904152409,
+        "building": "garage",
+        "building:levels": "1",
+        "address": null,
+        "footprint": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                18.4830243,
+                -33.5181982
+              ],
+              [
+                18.4831945,
+                -33.5181798
+              ],
+              [
+                18.4832007,
+                -33.51822
+              ],
+              [
+                18.4830305,
+                -33.5182383
+              ],
+              [
+                18.4830243,
+                -33.5181982
+              ]
+            ]
+          ]
+        },
+        "plus_code": "4FRWFFJM+P69",
+        "building_height": 4.1
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              18.4830243,
+              -33.5181982
+            ],
+            [
+              18.4831945,
+              -33.5181798
+            ],
+            [
+              18.4832007,
+              -33.51822
+            ],
+            [
+              18.4830305,
+              -33.5182383
+            ],
+            [
+              18.4830243,
+              -33.5181982
             ]
           ]
         ]
@@ -105649,7 +105779,7 @@
       "type": "Feature",
       "properties": {
         "osm_id": 905352376,
-        "building": "garage",
+        "building": "cabin",
         "building:levels": "1",
         "address": null,
         "footprint": {
@@ -105688,7 +105818,7 @@
           ]
         },
         "plus_code": "4FRWFFMM+W6M",
-        "building_height": 4.1
+        "building_height": 2.8
       },
       "geometry": {
         "type": "Polygon",
@@ -108868,9 +108998,9 @@
       "type": "Feature",
       "properties": {
         "osm_id": 907281999,
-        "building": "yes",
+        "building": "cabin",
         "building:levels": "1",
-        "address": "Poeit Street Mamre 7347 Cape Town",
+        "address": null,
         "footprint": {
           "type": "Polygon",
           "coordinates": [
@@ -108907,7 +109037,7 @@
           ]
         },
         "plus_code": "4FRWFFMH+94G",
-        "building_height": 4.1
+        "building_height": 2.8
       },
       "geometry": {
         "type": "Polygon",
@@ -109016,7 +109146,7 @@
         "osm_id": 907282001,
         "building": "yes",
         "building:levels": "1",
-        "address": "Poeit Street Mamre 7347 Cape Town",
+        "address": null,
         "footprint": {
           "type": "Polygon",
           "coordinates": [
@@ -109178,7 +109308,7 @@
         "osm_id": 907282003,
         "building": "yes",
         "building:levels": "1",
-        "address": "PM Louw Street Mamre 7347 Cape Town",
+        "address": null,
         "footprint": {
           "type": "Polygon",
           "coordinates": [
@@ -109403,9 +109533,9 @@
       "type": "Feature",
       "properties": {
         "osm_id": 907282008,
-        "building": "yes",
+        "building": "cabin",
         "building:levels": "1",
-        "address": "Poeit Street Mamre 7347 Cape Town",
+        "address": null,
         "footprint": {
           "type": "Polygon",
           "coordinates": [
@@ -109442,7 +109572,7 @@
           ]
         },
         "plus_code": "4FRWFFMH+G2M",
-        "building_height": 4.1
+        "building_height": 2.8
       },
       "geometry": {
         "type": "Polygon",
@@ -110100,9 +110230,9 @@
       "type": "Feature",
       "properties": {
         "osm_id": 907289190,
-        "building": "yes",
+        "building": "cabin",
         "building:levels": "1",
-        "address": "Poeit Street Mamre 7347 Cape Town",
+        "address": null,
         "footprint": {
           "type": "Polygon",
           "coordinates": [
@@ -110139,7 +110269,7 @@
           ]
         },
         "plus_code": "4FRWFFMG+VQR",
-        "building_height": 4.1
+        "building_height": 2.8
       },
       "geometry": {
         "type": "Polygon",
@@ -110635,9 +110765,9 @@
       "type": "Feature",
       "properties": {
         "osm_id": 907289203,
-        "building": "yes",
+        "building": "cabin",
         "building:levels": "1",
-        "address": "PM Louw Street Mamre 7347 Cape Town",
+        "address": null,
         "footprint": {
           "type": "Polygon",
           "coordinates": [
@@ -110674,7 +110804,7 @@
           ]
         },
         "plus_code": "4FRWFFMG+XP4",
-        "building_height": 4.1
+        "building_height": 2.8
       },
       "geometry": {
         "type": "Polygon",
@@ -111567,7 +111697,7 @@
         "osm_id": 907298840,
         "building": "yes",
         "building:levels": "1",
-        "address": "Henning Huizen Street Mamre 7347 Cape Town",
+        "address": null,
         "footprint": {
           "type": "Polygon",
           "coordinates": [
@@ -112585,7 +112715,7 @@
       "type": "Feature",
       "properties": {
         "osm_id": 907298860,
-        "building": "house",
+        "building": "guest_house",
         "building:levels": "1",
         "address": "8 Henning Huizen Street Mamre 7347 Cape Town",
         "footprint": {
@@ -113039,7 +113169,7 @@
         "osm_id": 907298864,
         "building": "yes",
         "building:levels": "1",
-        "address": "Henning Huizen Street Mamre 7347 Cape Town",
+        "address": null,
         "footprint": {
           "type": "Polygon",
           "coordinates": [
@@ -113409,62 +113539,94 @@
       "type": "Feature",
       "properties": {
         "osm_id": 907307472,
-        "building": "yes",
+        "building": "cabin",
         "building:levels": "1",
-        "address": "Henning Huizen Street Mamre 7347 Cape Town",
+        "address": null,
         "footprint": {
           "type": "Polygon",
           "coordinates": [
             [
               [
-                18.4805911,
-                -33.5163068
+                18.480645,
+                -33.5163097
               ],
               [
-                18.4805297,
-                -33.5163241
+                18.4805294,
+                -33.5163402
               ],
               [
-                18.4805415,
-                -33.5163532
+                18.4805449,
+                -33.5163811
               ],
               [
-                18.4806029,
-                -33.5163359
+                18.4805792,
+                -33.5163721
               ],
               [
-                18.4805911,
-                -33.5163068
+                18.4805897,
+                -33.5163999
+              ],
+              [
+                18.4806393,
+                -33.5163868
+              ],
+              [
+                18.4806274,
+                -33.5163552
+              ],
+              [
+                18.480659,
+                -33.5163469
+              ],
+              [
+                18.480645,
+                -33.5163097
               ]
             ]
           ]
         },
-        "plus_code": "4FRWFFMJ+F68",
-        "building_height": 4.1
+        "plus_code": "4FRWFFMJ+F64",
+        "building_height": 2.8
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              18.4805911,
-              -33.5163068
+              18.480645,
+              -33.5163097
             ],
             [
-              18.4805297,
-              -33.5163241
+              18.4805294,
+              -33.5163402
             ],
             [
-              18.4805415,
-              -33.5163532
+              18.4805449,
+              -33.5163811
             ],
             [
-              18.4806029,
-              -33.5163359
+              18.4805792,
+              -33.5163721
             ],
             [
-              18.4805911,
-              -33.5163068
+              18.4805897,
+              -33.5163999
+            ],
+            [
+              18.4806393,
+              -33.5163868
+            ],
+            [
+              18.4806274,
+              -33.5163552
+            ],
+            [
+              18.480659,
+              -33.5163469
+            ],
+            [
+              18.480645,
+              -33.5163097
             ]
           ]
         ]
@@ -113474,7 +113636,7 @@
       "type": "Feature",
       "properties": {
         "osm_id": 907307473,
-        "building": "cabin",
+        "building": "house",
         "building:levels": "1",
         "address": "Halbeck Street Mamre 7347 Cape Town",
         "footprint": {
@@ -113521,7 +113683,7 @@
           ]
         },
         "plus_code": "4FRWFFMJ+C5R",
-        "building_height": 2.8
+        "building_height": 4.1
       },
       "geometry": {
         "type": "Polygon",
@@ -113571,20 +113733,20 @@
       "type": "Feature",
       "properties": {
         "osm_id": 907307474,
-        "building": "yes",
+        "building": "cabin",
         "building:levels": "1",
-        "address": "Halbeck Street Mamre 7347 Cape Town",
+        "address": null,
         "footprint": {
           "type": "Polygon",
           "coordinates": [
             [
               [
-                18.480468,
-                -33.5163831
+                18.4804948,
+                -33.5164658
               ],
               [
-                18.4804969,
-                -33.5163784
+                18.4805224,
+                -33.5164611
               ],
               [
                 18.4804834,
@@ -113595,26 +113757,26 @@
                 -33.5163258
               ],
               [
-                18.480468,
-                -33.5163831
+                18.4804948,
+                -33.5164658
               ]
             ]
           ]
         },
-        "plus_code": "4FRWFFMJ+F55",
-        "building_height": 4.1
+        "plus_code": "4FRWFFMJ+C5X",
+        "building_height": 2.8
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              18.480468,
-              -33.5163831
+              18.4804948,
+              -33.5164658
             ],
             [
-              18.4804969,
-              -33.5163784
+              18.4805224,
+              -33.5164611
             ],
             [
               18.4804834,
@@ -113625,8 +113787,8 @@
               -33.5163258
             ],
             [
-              18.480468,
-              -33.5163831
+              18.4804948,
+              -33.5164658
             ]
           ]
         ]
@@ -115518,7 +115680,7 @@
         "osm_id": 907307505,
         "building": "cabin",
         "building:levels": "1",
-        "address": "Halbeck Street Mamre 7347 Cape Town",
+        "address": null,
         "footprint": {
           "type": "Polygon",
           "coordinates": [
@@ -115581,62 +115743,62 @@
       "type": "Feature",
       "properties": {
         "osm_id": 907307506,
-        "building": "garage",
+        "building": "cabin",
         "building:levels": "1",
-        "address": "Main Road Mamre 7347 Cape Town",
+        "address": null,
         "footprint": {
           "type": "Polygon",
           "coordinates": [
             [
               [
-                18.4800048,
-                -33.5141299
+                18.4800055,
+                -33.5141406
               ],
               [
-                18.4800345,
-                -33.5141315
+                18.4800348,
+                -33.5141429
               ],
               [
-                18.480041,
-                -33.5140482
+                18.4800416,
+                -33.5140838
               ],
               [
-                18.4800112,
-                -33.5140466
+                18.4800124,
+                -33.5140814
               ],
               [
-                18.4800048,
-                -33.5141299
+                18.4800055,
+                -33.5141406
               ]
             ]
           ]
         },
-        "plus_code": "4FRWFFPJ+926",
-        "building_height": 4.1
+        "plus_code": "4FRWFFPJ+922",
+        "building_height": 2.8
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              18.4800048,
-              -33.5141299
+              18.4800055,
+              -33.5141406
             ],
             [
-              18.4800345,
-              -33.5141315
+              18.4800348,
+              -33.5141429
             ],
             [
-              18.480041,
-              -33.5140482
+              18.4800416,
+              -33.5140838
             ],
             [
-              18.4800112,
-              -33.5140466
+              18.4800124,
+              -33.5140814
             ],
             [
-              18.4800048,
-              -33.5141299
+              18.4800055,
+              -33.5141406
             ]
           ]
         ]
@@ -116448,33 +116610,29 @@
           "coordinates": [
             [
               [
-                18.4808999,
-                -33.514169
+                18.4808892,
+                -33.5141779
               ],
               [
-                18.4808758,
+                18.4808624,
+                -33.5142876
+              ],
+              [
+                18.4807548,
                 -33.5142736
               ],
               [
-                18.4808066,
-                -33.5142625
+                18.480785,
+                -33.5141632
               ],
               [
-                18.4807628,
-                -33.5142555
-              ],
-              [
-                18.480787,
-                -33.5141509
-              ],
-              [
-                18.4808999,
-                -33.514169
+                18.4808892,
+                -33.5141779
               ]
             ]
           ]
         },
-        "plus_code": "4FRWFFPJ+888",
+        "plus_code": "4FRWFFPJ+884",
         "building_height": 4.1
       },
       "geometry": {
@@ -116482,28 +116640,24 @@
         "coordinates": [
           [
             [
-              18.4808999,
-              -33.514169
+              18.4808892,
+              -33.5141779
             ],
             [
-              18.4808758,
+              18.4808624,
+              -33.5142876
+            ],
+            [
+              18.4807548,
               -33.5142736
             ],
             [
-              18.4808066,
-              -33.5142625
+              18.480785,
+              -33.5141632
             ],
             [
-              18.4807628,
-              -33.5142555
-            ],
-            [
-              18.480787,
-              -33.5141509
-            ],
-            [
-              18.4808999,
-              -33.514169
+              18.4808892,
+              -33.5141779
             ]
           ]
         ]
@@ -116521,41 +116675,37 @@
           "coordinates": [
             [
               [
-                18.4806641,
-                -33.5142383
-              ],
-              [
                 18.4806547,
-                -33.5143188
+                -33.5142601
               ],
               [
-                18.4807962,
-                -33.5143362
+                18.48065,
+                -33.5143345
               ],
               [
-                18.4808066,
-                -33.5142633
+                18.4807868,
+                -33.5143457
               ],
               [
-                18.4807628,
-                -33.5142563
+                18.4807918,
+                -33.514284
+              ],
+              [
+                18.4807548,
+                -33.5142736
               ],
               [
                 18.4807211,
-                -33.5142506
+                -33.5142663
               ],
               [
-                18.4807217,
-                -33.5142411
-              ],
-              [
-                18.4806641,
-                -33.5142383
+                18.4806547,
+                -33.5142601
               ]
             ]
           ]
         },
-        "plus_code": "4FRWFFPJ+77Q",
+        "plus_code": "4FRWFFPJ+77H",
         "building_height": 2.8
       },
       "geometry": {
@@ -116563,36 +116713,32 @@
         "coordinates": [
           [
             [
-              18.4806641,
-              -33.5142383
-            ],
-            [
               18.4806547,
-              -33.5143188
+              -33.5142601
             ],
             [
-              18.4807962,
-              -33.5143362
+              18.48065,
+              -33.5143345
             ],
             [
-              18.4808066,
-              -33.5142633
+              18.4807868,
+              -33.5143457
             ],
             [
-              18.4807628,
-              -33.5142563
+              18.4807918,
+              -33.514284
+            ],
+            [
+              18.4807548,
+              -33.5142736
             ],
             [
               18.4807211,
-              -33.5142506
+              -33.5142663
             ],
             [
-              18.4807217,
-              -33.5142411
-            ],
-            [
-              18.4806641,
-              -33.5142383
+              18.4806547,
+              -33.5142601
             ]
           ]
         ]
@@ -116944,7 +117090,7 @@
         "osm_id": 907310422,
         "building": "garage",
         "building:levels": "1",
-        "address": "Khorhamer Street Mamre 7347 Cape Town",
+        "address": null,
         "footprint": {
           "type": "Polygon",
           "coordinates": [
@@ -126272,7 +126418,7 @@
       "type": "Feature",
       "properties": {
         "osm_id": 907701166,
-        "building": "garage",
+        "building": "cabin",
         "building:levels": "1",
         "address": null,
         "footprint": {
@@ -126303,7 +126449,7 @@
           ]
         },
         "plus_code": "4FRWFFPJ+J66",
-        "building_height": 4.1
+        "building_height": 2.8
       },
       "geometry": {
         "type": "Polygon",
@@ -128793,9 +128939,9 @@
       "type": "Feature",
       "properties": {
         "osm_id": 907714220,
-        "building": "garage",
+        "building": "cabin",
         "building:levels": "1",
-        "address": "Frans Street Mamre 7347 Cape Town",
+        "address": null,
         "footprint": {
           "type": "Polygon",
           "coordinates": [
@@ -128824,7 +128970,7 @@
           ]
         },
         "plus_code": "4FRWFFPJ+R7M",
-        "building_height": 4.1
+        "building_height": 2.8
       },
       "geometry": {
         "type": "Polygon",
@@ -138041,7 +138187,7 @@
       "type": "Feature",
       "properties": {
         "osm_id": 907998374,
-        "building": "garage",
+        "building": "cabin",
         "building:levels": "1",
         "address": null,
         "footprint": {
@@ -138049,12 +138195,12 @@
           "coordinates": [
             [
               [
-                18.4781575,
-                -33.5124355
+                18.4781307,
+                -33.5124858
               ],
               [
-                18.4782028,
-                -33.5124535
+                18.478188,
+                -33.512482
               ],
               [
                 18.4782398,
@@ -138065,26 +138211,26 @@
                 -33.5123707
               ],
               [
-                18.4781575,
-                -33.5124355
+                18.4781307,
+                -33.5124858
               ]
             ]
           ]
         },
-        "plus_code": "4FRWFFQH+27P",
-        "building_height": 4.1
+        "plus_code": "4FRWFFQH+27F",
+        "building_height": 2.8
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              18.4781575,
-              -33.5124355
+              18.4781307,
+              -33.5124858
             ],
             [
-              18.4782028,
-              -33.5124535
+              18.478188,
+              -33.512482
             ],
             [
               18.4782398,
@@ -138095,8 +138241,8 @@
               -33.5123707
             ],
             [
-              18.4781575,
-              -33.5124355
+              18.4781307,
+              -33.5124858
             ]
           ]
         ]
@@ -138465,7 +138611,7 @@
         "osm_id": 907998380,
         "building": "cabin",
         "building:levels": "1",
-        "address": "Kaap Street Mamre 7347 Cape Town",
+        "address": null,
         "footprint": {
           "type": "Polygon",
           "coordinates": [
@@ -138773,7 +138919,7 @@
         "osm_id": 907998384,
         "building": "cabin",
         "building:levels": "1",
-        "address": "Gousblom Avenue Mamre 7347 Cape Town",
+        "address": null,
         "footprint": {
           "type": "Polygon",
           "coordinates": [
@@ -139341,7 +139487,7 @@
         "osm_id": 908002752,
         "building": "yes",
         "building:levels": "1",
-        "address": "Kaap Street Mamre 7347 Cape Town",
+        "address": null,
         "footprint": {
           "type": "Polygon",
           "coordinates": [
@@ -139568,7 +139714,7 @@
         "osm_id": 908002755,
         "building": "roof",
         "building:levels": "1",
-        "address": "Kaap Street Mamre 7347 Cape Town",
+        "address": null,
         "footprint": {
           "type": "Polygon",
           "coordinates": [
@@ -139728,9 +139874,9 @@
       "type": "Feature",
       "properties": {
         "osm_id": 908002757,
-        "building": "garage",
+        "building": "cabin",
         "building:levels": "1",
-        "address": "Amos Comenius Street Mamre 7347 Cape Town",
+        "address": null,
         "footprint": {
           "type": "Polygon",
           "coordinates": [
@@ -139767,7 +139913,7 @@
           ]
         },
         "plus_code": "4FRWFFQH+2MH",
-        "building_height": 4.1
+        "building_height": 2.8
       },
       "geometry": {
         "type": "Polygon",
@@ -141116,7 +141262,7 @@
         "osm_id": 908002781,
         "building": "cabin",
         "building:levels": "1",
-        "address": "Amos Comenius Street Mamre 7347 Cape Town",
+        "address": null,
         "footprint": {
           "type": "Polygon",
           "coordinates": [
@@ -173803,7 +173949,7 @@
       "type": "Feature",
       "properties": {
         "osm_id": 913929375,
-        "building": "yes",
+        "building": "civic",
         "building:levels": "1",
         "address": "Khorhamer Street Mamre 7347 Cape Town",
         "footprint": {
@@ -174160,7 +174306,7 @@
       "type": "Feature",
       "properties": {
         "osm_id": 914158403,
-        "building": "cabin",
+        "building": "house",
         "building:levels": "1",
         "address": "23 Khorhamer Street Mamre 7347 Cape Town",
         "footprint": {
@@ -174168,54 +174314,54 @@
           "coordinates": [
             [
               [
-                18.4811524,
-                -33.5164112
+                18.4811618,
+                -33.5164064
               ],
               [
-                18.4812443,
-                -33.5164165
+                18.4812521,
+                -33.5164148
               ],
               [
-                18.4812479,
-                -33.5163723
+                18.4812672,
+                -33.5163009
               ],
               [
-                18.4811561,
-                -33.516367
+                18.4811769,
+                -33.5162926
               ],
               [
-                18.4811524,
-                -33.5164112
+                18.4811618,
+                -33.5164064
               ]
             ]
           ]
         },
-        "plus_code": "4FRWFFMJ+CFW",
-        "building_height": 2.8
+        "plus_code": "4FRWFFMJ+FF4",
+        "building_height": 4.1
       },
       "geometry": {
         "type": "Polygon",
         "coordinates": [
           [
             [
-              18.4811524,
-              -33.5164112
+              18.4811618,
+              -33.5164064
             ],
             [
-              18.4812443,
-              -33.5164165
+              18.4812521,
+              -33.5164148
             ],
             [
-              18.4812479,
-              -33.5163723
+              18.4812672,
+              -33.5163009
             ],
             [
-              18.4811561,
-              -33.516367
+              18.4811769,
+              -33.5162926
             ],
             [
-              18.4811524,
-              -33.5164112
+              18.4811618,
+              -33.5164064
             ]
           ]
         ]
@@ -174362,6 +174508,71 @@
             [
               18.4809735,
               -33.5156992
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "osm_id": 914158406,
+        "building": "cabin",
+        "building:levels": "1",
+        "address": null,
+        "footprint": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                18.4811902,
+                -33.5156336
+              ],
+              [
+                18.4811475,
+                -33.5156444
+              ],
+              [
+                18.4811931,
+                -33.515769
+              ],
+              [
+                18.4812358,
+                -33.5157581
+              ],
+              [
+                18.4811902,
+                -33.5156336
+              ]
+            ]
+          ]
+        },
+        "plus_code": "4FRWFFMJ+PF8",
+        "building_height": 2.8
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              18.4811902,
+              -33.5156336
+            ],
+            [
+              18.4811475,
+              -33.5156444
+            ],
+            [
+              18.4811931,
+              -33.515769
+            ],
+            [
+              18.4812358,
+              -33.5157581
+            ],
+            [
+              18.4811902,
+              -33.5156336
             ]
           ]
         ]
@@ -177924,6 +178135,1061 @@
             [
               18.4746682,
               -33.5140271
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "osm_id": 1379652744,
+        "building": "cabin",
+        "building:levels": "1",
+        "address": null,
+        "footprint": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                18.4817195,
+                -33.5146878
+              ],
+              [
+                18.4817563,
+                -33.5146789
+              ],
+              [
+                18.4817278,
+                -33.5145966
+              ],
+              [
+                18.481691,
+                -33.5146055
+              ],
+              [
+                18.4817195,
+                -33.5146878
+              ]
+            ]
+          ]
+        },
+        "plus_code": "4FRWFFPJ+4MX",
+        "building_height": 2.8
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              18.4817195,
+              -33.5146878
+            ],
+            [
+              18.4817563,
+              -33.5146789
+            ],
+            [
+              18.4817278,
+              -33.5145966
+            ],
+            [
+              18.481691,
+              -33.5146055
+            ],
+            [
+              18.4817195,
+              -33.5146878
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "osm_id": 1379652745,
+        "building": "cabin",
+        "building:levels": "1",
+        "address": null,
+        "footprint": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                18.4831422,
+                -33.5146851
+              ],
+              [
+                18.4833481,
+                -33.5147093
+              ],
+              [
+                18.4833384,
+                -33.5147669
+              ],
+              [
+                18.4832781,
+                -33.5147598
+              ],
+              [
+                18.483281,
+                -33.5147423
+              ],
+              [
+                18.4831355,
+                -33.5147252
+              ],
+              [
+                18.4831422,
+                -33.5146851
+              ]
+            ]
+          ]
+        },
+        "plus_code": "4FRWFFPM+482",
+        "building_height": 2.8
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              18.4831422,
+              -33.5146851
+            ],
+            [
+              18.4833481,
+              -33.5147093
+            ],
+            [
+              18.4833384,
+              -33.5147669
+            ],
+            [
+              18.4832781,
+              -33.5147598
+            ],
+            [
+              18.483281,
+              -33.5147423
+            ],
+            [
+              18.4831355,
+              -33.5147252
+            ],
+            [
+              18.4831422,
+              -33.5146851
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "osm_id": 1379652746,
+        "building": "cabin",
+        "building:levels": "1",
+        "address": null,
+        "footprint": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                18.4833575,
+                -33.5146997
+              ],
+              [
+                18.4835222,
+                -33.5147191
+              ],
+              [
+                18.4835149,
+                -33.5147616
+              ],
+              [
+                18.4833503,
+                -33.5147422
+              ],
+              [
+                18.4833575,
+                -33.5146997
+              ]
+            ]
+          ]
+        },
+        "plus_code": "4FRWFFPM+493",
+        "building_height": 2.8
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              18.4833575,
+              -33.5146997
+            ],
+            [
+              18.4835222,
+              -33.5147191
+            ],
+            [
+              18.4835149,
+              -33.5147616
+            ],
+            [
+              18.4833503,
+              -33.5147422
+            ],
+            [
+              18.4833575,
+              -33.5146997
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "osm_id": 1379652747,
+        "building": "house",
+        "building:levels": "1",
+        "address": "Bauhinia Crescent Mamre 7347 Cape Town",
+        "footprint": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                18.4827717,
+                -33.5146328
+              ],
+              [
+                18.4828607,
+                -33.5146432
+              ],
+              [
+                18.4828467,
+                -33.5147263
+              ],
+              [
+                18.4827577,
+                -33.5147159
+              ],
+              [
+                18.4827717,
+                -33.5146328
+              ]
+            ]
+          ]
+        },
+        "plus_code": "4FRWFFPM+44F",
+        "building_height": 4.1
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              18.4827717,
+              -33.5146328
+            ],
+            [
+              18.4828607,
+              -33.5146432
+            ],
+            [
+              18.4828467,
+              -33.5147263
+            ],
+            [
+              18.4827577,
+              -33.5147159
+            ],
+            [
+              18.4827717,
+              -33.5146328
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "osm_id": 1379652748,
+        "building": "cabin",
+        "building:levels": "1",
+        "address": null,
+        "footprint": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                18.4828205,
+                -33.5178987
+              ],
+              [
+                18.4828895,
+                -33.5178912
+              ],
+              [
+                18.4829087,
+                -33.5180136
+              ],
+              [
+                18.4828397,
+                -33.5180211
+              ],
+              [
+                18.4828205,
+                -33.5178987
+              ]
+            ]
+          ]
+        },
+        "plus_code": "4FRWFFJM+R49",
+        "building_height": 2.8
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              18.4828205,
+              -33.5178987
+            ],
+            [
+              18.4828895,
+              -33.5178912
+            ],
+            [
+              18.4829087,
+              -33.5180136
+            ],
+            [
+              18.4828397,
+              -33.5180211
+            ],
+            [
+              18.4828205,
+              -33.5178987
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "osm_id": 1379652749,
+        "building": "cabin",
+        "building:levels": "1",
+        "address": null,
+        "footprint": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                18.4828694,
+                -33.5182132
+              ],
+              [
+                18.4829526,
+                -33.5182054
+              ],
+              [
+                18.482968,
+                -33.5183188
+              ],
+              [
+                18.4828848,
+                -33.5183266
+              ],
+              [
+                18.4828694,
+                -33.5182132
+              ]
+            ]
+          ]
+        },
+        "plus_code": "4FRWFFJM+M5V",
+        "building_height": 2.8
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              18.4828694,
+              -33.5182132
+            ],
+            [
+              18.4829526,
+              -33.5182054
+            ],
+            [
+              18.482968,
+              -33.5183188
+            ],
+            [
+              18.4828848,
+              -33.5183266
+            ],
+            [
+              18.4828694,
+              -33.5182132
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "osm_id": 1379656535,
+        "building": "retail",
+        "building:levels": "1",
+        "address": null,
+        "footprint": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                18.4810661,
+                -33.516198
+              ],
+              [
+                18.4811688,
+                -33.5161741
+              ],
+              [
+                18.4811827,
+                -33.5162156
+              ],
+              [
+                18.48108,
+                -33.5162395
+              ],
+              [
+                18.4810661,
+                -33.516198
+              ]
+            ]
+          ]
+        },
+        "plus_code": "4FRWFFMJ+GC9",
+        "building_height": 4.1
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              18.4810661,
+              -33.516198
+            ],
+            [
+              18.4811688,
+              -33.5161741
+            ],
+            [
+              18.4811827,
+              -33.5162156
+            ],
+            [
+              18.48108,
+              -33.5162395
+            ],
+            [
+              18.4810661,
+              -33.516198
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "osm_id": 1379656536,
+        "building": "house",
+        "building:levels": "1",
+        "address": "Khorhamer Street Mamre 7347 Cape Town",
+        "footprint": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                18.4808107,
+                -33.5160426
+              ],
+              [
+                18.4806293,
+                -33.516088
+              ],
+              [
+                18.480606,
+                -33.5160236
+              ],
+              [
+                18.4807231,
+                -33.5159942
+              ],
+              [
+                18.4807049,
+                -33.5159436
+              ],
+              [
+                18.4807693,
+                -33.5159275
+              ],
+              [
+                18.4808107,
+                -33.5160426
+              ]
+            ]
+          ]
+        },
+        "plus_code": "4FRWFFMJ+H7X",
+        "building_height": 4.1
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              18.4808107,
+              -33.5160426
+            ],
+            [
+              18.4806293,
+              -33.516088
+            ],
+            [
+              18.480606,
+              -33.5160236
+            ],
+            [
+              18.4807231,
+              -33.5159942
+            ],
+            [
+              18.4807049,
+              -33.5159436
+            ],
+            [
+              18.4807693,
+              -33.5159275
+            ],
+            [
+              18.4808107,
+              -33.5160426
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "osm_id": 1379656537,
+        "building": "cabin",
+        "building:levels": "1",
+        "address": null,
+        "footprint": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                18.4785011,
+                -33.5158706
+              ],
+              [
+                18.4785917,
+                -33.5158758
+              ],
+              [
+                18.4785878,
+                -33.5159227
+              ],
+              [
+                18.4784973,
+                -33.5159176
+              ],
+              [
+                18.4785011,
+                -33.5158706
+              ]
+            ]
+          ]
+        },
+        "plus_code": "4FRWFFMH+JCV",
+        "building_height": 2.8
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              18.4785011,
+              -33.5158706
+            ],
+            [
+              18.4785917,
+              -33.5158758
+            ],
+            [
+              18.4785878,
+              -33.5159227
+            ],
+            [
+              18.4784973,
+              -33.5159176
+            ],
+            [
+              18.4785011,
+              -33.5158706
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "osm_id": 1379657537,
+        "building": "cabin",
+        "building:levels": "1",
+        "address": null,
+        "footprint": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                18.4793635,
+                -33.5139939
+              ],
+              [
+                18.4793588,
+                -33.5140386
+              ],
+              [
+                18.4793166,
+                -33.5140218
+              ],
+              [
+                18.4793186,
+                -33.5139766
+              ],
+              [
+                18.4793635,
+                -33.5139939
+              ]
+            ]
+          ]
+        },
+        "plus_code": "4FRWFFPH+9PW",
+        "building_height": 2.8
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              18.4793635,
+              -33.5139939
+            ],
+            [
+              18.4793588,
+              -33.5140386
+            ],
+            [
+              18.4793166,
+              -33.5140218
+            ],
+            [
+              18.4793186,
+              -33.5139766
+            ],
+            [
+              18.4793635,
+              -33.5139939
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "osm_id": 1379657538,
+        "building": "house",
+        "building:levels": "1",
+        "address": "21 Akkerboom Avenue Mamre 7347 Cape Town",
+        "footprint": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                18.4827293,
+                -33.5174386
+              ],
+              [
+                18.4827165,
+                -33.5174816
+              ],
+              [
+                18.4827544,
+                -33.5174894
+              ],
+              [
+                18.4827333,
+                -33.5175609
+              ],
+              [
+                18.4825562,
+                -33.5175245
+              ],
+              [
+                18.48259,
+                -33.51741
+              ],
+              [
+                18.4827293,
+                -33.5174386
+              ]
+            ]
+          ]
+        },
+        "plus_code": "4FRWFFMM+232",
+        "building_height": 4.1
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              18.4827293,
+              -33.5174386
+            ],
+            [
+              18.4827165,
+              -33.5174816
+            ],
+            [
+              18.4827544,
+              -33.5174894
+            ],
+            [
+              18.4827333,
+              -33.5175609
+            ],
+            [
+              18.4825562,
+              -33.5175245
+            ],
+            [
+              18.48259,
+              -33.51741
+            ],
+            [
+              18.4827293,
+              -33.5174386
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "osm_id": 1379658562,
+        "building": "cabin",
+        "building:levels": "1",
+        "address": null,
+        "footprint": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                18.4811098,
+                -33.5153302
+              ],
+              [
+                18.4811768,
+                -33.5153156
+              ],
+              [
+                18.4812191,
+                -33.5154398
+              ],
+              [
+                18.4811473,
+                -33.5154549
+              ],
+              [
+                18.4811098,
+                -33.5153302
+              ]
+            ]
+          ]
+        },
+        "plus_code": "4FRWFFMJ+RFV",
+        "building_height": 2.8
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              18.4811098,
+              -33.5153302
+            ],
+            [
+              18.4811768,
+              -33.5153156
+            ],
+            [
+              18.4812191,
+              -33.5154398
+            ],
+            [
+              18.4811473,
+              -33.5154549
+            ],
+            [
+              18.4811098,
+              -33.5153302
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "osm_id": 1379658563,
+        "building": "cabin",
+        "building:levels": "1",
+        "address": null,
+        "footprint": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                18.4811651,
+                -33.5155198
+              ],
+              [
+                18.4812106,
+                -33.5155099
+              ],
+              [
+                18.4812432,
+                -33.5156136
+              ],
+              [
+                18.4811977,
+                -33.5156236
+              ],
+              [
+                18.4811651,
+                -33.5155198
+              ]
+            ]
+          ]
+        },
+        "plus_code": "4FRWFFMJ+QFG",
+        "building_height": 2.8
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              18.4811651,
+              -33.5155198
+            ],
+            [
+              18.4812106,
+              -33.5155099
+            ],
+            [
+              18.4812432,
+              -33.5156136
+            ],
+            [
+              18.4811977,
+              -33.5156236
+            ],
+            [
+              18.4811651,
+              -33.5155198
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "osm_id": 1379663447,
+        "building": "cabin",
+        "building:levels": "1",
+        "address": null,
+        "footprint": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                18.4789086,
+                -33.5120749
+              ],
+              [
+                18.478866,
+                -33.5120012
+              ],
+              [
+                18.478806,
+                -33.5120253
+              ],
+              [
+                18.4788219,
+                -33.5120528
+              ],
+              [
+                18.4788528,
+                -33.5120404
+              ],
+              [
+                18.4788795,
+                -33.5120866
+              ],
+              [
+                18.4789086,
+                -33.5120749
+              ]
+            ]
+          ]
+        },
+        "plus_code": "4FRWFFQH+5GQ",
+        "building_height": 2.8
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              18.4789086,
+              -33.5120749
+            ],
+            [
+              18.478866,
+              -33.5120012
+            ],
+            [
+              18.478806,
+              -33.5120253
+            ],
+            [
+              18.4788219,
+              -33.5120528
+            ],
+            [
+              18.4788528,
+              -33.5120404
+            ],
+            [
+              18.4788795,
+              -33.5120866
+            ],
+            [
+              18.4789086,
+              -33.5120749
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "osm_id": 1379663448,
+        "building": "cabin",
+        "building:levels": "1",
+        "address": null,
+        "footprint": {
+          "type": "Polygon",
+          "coordinates": [
+            [
+              [
+                18.4786905,
+                -33.5119289
+              ],
+              [
+                18.4786301,
+                -33.5119417
+              ],
+              [
+                18.4786221,
+                -33.5119151
+              ],
+              [
+                18.4786514,
+                -33.5119089
+              ],
+              [
+                18.478643,
+                -33.5118812
+              ],
+              [
+                18.478674,
+                -33.5118746
+              ],
+              [
+                18.4786905,
+                -33.5119289
+              ]
+            ]
+          ]
+        },
+        "plus_code": "4FRWFFQH+6FV",
+        "building_height": 2.8
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              18.4786905,
+              -33.5119289
+            ],
+            [
+              18.4786301,
+              -33.5119417
+            ],
+            [
+              18.4786221,
+              -33.5119151
+            ],
+            [
+              18.4786514,
+              -33.5119089
+            ],
+            [
+              18.478643,
+              -33.5118812
+            ],
+            [
+              18.478674,
+              -33.5118746
+            ],
+            [
+              18.4786905,
+              -33.5119289
             ]
           ]
         ]

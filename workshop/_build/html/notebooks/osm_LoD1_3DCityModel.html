@@ -473,8 +473,8 @@ document.write(`
 <p><strong>A <code class="docutils literal notranslate"><span class="pre">parameter.json</span></code> defines the path and files</strong>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#jparams = json.load(open(&#39;osm3DwStock_param.json&#39;))       </span>
-<span class="n">jparams</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;osm3DsRiver_param25m.json&#39;</span><span class="p">))</span>      
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jparams</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;osm3DwStock_param.json&#39;</span><span class="p">))</span>       
+<span class="c1">#jparams = json.load(open(&#39;osm3DsRiver_param25m.json&#39;))      </span>
 </pre></div>
 </div>
 </div>
@@ -577,10 +577,10 @@ document.write(`
   <tbody>
     <tr>
       <th>0</th>
-      <td>MULTIPOLYGON (((18.47036 -33.93075, 18.47050 -...</td>
+      <td>MULTIPOLYGON (((18.43942 -33.93323, 18.43952 -...</td>
       <td>relation</td>
-      <td>2034284</td>
-      <td>{'name': 'Salt River', 'place': 'suburb', 'typ...</td>
+      <td>2034285</td>
+      <td>{'boundary': 'place', 'name': 'Woodstock', 'pl...</td>
     </tr>
   </tbody>
 </table>
@@ -625,7 +625,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.593398
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.588509
 </pre></div>
 </div>
 </div>
@@ -677,12 +677,12 @@ document.write(`
   <tbody>
     <tr>
       <th>0</th>
-      <td>6383946</td>
+      <td>11029147</td>
       <td>NaN</td>
-      <td>Western Cape Metrorail - Infrastructure Building</td>
+      <td>NaN</td>
       <td>multipolygon</td>
       <td>NaN</td>
-      <td>office</td>
+      <td>school</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -691,27 +691,27 @@ document.write(`
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>"addr:city"=&gt;"Cape Town","addr:postcode"=&gt;"729...</td>
-      <td>MULTIPOLYGON (((18.47234 -33.92889, 18.47238 -...</td>
+      <td>"building:levels"=&gt;"2","ref:ZA:emis"=&gt;"1033103...</td>
+      <td>MULTIPOLYGON (((18.43904 -33.93415, 18.43955 -...</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>6691666</td>
+      <td>12227309</td>
       <td>NaN</td>
-      <td>NaN</td>
+      <td>The Neighbourgoods Market</td>
       <td>multipolygon</td>
-      <td>NaN</td>
-      <td>hall</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>marketplace</td>
+      <td>retail</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>"addr:housename"=&gt;"Parish Hall"</td>
-      <td>MULTIPOLYGON (((18.46860 -33.93602, 18.46862 -...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>"addr:city"=&gt;"Cape Town","addr:suburb"=&gt;"Woods...</td>
+      <td>MULTIPOLYGON (((18.45801 -33.92731, 18.45853 -...</td>
     </tr>
   </tbody>
 </table>
@@ -784,35 +784,35 @@ document.write(`
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <td>6383946</td>
+      <th>1</th>
+      <td>12227309</td>
       <td>NaN</td>
-      <td>Western Cape Metrorail - Infrastructure Building</td>
+      <td>The Neighbourgoods Market</td>
       <td>multipolygon</td>
-      <td>NaN</td>
-      <td>office</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>marketplace</td>
+      <td>retail</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>"addr:city"=&gt;"Cape Town","addr:postcode"=&gt;"729...</td>
-      <td>MULTIPOLYGON (((18.47234 -33.92889, 18.47238 -...</td>
-      <td>{'addr:city': 'Cape Town', 'addr:postcode': '7...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>"addr:city"=&gt;"Cape Town","addr:suburb"=&gt;"Woods...</td>
+      <td>MULTIPOLYGON (((18.45801 -33.92731, 18.45853 -...</td>
+      <td>{'addr:city': 'Cape Town', 'addr:suburb': 'Woo...</td>
       <td>1</td>
       <td>None</td>
     </tr>
     <tr>
-      <th>7</th>
-      <td>13328172</td>
+      <th>2</th>
+      <td>12249345</td>
       <td>NaN</td>
-      <td>NaN</td>
+      <td>Church  Square</td>
       <td>multipolygon</td>
       <td>NaN</td>
-      <td>school</td>
+      <td>apartments</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -821,10 +821,10 @@ document.write(`
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>"building:levels"=&gt;"2","ref:ZA:emis"=&gt;"1033101...</td>
-      <td>MULTIPOLYGON (((18.46158 -33.93174, 18.46176 -...</td>
-      <td>{'building:levels': '2', 'ref:ZA:emis': '10331...</td>
-      <td>2</td>
+      <td>"addr:city"=&gt;"Woodstock, Cape Town","addr:hous...</td>
+      <td>MULTIPOLYGON (((18.45082 -33.92792, 18.45086 -...</td>
+      <td>{'addr:city': 'Woodstock, Cape Town', 'addr:ho...</td>
+      <td>6</td>
       <td>None</td>
     </tr>
   </tbody>
@@ -840,7 +840,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 1451 buildings have been harvested from ./data/CapeTown.osm.pbf
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 3796 buildings have been harvested from ./data/CapeTown.osm.pbf
 </pre></div>
 </div>
 </div>
@@ -893,35 +893,35 @@ document.write(`
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <td>6383946</td>
+      <th>1</th>
+      <td>12227309</td>
       <td>NaN</td>
-      <td>Western Cape Metrorail - Infrastructure Building</td>
+      <td>The Neighbourgoods Market</td>
       <td>multipolygon</td>
-      <td>NaN</td>
-      <td>office</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>marketplace</td>
+      <td>retail</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>"addr:city"=&gt;"Cape Town","addr:postcode"=&gt;"729...</td>
-      <td>MULTIPOLYGON (((18.47234 -33.92889, 18.47238 -...</td>
-      <td>{'addr:city': 'Cape Town', 'addr:postcode': '7...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>"addr:city"=&gt;"Cape Town","addr:suburb"=&gt;"Woods...</td>
+      <td>MULTIPOLYGON (((18.45801 -33.92731, 18.45853 -...</td>
+      <td>{'addr:city': 'Cape Town', 'addr:suburb': 'Woo...</td>
       <td>1</td>
       <td>None</td>
     </tr>
     <tr>
-      <th>7</th>
-      <td>13328172</td>
+      <th>2</th>
+      <td>12249345</td>
       <td>NaN</td>
-      <td>NaN</td>
+      <td>Church  Square</td>
       <td>multipolygon</td>
       <td>NaN</td>
-      <td>school</td>
+      <td>apartments</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -930,10 +930,10 @@ document.write(`
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>"building:levels"=&gt;"2","ref:ZA:emis"=&gt;"1033101...</td>
-      <td>MULTIPOLYGON (((18.46158 -33.93174, 18.46176 -...</td>
-      <td>{'building:levels': '2', 'ref:ZA:emis': '10331...</td>
-      <td>2</td>
+      <td>"addr:city"=&gt;"Woodstock, Cape Town","addr:hous...</td>
+      <td>MULTIPOLYGON (((18.45082 -33.92792, 18.45086 -...</td>
+      <td>{'addr:city': 'Woodstock, Cape Town', 'addr:ho...</td>
+      <td>6</td>
       <td>None</td>
     </tr>
   </tbody>
@@ -960,7 +960,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold"> Salt River has </span> 1377 buildings
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold"> Woodstock has </span> 3714 buildings
 </pre></div>
 </div>
 </div>
@@ -1014,46 +1014,46 @@ document.write(`
   </thead>
   <tbody>
     <tr>
-      <th>4386</th>
+      <th>4389</th>
       <td>NaN</td>
-      <td>1313817370</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>yes</td>
+      <td>1317425439</td>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>warehouse</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>"building:levels"=&gt;"1","railway"=&gt;"workshop"</td>
-      <td>MULTIPOLYGON (((18.46209 -33.92551, 18.46194 -...</td>
-      <td>{'building:levels': '1', 'railway': 'workshop'}</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>"building:levels"=&gt;"1"</td>
+      <td>MULTIPOLYGON (((18.44729 -33.92583, 18.44725 -...</td>
+      <td>{'building:levels': '1'}</td>
       <td>1</td>
       <td>None</td>
     </tr>
     <tr>
-      <th>4387</th>
+      <th>4390</th>
       <td>NaN</td>
-      <td>1313817371</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>yes</td>
+      <td>1340498943</td>
       <td>NaN</td>
       <td>NaN</td>
+      <td>NaN</td>
+      <td>semidetached_house</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>"building:levels"=&gt;"1","railway"=&gt;"workshop"</td>
-      <td>MULTIPOLYGON (((18.46101 -33.92611, 18.46102 -...</td>
-      <td>{'building:levels': '1', 'railway': 'workshop'}</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>"addr:city"=&gt;"Cape Town","addr:street"=&gt;"Balfo...</td>
+      <td>MULTIPOLYGON (((18.44973 -33.93420, 18.44979 -...</td>
+      <td>{'addr:city': 'Cape Town', 'addr:street': 'Bal...</td>
       <td>1</td>
       <td>None</td>
     </tr>
@@ -1232,7 +1232,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:10.888184
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:01:43.331480
 </pre></div>
 </div>
 </div>
@@ -1255,7 +1255,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/ae7735c533ccd2befd36ab04decce25238566e359390d4459b819e4776f01de6.png" src="../_images/ae7735c533ccd2befd36ab04decce25238566e359390d4459b819e4776f01de6.png" />
+<img alt="../_images/3066c77227b160ea2c41537bba29cebfc45addfe4d3ef0c0a1be7fca9de4127c.png" src="../_images/3066c77227b160ea2c41537bba29cebfc45addfe4d3ef0c0a1be7fca9de4127c.png" />
 </div>
 </div>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -1359,37 +1359,37 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <td>MULTIPOLYGON (((266353.277 6242850.213, 266357...</td>
-      <td>6383946</td>
+      <th>1</th>
+      <td>MULTIPOLYGON (((265023.481 6242993.344, 265021...</td>
+      <td>12227309</td>
       <td>NaN</td>
-      <td>Western Cape Metrorail - Infrastructure Building</td>
+      <td>The Neighbourgoods Market</td>
       <td>multipolygon</td>
-      <td>NaN</td>
-      <td>office</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>marketplace</td>
+      <td>retail</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>"addr:city"=&gt;"Cape Town","addr:postcode"=&gt;"729...</td>
-      <td>{'addr:city': 'Cape Town', 'addr:postcode': '7...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>"addr:city"=&gt;"Cape Town","addr:suburb"=&gt;"Woods...</td>
+      <td>{'addr:city': 'Cape Town', 'addr:suburb': 'Woo...</td>
       <td>1</td>
       <td>None</td>
-      <td>4.110000</td>
+      <td>7.17</td>
     </tr>
     <tr>
-      <th>7</th>
-      <td>MULTIPOLYGON (((265366.084 6242509.527, 265364...</td>
-      <td>13328172</td>
+      <th>2</th>
+      <td>MULTIPOLYGON (((264360.391 6242908.633, 264361...</td>
+      <td>12249345</td>
       <td>NaN</td>
-      <td>NaN</td>
+      <td>Church  Square</td>
       <td>multipolygon</td>
       <td>NaN</td>
-      <td>school</td>
+      <td>apartments</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1398,11 +1398,11 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>"building:levels"=&gt;"2","ref:ZA:emis"=&gt;"1033101...</td>
-      <td>{'building:levels': '2', 'ref:ZA:emis': '10331...</td>
-      <td>2</td>
+      <td>"addr:city"=&gt;"Woodstock, Cape Town","addr:hous...</td>
+      <td>{'addr:city': 'Woodstock, Cape Town', 'addr:ho...</td>
+      <td>6</td>
       <td>None</td>
-      <td>17.030001</td>
+      <td>10.45</td>
     </tr>
   </tbody>
 </table>
@@ -1464,7 +1464,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.371471
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.982467
 </pre></div>
 </div>
 </div>
@@ -1476,7 +1476,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1372 buildings have been harvested from the osm.pbf for the Salt River area
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3707 buildings have been harvested from the osm.pbf for the Woodstock area
 </pre></div>
 </div>
 </div>
@@ -1514,8 +1514,8 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <th>beds</th>
       <th>building:flats</th>
       <th>building:units</th>
-      <th>rooms</th>
       <th>residential</th>
+      <th>rooms</th>
       <th>social_facility</th>
       <th>footprint</th>
       <th>plus_code</th>
@@ -1531,9 +1531,9 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
   <tbody>
     <tr>
       <th>0</th>
-      <td>6383946</td>
-      <td>Western Cape Metrorail 7295 Cape Town</td>
-      <td>office</td>
+      <td>12227309</td>
+      <td>Woodstock Cape Town</td>
+      <td>retail</td>
       <td>NaN</td>
       <td>1</td>
       <td>NaN</td>
@@ -1542,38 +1542,38 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>{'type': 'Polygon', 'coordinates': [[[266353.2...</td>
-      <td>CCXPX5XJ+X3V</td>
-      <td>4.11</td>
+      <td>{'type': 'Polygon', 'coordinates': [[[265023.4...</td>
+      <td>CJXQXVX7+X6V</td>
+      <td>7.17</td>
       <td>NaN</td>
       <td>4.1</td>
-      <td>8.21</td>
-      <td>POLYGON ((266353.277 6242850.213, 266357.266 6...</td>
-      <td>266394.180182</td>
-      <td>6.242829e+06</td>
+      <td>11.27</td>
+      <td>POLYGON ((265023.481 6242993.344, 265021.289 6...</td>
+      <td>265035.863057</td>
+      <td>6.242978e+06</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>13328172</td>
+      <td>12249345</td>
+      <td>34 Dickson Street 7915 Woodstock, Cape Town</td>
+      <td>apartments</td>
       <td>NaN</td>
-      <td>school</td>
+      <td>6</td>
       <td>NaN</td>
-      <td>2</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>105</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>{'type': 'Polygon', 'coordinates': [[[265366.0...</td>
-      <td>CHXWXPXM+X9W</td>
-      <td>17.03</td>
       <td>NaN</td>
-      <td>6.9</td>
-      <td>23.93</td>
-      <td>POLYGON ((265366.084 6242509.527, 265364.518 6...</td>
-      <td>265378.733465</td>
-      <td>6.242489e+06</td>
+      <td>NaN</td>
+      <td>{'type': 'Polygon', 'coordinates': [[[264360.3...</td>
+      <td>CMX9X9XC+X8W</td>
+      <td>10.45</td>
+      <td>NaN</td>
+      <td>18.1</td>
+      <td>28.55</td>
+      <td>POLYGON ((264360.391 6242908.633, 264361.062 6...</td>
+      <td>264327.370820</td>
+      <td>6.242905e+06</td>
     </tr>
   </tbody>
 </table>
@@ -1635,7 +1635,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:01:50.160963
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:05:09.122258
 </pre></div>
 </div>
 </div>
@@ -1673,8 +1673,8 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <th>beds</th>
       <th>building:flats</th>
       <th>building:units</th>
-      <th>rooms</th>
       <th>residential</th>
+      <th>rooms</th>
       <th>social_facility</th>
       <th>footprint</th>
       <th>plus_code</th>
@@ -1689,10 +1689,10 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
   </thead>
   <tbody>
     <tr>
-      <th>1374</th>
-      <td>1313817369</td>
+      <th>3711</th>
+      <td>1314777371</td>
       <td>NaN</td>
-      <td>yes</td>
+      <td>garage</td>
       <td>NaN</td>
       <td>1</td>
       <td>NaN</td>
@@ -1701,21 +1701,21 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>{'type': 'Polygon', 'coordinates': [[[265391.2...</td>
-      <td>CJX7X4XW+X3V</td>
-      <td>4.15</td>
+      <td>{'type': 'Polygon', 'coordinates': [[[264153.9...</td>
+      <td>C6XGXHXP+X8W</td>
+      <td>20.21</td>
       <td>NaN</td>
       <td>4.1</td>
-      <td>8.25</td>
-      <td>POLYGON ((265391.259 6243162.292, 265394.599 6...</td>
-      <td>265385.145162</td>
-      <td>6.243178e+06</td>
+      <td>24.31</td>
+      <td>POLYGON ((264153.941 6242630.251, 264148.107 6...</td>
+      <td>264150.585825</td>
+      <td>6.242629e+06</td>
     </tr>
     <tr>
-      <th>1375</th>
-      <td>1313817370</td>
+      <th>3712</th>
+      <td>1317425439</td>
       <td>NaN</td>
-      <td>yes</td>
+      <td>warehouse</td>
       <td>NaN</td>
       <td>1</td>
       <td>NaN</td>
@@ -1724,21 +1724,21 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>{'type': 'Polygon', 'coordinates': [[[265395.6...</td>
-      <td>CJXCXHX5+XCW</td>
-      <td>4.15</td>
+      <td>{'type': 'Polygon', 'coordinates': [[[264028.5...</td>
+      <td>CVXHX6X3+XPW</td>
+      <td>5.52</td>
       <td>NaN</td>
       <td>4.1</td>
-      <td>8.25</td>
-      <td>POLYGON ((265395.618 6243201.900, 265382.518 6...</td>
-      <td>265388.558568</td>
-      <td>6.243198e+06</td>
+      <td>9.62</td>
+      <td>POLYGON ((264028.583 6243133.267, 264025.150 6...</td>
+      <td>264051.204336</td>
+      <td>6.243116e+06</td>
     </tr>
     <tr>
-      <th>1376</th>
-      <td>1313817371</td>
-      <td>NaN</td>
-      <td>yes</td>
+      <th>3713</th>
+      <td>1340498943</td>
+      <td>Balfour Street Woodstock Cape Town</td>
+      <td>semidetached_house</td>
       <td>NaN</td>
       <td>1</td>
       <td>NaN</td>
@@ -1747,15 +1747,15 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>{'type': 'Polygon', 'coordinates': [[[265297.7...</td>
-      <td>CFX3XHX5+XVV</td>
-      <td>4.48</td>
+      <td>{'type': 'Polygon', 'coordinates': [[[264277.1...</td>
+      <td>CGXWX6X9+X5W</td>
+      <td>55.90</td>
       <td>NaN</td>
       <td>4.1</td>
-      <td>8.58</td>
-      <td>POLYGON ((265297.730 6243132.831, 265344.795 6...</td>
-      <td>265321.559683</td>
-      <td>6.243133e+06</td>
+      <td>60.00</td>
+      <td>POLYGON ((264277.101 6242210.386, 264272.196 6...</td>
+      <td>264278.217939</td>
+      <td>6.242203e+06</td>
     </tr>
   </tbody>
 </table>
@@ -1878,7 +1878,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:02:11.100947
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:07:12.703517
 </pre></div>
 </div>
 </div>
