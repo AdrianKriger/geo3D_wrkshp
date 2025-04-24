@@ -394,12 +394,12 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-data-science">Spatial Data Science</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-data-science">1. Spatial Data Science</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimate-population">Estimate Population:</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#building-volume-per-capita-bvpc">Building Volume Per Capita (BVPC)</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-visualization">Interactive Visualization</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-visualization">2. Interactive Visualization</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#building-stock">Building Stock</a></li>
 </ul>
 </li>
@@ -633,7 +633,7 @@ textures = False
 </div>
 </div>
 <section id="spatial-data-science">
-<h2>Spatial Data Science<a class="headerlink" href="#spatial-data-science" title="Link to this heading">#</a></h2>
+<h2>1. Spatial Data Science<a class="headerlink" href="#spatial-data-science" title="Link to this heading">#</a></h2>
 <div class="alert alert-block alert-warning"><b>We start with basic spatial analysis</b>  
 <ul class="simple">
 <li><p>We’ll estimate the population, within our area of interest, and then</p></li>
@@ -823,7 +823,7 @@ Name: count, dtype: int64
 <p><strong>This area is urban with single and 2-storey level housing units. To estimate population is thus pretty straight forward.</strong></p>
 <div class="alert alert-block alert-info"><b>We start with local knowledge.</b></div>
 <p><strong>On average there are roughly <code class="docutils literal notranslate"><span class="pre">4</span></code> people per <code class="docutils literal notranslate"><span class="pre">building:house</span></code> in this area.</strong></p>
-<p><strong><a class="reference external" href="https://en.wikipedia.org/wiki/Public_housing">social housing</a></strong> is tagged <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> with the <code class="docutils literal notranslate"><span class="pre">3</span></code> people per building or <code class="docutils literal notranslate"><span class="pre">building:flats</span> <span class="pre">*</span> <span class="pre">4</span></code> if the building is an <em>apartment-type</em> complex</p>
+<p><strong><a class="reference external" href="https://en.wikipedia.org/wiki/Public_housing">social housing</a></strong> is tagged <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> with the <code class="docutils literal notranslate"><span class="pre">3</span></code> people per building or <code class="docutils literal notranslate"><span class="pre">building:flats</span> <span class="pre">*</span> <span class="pre">3</span></code> if the building is an <em>apartment-type</em> complex</p>
 <div class="alert alert-block alert-danger"><b>Your Participation! </b>
 <p>We will execute the calculation programmatically. <strong>Fill in the relevant variables in the <em><code class="docutils literal notranslate"><span class="pre">cell</span></code></em> below</strong> </div></p>
 <div class="cell docutils container">
@@ -841,7 +841,7 @@ Name: count, dtype: int64
 <ul class="simple">
 <li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Public_housing">social housing</a> is tagged <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> with the number of occupants iether the number of informal structure occupants or <code class="docutils literal notranslate"><span class="pre">building:flats</span> <span class="pre">*</span> <span class="pre">inf_structure</span></code></p></li>
 <li><p>A <code class="docutils literal notranslate"><span class="pre">social_facility</span></code> (carehome, shelter, etc.) harvests the beds <code class="docutils literal notranslate"><span class="pre">key:value</span></code> pair.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">building:apartment</span></code> harvests the <code class="docutils literal notranslate"><span class="pre">building:flats</span></code> <code class="docutils literal notranslate"><span class="pre">key:value</span></code> pair (the number of units) to calculate <code class="docutils literal notranslate"><span class="pre">*4</span></code> people per per apartment.</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">building:apartment</span></code> harvests the <code class="docutils literal notranslate"><span class="pre">building:flats</span></code> <code class="docutils literal notranslate"><span class="pre">key:value</span></code> pair (the number of units) to calculate <code class="docutils literal notranslate"><span class="pre">*3</span></code> people per per apartment.</p>
 <ul>
 <li><p><em><strong>Student accomodation</strong></em>:</p></li>
 </ul>
@@ -887,7 +887,7 @@ Name: count, dtype: int64
                 
     <span class="c1">#- formal apartment</span>
     <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;apartments&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:flats&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">4</span>
+        <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:flats&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span>
         
     <span class="c1">#- private student residence </span>
     <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;student&#39;</span><span class="p">:</span>
@@ -913,7 +913,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The estimated population is: 18360
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The estimated population is: 17062
 </pre></div>
 </div>
 </div>
@@ -924,7 +924,7 @@ These numbers are based on disaggregated <a class="reference external" href="htt
 <p>We can calculate the annual population growth rate using the formula for <strong><a class="reference external" href="https://databank.worldbank.org/metadataglossary/health-nutrition-and-population-statistics/series/SP.POP.GROW">Annual population growth</a>:</strong></p>
 <div class="math notranslate nohighlight">
 \[
-r = \frac{\ln{[\frac{End Population}{Start Population}}]}{n} * 100 = \frac{\ln{[\frac{18 360}{12 656}}]}{12} * 100   = 3.1\%
+r = \frac{\ln{[\frac{End Population}{Start Population}}]}{n} * 100 = \frac{\ln{[\frac{17 062}{12 656}}]}{12} * 100   = 2.49\%
 \]</div>
 <div class="alert alert-block alert-danger"><b>Your Participation! </b>
 <p>It is possible to execute the calculation programmatically. <strong>Fill in the relevant variables in the <em><code class="docutils literal notranslate"><span class="pre">cell</span></code></em> below</strong> </div></p>
@@ -948,7 +948,7 @@ r = \frac{\ln{[\frac{End Population}{Start Population}}]}{n} * 100 = \frac{\ln{[
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>population growth rate of approximately: 3.1 %
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>population growth rate of approximately: 2.49 %
 </pre></div>
 </div>
 </div>
@@ -956,7 +956,7 @@ r = \frac{\ln{[\frac{End Population}{Start Population}}]}{n} * 100 = \frac{\ln{[
 <p>To conclude; we can project into the future with a very basic formula to estimate the population <em>x</em>-years from now:</p>
 <div class="math notranslate nohighlight">
 \[
-p  = P_o * (1 + r)^{t} = p = 18360 * (1 + 0.031)^{10}  = 24 915
+p  = P_o * (1 + r)^{t} = p = 17062 * (1 + 0.0249)^{10}  = 21 818
 \]</div>
 <div class="alert alert-block alert-danger"><b>Your Participation! </b>
 <p>It is possible to execute the calculation programmatically. <strong>Fill in the variables in the <em><code class="docutils literal notranslate"><span class="pre">cell</span></code></em> below</strong> </div></p>
@@ -977,7 +977,7 @@ p  = P_o * (1 + r)^{t} = p = 18360 * (1 + 0.031)^{10}  = 24 915
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated population 10 years from now: 24915
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated population 10 years from now: 21818
 </pre></div>
 </div>
 </div>
@@ -1112,9 +1112,9 @@ p  = P_o * (1 + r)^{t} = p = 18360 * (1 + 0.031)^{10}  = 24 915
 mean             inf
 std              NaN
 min        30.084609
-25%        89.709955
-50%       116.921961
-75%       166.855261
+25%        89.761428
+50%       117.238453
+75%       166.938368
 max              inf
 Name: bvpc, dtype: float64
 </pre></div>
@@ -1130,7 +1130,7 @@ Name: bvpc, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 127.547
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 137.251
 </pre></div>
 </div>
 </div>
@@ -1183,7 +1183,7 @@ LoD2 would offer a more representative BVPC <a class="reference external" href="
 </section>
 </section>
 <section id="interactive-visualization">
-<h2>Interactive Visualization<a class="headerlink" href="#interactive-visualization" title="Link to this heading">#</a></h2>
+<h2>2. Interactive Visualization<a class="headerlink" href="#interactive-visualization" title="Link to this heading">#</a></h2>
 <p>You might want to create and share an <code class="docutils literal notranslate"><span class="pre">html</span></code> visualization.</p>
 <div class="alert alert-block alert-warning"><b> </b>  
 <p><em>In this example we identify building stock by <strong>color</strong> but you are limited only through your imagination and the data you have access too</em></p>
@@ -1531,7 +1531,7 @@ var r=n(262),i=n(213),o=n(263);function a(){return u.TYPED_ARRAY_SUPPORT?2147483
         1
       ],
       &quot;getPolygon&quot;: &quot;@@=-&quot;,
-      &quot;id&quot;: &quot;d3431e07-76d3-4b54-8971-6b5e8d3b1d86&quot;,
+      &quot;id&quot;: &quot;96f40560-93bc-4923-b53b-ea9243d60b62&quot;,
       &quot;stroked&quot;: false
     },
     {
@@ -227403,7 +227403,7 @@ var r=n(262),i=n(213),o=n(263);function a(){return u.TYPED_ARRAY_SUPPORT?2147483
       &quot;getFillColor&quot;: &quot;@@=color&quot;,
       &quot;getLineColor&quot;: &quot;@@=color&quot;,
       &quot;getPolygon&quot;: &quot;@@=geometry.coordinates&quot;,
-      &quot;id&quot;: &quot;0d764621-a22b-49c7-b6b4-463bd5cbff5b&quot;,
+      &quot;id&quot;: &quot;57eeb6f3-ed07-43be-be78-66cecfd0ebc3&quot;,
       &quot;opacity&quot;: 0.3,
       &quot;pickable&quot;: true,
       &quot;stroked&quot;: false,
@@ -227545,12 +227545,12 @@ var r=n(262),i=n(213),o=n(263);function a(){return u.TYPED_ARRAY_SUPPORT?2147483
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-data-science">Spatial Data Science</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-data-science">1. Spatial Data Science</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#estimate-population">Estimate Population:</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#building-volume-per-capita-bvpc">Building Volume Per Capita (BVPC)</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-visualization">Interactive Visualization</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-visualization">2. Interactive Visualization</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#building-stock">Building Stock</a></li>
 </ul>
 </li>
