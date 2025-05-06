@@ -8,7 +8,7 @@ The following section aims to explain what *geo3D* produces, the creation proces
 ```
 
 ## 1. What does *geo3D* do?
-The primary product is a topologically correct Level of Detail 1 (LoD1) 3D City Model<sup>*</sup>. Secondary products include an application of spatial data science and an HTML-based visualisation. 
+The primary product is a semantically rich, topologically correct Level of Detail 1 (LoD1) 3D City Model<sup>*</sup>. Secondary products include an application of spatial data science and an HTML-based visualisation. 
 
 %Our mission is to empower high school learning and community engagement by fostering effective communication and advocacy at the grassroots level.
  
