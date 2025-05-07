@@ -12,7 +12,7 @@
     
     "in_raster": "./raster/LO19_050M_3318CD.tif",
     "nodata": 3.402823466385289e+38,
-    "projClip_raster": "./raster/3318CDclip_utm34s.tif",
+    "projClip_raster": "./raster/3318CD_clip_utm34s.tif",
 
     "xyz": "./result/rasElevTest.xyz",
     
