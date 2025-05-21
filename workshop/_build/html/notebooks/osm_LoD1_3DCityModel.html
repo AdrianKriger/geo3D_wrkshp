@@ -474,7 +474,7 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jparams</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;osm3DwStock_param.json&#39;</span><span class="p">))</span>       
-<span class="c1">#jparams = json.load(open(&#39;osm3DsRiver_param25m.json&#39;))      </span>
+<span class="c1">#jparams = json.load(open(&#39;osm3Dsaao_param.json&#39;))      </span>
 </pre></div>
 </div>
 </div>
@@ -515,7 +515,7 @@ document.write(`
 <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;[out:json][timeout:30];</span>
 <span class="s2">        area[boundary=administrative][name=&#39;</span><span class="si">{0}</span><span class="s2">&#39;] -&gt; .a;</span>
 <span class="s2">        (</span>
-<span class="s2">        way[amenity=&#39;university&#39;][name=&#39;</span><span class="si">{1}</span><span class="s2">&#39;](area.a);</span>
+<span class="s2">        way[amenity~&#39;university|research_institute&#39;][name=&#39;</span><span class="si">{1}</span><span class="s2">&#39;](area.a);</span>
 <span class="s2">        relation[place][place~&quot;sub|town|city|count|state|village|borough|quarter|neighbourhood&quot;][name=&#39;</span><span class="si">{1}</span><span class="s2">&#39;](area.a);</span>
 <span class="s2">        );</span>
 <span class="s2">        out geom;</span>
@@ -625,7 +625,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.588509
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.496901
 </pre></div>
 </div>
 </div>
@@ -1208,7 +1208,7 @@ Datum: World Geodetic System 1984 ensemble
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- harvest buildings</span>
-<span class="n">ts</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">ts</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;node&#39;</span><span class="p">],</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="c1">#ts.drop(ts.index[ts[&#39;type&#39;] == &#39;node&#39;], inplace = True)</span>
 
 <span class="c1">#- orient segments and simplify topology</span>
 <span class="n">topo</span> <span class="o">=</span> <span class="n">tp</span><span class="o">.</span><span class="n">Topology</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">prequantize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">winding_order</span><span class="o">=</span><span class="s1">&#39;CCW_CW&#39;</span><span class="p">)</span>
@@ -1232,7 +1232,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:01:43.331480
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:01:43.746483
 </pre></div>
 </div>
 </div>
@@ -1464,7 +1464,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.982467
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.979811
 </pre></div>
 </div>
 </div>
@@ -1635,7 +1635,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:05:09.122258
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:05:15.018111
 </pre></div>
 </div>
 </div>
@@ -1878,7 +1878,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:07:12.703517
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:07:17.068466
 </pre></div>
 </div>
 </div>
