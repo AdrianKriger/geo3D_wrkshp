@@ -841,7 +841,7 @@ Name: count, dtype: int64
 <ul class="simple">
 <li><p><a class="reference external" href="https://en.wikipedia.org/wiki/Public_housing">social housing</a> is tagged <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> with the number of occupants iether the number of informal structure occupants or <code class="docutils literal notranslate"><span class="pre">building:flats</span> <span class="pre">*</span> <span class="pre">inf_structure</span></code></p></li>
 <li><p>A <code class="docutils literal notranslate"><span class="pre">social_facility</span></code> (carehome, shelter, etc.) harvests the beds <code class="docutils literal notranslate"><span class="pre">key:value</span></code> pair.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">building:apartment</span></code> harvests the <code class="docutils literal notranslate"><span class="pre">building:flats</span></code> <code class="docutils literal notranslate"><span class="pre">key:value</span></code> pair (the number of units) to calculate <code class="docutils literal notranslate"><span class="pre">*3</span></code> people per per apartment.</p>
+<li><p><code class="docutils literal notranslate"><span class="pre">building:apartments</span></code> harvests the <code class="docutils literal notranslate"><span class="pre">building:flats</span></code> <code class="docutils literal notranslate"><span class="pre">key:value</span></code> pair (the number of units) to calculate <code class="docutils literal notranslate"><span class="pre">*3</span></code> people per per apartment.</p>
 <ul>
 <li><p><em><strong>Student accomodation</strong></em>:</p></li>
 </ul>
@@ -1150,7 +1150,7 @@ Name: bvpc, dtype: float64
 <p><strong>We want to understand the living space <em>(the cubic-meter BVPC value)</em> each person has in thier home</strong></p>
 </div><div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">formal</span> <span class="o">=</span> <span class="n">gdf_pop</span><span class="p">[</span><span class="n">gdf_pop</span><span class="p">[</span><span class="s2">&quot;building&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;house&#39;</span><span class="p">,</span> <span class="s1">&#39;semidetached_house&#39;</span><span class="p">,</span> <span class="s1">&#39;terrace&#39;</span><span class="p">,</span> <span class="s1">&#39;apartment&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">formal</span> <span class="o">=</span> <span class="n">gdf_pop</span><span class="p">[</span><span class="n">gdf_pop</span><span class="p">[</span><span class="s2">&quot;building&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;house&#39;</span><span class="p">,</span> <span class="s1">&#39;semidetached_house&#39;</span><span class="p">,</span> <span class="s1">&#39;terrace&#39;</span><span class="p">,</span> <span class="s1">&#39;apartments&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">f_pop</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">formal</span><span class="p">[</span><span class="s1">&#39;pop&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
 <span class="c1">#f_area = formal[&#39;area&#39;].mean()</span>
 
@@ -1175,7 +1175,7 @@ Name: bvpc, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FORMAL: Population:  11844  with Building Volume Per Capita (BVPC): 145.654
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FORMAL: Population:  15738  with Building Volume Per Capita (BVPC): 142.163
 
 STUDENT RESIDENCE: Population:  45  with Building Volume Per Capita (BVPC): 109.497
 
@@ -1540,7 +1540,7 @@ var r=n(262),i=n(213),o=n(263);function a(){return u.TYPED_ARRAY_SUPPORT?2147483
         1
       ],
       &quot;getPolygon&quot;: &quot;@@=-&quot;,
-      &quot;id&quot;: &quot;c34b81d6-8c02-4e90-b0be-aa9d807eb887&quot;,
+      &quot;id&quot;: &quot;5be1e7ea-7afa-4e85-9d9e-164697890560&quot;,
       &quot;stroked&quot;: false
     },
     {
@@ -227412,7 +227412,7 @@ var r=n(262),i=n(213),o=n(263);function a(){return u.TYPED_ARRAY_SUPPORT?2147483
       &quot;getFillColor&quot;: &quot;@@=color&quot;,
       &quot;getLineColor&quot;: &quot;@@=color&quot;,
       &quot;getPolygon&quot;: &quot;@@=geometry.coordinates&quot;,
-      &quot;id&quot;: &quot;02362086-5127-463e-b952-17bab17c224c&quot;,
+      &quot;id&quot;: &quot;d96affff-e147-4a3f-9593-50e567070b0d&quot;,
       &quot;opacity&quot;: 0.3,
       &quot;pickable&quot;: true,
       &quot;stroked&quot;: false,
