@@ -20,6 +20,7 @@ import copy
 
 import numpy as np
 import pandas as pd
+import geopandas as gpd
 
 import shapely.geometry as sg
 from shapely.geometry import Point, LineString, Polygon, MultiPolygon, LinearRing, shape, mapping
@@ -255,6 +256,149 @@ def write_geojson(ts, jparams):
     with open(jparams['osm_bldings'], 'w') as outfile:
         json.dump(footprints, outfile, indent=2)
         
+def extract_all_town_features(input_pbf, town_name, province_name=None):
+    """
+    Single query approach - extract all features at once
+    If initial query fails, try province-based hierarchical search
+    """
+    gdal.UseExceptions()
+    gdal.SetConfigOption("OGR_GEOMETRY_ACCEPT_UNCLOSED_RING", "NO")
+    
+    # Combined where clause matching your original query logic
+    where_clause = f"""
+    (boundary IN ('place', 'administrative') OR amenity IN ('university', 'research_institute') OR place IN ('suburb')) 
+    AND name LIKE '%{town_name}%'
+    """
+    
+    geojson_vsimem = "/vsimem/town_features.geojson"
+    
+    try:
+        # Build options
+        options = [
+            "-where", where_clause,
+            "-makevalid"
+        ]
+        
+        # Extract from all relevant layers
+        all_features = []
+        
+        for layer in ["multipolygons"]:
+            try:
+                gdal.VectorTranslate(
+                    geojson_vsimem,
+                    input_pbf,
+                    format="GeoJSON",
+                    layers=[layer],
+                    options=options
+                )
+                
+                gdf = gpd.read_file(geojson_vsimem)
+                if not gdf.empty:
+                    all_features.append(gdf)
+                
+                gdal.Unlink(geojson_vsimem)
+                
+            except Exception as e:
+                print(f"Warning: Could not process {layer}: {e}")
+                try:
+                    gdal.Unlink(geojson_vsimem)
+                except:
+                    pass
+        
+        # If no features found and province_name provided, try hierarchical search
+        if not all_features and province_name:
+            print(f"No direct matches found. Trying province-based search for {province_name}...")
+            return _hierarchical_province_search(input_pbf, town_name, province_name)
+        
+        # Combine all features
+        if all_features:
+            return pd.concat(all_features, ignore_index=True)
+        else:
+            return gpd.GeoDataFrame()
+            
+    except Exception as e:
+        print(f"Error in extraction: {e}")
+        try:
+            gdal.Unlink(geojson_vsimem)
+        except:
+            pass
+        return gpd.GeoDataFrame()
+
+def _hierarchical_province_search(input_pbf, town_name, province_name):
+    """
+    Two-step search: first find province boundary, then search within it for town
+    """
+    province_vsimem = "/vsimem/province.geojson"
+    town_vsimem = "/vsimem/town_within_province.geojson"
+    
+    try:
+        # Step 1: Extract province boundary
+        province_where = f"boundary = 'administrative' AND name = '{province_name}'"
+        province_options = ["-where", province_where, "-makevalid"]
+        
+        gdal.VectorTranslate(
+            province_vsimem,
+            input_pbf,
+            format="GeoJSON",
+            layers=["multipolygons"],
+            options=province_options
+        )
+        
+        province_gdf = gpd.read_file(province_vsimem)
+        gdal.Unlink(province_vsimem)
+        
+        if province_gdf.empty:
+            print(f"Province '{province_name}' not found")
+            return gpd.GeoDataFrame()
+        
+        print(f"Found province '{province_name}', searching for towns within...")
+        
+        # Step 2: Search for town within province boundary
+        # Get province bounds for spatial filter
+        bounds = province_gdf.total_bounds  # [minx, miny, maxx, maxy]
+        
+        town_where = f"""
+        (boundary IN ('place', 'administrative') OR amenity IN ('university', 'research_institute') OR place IN ('suburb')) 
+        AND name LIKE '%{town_name}%'
+        """
+        town_options = [
+            "-where", town_where,
+            "-makevalid",
+            "-spat", str(bounds[0]), str(bounds[1]), str(bounds[2]), str(bounds[3])
+        ]
+        
+        gdal.VectorTranslate(
+            town_vsimem,
+            input_pbf,
+            format="GeoJSON",
+            layers=["multipolygons"],
+            options=town_options
+        )
+        
+        town_gdf = gpd.read_file(town_vsimem)
+        gdal.Unlink(town_vsimem)
+        
+        if town_gdf.empty:
+            print(f"Town '{town_name}' not found within province '{province_name}'")
+            return gpd.GeoDataFrame()
+        
+        # Filter to only towns that are actually within the province geometry
+        town_within = gpd.sjoin(town_gdf, province_gdf, how='inner', predicate='within')
+        
+        print(f"Found {len(town_within)} town features within province")
+        return town_within
+        
+    except Exception as e:
+        print(f"Error in hierarchical search: {e}")
+        # Cleanup
+        for vsimem_path in [province_vsimem, town_vsimem]:
+            try:
+                gdal.Unlink(vsimem_path)
+            except:
+                pass
+        return gpd.GeoDataFrame()
+
+
 
 def getBldVertices(dis, gt_forward, rb):
     """
