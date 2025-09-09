@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# env/geo3D_distV2
+# env/geo3D_wrkshp02
 #########################
 # helper functions to create LoD1 3D City Model from volunteered public data (OpenStreetMap) with elevation via a raster DEM.
 
@@ -23,9 +23,10 @@ import pandas as pd
 import geopandas as gpd
 
 import shapely.geometry as sg
+#from shapely.ops import unary_union, polygonize
 from shapely.geometry import Point, LineString, Polygon, MultiPolygon, LinearRing, shape, mapping
-from shapely.ops import snap
-from shapely.ops import transform
+from shapely.ops import snap, unary_union, polygonize, transform
+#from shapely.ops import transform
 
 import pyproj
 
@@ -36,6 +37,19 @@ from openlocationcode import openlocationcode as olc
 from cjio import cityjson, geom_help
 
 dps = 3
+WGS84 = "EPSG:4326"
+
+def _to_wgs84_point(pt, src_crs):
+    """Return (lat, lon) in EPSG:4326 for a Shapely Point in src_crs."""
+    if src_crs is None:
+        # Assume already WGS84 (best-effort)
+        return (pt.y, pt.x)
+    if str(src_crs).upper() in ("EPSG:4326", "WGS84", "OGC:CRS84"):
+        return (pt.y, pt.x)
+    # Reproject
+    project = pyproj.Transformer.from_crs(src_crs, WGS84, always_xy=True).transform
+    x, y = project(pt.x, pt.y)
+    return (y, x)
 
 def calc_Bldheight(data, is_geojson=True, output_file='./data/fp_j.geojson'):
     """Calculate building height and write to GeoJSON from either a GeoJSON dictionary or a GeoDataFrame."""
@@ -115,9 +129,11 @@ def calc_Bldheight(data, is_geojson=True, output_file='./data/fp_j.geojson'):
         f["geometry"] = mapping(osm_shape)
         f["properties"]["footprint"] = mapping(osm_shape)
 
-        # Compute Plus Code
+        # determine input CRS if you have gdf.crs (when not is_geojson)
+        src_crs = data.crs if not is_geojson and hasattr(data, "crs") else None
         p = osm_shape.representative_point()
-        f["properties"]["plus_code"] = olc.encode(p.y, p.x, 11)
+        lat, lon = _to_wgs84_point(p, src_crs)
+        f["properties"]["plus_code"] = olc.encode(lat, lon, 11)
 
         # Compute building height
         levels = float(tags.get('building:levels', 1)) if is_geojson else \
@@ -135,7 +151,6 @@ def calc_Bldheight(data, is_geojson=True, output_file='./data/fp_j.geojson'):
     with open(output_file, 'w') as outfile:
         json.dump(footprints, outfile, indent=2)
         
-
 def process_geometry(geometry):
     """Ensure valid polygon geometry for buildings."""
     if geometry.geom_type == 'LineString':
@@ -154,7 +169,6 @@ def extract_address(row):
     tags = row.get('tags', {}) if isinstance(row.get('tags'), dict) else {}
     address_parts = [tags.get(key) for key in address_keys if tags.get(key) is not None]
     return " ".join(address_parts) if address_parts else None
-
 
 def calculate_building_heights(row, storeyheight=2.8):
     """Compute ground, building, and roof heights based on building type."""
@@ -203,7 +217,8 @@ def write_geojson(ts, jparams):
     """Process buildings and write results to GeoJSON."""
     storeyheight = 2.8
     footprints = {"type": "FeatureCollection", "features": []}
-    
+    src_crs = getattr(ts, "crs", None)
+
     for _, row in ts.iterrows():
         if row.geometry.geom_type == 'LineString' and len(row.geometry.coords) < 3:
             continue  # Skip invalid geometries
@@ -240,9 +255,10 @@ def write_geojson(ts, jparams):
         f["geometry"] = mapping(osm_shape)
         f["properties"]["footprint"] = mapping(osm_shape)
         
-        # Compute plus_code
+        # Plus code in WGS84
         p = osm_shape.representative_point()
-        f["properties"]["plus_code"] = olc.encode(p.y, p.x, 11)
+        lat, lon = _to_wgs84_point(p, src_crs)
+        f["properties"]["plus_code"] = olc.encode(lat, lon, 11)
         
         # Compute height attributes
         height_attributes = calculate_building_heights(row, storeyheight)
@@ -256,148 +272,6 @@ def write_geojson(ts, jparams):
     with open(jparams['osm_bldings'], 'w') as outfile:
         json.dump(footprints, outfile, indent=2)
         
-def extract_all_town_features(input_pbf, town_name, province_name=None):
-    """
-    Single query approach - extract all features at once
-    If initial query fails, try province-based hierarchical search
-    """
-    gdal.UseExceptions()
-    gdal.SetConfigOption("OGR_GEOMETRY_ACCEPT_UNCLOSED_RING", "NO")
-    
-    # Combined where clause matching your original query logic
-    where_clause = f"""
-    (boundary IN ('place', 'administrative') OR amenity IN ('university', 'research_institute') OR place IN ('suburb')) 
-    AND name LIKE '%{town_name}%'
-    """
-    
-    geojson_vsimem = "/vsimem/town_features.geojson"
-    
-    try:
-        # Build options
-        options = [
-            "-where", where_clause,
-            "-makevalid"
-        ]
-        
-        # Extract from all relevant layers
-        all_features = []
-        
-        for layer in ["multipolygons"]:
-            try:
-                gdal.VectorTranslate(
-                    geojson_vsimem,
-                    input_pbf,
-                    format="GeoJSON",
-                    layers=[layer],
-                    options=options
-                )
-                
-                gdf = gpd.read_file(geojson_vsimem)
-                if not gdf.empty:
-                    all_features.append(gdf)
-                
-                gdal.Unlink(geojson_vsimem)
-                
-            except Exception as e:
-                print(f"Warning: Could not process {layer}: {e}")
-                try:
-                    gdal.Unlink(geojson_vsimem)
-                except:
-                    pass
-        
-        # If no features found and province_name provided, try hierarchical search
-        if not all_features and province_name:
-            print(f"No direct matches found. Trying province-based search for {province_name}...")
-            return _hierarchical_province_search(input_pbf, town_name, province_name)
-        
-        # Combine all features
-        if all_features:
-            return pd.concat(all_features, ignore_index=True)
-        else:
-            return gpd.GeoDataFrame()
-            
-    except Exception as e:
-        print(f"Error in extraction: {e}")
-        try:
-            gdal.Unlink(geojson_vsimem)
-        except:
-            pass
-        return gpd.GeoDataFrame()
-
-def _hierarchical_province_search(input_pbf, town_name, province_name):
-    """
-    Two-step search: first find province boundary, then search within it for town
-    """
-    province_vsimem = "/vsimem/province.geojson"
-    town_vsimem = "/vsimem/town_within_province.geojson"
-    
-    try:
-        # Step 1: Extract province boundary
-        province_where = f"boundary = 'administrative' AND name = '{province_name}'"
-        province_options = ["-where", province_where, "-makevalid"]
-        
-        gdal.VectorTranslate(
-            province_vsimem,
-            input_pbf,
-            format="GeoJSON",
-            layers=["multipolygons"],
-            options=province_options
-        )
-        
-        province_gdf = gpd.read_file(province_vsimem)
-        gdal.Unlink(province_vsimem)
-        
-        if province_gdf.empty:
-            print(f"Province '{province_name}' not found")
-            return gpd.GeoDataFrame()
-        
-        print(f"Found province '{province_name}', searching for towns within...")
-        
-        # Step 2: Search for town within province boundary
-        # Get province bounds for spatial filter
-        bounds = province_gdf.total_bounds  # [minx, miny, maxx, maxy]
-        
-        town_where = f"""
-        (boundary IN ('place', 'administrative') OR amenity IN ('university', 'research_institute') OR place IN ('suburb')) 
-        AND name LIKE '%{town_name}%'
-        """
-        town_options = [
-            "-where", town_where,
-            "-makevalid",
-            "-spat", str(bounds[0]), str(bounds[1]), str(bounds[2]), str(bounds[3])
-        ]
-        
-        gdal.VectorTranslate(
-            town_vsimem,
-            input_pbf,
-            format="GeoJSON",
-            layers=["multipolygons"],
-            options=town_options
-        )
-        
-        town_gdf = gpd.read_file(town_vsimem)
-        gdal.Unlink(town_vsimem)
-        
-        if town_gdf.empty:
-            print(f"Town '{town_name}' not found within province '{province_name}'")
-            return gpd.GeoDataFrame()
-        
-        # Filter to only towns that are actually within the province geometry
-        town_within = gpd.sjoin(town_gdf, province_gdf, how='inner', predicate='within')
-        
-        print(f"Found {len(town_within)} town features within province")
-        return town_within
-        
-    except Exception as e:
-        print(f"Error in hierarchical search: {e}")
-        # Cleanup
-        for vsimem_path in [province_vsimem, town_vsimem]:
-            try:
-                gdal.Unlink(vsimem_path)
-            except:
-                pass
-        return gpd.GeoDataFrame()
-
 def getBldVertices(dis, gt_forward, rb):
     """
     retrieve vertices from building footprints ~ without duplicates 
@@ -545,8 +419,8 @@ def doVcBndGeomRd(lsgeom, lsattributes, extent, minz, maxz, TerrainT, pts, acoi,
         extent[0],
         extent[1],
         minz ,
-        extent[1],
-        extent[1],
+        extent[2],
+        extent[3],
         maxz
       ],
     "datasetPointOfContact": {
