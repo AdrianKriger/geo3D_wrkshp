@@ -39,27 +39,6 @@ from cjio import cityjson, geom_help
 dps = 3
 WGS84 = "EPSG:4326"
 
-def _ensure_polygon(geom):
-    """Return a Polygon or None. Avoid unsafe Polygon(linestring)."""
-    if geom is None or geom.is_empty:
-        return None
-    if geom.geom_type == "Polygon":
-        return geom
-    if geom.geom_type == "MultiPolygon":
-        # take the largest part to keep behavior predictable
-        parts = list(geom.geoms)
-        parts.sort(key=lambda g: g.area if hasattr(g, "area") else 0, reverse=True)
-        return parts[0] if parts else None
-    # Optionally try to polygonize closed lines (opt-in, comment out if you prefer skipping)
-    if geom.geom_type in ("LineString", "MultiLineString"):
-        try:
-            poly = unary_union(list(polygonize(geom)))
-            if poly and not poly.is_empty:
-                return _ensure_polygon(poly)
-        except Exception:
-            pass
-    return None  # skip non-areas
-
 def _to_wgs84_point(pt, src_crs):
     """Return (lat, lon) in EPSG:4326 for a Shapely Point in src_crs."""
     if src_crs is None:
@@ -72,21 +51,9 @@ def _to_wgs84_point(pt, src_crs):
     x, y = project(pt.x, pt.y)
     return (y, x)
 
-def safe_tags(row):
-    t = row.get("tags", {})
-    if isinstance(t, dict):
-        return t
-    # Sometimes tags arrive as JSON strings or NaN
-    if isinstance(t, str):
-        try:
-            return json.loads(t)
-        except Exception:
-            return {}
-    return {}
-
-def process_geometry(geometry):
-    """Return a valid Polygon or None (skip if not area)."""
-    return _ensure_polygon(geometry)
+#def process_geometry(geometry):
+#    """Return a valid Polygon or None (skip if not area)."""
+#    return _ensure_polygon(geometry)
 
 def calc_Bldheight(data, is_geojson=True, output_file='./data/fp_j.geojson'):
     """Calculate building height and write to GeoJSON from either a GeoJSON dictionary or a GeoDataFrame."""
@@ -193,14 +160,14 @@ def calc_Bldheight(data, is_geojson=True, output_file='./data/fp_j.geojson'):
     with open(output_file, 'w') as outfile:
         json.dump(footprints, outfile, indent=2)
         
-#def process_geometry(geometry):
-#    """Ensure valid polygon geometry for buildings."""
-#    if geometry.geom_type == 'LineString':
-#        return Polygon(geometry)
-#    elif geometry.geom_type == 'MultiPolygon': 
-#        return Polygon(geometry.geoms[0])
-#    else:
-#        return geometry
+def process_geometry(geometry):
+    """Ensure valid polygon geometry for buildings."""
+    if geometry.geom_type == 'LineString':
+        return Polygon(geometry)
+    elif geometry.geom_type == 'MultiPolygon': 
+        return Polygon(geometry.geoms[0])
+    else:
+        return geometry
 
 def extract_address(row):
     """Extract and format address components from the 'tags' dictionary in OSM data."""
@@ -262,54 +229,55 @@ def write_geojson(ts, jparams):
     src_crs = getattr(ts, "crs", None)
 
     for _, row in ts.iterrows():
-        tags = safe_tags(row)
-        # require levels to build height attributes
-        if not ("building:levels" in tags or "building:levels" in row):
-            continue
-
-        osm_shape = process_geometry(row.get("geometry"))
-        if osm_shape is None:
-            continue
-
+        if row.geometry.geom_type == 'LineString' and len(row.geometry.coords) < 3:
+            continue  # Skip invalid geometries
+        
+        if row.get('type') == 'node' or row.get('tags') is None or 'building:levels' not in row.get('tags'):
+            continue  # Skip rows that don't meet the condition
+        
         f = {"type": "Feature", "properties": {}}
-
-        # OSM id, try the common columns in order
-        osm_id = (row.get("osm_way_id") or row.get("osm_id") or row.get("id"))
-        f["properties"]["osm_id"] = str(osm_id) if osm_id is not None else None
-
-        # Address & attributes
+        
+        #- harvest OSM 'id'
+        f["properties"]["osm_id"] = (
+            row.get("osm_way_id") if row.get("osm_way_id") is not None and pd.notna(row.get("osm_way_id")) 
+            else row.get("osm_id") if row.get("osm_id") is not None and pd.notna(row.get("osm_id")) 
+            else row.get("id")
+        )
+        
+        # Extract address
         f["properties"]["address"] = extract_address(row)
-
-        bld_type = tags.get("building", row.get("building"))
-        if bld_type is not None:
-            f["properties"]["building"] = bld_type
-
+        
+        # Extract building type
+        f["properties"]["building"] = row.get("building")
+        
+        # Harvest attributes only if they exist
         for key in [
             'building:use', 'building:levels', 'building:flats', 'building:units',
             'beds', 'rooms', 'residential', 'amenity', 'social_facility'
         ]:
-            val = tags.get(key, row.get(key))
-            if val not in (None, "", {}, []):
-                f["properties"][key] = val
-
-        # Geometry
+            value = row.get('tags', {}).get(key)
+            if value is not None:
+                f["properties"][key] = value
+        
+        # Process geometry
+        osm_shape = process_geometry(row["geometry"])
         f["geometry"] = mapping(osm_shape)
         f["properties"]["footprint"] = mapping(osm_shape)
-
+        
         # Plus code in WGS84
         p = osm_shape.representative_point()
         lat, lon = _to_wgs84_point(p, src_crs)
         f["properties"]["plus_code"] = olc.encode(lat, lon, 11)
-
-        # Heights
-        # clone row so calculate_building_heights sees the tags safely
-        row_like = dict(row)
-        row_like['tags'] = tags
-        height_attributes = calculate_building_heights(row_like, storeyheight)
-        f["properties"].update({k: v for k, v in height_attributes.items() if v is not None})
-
+        
+        # Compute height attributes
+        height_attributes = calculate_building_heights(row, storeyheight)
+        for key, value in height_attributes.items():
+            if key not in f["properties"]:
+                f["properties"][key] = value
+        
         footprints['features'].append(f)
-
+    
+    # Store the data as GeoJSON
     with open(jparams['osm_bldings'], 'w') as outfile:
         json.dump(footprints, outfile, indent=2)
         
