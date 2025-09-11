@@ -474,7 +474,9 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jparams</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;osm3DwStock_param.json&#39;</span><span class="p">))</span>       
+
 <span class="c1">#jparams = json.load(open(&#39;osm3Dsaao_param.json&#39;))   </span>
+<span class="c1">#jparams = json.load(open(&#39;osm3DsRiver_param25m.json&#39;))</span>
 </pre></div>
 </div>
 </div>
@@ -625,7 +627,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.629291
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.638031
 </pre></div>
 </div>
 </div>
@@ -733,9 +735,21 @@ document.write(`
 <span class="c1">#- apply conversion function</span>
 <span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;tags&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;other_tags&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">safe_convert</span><span class="p">)</span>
 
-<span class="c1">#- extract values safely</span>
-<span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;building:levels&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;tags&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;building:levels&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
-<span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;building:part&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="s2">&quot;tags&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">d</span><span class="p">:</span> <span class="n">d</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;building:part&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+<span class="c1"># Normalize the &#39;tags&#39; column to create a new DataFrame</span>
+<span class="n">tags_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">json_normalize</span><span class="p">(</span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;tags&#39;</span><span class="p">])</span>
+<span class="c1"># Join the new columns back to the original GeoDataFrame</span>
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">gdf</span><span class="p">,</span> <span class="n">tags_df</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># (Optional) Drop the original &#39;tags&#39; column</span>
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;other_tags&#39;</span><span class="p">])</span>
+
+<span class="c1"># Ensure a single &#39;osm_id&#39; column</span>
+<span class="k">if</span> <span class="s1">&#39;osm_id&#39;</span> <span class="ow">in</span> <span class="n">gdf</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="k">if</span> <span class="s1">&#39;osm_way_id&#39;</span> <span class="ow">in</span> <span class="n">gdf</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;osm_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">o</span> <span class="k">if</span> <span class="n">pd</span><span class="o">.</span><span class="n">notna</span><span class="p">(</span><span class="n">o</span><span class="p">)</span> <span class="k">else</span> <span class="n">w</span> 
+                         <span class="k">for</span> <span class="n">o</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;osm_id&#39;</span><span class="p">],</span> <span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;osm_way_id&#39;</span><span class="p">])]</span>
+        <span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;osm_way_id&#39;</span><span class="p">])</span>
+<span class="k">elif</span> <span class="s1">&#39;osm_way_id&#39;</span> <span class="ow">in</span> <span class="n">gdf</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;osm_way_id&#39;</span><span class="p">:</span> <span class="s1">&#39;osm_id&#39;</span><span class="p">})</span>
 
 <span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">within</span><span class="p">(</span><span class="n">aoi</span><span class="o">.</span><span class="n">unary_union</span><span class="p">))]</span>
 <span class="n">gdf</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
@@ -762,7 +776,6 @@ document.write(`
     <tr style="text-align: right;">
       <th></th>
       <th>osm_id</th>
-      <th>osm_way_id</th>
       <th>name</th>
       <th>type</th>
       <th>amenity</th>
@@ -772,21 +785,23 @@ document.write(`
       <th>leisure</th>
       <th>man_made</th>
       <th>office</th>
-      <th>shop</th>
-      <th>sport</th>
-      <th>tourism</th>
-      <th>other_tags</th>
-      <th>geometry</th>
-      <th>tags</th>
-      <th>building:levels</th>
-      <th>building:part</th>
+      <th>...</th>
+      <th>studio</th>
+      <th>guest_house</th>
+      <th>abandoned:building</th>
+      <th>motorcycle:rental</th>
+      <th>second_hand</th>
+      <th>drink:coffee</th>
+      <th>bus</th>
+      <th>network</th>
+      <th>opening_date</th>
+      <th>unisex</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>1</th>
       <td>12227309</td>
-      <td>NaN</td>
       <td>The Neighbourgoods Market</td>
       <td>multipolygon</td>
       <td>marketplace</td>
@@ -796,19 +811,21 @@ document.write(`
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>"addr:city"=&gt;"Cape Town","addr:suburb"=&gt;"Woods...</td>
-      <td>MULTIPOLYGON (((18.45801 -33.92731, 18.45853 -...</td>
-      <td>{'addr:city': 'Cape Town', 'addr:suburb': 'Woo...</td>
-      <td>1</td>
-      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>2</th>
       <td>12249345</td>
-      <td>NaN</td>
       <td>Church  Square</td>
       <td>multipolygon</td>
       <td>NaN</td>
@@ -818,17 +835,21 @@ document.write(`
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>"addr:city"=&gt;"Woodstock, Cape Town","addr:hous...</td>
-      <td>MULTIPOLYGON (((18.45082 -33.92792, 18.45086 -...</td>
-      <td>{'addr:city': 'Woodstock, Cape Town', 'addr:ho...</td>
-      <td>6</td>
-      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
   </tbody>
 </table>
+<p>2 rows × 152 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -871,7 +892,6 @@ document.write(`
     <tr style="text-align: right;">
       <th></th>
       <th>osm_id</th>
-      <th>osm_way_id</th>
       <th>name</th>
       <th>type</th>
       <th>amenity</th>
@@ -881,21 +901,23 @@ document.write(`
       <th>leisure</th>
       <th>man_made</th>
       <th>office</th>
-      <th>shop</th>
-      <th>sport</th>
-      <th>tourism</th>
-      <th>other_tags</th>
-      <th>geometry</th>
-      <th>tags</th>
-      <th>building:levels</th>
-      <th>building:part</th>
+      <th>...</th>
+      <th>studio</th>
+      <th>guest_house</th>
+      <th>abandoned:building</th>
+      <th>motorcycle:rental</th>
+      <th>second_hand</th>
+      <th>drink:coffee</th>
+      <th>bus</th>
+      <th>network</th>
+      <th>opening_date</th>
+      <th>unisex</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>1</th>
       <td>12227309</td>
-      <td>NaN</td>
       <td>The Neighbourgoods Market</td>
       <td>multipolygon</td>
       <td>marketplace</td>
@@ -905,19 +927,21 @@ document.write(`
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>"addr:city"=&gt;"Cape Town","addr:suburb"=&gt;"Woods...</td>
-      <td>MULTIPOLYGON (((18.45801 -33.92731, 18.45853 -...</td>
-      <td>{'addr:city': 'Cape Town', 'addr:suburb': 'Woo...</td>
-      <td>1</td>
-      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>2</th>
       <td>12249345</td>
-      <td>NaN</td>
       <td>Church  Square</td>
       <td>multipolygon</td>
       <td>NaN</td>
@@ -927,33 +951,36 @@ document.write(`
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>"addr:city"=&gt;"Woodstock, Cape Town","addr:hous...</td>
-      <td>MULTIPOLYGON (((18.45082 -33.92792, 18.45086 -...</td>
-      <td>{'addr:city': 'Woodstock, Cape Town', 'addr:ho...</td>
-      <td>6</td>
-      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
   </tbody>
 </table>
+<p>2 rows × 152 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># basic cleaning to harvest building=* (no building:part=*) and building=levels tags only</span>
 
-<span class="n">ts</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;building:levels&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
-<span class="n">ts</span><span class="p">[</span><span class="s1">&#39;building:levels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">ts</span><span class="p">[</span><span class="s1">&#39;building:levels&#39;</span><span class="p">],</span> <span class="n">downcast</span><span class="o">=</span><span class="s1">&#39;integer&#39;</span><span class="p">)</span>
-<span class="n">ts</span><span class="p">[</span><span class="s1">&#39;building:levels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ts</span><span class="p">[</span><span class="s1">&#39;building:levels&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 <span class="c1">#- we only want buildings with =levels data</span>
-<span class="n">ts</span> <span class="o">=</span> <span class="n">ts</span><span class="p">[</span><span class="n">ts</span><span class="p">[</span><span class="s1">&#39;building:levels&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">]</span>
-<span class="n">ts</span><span class="p">[</span><span class="s1">&#39;building:levels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">ts</span><span class="p">[</span><span class="s1">&#39;building:levels&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;None&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span><span class="c1">#, inplace=True)</span>
-<span class="n">ts</span> <span class="o">=</span> <span class="n">ts</span><span class="p">[</span><span class="n">ts</span><span class="p">[</span><span class="s1">&#39;building:levels&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()]</span>
+<span class="n">ts</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="n">ts</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;building:levels&#39;</span><span class="p">])</span>
+      <span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="s1">&#39;building:levels&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">ts</span><span class="p">[</span><span class="s1">&#39;building:levels&#39;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)})</span>
+      <span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;`building:levels` != 0&quot;</span><span class="p">)</span>
+<span class="p">)</span>
 
 <span class="c1">#- without building:part</span>
-<span class="n">ts</span> <span class="o">=</span> <span class="n">ts</span><span class="p">[</span><span class="n">ts</span><span class="p">[</span><span class="s1">&#39;building:part&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span>
+<span class="n">ts</span> <span class="o">=</span> <span class="n">ts</span><span class="p">[</span><span class="n">ts</span><span class="p">[</span><span class="s1">&#39;building:part&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span> <span class="k">if</span> <span class="s1">&#39;building:part&#39;</span> <span class="ow">in</span> <span class="n">ts</span><span class="o">.</span><span class="n">columns</span> <span class="k">else</span> <span class="n">ts</span>
 <span class="c1">#ts = ts.explode()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\033</span><span class="s1">[1m&#39;</span><span class="p">,</span> <span class="n">jparams</span><span class="p">[</span><span class="s1">&#39;FocusArea&#39;</span><span class="p">],</span> <span class="s1">&#39;has </span><span class="se">\033</span><span class="s1">[0m&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">),</span> <span class="s1">&#39;buildings&#39;</span><span class="p">)</span>
 </pre></div>
@@ -992,7 +1019,6 @@ document.write(`
     <tr style="text-align: right;">
       <th></th>
       <th>osm_id</th>
-      <th>osm_way_id</th>
       <th>name</th>
       <th>type</th>
       <th>amenity</th>
@@ -1002,20 +1028,22 @@ document.write(`
       <th>leisure</th>
       <th>man_made</th>
       <th>office</th>
-      <th>shop</th>
-      <th>sport</th>
-      <th>tourism</th>
-      <th>other_tags</th>
-      <th>geometry</th>
-      <th>tags</th>
-      <th>building:levels</th>
-      <th>building:part</th>
+      <th>...</th>
+      <th>studio</th>
+      <th>guest_house</th>
+      <th>abandoned:building</th>
+      <th>motorcycle:rental</th>
+      <th>second_hand</th>
+      <th>drink:coffee</th>
+      <th>bus</th>
+      <th>network</th>
+      <th>opening_date</th>
+      <th>unisex</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>4387</th>
-      <td>NaN</td>
       <td>1317425439</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1026,18 +1054,20 @@ document.write(`
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>"building:levels"=&gt;"1"</td>
-      <td>MULTIPOLYGON (((18.44729 -33.92583, 18.44725 -...</td>
-      <td>{'building:levels': '1'}</td>
-      <td>1</td>
-      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>4388</th>
-      <td>NaN</td>
       <td>1340498943</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1048,17 +1078,21 @@ document.write(`
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>"addr:city"=&gt;"Cape Town","addr:street"=&gt;"Balfo...</td>
-      <td>MULTIPOLYGON (((18.44973 -33.93420, 18.44979 -...</td>
-      <td>{'addr:city': 'Cape Town', 'addr:street': 'Bal...</td>
-      <td>1</td>
-      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
   </tbody>
 </table>
+<p>2 rows × 152 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -1232,7 +1266,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:01:45.229230
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:01:45.430426
 </pre></div>
 </div>
 </div>
@@ -1337,7 +1371,6 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <th></th>
       <th>geometry</th>
       <th>osm_id</th>
-      <th>osm_way_id</th>
       <th>name</th>
       <th>type</th>
       <th>amenity</th>
@@ -1346,14 +1379,16 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <th>historic</th>
       <th>leisure</th>
       <th>man_made</th>
-      <th>office</th>
-      <th>shop</th>
-      <th>sport</th>
-      <th>tourism</th>
-      <th>other_tags</th>
-      <th>tags</th>
-      <th>building:levels</th>
-      <th>building:part</th>
+      <th>...</th>
+      <th>guest_house</th>
+      <th>abandoned:building</th>
+      <th>motorcycle:rental</th>
+      <th>second_hand</th>
+      <th>drink:coffee</th>
+      <th>bus</th>
+      <th>network</th>
+      <th>opening_date</th>
+      <th>unisex</th>
       <th>mean</th>
     </tr>
   </thead>
@@ -1362,7 +1397,6 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <th>1</th>
       <td>MULTIPOLYGON (((265023.481 6242993.344, 265021...</td>
       <td>12227309</td>
-      <td>NaN</td>
       <td>The Neighbourgoods Market</td>
       <td>multipolygon</td>
       <td>marketplace</td>
@@ -1371,21 +1405,22 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>"addr:city"=&gt;"Cape Town","addr:suburb"=&gt;"Woods...</td>
-      <td>{'addr:city': 'Cape Town', 'addr:suburb': 'Woo...</td>
-      <td>1</td>
-      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
       <td>7.17</td>
     </tr>
     <tr>
       <th>2</th>
       <td>MULTIPOLYGON (((264360.391 6242908.633, 264361...</td>
       <td>12249345</td>
-      <td>NaN</td>
       <td>Church  Square</td>
       <td>multipolygon</td>
       <td>NaN</td>
@@ -1394,18 +1429,21 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
+      <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>"addr:city"=&gt;"Woodstock, Cape Town","addr:hous...</td>
-      <td>{'addr:city': 'Woodstock, Cape Town', 'addr:ho...</td>
-      <td>6</td>
-      <td>None</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
       <td>10.45</td>
     </tr>
   </tbody>
 </table>
+<p>2 rows × 153 columns</p>
 </div></div></div>
 </div>
 <div class="alert alert-block alert-warning"><b>Calculate building height:</b> 
@@ -1415,7 +1453,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># -- execute function. write geoJSON</span>
-<span class="n">city3D</span><span class="o">.</span><span class="n">write_geojson</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">jparams</span><span class="p">)</span>
+<span class="n">dis</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">process_and_write_geojson</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">crs</span><span class="p">,</span> <span class="n">jparams</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1425,8 +1463,8 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- prepare building dataset. remove skywalk and bld:roof</span>
 <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-<span class="n">dis</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">jparams</span><span class="p">[</span><span class="s1">&#39;osm_bldings&#39;</span><span class="p">])</span>                   
-<span class="n">dis</span><span class="o">.</span><span class="n">set_crs</span><span class="p">(</span><span class="n">epsg</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="n">epsg</span><span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">:]),</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">allow_override</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1">#dis = gpd.read_file(jparams[&#39;osm_bldings&#39;])                   </span>
+<span class="c1">#dis.set_crs(epsg=int(epsg[-5:]), inplace=True, allow_override=True)</span>
 
 <span class="n">dict_vertices</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;bottom_bridge_height&#39;</span><span class="p">,</span> <span class="s1">&#39;bottom_roof_height&#39;</span><span class="p">,</span> <span class="s1">&#39;roof_height&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">dis</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
@@ -1464,7 +1502,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.994621
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.457269
 </pre></div>
 </div>
 </div>
@@ -1509,20 +1547,21 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <th>osm_id</th>
       <th>address</th>
       <th>building</th>
-      <th>building:use</th>
       <th>building:levels</th>
-      <th>beds</th>
+      <th>building:use</th>
       <th>building:flats</th>
       <th>building:units</th>
-      <th>residential</th>
+      <th>beds</th>
       <th>rooms</th>
-      <th>social_facility</th>
-      <th>footprint</th>
-      <th>plus_code</th>
-      <th>ground_height</th>
-      <th>bottom_roof_height</th>
+      <th>residential</th>
+      <th>...</th>
       <th>building_height</th>
       <th>roof_height</th>
+      <th>ground_height</th>
+      <th>bottom_bridge_height</th>
+      <th>bottom_roof_height</th>
+      <th>plus_code</th>
+      <th>footprint</th>
       <th>geometry</th>
       <th>x</th>
       <th>y</th>
@@ -1530,53 +1569,56 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
+      <th>1</th>
       <td>12227309</td>
       <td>Woodstock Cape Town</td>
       <td>retail</td>
-      <td>NaN</td>
-      <td>1</td>
-      <td>NaN</td>
+      <td>1.0</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>{'type': 'Polygon', 'coordinates': [[[265023.4...</td>
-      <td>CJXQXVX7+X6V</td>
-      <td>7.17</td>
       <td>NaN</td>
+      <td>...</td>
       <td>4.1</td>
       <td>11.27</td>
+      <td>7.17</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>4FRW3FF5+27C</td>
+      <td>{'type': 'Polygon', 'coordinates': (((265023.4...</td>
       <td>POLYGON ((265023.481 6242993.344, 265021.289 6...</td>
       <td>265035.863057</td>
       <td>6.242978e+06</td>
     </tr>
     <tr>
-      <th>1</th>
+      <th>2</th>
       <td>12249345</td>
       <td>34 Dickson Street 7915 Woodstock, Cape Town</td>
       <td>apartments</td>
-      <td>NaN</td>
-      <td>6</td>
+      <td>6.0</td>
       <td>NaN</td>
       <td>105</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>{'type': 'Polygon', 'coordinates': [[[264360.3...</td>
-      <td>CMX9X9XC+X8W</td>
-      <td>10.45</td>
-      <td>NaN</td>
+      <td>...</td>
       <td>18.1</td>
       <td>28.55</td>
+      <td>10.45</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>4FRW3FC2+R5G</td>
+      <td>{'type': 'Polygon', 'coordinates': (((264360.3...</td>
       <td>POLYGON ((264360.391 6242908.633, 264361.062 6...</td>
       <td>264327.370820</td>
       <td>6.242905e+06</td>
     </tr>
   </tbody>
 </table>
+<p>2 rows × 22 columns</p>
 </div></div></div>
 </div>
 <p><strong>prepare the elevation for the TIN</strong></p>
@@ -1635,7 +1677,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:05:11.087565
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:05:10.890052
 </pre></div>
 </div>
 </div>
@@ -1668,20 +1710,21 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <th>osm_id</th>
       <th>address</th>
       <th>building</th>
-      <th>building:use</th>
       <th>building:levels</th>
-      <th>beds</th>
+      <th>building:use</th>
       <th>building:flats</th>
       <th>building:units</th>
-      <th>residential</th>
+      <th>beds</th>
       <th>rooms</th>
-      <th>social_facility</th>
-      <th>footprint</th>
-      <th>plus_code</th>
-      <th>ground_height</th>
-      <th>bottom_roof_height</th>
+      <th>residential</th>
+      <th>...</th>
       <th>building_height</th>
       <th>roof_height</th>
+      <th>ground_height</th>
+      <th>bottom_bridge_height</th>
+      <th>bottom_roof_height</th>
+      <th>plus_code</th>
+      <th>footprint</th>
       <th>geometry</th>
       <th>x</th>
       <th>y</th>
@@ -1689,76 +1732,80 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
   </thead>
   <tbody>
     <tr>
-      <th>3711</th>
+      <th>4386</th>
       <td>1314777371</td>
-      <td>NaN</td>
+      <td>None</td>
       <td>garage</td>
-      <td>NaN</td>
-      <td>1</td>
-      <td>NaN</td>
+      <td>1.0</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>{'type': 'Polygon', 'coordinates': [[[264153.9...</td>
-      <td>C6XGXHXP+X8W</td>
-      <td>20.21</td>
       <td>NaN</td>
+      <td>...</td>
       <td>4.1</td>
       <td>24.31</td>
+      <td>20.209999</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>4FRW3C9X+R9X</td>
+      <td>{'type': 'Polygon', 'coordinates': (((264153.9...</td>
       <td>POLYGON ((264153.941 6242630.251, 264148.107 6...</td>
       <td>264150.585825</td>
       <td>6.242629e+06</td>
     </tr>
     <tr>
-      <th>3712</th>
+      <th>4387</th>
       <td>1317425439</td>
-      <td>NaN</td>
+      <td>None</td>
       <td>warehouse</td>
-      <td>NaN</td>
-      <td>1</td>
-      <td>NaN</td>
+      <td>1.0</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>{'type': 'Polygon', 'coordinates': [[[264028.5...</td>
-      <td>CVXHX6X3+XPW</td>
-      <td>5.52</td>
       <td>NaN</td>
+      <td>...</td>
       <td>4.1</td>
       <td>9.62</td>
+      <td>5.520000</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>4FRW3CFX+J23</td>
+      <td>{'type': 'Polygon', 'coordinates': (((264028.5...</td>
       <td>POLYGON ((264028.583 6243133.267, 264025.150 6...</td>
       <td>264051.204336</td>
       <td>6.243116e+06</td>
     </tr>
     <tr>
-      <th>3713</th>
+      <th>4388</th>
       <td>1340498943</td>
       <td>Balfour Street Woodstock Cape Town</td>
       <td>semidetached_house</td>
-      <td>NaN</td>
-      <td>1</td>
-      <td>NaN</td>
+      <td>1.0</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>{'type': 'Polygon', 'coordinates': [[[264277.1...</td>
-      <td>CGXWX6X9+X5W</td>
-      <td>55.90</td>
       <td>NaN</td>
+      <td>...</td>
       <td>4.1</td>
       <td>60.00</td>
+      <td>55.900002</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>4FRW3C8X+7VX</td>
+      <td>{'type': 'Polygon', 'coordinates': (((264277.1...</td>
       <td>POLYGON ((264277.101 6242210.386, 264272.196 6...</td>
       <td>264278.217939</td>
       <td>6.242203e+06</td>
     </tr>
   </tbody>
 </table>
+<p>3 rows × 22 columns</p>
 </div></div></div>
 </div>
 <div class="alert alert-block alert-warning"><b>Prepare for Triangle:</b> </div>
@@ -1878,7 +1925,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:07:17.094316
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:07:18.433543
 </pre></div>
 </div>
 </div>
