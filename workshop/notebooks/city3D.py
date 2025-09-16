@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# env/geo3D_wrkshp02
+# env/geo3D_gthbRepo02
 #########################
 # helper functions to create LoD1 3D City Model from volunteered public data (OpenStreetMap) with elevation via a raster DEM.
 
@@ -77,7 +77,7 @@ def process_and_write_geojson(gdf, crs, jparams=None): #, output_file='./data/fp
 
     # Process geometry to ensure all are polygons
     filtered_gdf['geometry'] = filtered_gdf['geometry'].apply(process_geometry)
-    filtered_gdf['footprint'] = filtered_gdf['geometry'].apply(lambda g: mapping(g))
+    filtered_gdf['footprint'] = filtered_gdf['geometry'].apply(lambda g: mapping(g)["coordinates"]) 
     filtered_gdf = filtered_gdf[filtered_gdf['geometry'].notna()]
 
     # 2. Add new columns using vectorized operations (faster than iterrows)
@@ -650,3 +650,53 @@ def output_cityjson(extent, minz, maxz, TerrainT, pts, jparams, min_zbld, acoi, 
     #clean cityjson
     cm = cityjson.load(jparams['cjsn_out'])               
     cityjson.save(cm, jparams['cjsn_solid']) 
+
+def extract_boundaries_by_name(input_pbf, jparams):
+    """
+    Extract boundaries from an OSM PBF:
+        1. Try to extract by name within boundary/place types (neighbourhood, suburb, town, etc.)
+        2. If nothing is found, fallback to amenities (e.g., university, research_institute)
+    Parameters:
+        input_pbf (str): path to OSM PBF
+        jparams (dict): must contain 'FocusArea' key for boundary name
+    Returns:
+        GeoDataFrame
+    """
+    gdal.UseExceptions()
+    gdal.SetConfigOption("OGR_GEOMETRY_ACCEPT_UNCLOSED_RING", "NO")
+    
+    geojson_vsimem = "/vsimem/boundaries.geojson"
+    boundary_name = jparams.get("FocusArea")
+    place_types = ["neighbourhood", "suburb", "quarter", "borough", "village", "town", "city"]
+    amenity_list = ["university", "research_institute"]
+
+    # --- Try boundary name first, restricted to place types ---
+    place_filter = " OR ".join([f"place = '{p}'" for p in place_types])
+    where_filter = f"name = '{boundary_name}' AND ({place_filter})"
+    gdal.VectorTranslate(
+        geojson_vsimem,
+        input_pbf,
+        format="GeoJSON",
+        layers=["multipolygons"],
+        options=["-where", where_filter, "-makevalid"]
+    )
+    gdf = gpd.read_file(geojson_vsimem)
+    gdal.Unlink(geojson_vsimem)
+
+    if len(gdf) > 0:
+        return gdf
+
+    # --- Fallback to amenities ---
+    amenity_filter = " OR ".join([f"amenity = '{a}'" for a in amenity_list])
+    gdal.VectorTranslate(
+        geojson_vsimem,
+        input_pbf,
+        format="GeoJSON",
+        layers=["multipolygons"],
+        options=["-where", amenity_filter, "-makevalid"]
+    )
+    gdf = gpd.read_file(geojson_vsimem)
+    gdal.Unlink(geojson_vsimem)
+
+    return gdf
+
