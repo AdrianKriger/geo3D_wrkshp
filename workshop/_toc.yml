@@ -15,10 +15,10 @@ parts:
   chapters:
   - file: notebooks/interactiveOnly
 
-- caption: suburb. No Internet.
+- caption: suburb (No Internet)
   chapters:
-  - file: notebooks/osm_LoD1_3DCityModel
-  - file: notebooks/CityJSONspatialDataScience
+  - file: notebooks/osm_LoD1_3D-noInternet
+  - file: notebooks/CityJSONdataScience-noInternet
 
 - caption: LoD1 caveats
   chapters:
