@@ -688,12 +688,13 @@ def extract_boundaries_by_name(input_pbf, jparams):
 
     # --- Fallback to amenities ---
     amenity_filter = " OR ".join([f"amenity = '{a}'" for a in amenity_list])
+    where_filter = f"name = '{boundary_name}' AND ({amenity_filter})"
     gdal.VectorTranslate(
         geojson_vsimem,
         input_pbf,
         format="GeoJSON",
         layers=["multipolygons"],
-        options=["-where", amenity_filter, "-makevalid"]
+        options=["-where", where_filter, "-makevalid"]
     )
     gdf = gpd.read_file(geojson_vsimem)
     gdal.Unlink(geojson_vsimem)
