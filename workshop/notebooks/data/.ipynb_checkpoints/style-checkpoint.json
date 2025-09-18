@@ -1,0 +1,147 @@
+{
+  "version": 8,
+  "name": "Dark Matter Extended",
+  "sources": {
+    "{AREA_NAME}": {
+      "type": "vector",
+      "tiles": ["http://localhost:{PORT}/{z}/{x}/{y}.pbf"],
+      "minzoom": 0,
+      "maxzoom": 14
+    }
+  },
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "layout": { "visibility": "visible" },
+      "paint": { "background-color": "#0e0e0e", "background-opacity": 1 }
+    },
+    {
+     "id": "water",
+      "type": "fill",
+      "source": "{AREA_NAME}",
+      "source-layer": "water",
+      "minzoom": 0,
+      "maxzoom": 24,
+      "filter": ["all", ["==", "$type", "Polygon"]],
+      "layout": { "visibility": "visible" },
+      "paint": {
+        "fill-color": "#2C353C",
+        "fill-antialias": true,
+        "fill-translate-anchor": "map",
+        "fill-opacity": 1
+      }
+    },
+    {
+      "id": "park",
+      "type": "fill",
+      "source": "{AREA_NAME}",
+      "source-layer": "landuse",
+      "filter": ["in", "class", "park", "recreation_ground", "cemetery", "forest"],
+      "paint": {
+        "fill-color": "#16213e",
+        "fill-opacity": 0.4
+      }
+    },
+    {
+      "id": "road-motorway",
+      "type": "line",
+      "source": "{AREA_NAME}",
+      "source-layer": "transportation",
+      "filter": ["==", "class", "motorway"],
+      "paint": {
+        "line-color": "#666666",
+        "line-width": [
+          "interpolate", ["linear"], ["zoom"],
+          8, 1,
+          14, 6
+        ]
+      }
+    },
+    {
+      "id": "road-primary",
+      "type": "line",
+      "source": "{AREA_NAME}",
+      "source-layer": "transportation",
+      "filter": ["==", "class", "primary"],
+      "paint": {
+        "line-color": "#8b949e",
+        "line-width": [
+          "interpolate", ["linear"], ["zoom"],
+          8, 0.5,
+          14, 4
+        ]
+      }
+    },
+    {
+      "id": "road-secondary",
+      "type": "line",
+      "source": "{AREA_NAME}",
+      "source-layer": "transportation",
+      "filter": ["==", "class", "secondary"],
+      "paint": {
+        "line-color": "#6e7681",
+        "line-width": [
+          "interpolate", ["linear"], ["zoom"],
+          8, 0.5,
+          14, 3
+        ]
+      }
+    },
+    {
+      "id": "road-tertiary",
+      "type": "line",
+      "source": "{AREA_NAME}",
+      "source-layer": "transportation",
+      "filter": ["==", "class", "tertiary"],
+      "paint": {
+        "line-color": "#5a5f66",
+        "line-width": [
+          "interpolate", ["linear"], ["zoom"],
+          8, 0.5,
+          14, 2.5
+        ]
+      }
+    },
+    {
+      "id": "road-residential",
+      "type": "line",
+      "source": "{AREA_NAME}",
+      "source-layer": "transportation",
+      "filter": ["==", "class", "residential"],
+      "paint": {
+        "line-color": "#444c56",
+        "line-width": [
+          "interpolate", ["linear"], ["zoom"],
+          10, 0.5,
+          16, 2
+        ]
+      }
+    },
+    {
+      "id": "road-service",
+      "type": "line",
+      "source": "{AREA_NAME}",
+      "source-layer": "transportation",
+      "filter": ["in", "class", "service", "track", "minor"],
+      "paint": {
+        "line-color": "#363b42",
+        "line-width": [
+          "interpolate", ["linear"], ["zoom"],
+          12, 0.25,
+          16, 1
+        ]
+      }
+    },
+    {
+      "id": "buildings",
+      "type": "fill",
+      "source": "{AREA_NAME}",
+      "source-layer": "building",
+      "paint": {
+        "fill-color": "#30363d",
+        "fill-opacity": 0.7
+      }
+    }
+  ]
+}

@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -184,10 +184,10 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/interactiveOnly.html"><em>pseudo</em>-3D visualisation with Spatial Analysis</a></li>
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">suburb</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">suburb (No Internet)</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/osm_LoD1_3DCityModel.html">LoD1 3D City Model</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../notebooks/CityJSONspatialDataScience.html">Spatial Data Science with CityJSON</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/osm_LoD1_3D-noInternet.html">osm_LoD1_3DCityModel <em>(No Internet)</em></a></li>
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/CityJSONdataScience-noInternet.html">Spatial Data Science with CityJSON <em>(No Internet)</em></a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LoD1 caveats</span></p>
 <ul class="nav bd-sidenav">
@@ -409,7 +409,7 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="setup-and-content">
+  <section id="setup-and-content">
 <h1>Setup and content<a class="headerlink" href="#setup-and-content" title="Link to this heading">#</a></h1>
 <nav class="contents local" id="contents">
 <ul class="simple">
@@ -428,7 +428,7 @@ document.write(`
 <h3><a class="toc-backref" href="#id2" role="doc-backlink">Execute with a Binder deployment</a><a class="headerlink" href="#execute-with-a-binder-deployment" title="Link to this heading">#</a></h3>
 <p>Binder is a cloud service that allows users to share reproducible interactive computing environments from code repositories. It is generally used to enable other users to easily run your code through Jupyter notebooks. It is a really cool service offered for free by several organisations (MyBinder through Jupyter, etc.).</p>
 <p>Binder is probably the easiest way to execute notebooks in this repository, as you only have to do one click to arrive in a Jupyterlab with all the necessary libraries. However, its public resources are limited, supporting only some <em>‘tens’</em> (less than 30) of instances at a time with restricted processing power. The primary purpose of this functionality here; is to demonstrate the plug-and-play nature of <em>geo3D</em>.</p>
-<p>Each Notebook in the village and suburbs sections (<a class="reference internal" href="../notebooks/interactiveOnly.html"><span class="doc std std-doc">interactiveOnly</span></a>, <a class="reference internal" href="../notebooks/osm_LoD1_3DCityModel.html"><span class="doc std std-doc">LoD1_3D_CityModel</span></a> and <a class="reference internal" href="../notebooks/CityJSONspatialDataScience.html"><span class="doc std std-doc">CityJSONSpatialDataScience</span></a>) have a Binder icon, from which to launch the <strong>that particular</strong> notebook on the Binder service.</p>
+<p>Each Notebook in the village and suburbs sections (<a class="reference internal" href="../notebooks/interactiveOnly.html"><span class="doc std std-doc">interactiveOnly</span></a>, <a class="reference internal" href="../notebooks/osm_LoD1_3D-noInternet.html"><span class="doc std std-doc">LoD1_3D_CityModel</span></a> and <a class="reference internal" href="../notebooks/CityJSONdataScience-noInternet.html"><span class="doc std std-doc">CityJSONSpatialDataScience</span></a>) have a Binder icon, from which to launch the <strong>that particular</strong> notebook on the Binder service.</p>
 <p>Alternatively, to launch the <strong>entire</strong> <code class="docutils literal notranslate"><span class="pre">geo3D_wrkshp</span></code> GitHub repository; click on the launch Binder icon below:</p>
 <p><a class="reference external" href="https://mybinder.org/v2/gh/AdrianKriger/geo3D_wrkshp/HEAD"><img alt="Binder" src="../_images/launch-binder.svg" /></a></p>
 <p>Thereafter; navigate and choose a notebook, using the file browser, on the left side of the Jupyterlab screen.</p>

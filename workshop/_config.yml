@@ -13,7 +13,7 @@ copyright: "2023-2025"
 # Force re-execution of notebooks on each build.
 # See https://jupyterbook.org/content/execute.html
 execute:
-  execute_notebooks: 'off'
+  execute_notebooks: 'force'
   
 # Add a launch button on a specific binder instance
 #launch_buttons:
@@ -44,6 +44,7 @@ html:
 # html iframe images
 parse:
   myst_enable_extensions:
+    - html
     - html_admonition
     - html_image
     - amsmath

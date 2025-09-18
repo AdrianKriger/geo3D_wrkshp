@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>osm_LoD1_3DCityModel &#8212; geo3D</title>
+    <title>osm_LoD1_3DCityModel (No Internet) &#8212; geo3D</title>
   
   
   
@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -186,10 +186,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">suburb (No Internet)</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">osm_LoD1_3DCityModel</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">osm_LoD1_3DCityModel <em>(No Internet)</em></a></li>
 <li class="toctree-l1"><a class="reference internal" href="CityJSONdataScience-noInternet.html">Spatial Data Science with CityJSON <em>(No Internet)</em></a></li>
-
-
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LoD1 caveats</span></p>
 <ul class="nav bd-sidenav">
@@ -384,7 +382,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>osm_LoD1_3DCityModel</h1>
+    <h1>osm_LoD1_3DCityModel (No Internet)</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -395,6 +393,7 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-lod1-3d-city-model">1. Create LoD1 3D City Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#possible-secondary-and-tertiary-level-conversations-starters">2. Possible Secondary and Tertiary level <em>‘conversations starters’</em>:</a></li>
 </ul>
             </nav>
         </div>
@@ -406,8 +405,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="osm-lod1-3dcitymodel">
-<h1>osm_LoD1_3DCityModel<a class="headerlink" href="#osm-lod1-3dcitymodel" title="Link to this heading">#</a></h1>
+  <section id="osm-lod1-3dcitymodel-no-internet">
+<h1>osm_LoD1_3DCityModel <em>(No Internet)</em><a class="headerlink" href="#osm-lod1-3dcitymodel-no-internet" title="Link to this heading">#</a></h1>
 <p><a class="reference external" href="https://mybinder.org/v2/gh/AdrianKriger/geo3D_wrkshp/HEAD?urlpath=%2Fdoc%2Ftree%2Fworkshop%2Fnotebooks%2Fosm_LoD1_3D-noInternet.ipynb"><img alt="Binder" src="../_images/launch-binder1.svg" /></a></p>
 <div class="alert alert-block alert-info""><b>This is a stand-alone Notebook for use in low resource settings. NO internet connection is necessary.</b> 
 <br>
@@ -417,7 +416,7 @@ document.write(`
 <div class="alert alert-block alert-warning"><b>This notebook will:</b>
 <blockquote>
 <div><p><strong>1. allow the user to create a Level-of-Detail 1 (LoD1) <a class="reference external" href="https://en.wikipedia.org/wiki/3D_city_model">3D City Model</a>.</strong></p>
-<p><strong>2. propose several <a class="reference internal" href="#Section2"><span class="xref myst">Geography and Sustainable Development Education <em>conversation starters</em></span></a> for Secondary and Tertiary level students</strong></p>
+<p><strong>2. propose several Geography and Sustainable Development Education <em>conversation starters</em> for Secondary and Tertiary level students</strong></p>
 </div></blockquote>
 </div>
 <div class="alert alert-block alert-danger"><b></b>
@@ -452,7 +451,7 @@ document.write(`
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">pyproj</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">city3D_newNext</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">city3D</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">city3D</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">osgeo</span><span class="w"> </span><span class="kn">import</span> <span class="n">gdal</span><span class="p">,</span> <span class="n">ogr</span><span class="p">,</span> <span class="n">osr</span>
 
@@ -478,12 +477,8 @@ document.write(`
 <p><strong>A <code class="docutils literal notranslate"><span class="pre">parameter.json</span></code> defines the path and files</strong>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#jparams = json.load(open(&#39;osm3DwStock_param.json&#39;))       </span>
-<span class="n">jparams</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;osm3DuEstate_param.json&#39;</span><span class="p">))</span>   
-<span class="c1">#jparams = json.load(open(&#39;osm3DwEstate_param.json&#39;))   </span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jparams</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;osm3DwStock_param.json&#39;</span><span class="p">))</span>         
 <span class="c1">#jparams = json.load(open(&#39;osm3DsRiver_param25m.json&#39;))       </span>
-<span class="c1">#jparams = json.load(open(&#39;osm3Dobs_param.json&#39;)) </span>
-<span class="c1">#jparams = json.load(open(&#39;osm3Dcput_param.json&#39;)) </span>
 <span class="c1">#jparams = json.load(open(&#39;osm3Dsaao_param.json&#39;))       </span>
 </pre></div>
 </div>
@@ -513,7 +508,7 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Input OSM PBF file</span>
-<span class="n">input_pbf</span> <span class="o">=</span> <span class="s2">&quot;./data/CapeTown.osm.pbf&quot;</span>
+<span class="n">input_pbf</span> <span class="o">=</span> <span class="s2">&quot;./data/CapeTownNew.osm.pbf&quot;</span>
 <span class="c1">#input_pbf = &quot;./data/south-africa-latest.osm.pbf&quot;</span>
 
 <span class="c1"># GeoPackage file [will be created]</span>
@@ -544,9 +539,51 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.522618
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">RuntimeError</span><span class="g g-Whitespace">                              </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">line</span> <span class="mi">3</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">aoi</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">extract_boundaries_by_name</span><span class="p">(</span><span class="n">input_pbf</span><span class="p">,</span> <span class="n">jparams</span><span class="p">)</span><span class="c1">#, country=&#39;yes&#39;, place_type=&#39;neighbourhood&#39;)</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">))))</span>
+
+<span class="nn">File ~/Documents/osm_LoD1_3DCityModel/geo3D_wrkshp/tutorial/notebooks/city3D.py:676,</span> in <span class="ni">extract_boundaries_by_name</span><span class="nt">(input_pbf, jparams)</span>
+<span class="g g-Whitespace">    </span><span class="mi">674</span> <span class="n">place_filter</span> <span class="o">=</span> <span class="s2">&quot; OR &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;place = &#39;</span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&#39;&quot;</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">place_types</span><span class="p">])</span>
+<span class="g g-Whitespace">    </span><span class="mi">675</span> <span class="n">where_filter</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;name = &#39;</span><span class="si">{</span><span class="n">boundary_name</span><span class="si">}</span><span class="s2">&#39; AND (</span><span class="si">{</span><span class="n">place_filter</span><span class="si">}</span><span class="s2">)&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">676</span> <span class="n">gdal</span><span class="o">.</span><span class="n">VectorTranslate</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">677</span>     <span class="n">geojson_vsimem</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">678</span>     <span class="n">input_pbf</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">679</span>     <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;GeoJSON&quot;</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">680</span>     <span class="n">layers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;multipolygons&quot;</span><span class="p">],</span>
+<span class="g g-Whitespace">    </span><span class="mi">681</span>     <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;-where&quot;</span><span class="p">,</span> <span class="n">where_filter</span><span class="p">,</span> <span class="s2">&quot;-makevalid&quot;</span><span class="p">]</span>
+<span class="g g-Whitespace">    </span><span class="mi">682</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">683</span> <span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">geojson_vsimem</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">684</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Unlink</span><span class="p">(</span><span class="n">geojson_vsimem</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/geo3D_wrkshp02/lib/python3.9/site-packages/osgeo/gdal.py:1392,</span> in <span class="ni">VectorTranslate</span><span class="nt">(destNameOrDestDS, srcDS, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1390</span>     <span class="p">(</span><span class="n">opts</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">callback_data</span><span class="p">)</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;options&#39;</span><span class="p">]</span>
+<span class="g g-Whitespace">   </span><span class="mi">1391</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">srcDS</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+<span class="ne">-&gt; </span><span class="mi">1392</span>     <span class="n">srcDS</span> <span class="o">=</span> <span class="n">OpenEx</span><span class="p">(</span><span class="n">srcDS</span><span class="p">,</span> <span class="n">gdalconst</span><span class="o">.</span><span class="n">OF_VECTOR</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1394</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">destNameOrDestDS</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">1395</span>     <span class="k">return</span> <span class="n">wrapper_GDALVectorTranslateDestName</span><span class="p">(</span><span class="n">destNameOrDestDS</span><span class="p">,</span> <span class="n">srcDS</span><span class="p">,</span> <span class="n">opts</span><span class="p">,</span> <span class="n">callback</span><span class="p">,</span> <span class="n">callback_data</span><span class="p">)</span>
+
+<span class="nn">File ~/miniconda3/envs/geo3D_wrkshp02/lib/python3.9/site-packages/osgeo/gdal.py:5318,</span> in <span class="ni">OpenEx</span><span class="nt">(*args, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">5313</span><span class="w"> </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;OpenEx(char const * utf8_path, unsigned int nOpenFlags=0, char ** allowed_drivers=None, char ** open_options=None, char ** sibling_files=None) -&gt; Dataset&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">5315</span> <span class="n">_WarnIfUserHasNotSpecifiedIfUsingExceptions</span><span class="p">()</span>
+<span class="ne">-&gt; </span><span class="mi">5318</span> <span class="k">return</span> <span class="n">_gdal</span><span class="o">.</span><span class="n">OpenEx</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="ne">RuntimeError</span>: ./data/CapeTownNew.osm.pbf: No such file or directory
 </pre></div>
 </div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">aoi</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -565,24 +602,10 @@ document.write(`
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>osm_id</th>
-      <th>name</th>
-      <th>type</th>
-      <th>place</th>
-      <th>other_tags</th>
       <th>geometry</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <th>0</th>
-      <td>12622096</td>
-      <td>University Estate</td>
-      <td>multipolygon</td>
-      <td>neighbourhood</td>
-      <td>"wikidata"=&gt;"Q3551340"</td>
-      <td>MULTIPOLYGON (((18.44856 -33.94005, 18.44862 -...</td>
-    </tr>
   </tbody>
 </table>
 </div></div></div>
@@ -1092,23 +1115,8 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Geographic 2D CRS: EPSG:4326&gt;
-Name: WGS 84
-Axis Info [ellipsoidal]:
-- Lat[north]: Geodetic latitude (degree)
-- Lon[east]: Geodetic longitude (degree)
-Area of Use:
-- name: World.
-- bounds: (-180.0, -90.0, 180.0, 90.0)
-Datum: World Geodetic System 1984 ensemble
-- Ellipsoid: WGS 84
-- Prime Meridian: Greenwich
-</pre></div>
 </div>
-</div>
-</div>
-<img src="data/proj.png" alt="proj" width="550" align="right"/>
+<img src="_static/proj.png" alt="proj" width="550" align="right"/>
 <br>
 <br>
 <p>We need the <em><strong>Projected</strong></em> Coordinate Reference System.</p>
@@ -1116,24 +1124,6 @@ Datum: World Geodetic System 1984 ensemble
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- estimate utm: internal geopandas function</span>
 <span class="n">ts</span><span class="o">.</span><span class="n">estimate_utm_crs</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Projected CRS: EPSG:32734&gt;
-Name: WGS 84 / UTM zone 34S
-Axis Info [cartesian]:
-- E[east]: Easting (metre)
-- N[north]: Northing (metre)
-Area of Use:
-- name: Between 18°E and 24°E, southern hemisphere between 80°S and equator, onshore and offshore. Angola. Botswana. Democratic Republic of the Congo (Zaire). Namibia. South Africa. Zambia.
-- bounds: (18.0, -80.0, 24.0, 0.0)
-Coordinate Operation:
-- name: UTM zone 34S
-- method: Transverse Mercator
-Datum: World Geodetic System 1984 ensemble
-- Ellipsoid: WGS 84
-- Prime Meridian: Greenwich
 </pre></div>
 </div>
 </div>
@@ -1287,10 +1277,10 @@ Datum: World Geodetic System 1984 ensemble
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="text-center"><p><img alt="ue-error.png" src="notebooks/attachment:db8986e3-08a6-4545-83a0-dc2cfb2d1665.png" /></p></td>
+<tr class="row-even"><td class="text-center"><p><img alt="ue-error.png" src="../_images/ue-error.png" /></p></td>
 <td class="text-center"><p><strong>Typical challenges will be highlight in <em>Red</em>.</strong></p></td>
 </tr>
-<tr class="row-odd"><td class="text-center"><p><img alt="ue.png" src="notebooks/attachment:bb8b9228-ce4f-452f-80d7-fd9cc16094e9.png" /></p></td>
+<tr class="row-odd"><td class="text-center"><p><img alt="ue.png" src="../_images/ue.png" /></p></td>
 <td class="text-center"><p><strong>or none</strong></p></td>
 </tr>
 <tr class="row-even"><td class="text-center"><p><br /> <strong>If you continue without fixing the challenges, the LoD1 City Model <em>will not be error free</em>.</strong></p></td>
@@ -1830,7 +1820,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <p><strong>If you parse the result of this notebook through <a class="reference external" href="http://geovalidation.bk.tudelft.nl/val3dity/">val3dity</a> it will return a report with an invalid <a class="reference external" href="https://www.cityjson.org/specs/1.1.1/#tinrelief">TINRelief</a> and error.</strong>
 <br>
 <br>
-<a class="reference internal" href="notebooks/data/iso19107_error.jpg"><img alt="notebooks/data/iso19107_error.jpg" src="notebooks/data/iso19107_error.jpg" style="width: 550px;" /></a>
+<img src="_static/iso19107_error.jpg" width="550"/>
 <br>
 <br>
 <strong>This particular area contains Buildings with courtyards. The courtyards</strong> (polygons) <strong>are islands of terrain disconnected from the <em>larger</em> TINRelief</strong> (shell); <strong>thus the error<sup>*</sup>.</strong>
@@ -1841,10 +1831,13 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <p><em><strong>To understand the value and usefulness of a 3D City Model</strong></em>; parse the result of this Notebook through <a class="reference external" href="https://github.com/AdrianKriger/geo3D/blob/main/CityJSONspatialDataScience.ipynb">CityJSONspatialDataScience.ipynb</a> to workthrough an example of:</p>
 <ul class="simple">
 <li><p>population estimation and</p></li>
-<li><p>a calculation of [Building Volume per Capita]((https://www.researchgate.net/publication/343185735_Building_Volume_Per_Capita_BVPC_A_Spatially_Explicit_Measure_of_Inequality_Relevant_to_the_SDGs)</p></li>
+<li><p>a calculation of <a class="reference external" href="https://www.researchgate.net/publication/343185735_Building_Volume_Per_Capita_BVPC_A_Spatially_Explicit_Measure_of_Inequality_Relevant_to_the_SDGs">Building Volume per Capita</a></p></li>
 </ul>
 </div><p><a id='Section2'></a></p>
-<div class="alert alert-block alert-success"><b>2. Possible Secondary and Tertiary level conversations starters:</b></div><div class="pst-scrollable-table-container"><table class="table">
+</section>
+<section id="possible-secondary-and-tertiary-level-conversations-starters">
+<h2>2. Possible Secondary and Tertiary level <em>‘conversations starters’</em>:<a class="headerlink" href="#possible-secondary-and-tertiary-level-conversations-starters" title="Link to this heading">#</a></h2>
+<div class="alert alert-block alert-success"><b></b>communicate and exchange ideas and understanding</div><div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Topic</strong></p></th>
 <th class="head"><p><strong>Secondary Level Questions</strong></p></th>
@@ -1940,6 +1933,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-lod1-3d-city-model">1. Create LoD1 3D City Model</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#possible-secondary-and-tertiary-level-conversations-starters">2. Possible Secondary and Tertiary level <em>‘conversations starters’</em>:</a></li>
 </ul>
   </nav></div>
 
