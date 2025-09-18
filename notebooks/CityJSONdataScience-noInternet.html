@@ -478,7 +478,7 @@ document.write(`
 
 <span class="c1"># configure before starting</span>
 <span class="n">AREA_NAME</span> <span class="o">=</span> <span class="s2">&quot;capeTown&quot;</span>                      <span class="c1">#- this is the name of the &#39;./data/{file-name}.mbtiles&#39; file. The .mbtiles file-name must match this name here.</span>
-<span class="n">PORT</span> <span class="o">=</span> <span class="mi">8080</span>                                 <span class="c1">#- choose port [5000, 8000, 8080]</span>
+<span class="n">PORT</span> <span class="o">=</span> <span class="mi">8000</span>                                 <span class="c1">#- choose port [5000, 8000, 8080]</span>
 
 <span class="c1"># configure tile server</span>
 <span class="n">configure</span><span class="p">(</span><span class="n">AREA_NAME</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">PORT</span><span class="p">)</span>
@@ -493,27 +493,9 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">6</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
-<span class="ne">----&gt; </span><span class="mi">6</span> <span class="kn">from</span><span class="w"> </span><span class="nn">vector_tileserver</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span><span class="p">,</span> <span class="n">configure</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="c1"># Reduce default Flask logging</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span> <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;werkzeug&#39;</span><span class="p">)</span>
-
-<span class="n">File</span> <span class="o">~/</span><span class="n">Documents</span><span class="o">/</span><span class="n">osm_LoD1_3DCityModel</span><span class="o">/</span><span class="n">geo3D_wrkshp</span><span class="o">/</span><span class="n">tutorial</span><span class="o">/</span><span class="n">notebooks</span><span class="o">/</span><span class="n">vector_tileserver</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">10</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># vector_tileserver02.py</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="c1">#########################</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="c1"># helper functions to render .mbtiles as a basemap inside pydeck</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> 
-<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="c1">#########################</span>
-<span class="ne">---&gt; </span><span class="mi">10</span> <span class="kn">from</span><span class="w"> </span><span class="nn">flask</span><span class="w"> </span><span class="kn">import</span> <span class="n">Flask</span><span class="p">,</span> <span class="n">Response</span><span class="p">,</span> <span class="n">abort</span>
-<span class="g g-Whitespace">     </span><span class="mi">11</span> <span class="kn">import</span><span class="w"> </span><span class="nn">sqlite3</span>
-<span class="g g-Whitespace">     </span><span class="mi">12</span> <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
-
-<span class="ne">ModuleNotFoundError</span>: No module named &#39;flask&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tile server running on http://localhost:8000
+ * Serving Flask app &#39;vector_tileserver&#39;
+ * Debug mode: off
 </pre></div>
 </div>
 </div>
@@ -1296,7 +1278,7 @@ INFORMAL: Population:  1279  with Building Volume Per Capita (BVPC) 77.776
 <p>These are LoD1 3D City Models and works well in these types of areas.<br />
 LoD2 would offer a more representative BVpC <a class="reference external" href="https://www.researchgate.net/publication/343185735_Building_Volume_Per_Capita_BVPC_A_Spatially_Explicit_Measure_of_Inequality_Relevant_to_the_SDGs">(Ghosh, T; et al. 2020)</a> value; when the complexity of the built environment increases.</p>
 <p>Think about a <code class="docutils literal notranslate"><span class="pre">house</span></code> with living space in the roof structure, so called <em>‘attic living’</em>, or an <code class="docutils literal notranslate"><span class="pre">apartment</span></code> / <code class="docutils literal notranslate"><span class="pre">residential</span></code> building with different levels, loft apartments and/or units in the turrets of a <code class="docutils literal notranslate"><span class="pre">building</span></code>.</p>
-<p><em><strong>consider</strong></em>: <em><strong><a class="reference external" href="https://adriankriger.github.io/geo3D/">geo3D</a></strong></em> seperates <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Tag:building%3Dcabin">building:cabin</a> from <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> to more precisely represent informal structures which typical do not have roof trussess but account for <a class="reference external" href="https://en.wikipedia.org/wiki/Public_housing">social housing</a> that does</div></div></p>
+<p><em><strong>consider</strong></em>: <em><strong><a class="reference external" href="https://adriankriger.github.io/geo3D/">geo3D</a></strong></em> seperates <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Tag:building%3Dcabin">building:cabin</a> from <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> to more precisely represent informal structures which typical do not have roof trusses but account for <a class="reference external" href="https://en.wikipedia.org/wiki/Public_housing">social housing</a> that does</div></p>
 </section>
 </section>
 <section id="interactive-visualization">
@@ -1573,22 +1555,6 @@ LoD2 would offer a more representative BVpC <a class="reference external" href="
 
 
 <span class="c1"># Show the HTML file in a JupyterBook for rendering - below (it might be hidden / narrow) we open. delete this in practice</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Show the HTML file inline | for rendering in JupyterBook we open. delete this in practice</span>
-<span class="o">&lt;</span><span class="n">iframe</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;_static/interactiveOnly.html&quot;</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;100%&quot;</span> <span class="n">height</span><span class="o">=</span><span class="s2">&quot;450&quot;</span> <span class="n">frameborder</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="o">&gt;&lt;/</span><span class="n">iframe</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span>  <span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">34</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
-    <span class="o">&lt;</span><span class="n">iframe</span> <span class="n">src</span><span class="o">=</span><span class="s2">&quot;_static/interactiveOnly.html&quot;</span> <span class="n">width</span><span class="o">=</span><span class="s2">&quot;100%&quot;</span> <span class="n">height</span><span class="o">=</span><span class="s2">&quot;450&quot;</span> <span class="n">frameborder</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="o">&gt;&lt;/</span><span class="n">iframe</span><span class="o">&gt;</span>
-    <span class="o">^</span>
-<span class="ne">SyntaxError</span>: invalid syntax
 </pre></div>
 </div>
 </div>
