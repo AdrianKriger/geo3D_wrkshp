@@ -12,7 +12,7 @@ Binder is a cloud service that allows users to share reproducible interactive co
 
 Binder is probably the easiest way to execute notebooks in this repository, as you only have to do one click to arrive in a Jupyterlab with all the necessary libraries. However, its public resources are limited, supporting only some *'tens'* (less than 30) of instances at a time with restricted processing power. The primary purpose of this functionality here; is to demonstrate the plug-and-play nature of *geo3D*. 
 
-Each Notebook in the village and suburbs sections ([interactiveOnly](../notebooks/interactiveOnly), [LoD1_3D_CityModel](../notebooks/osm_LoD1_3DCityModel) and [CityJSONSpatialDataScience](../notebooks/CityJSONspatialDataScience)) have a Binder icon, from which to launch the **that particular** notebook on the Binder service.
+Each Notebook in the village and suburbs sections ([interactiveOnly](../notebooks/interactiveOnly), [LoD1_3D_CityModel](../notebooks/osm_LoD1_3D-noInternet) and [CityJSONSpatialDataScience](../notebooks/CityJSONdataScience-noInternet)) have a Binder icon, from which to launch the **that particular** notebook on the Binder service.
 
 Alternatively, to launch the **entire** `geo3D_wrkshp` GitHub repository; click on the launch Binder icon below:
 
