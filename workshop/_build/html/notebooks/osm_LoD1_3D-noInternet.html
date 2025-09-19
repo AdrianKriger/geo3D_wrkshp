@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -539,7 +539,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.592766
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.921178
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -561,7 +561,10 @@ document.write(`
     <tr style="text-align: right;">
       <th></th>
       <th>osm_id</th>
+      <th>osm_way_id</th>
       <th>name</th>
+      <th>amenity</th>
+      <th>building</th>
       <th>type</th>
       <th>boundary</th>
       <th>place</th>
@@ -573,7 +576,10 @@ document.write(`
     <tr>
       <th>0</th>
       <td>2034285</td>
+      <td>NaN</td>
       <td>Woodstock</td>
+      <td>NaN</td>
+      <td>NaN</td>
       <td>boundary</td>
       <td>place</td>
       <td>suburb</td>
@@ -610,7 +616,10 @@ document.write(`
     <tr style="text-align: right;">
       <th></th>
       <th>osm_id</th>
+      <th>osm_way_id</th>
       <th>name</th>
+      <th>amenity</th>
+      <th>building</th>
       <th>type</th>
       <th>boundary</th>
       <th>place</th>
@@ -622,7 +631,10 @@ document.write(`
     <tr>
       <th>0</th>
       <td>2034285</td>
+      <td>NaN</td>
       <td>Woodstock</td>
+      <td>NaN</td>
+      <td>NaN</td>
       <td>boundary</td>
       <td>place</td>
       <td>suburb</td>
@@ -672,7 +684,11 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.081459
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ERROR 1: Non closed ring detected.
+ERROR 1: Non closed ring detected.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.413295
 </pre></div>
 </div>
 </div>
@@ -706,11 +722,17 @@ document.write(`
       <th>osm_id</th>
       <th>osm_way_id</th>
       <th>name</th>
-      <th>amenity</th>
       <th>type</th>
+      <th>amenity</th>
       <th>building</th>
+      <th>craft</th>
+      <th>historic</th>
+      <th>leisure</th>
+      <th>man_made</th>
       <th>office</th>
+      <th>shop</th>
       <th>sport</th>
+      <th>tourism</th>
       <th>other_tags</th>
       <th>geometry</th>
     </tr>
@@ -718,29 +740,41 @@ document.write(`
   <tbody>
     <tr>
       <th>0</th>
-      <td>13665513</td>
-      <td>NaN</td>
+      <td>11029147</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>multipolygon</td>
-      <td>apartments</td>
+      <td>NaN</td>
+      <td>school</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>"addr:city"=&gt;"Cape Town","addr:housename"=&gt;"Up...</td>
-      <td>MULTIPOLYGON (((18.45714 -33.93530, 18.45709 -...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>"building:levels"=&gt;"2","ref:ZA:emis"=&gt;"1033103...</td>
+      <td>MULTIPOLYGON (((18.43904 -33.93415, 18.43955 -...</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>13705114</td>
+      <td>12227309</td>
       <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>The Neighbourgoods Market</td>
       <td>multipolygon</td>
-      <td>warehouse</td>
+      <td>marketplace</td>
+      <td>retail</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>"addr:city"=&gt;"Cape Town","addr:housenumber"=&gt;"...</td>
-      <td>MULTIPOLYGON (((18.44997 -33.93634, 18.45045 -...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>"addr:city"=&gt;"Cape Town","addr:suburb"=&gt;"Woods...</td>
+      <td>MULTIPOLYGON (((18.45801 -33.92731, 18.45853 -...</td>
     </tr>
   </tbody>
 </table>
@@ -804,40 +838,40 @@ document.write(`
       <th></th>
       <th>osm_id</th>
       <th>name</th>
-      <th>amenity</th>
       <th>type</th>
+      <th>amenity</th>
       <th>building</th>
+      <th>craft</th>
+      <th>historic</th>
+      <th>leisure</th>
+      <th>man_made</th>
       <th>office</th>
-      <th>sport</th>
-      <th>geometry</th>
-      <th>tags</th>
-      <th>addr:city</th>
       <th>...</th>
-      <th>ref:ZA:emis</th>
-      <th>school</th>
-      <th>building:prefabricated</th>
-      <th>access</th>
-      <th>female</th>
-      <th>club</th>
-      <th>cuisine</th>
-      <th>opening_hours</th>
-      <th>outdoor_seating</th>
-      <th>layer</th>
+      <th>studio</th>
+      <th>guest_house</th>
+      <th>abandoned:building</th>
+      <th>motorcycle:rental</th>
+      <th>second_hand</th>
+      <th>drink:coffee</th>
+      <th>bus</th>
+      <th>network</th>
+      <th>opening_date</th>
+      <th>unisex</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>1</th>
-      <td>13705114</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>12227309</td>
+      <td>The Neighbourgoods Market</td>
       <td>multipolygon</td>
-      <td>warehouse</td>
+      <td>marketplace</td>
+      <td>retail</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>MULTIPOLYGON (((18.44997 -33.93634, 18.45045 -...</td>
-      <td>{'addr:city': 'Cape Town', 'addr:housenumber':...</td>
-      <td>Cape Town</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -851,17 +885,17 @@ document.write(`
       <td>NaN</td>
     </tr>
     <tr>
-      <th>7</th>
-      <td>739615941</td>
+      <th>2</th>
+      <td>12249345</td>
+      <td>Church  Square</td>
+      <td>multipolygon</td>
+      <td>NaN</td>
+      <td>apartments</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>house</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>MULTIPOLYGON (((18.44961 -33.93777, 18.44955 -...</td>
-      <td>{'addr:city': 'Cape Town', 'addr:housenumber':...</td>
-      <td>Cape Town</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -876,7 +910,7 @@ document.write(`
     </tr>
   </tbody>
 </table>
-<p>2 rows × 30 columns</p>
+<p>2 rows × 149 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -888,7 +922,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 306 buildings have been harvested from ./data/CapeTown.osm.pbf
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 3797 buildings have been harvested from ./data/CapeTown.osm.pbf
 </pre></div>
 </div>
 </div>
@@ -920,40 +954,40 @@ document.write(`
       <th></th>
       <th>osm_id</th>
       <th>name</th>
-      <th>amenity</th>
       <th>type</th>
+      <th>amenity</th>
       <th>building</th>
+      <th>craft</th>
+      <th>historic</th>
+      <th>leisure</th>
+      <th>man_made</th>
       <th>office</th>
-      <th>sport</th>
-      <th>geometry</th>
-      <th>tags</th>
-      <th>addr:city</th>
       <th>...</th>
-      <th>ref:ZA:emis</th>
-      <th>school</th>
-      <th>building:prefabricated</th>
-      <th>access</th>
-      <th>female</th>
-      <th>club</th>
-      <th>cuisine</th>
-      <th>opening_hours</th>
-      <th>outdoor_seating</th>
-      <th>layer</th>
+      <th>studio</th>
+      <th>guest_house</th>
+      <th>abandoned:building</th>
+      <th>motorcycle:rental</th>
+      <th>second_hand</th>
+      <th>drink:coffee</th>
+      <th>bus</th>
+      <th>network</th>
+      <th>opening_date</th>
+      <th>unisex</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>1</th>
-      <td>13705114</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>12227309</td>
+      <td>The Neighbourgoods Market</td>
       <td>multipolygon</td>
-      <td>warehouse</td>
+      <td>marketplace</td>
+      <td>retail</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>MULTIPOLYGON (((18.44997 -33.93634, 18.45045 -...</td>
-      <td>{'addr:city': 'Cape Town', 'addr:housenumber':...</td>
-      <td>Cape Town</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -967,17 +1001,17 @@ document.write(`
       <td>NaN</td>
     </tr>
     <tr>
-      <th>7</th>
-      <td>739615941</td>
+      <th>2</th>
+      <td>12249345</td>
+      <td>Church  Square</td>
+      <td>multipolygon</td>
+      <td>NaN</td>
+      <td>apartments</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>house</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>MULTIPOLYGON (((18.44961 -33.93777, 18.44955 -...</td>
-      <td>{'addr:city': 'Cape Town', 'addr:housenumber':...</td>
-      <td>Cape Town</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -992,7 +1026,7 @@ document.write(`
     </tr>
   </tbody>
 </table>
-<p>2 rows × 30 columns</p>
+<p>2 rows × 149 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -1023,7 +1057,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold"> University Estate has </span> 305 buildings
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold"> Woodstock has </span> 3715 buildings
 </pre></div>
 </div>
 </div>
@@ -1056,39 +1090,39 @@ document.write(`
       <th></th>
       <th>osm_id</th>
       <th>name</th>
-      <th>amenity</th>
       <th>type</th>
+      <th>amenity</th>
       <th>building</th>
+      <th>craft</th>
+      <th>historic</th>
+      <th>leisure</th>
+      <th>man_made</th>
       <th>office</th>
-      <th>sport</th>
-      <th>geometry</th>
-      <th>tags</th>
-      <th>addr:city</th>
       <th>...</th>
-      <th>ref:ZA:emis</th>
-      <th>school</th>
-      <th>building:prefabricated</th>
-      <th>access</th>
-      <th>female</th>
-      <th>club</th>
-      <th>cuisine</th>
-      <th>opening_hours</th>
-      <th>outdoor_seating</th>
-      <th>layer</th>
+      <th>studio</th>
+      <th>guest_house</th>
+      <th>abandoned:building</th>
+      <th>motorcycle:rental</th>
+      <th>second_hand</th>
+      <th>drink:coffee</th>
+      <th>bus</th>
+      <th>network</th>
+      <th>opening_date</th>
+      <th>unisex</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>415</th>
-      <td>1025219392</td>
+      <th>4388</th>
+      <td>1340498943</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>garage</td>
+      <td>semidetached_house</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>MULTIPOLYGON (((18.44891 -33.93753, 18.44904 -...</td>
-      <td>{'building:levels': '2'}</td>
+      <td>NaN</td>
+      <td>NaN</td>
       <td>NaN</td>
       <td>...</td>
       <td>NaN</td>
@@ -1103,17 +1137,17 @@ document.write(`
       <td>NaN</td>
     </tr>
     <tr>
-      <th>496</th>
-      <td>1311778266</td>
+      <th>4389</th>
+      <td>1423081172</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>office</td>
-      <td>financial</td>
+      <td>warehouse</td>
       <td>NaN</td>
-      <td>MULTIPOLYGON (((18.45093 -33.93753, 18.45085 -...</td>
-      <td>{'addr:city': 'Cape Town', 'addr:housename': '...</td>
-      <td>Cape Town</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1128,13 +1162,28 @@ document.write(`
     </tr>
   </tbody>
 </table>
-<p>2 rows × 30 columns</p>
+<p>2 rows × 149 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- coordinate reference system</span>
 <span class="n">ts</span><span class="o">.</span><span class="n">crs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Geographic 2D CRS: EPSG:4326&gt;
+Name: WGS 84
+Axis Info [ellipsoidal]:
+- Lat[north]: Geodetic latitude (degree)
+- Lon[east]: Geodetic longitude (degree)
+Area of Use:
+- name: World.
+- bounds: (-180.0, -90.0, 180.0, 90.0)
+Datum: World Geodetic System 1984 ensemble
+- Ellipsoid: WGS 84
+- Prime Meridian: Greenwich
 </pre></div>
 </div>
 </div>
@@ -1147,6 +1196,24 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- estimate utm: internal geopandas function</span>
 <span class="n">ts</span><span class="o">.</span><span class="n">estimate_utm_crs</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Projected CRS: EPSG:32734&gt;
+Name: WGS 84 / UTM zone 34S
+Axis Info [cartesian]:
+- E[east]: Easting (metre)
+- N[north]: Northing (metre)
+Area of Use:
+- name: Between 18°E and 24°E, southern hemisphere between 80°S and equator, onshore and offshore. Angola. Botswana. Democratic Republic of the Congo (Zaire). Namibia. South Africa. Zambia.
+- bounds: (18.0, -80.0, 24.0, 0.0)
+Coordinate Operation:
+- name: UTM zone 34S
+- method: Transverse Mercator
+Datum: World Geodetic System 1984 ensemble
+- Ellipsoid: WGS 84
+- Prime Meridian: Greenwich
 </pre></div>
 </div>
 </div>
@@ -1266,7 +1333,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.369401
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:01:45.484975
 </pre></div>
 </div>
 </div>
@@ -1290,7 +1357,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/1a5b74d95b4a2107fa1690c0c07efd88fa4b891c294baa6a51dc9e0ee3d373f2.png" src="../_images/1a5b74d95b4a2107fa1690c0c07efd88fa4b891c294baa6a51dc9e0ee3d373f2.png" />
+<img alt="../_images/0169f86660f8cbc5409ed9d8497b2dede5034de9e2465150892dc62d7e3a3680.png" src="../_images/0169f86660f8cbc5409ed9d8497b2dede5034de9e2465150892dc62d7e3a3680.png" />
 </div>
 </div>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -1351,100 +1418,24 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">RuntimeError</span><span class="g g-Whitespace">                              </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">24</span><span class="p">],</span> <span class="n">line</span> <span class="mi">4</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># set the path to the projected, cliped elevation</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">src_filename</span> <span class="o">=</span> <span class="n">jparams</span><span class="p">[</span><span class="s1">&#39;projClip_raster&#39;</span><span class="p">]</span>
+<span class="ne">----&gt; </span><span class="mi">4</span> <span class="n">src_ds</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">src_filename</span><span class="p">)</span> 
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">gt_forward</span> <span class="o">=</span> <span class="n">src_ds</span><span class="o">.</span><span class="n">GetGeoTransform</span><span class="p">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="n">rb</span> <span class="o">=</span> <span class="n">src_ds</span><span class="o">.</span><span class="n">GetRasterBand</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
+<span class="nn">File ~/miniconda3/envs/geo3D_gthbRepo02/lib/python3.9/site-packages/osgeo/gdal.py:5310,</span> in <span class="ni">Open</span><span class="nt">(*args)</span>
+<span class="g g-Whitespace">   </span><span class="mi">5305</span><span class="w"> </span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;Open(char const * utf8_path, GDALAccess eAccess=GA_ReadOnly) -&gt; Dataset&quot;&quot;&quot;</span>
+<span class="g g-Whitespace">   </span><span class="mi">5307</span> <span class="n">_WarnIfUserHasNotSpecifiedIfUsingExceptions</span><span class="p">()</span>
+<span class="ne">-&gt; </span><span class="mi">5310</span> <span class="k">return</span> <span class="n">_gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
 
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>geometry</th>
-      <th>osm_id</th>
-      <th>name</th>
-      <th>amenity</th>
-      <th>type</th>
-      <th>building</th>
-      <th>office</th>
-      <th>sport</th>
-      <th>tags</th>
-      <th>addr:city</th>
-      <th>...</th>
-      <th>school</th>
-      <th>building:prefabricated</th>
-      <th>access</th>
-      <th>female</th>
-      <th>club</th>
-      <th>cuisine</th>
-      <th>opening_hours</th>
-      <th>outdoor_seating</th>
-      <th>layer</th>
-      <th>mean</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1</th>
-      <td>MULTIPOLYGON (((264304.860 6241972.753, 264375...</td>
-      <td>13705114</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>multipolygon</td>
-      <td>warehouse</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>{'addr:city': 'Cape Town', 'addr:housenumber':...</td>
-      <td>Cape Town</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>69.699997</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>MULTIPOLYGON (((264275.999 6241813.835, 264278...</td>
-      <td>739615941</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>house</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>{'addr:city': 'Cape Town', 'addr:housenumber':...</td>
-      <td>Cape Town</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>96.750000</td>
-    </tr>
-  </tbody>
-</table>
-<p>2 rows × 31 columns</p>
-</div></div></div>
+<span class="ne">RuntimeError</span>: ./raster/3318CDclip_utm34s.tif: No such file or directory
+</pre></div>
+</div>
+</div>
 </div>
 <div class="alert alert-block alert-warning"><b>Calculate building height:</b> 
 <p>We assume a building level is 2.8 meters high and add another 1.3 meters (to account for the roof) and create a new attribute <code class="docutils literal notranslate"><span class="pre">height</span></code>.</div></p>
@@ -1501,11 +1492,6 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.040881
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1515,88 +1501,6 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>osm_id</th>
-      <th>address</th>
-      <th>building</th>
-      <th>building:levels</th>
-      <th>building:use</th>
-      <th>building:flats</th>
-      <th>amenity</th>
-      <th>building_height</th>
-      <th>roof_height</th>
-      <th>ground_height</th>
-      <th>bottom_bridge_height</th>
-      <th>bottom_roof_height</th>
-      <th>plus_code</th>
-      <th>footprint</th>
-      <th>geometry</th>
-      <th>x</th>
-      <th>y</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>1</th>
-      <td>13705114</td>
-      <td>197 Nelson Mandela Boulevard Cape Town</td>
-      <td>warehouse</td>
-      <td>2.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>6.9</td>
-      <td>76.60</td>
-      <td>69.699997</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>4FRW3F72+C5V</td>
-      <td>(((264304.8598043866, 6241972.753412597), (264...</td>
-      <td>POLYGON ((264304.860 6241972.753, 264375.824 6...</td>
-      <td>264346.351785</td>
-      <td>6.241970e+06</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>739615941</td>
-      <td>10 Rhodes Avenue University Estate Cape Town</td>
-      <td>house</td>
-      <td>2.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>6.9</td>
-      <td>103.65</td>
-      <td>96.750000</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>4FRW3C6X+WRG</td>
-      <td>(((264275.99887603114, 6241813.834685098), (26...</td>
-      <td>POLYGON ((264275.999 6241813.835, 264278.104 6...</td>
-      <td>264273.719480</td>
-      <td>6.241822e+06</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <p><strong>prepare the elevation for the TIN</strong></p>
 <div class="cell docutils container">
@@ -1650,11 +1554,6 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:02.357814
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1662,108 +1561,6 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>osm_id</th>
-      <th>address</th>
-      <th>building</th>
-      <th>building:levels</th>
-      <th>building:use</th>
-      <th>building:flats</th>
-      <th>amenity</th>
-      <th>building_height</th>
-      <th>roof_height</th>
-      <th>ground_height</th>
-      <th>bottom_bridge_height</th>
-      <th>bottom_roof_height</th>
-      <th>plus_code</th>
-      <th>footprint</th>
-      <th>geometry</th>
-      <th>x</th>
-      <th>y</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>414</th>
-      <td>1025219391</td>
-      <td>2 Rhodes Avenue University Estate Cape Town</td>
-      <td>house</td>
-      <td>2.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>6.9</td>
-      <td>108.15</td>
-      <td>101.250000</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>4FRW3C7X+2JJ</td>
-      <td>(((264224.2917118013, 6241856.43305646), (2642...</td>
-      <td>POLYGON ((264224.292 6241856.433, 264214.469 6...</td>
-      <td>264219.011950</td>
-      <td>6.241851e+06</td>
-    </tr>
-    <tr>
-      <th>415</th>
-      <td>1025219392</td>
-      <td>None</td>
-      <td>garage</td>
-      <td>2.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>6.9</td>
-      <td>110.31</td>
-      <td>103.410004</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>4FRW3C6X+XHG</td>
-      <td>(((264210.071087759, 6241838.299184569), (2642...</td>
-      <td>POLYGON ((264210.071 6241838.299, 264209.705 6...</td>
-      <td>264215.940686</td>
-      <td>6.241836e+06</td>
-    </tr>
-    <tr>
-      <th>496</th>
-      <td>1311778266</td>
-      <td>Oasis House 96 Upper Roodebloem Road Universit...</td>
-      <td>office</td>
-      <td>3.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>9.7</td>
-      <td>92.57</td>
-      <td>82.870003</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>4FRW3F72+27H</td>
-      <td>(((264397.17827348795, 6241843.428759759), (26...</td>
-      <td>POLYGON ((264397.178 6241843.429, 264389.388 6...</td>
-      <td>264378.153709</td>
-      <td>6.241852e+06</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <div class="alert alert-block alert-warning"><b>Prepare for Triangle:</b> </div>
 <p>The Python code to execute the <code class="docutils literal notranslate"><span class="pre">city3D.functions</span></code> are in the <code class="docutils literal notranslate"><span class="pre">city3D.py</span></code> script</p>
@@ -1879,11 +1676,6 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Tend</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">Tend</span> <span class="o">-</span> <span class="n">Tstart</span><span class="p">))))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:07.209067
 </pre></div>
 </div>
 </div>

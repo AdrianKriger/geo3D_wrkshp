@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -1719,60 +1719,51 @@ Name: count, dtype: int64
         <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:units&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:units&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">f_house</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">f_house</span>
+            <span class="n">f_house</span>
 
     <span class="c1">#- informal structure (shack)</span>
     <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;cabin&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">inf_structure</span>
         
     <span class="c1">#- in this case social housing</span>
-    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;residential&#39;</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;social_facility&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:levels&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rooms&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rooms&#39;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:levels&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rooms&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:flats&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">inf_structure</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">inf_structure</span>
-
-    <span class="c1">#-- social facility [shelter / carehome]</span>
-    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;residential&#39;</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;social_facility&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;residential&#39;</span> <span class="ow">and</span> <span class="s1">&#39;social_facility&#39;</span> <span class="ow">in</span> <span class="n">c</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;social_facility&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:levels&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:units&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:units&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">inf_structure</span>
-            <span class="k">else</span><span class="p">:</span> 
-                <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;beds&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s1">&#39;rooms&#39;</span> <span class="ow">in</span> <span class="n">c</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rooms&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rooms&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s1">&#39;building:flats&#39;</span> <span class="ow">in</span> <span class="n">c</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:flats&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:flats&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">inf_structure</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">inf_structure</span>
-            
+    <span class="c1">#-- social facility [shelter / carehome]</span>
+    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;residential&#39;</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;social_facility&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:units&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:units&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">inf_structure</span>
+        <span class="k">else</span><span class="p">:</span> 
+            <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;beds&#39;</span><span class="p">]</span>
+                
     <span class="c1">#- formal apartment</span>
     <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;apartments&#39;</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rooms&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rooms&#39;</span><span class="p">]</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:flats&#39;</span><span class="p">])</span> <span class="o">*</span> <span class="mi">3</span>
+        <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:flats&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mi">3</span>
         
-    <span class="c1">#- private student residence</span>
-    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;student&#39;</span><span class="p">:</span> 
+    <span class="c1">#- private student residence </span>
+    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;student&#39;</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:levels&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rooms&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rooms&#39;</span><span class="p">]</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:flats&#39;</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:flats&#39;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">3</span>
     <span class="c1"># university owned student residence</span>
     <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;dormitory&#39;</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;residential&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;university&#39;</span><span class="p">:</span>
         <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:levels&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rooms&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;rooms&#39;</span> <span class="ow">in</span> <span class="n">c</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rooms&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rooms&#39;</span><span class="p">]</span>
-            <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;beds&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;beds&#39;</span> <span class="ow">in</span> <span class="n">c</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;beds&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;beds&#39;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="mi">3</span>
 
 <span class="n">gdf2</span><span class="p">[</span><span class="s1">&#39;pop&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf2</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">pop</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
-<span class="n">est_pop</span> <span class="o">=</span> <span class="n">gdf2</span><span class="p">[</span><span class="s1">&#39;pop&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">est_pop</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">gdf2</span><span class="p">[</span><span class="s1">&#39;pop&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The estimated population is:&#39;</span><span class="p">,</span> <span class="n">est_pop</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -2217,7 +2208,7 @@ LoD2 would offer a more representative BVPC <a class="reference external" href="
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:40.564436
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:38.784879
 </pre></div>
 </div>
 </div>
