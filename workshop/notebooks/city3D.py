@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# env/geo3D_gthbRepo02
+# env/geo3D_wrkshp02
 #########################
 # helper functions to create LoD1 3D City Model from volunteered public data (OpenStreetMap) with elevation via a raster DEM.
 
@@ -653,14 +653,7 @@ def output_cityjson(extent, minz, maxz, TerrainT, pts, jparams, min_zbld, acoi, 
 
 def extract_boundaries_by_name(input_pbf, jparams):
     """
-    Extract boundaries from an OSM PBF:
-        1. Try to extract by name within boundary/place types (neighbourhood, suburb, town, etc.)
-        2. If nothing is found, fallback to amenities (e.g., university, research_institute)
-    Parameters:
-        input_pbf (str): path to OSM PBF
-        jparams (dict): must contain 'FocusArea' key for boundary name
-    Returns:
-        GeoDataFrame
+    Extract suburb (or other place-type) boundaries from an OSM PBF.
     """
     gdal.UseExceptions()
     gdal.SetConfigOption("OGR_GEOMETRY_ACCEPT_UNCLOSED_RING", "NO")
@@ -670,34 +663,43 @@ def extract_boundaries_by_name(input_pbf, jparams):
     place_types = ["neighbourhood", "suburb", "quarter", "borough", "village", "town", "city"]
     amenity_list = ["university", "research_institute"]
 
-    # --- Try boundary name first, restricted to place types ---
-    place_filter = " OR ".join([f"place = '{p}'" for p in place_types])
-    where_filter = f"name = '{boundary_name}' AND ({place_filter})"
+    # --- Translate everything with name first ---
     gdal.VectorTranslate(
         geojson_vsimem,
         input_pbf,
         format="GeoJSON",
         layers=["multipolygons"],
-        options=["-where", where_filter, "-makevalid"]
+        options=["-where", f"name = '{boundary_name}'", "-makevalid"]
+
     )
     gdf = gpd.read_file(geojson_vsimem)
     gdal.Unlink(geojson_vsimem)
+
+    # --- Filter in Python for robustness ---
+    gdf = gdf[
+        (gdf["name"] == boundary_name) &
+        (gdf["place"].isin(place_types))
+    ]
 
     if len(gdf) > 0:
         return gdf
 
-    # --- Fallback to amenities ---
-    amenity_filter = " OR ".join([f"amenity = '{a}'" for a in amenity_list])
-    where_filter = f"name = '{boundary_name}' AND ({amenity_filter})"
+    # --- Fallback: look for amenities ---
     gdal.VectorTranslate(
         geojson_vsimem,
         input_pbf,
         format="GeoJSON",
         layers=["multipolygons"],
-        options=["-where", where_filter, "-makevalid"]
+        options=[f"-where name = '{boundary_name}'", "-makevalid"]
     )
     gdf = gpd.read_file(geojson_vsimem)
     gdal.Unlink(geojson_vsimem)
 
+    gdf = gdf[
+        (gdf["name"] == boundary_name) &
+        (gdf["amenity"].isin(amenity_list))
+    ]
+
     return gdf
+
 
