@@ -21,3 +21,5 @@ dependencies:
   - overpass==0.7
   - osm2geojson==0.2.4
   - openlocationcode==1.0.1                            #- google 'plus codes' at https://github.com/google/open-location-code
+  - flask==3.1.2
+
