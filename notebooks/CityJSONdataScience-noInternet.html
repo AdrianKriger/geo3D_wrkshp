@@ -472,34 +472,51 @@ document.write(`
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">vector_tileserver</span><span class="w"> </span><span class="kn">import</span> <span class="n">app</span><span class="p">,</span> <span class="n">configure</span>
 
-<span class="c1"># Reduce default Flask logging</span>
-<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;werkzeug&#39;</span><span class="p">)</span>
-<span class="n">log</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>               <span class="c1"># Only show warnings and errors</span>
+<span class="c1"># Quiet Flask logs</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;werkzeug&quot;</span><span class="p">)</span>
+<span class="n">log</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>                               <span class="c1"># Only show warnings and errors</span>
 
-<span class="c1"># configure before starting</span>
-<span class="n">AREA_NAME</span> <span class="o">=</span> <span class="s2">&quot;capeTown&quot;</span>                      <span class="c1">#- this is the name of the &#39;./data/{file-name}.mbtiles&#39; file. The .mbtiles file-name must match this name here.</span>
-<span class="n">PORT</span> <span class="o">=</span> <span class="mi">8000</span>                                 <span class="c1">#- choose port [5000, 8000, 8080]</span>
+<span class="n">AREA_NAME</span> <span class="o">=</span> <span class="s2">&quot;capeTown&quot;</span>                                      <span class="c1">#- this is the name of the &#39;./data/{file-name}.mbtiles&#39; file. The .mbtiles file-name must match this name here</span>
+<span class="n">PORT</span> <span class="o">=</span> <span class="mi">8000</span>                                                 <span class="c1">#- choose port [5000, 8000, 8080]</span>
 
-<span class="c1"># configure tile server</span>
 <span class="n">configure</span><span class="p">(</span><span class="n">AREA_NAME</span><span class="p">,</span> <span class="n">port</span><span class="o">=</span><span class="n">PORT</span><span class="p">)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">run_server</span><span class="p">():</span>
-    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="n">PORT</span><span class="p">)</span>  <span class="c1">#</span>
+    <span class="n">app</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="n">PORT</span><span class="p">,</span> <span class="n">host</span><span class="o">=</span><span class="s2">&quot;0.0.0.0&quot;</span><span class="p">)</span>                      <span class="c1"># works both local &amp; cloud</span>
 
 <span class="n">thread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">run_server</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tile server running on http://localhost:</span><span class="si">{</span><span class="n">PORT</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tile server running on http://localhost:8000
- * Serving Flask app &#39;vector_tileserver&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> * Serving Flask app &#39;vector_tileserver&#39;
  * Debug mode: off
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Address already in use
-Port 8000 is in use by another program. Either identify and stop that program, or start the server with a different port.
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- account for cloud execution | Binder and JupyterHub (add other Colab, AWS SageMaker, Azure Notebooks, etc.) | to show the basemap</span>
+<span class="c1">#- typically not necessary if executing on a local machine but we want to show the vector_tilesever.py is feeding the style.json .mbtiles</span>
+
+<span class="c1"># Detect cloud (binder and juypterhub) vs Local</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_tile_base_url</span><span class="p">(</span><span class="n">port</span><span class="o">=</span><span class="mi">8000</span><span class="p">):</span>
+    <span class="k">if</span> <span class="s2">&quot;BINDER_SERVICE_HOST&quot;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span> <span class="ow">or</span> <span class="s2">&quot;JUPYTERHUB_SERVICE_PREFIX&quot;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
+        <span class="c1"># Binder / JupyterHub → use proxy</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;/proxy/</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Local</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&quot;</span>
+
+<span class="n">TILE_BASE</span> <span class="o">=</span> <span class="n">get_tile_base_url</span><span class="p">(</span><span class="n">PORT</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Tile server URL:&quot;</span><span class="p">,</span> <span class="n">TILE_BASE</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tile server URL: http://localhost:8000
 </pre></div>
 </div>
 </div>
@@ -1483,20 +1500,17 @@ LoD2 would offer a more representative BVpC <a class="reference external" href="
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># define variables for the pydeck tile server | basemap</span>
+
 <span class="c1"># Update tile endpoint dynamically</span>
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;./data/style.json&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">style</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-    
-<span class="c1"># dynamically update both source name and tile URL</span>
-<span class="n">placeholder_key</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">style</span><span class="p">[</span><span class="s2">&quot;sources&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>  <span class="c1"># &quot;{AREA_NAME}&quot;</span>
+
+<span class="n">placeholder_key</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">style</span><span class="p">[</span><span class="s2">&quot;sources&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()))</span>
 <span class="n">style</span><span class="p">[</span><span class="s2">&quot;sources&quot;</span><span class="p">][</span><span class="n">AREA_NAME</span><span class="p">]</span> <span class="o">=</span> <span class="n">style</span><span class="p">[</span><span class="s2">&quot;sources&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">placeholder_key</span><span class="p">)</span>
 
-<span class="c1"># --- update tiles ---</span>
-<span class="n">style</span><span class="p">[</span><span class="s2">&quot;sources&quot;</span><span class="p">][</span><span class="n">AREA_NAME</span><span class="p">][</span><span class="s2">&quot;tiles&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="sa">f</span><span class="s2">&quot;http://localhost:</span><span class="si">{</span><span class="n">PORT</span><span class="si">}</span><span class="s2">/</span><span class="se">{{</span><span class="s2">z</span><span class="se">}}</span><span class="s2">/</span><span class="se">{{</span><span class="s2">x</span><span class="se">}}</span><span class="s2">/</span><span class="se">{{</span><span class="s2">y</span><span class="se">}}</span><span class="s2">.pbf&quot;</span>
-<span class="p">]</span>
+<span class="c1"># Inject runtime URL</span>
+<span class="n">style</span><span class="p">[</span><span class="s2">&quot;sources&quot;</span><span class="p">][</span><span class="n">AREA_NAME</span><span class="p">][</span><span class="s2">&quot;tiles&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">TILE_BASE</span><span class="si">}</span><span class="s2">/</span><span class="se">{{</span><span class="s2">z</span><span class="se">}}</span><span class="s2">/</span><span class="se">{{</span><span class="s2">x</span><span class="se">}}</span><span class="s2">/</span><span class="se">{{</span><span class="s2">y</span><span class="se">}}</span><span class="s2">.pbf&quot;</span><span class="p">]</span>
 
-<span class="c1"># --- fix each layer’s source ---</span>
 <span class="k">for</span> <span class="n">layer</span> <span class="ow">in</span> <span class="n">style</span><span class="p">[</span><span class="s2">&quot;layers&quot;</span><span class="p">]:</span>
     <span class="k">if</span> <span class="s2">&quot;source&quot;</span> <span class="ow">in</span> <span class="n">layer</span> <span class="ow">and</span> <span class="n">layer</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">placeholder_key</span><span class="p">:</span>
         <span class="n">layer</span><span class="p">[</span><span class="s2">&quot;source&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">AREA_NAME</span>
