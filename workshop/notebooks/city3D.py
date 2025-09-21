@@ -663,43 +663,33 @@ def extract_boundaries_by_name(input_pbf, jparams):
     place_types = ["neighbourhood", "suburb", "quarter", "borough", "village", "town", "city"]
     amenity_list = ["university", "research_institute"]
 
-    # --- Translate everything with name first ---
+    # --- Try boundary name first, restricted to place types ---
+    place_filter = " OR ".join([f"place = '{p}'" for p in place_types])
+    where_filter = f"name = '{boundary_name}' AND ({place_filter})"
     gdal.VectorTranslate(
         geojson_vsimem,
         input_pbf,
         format="GeoJSON",
         layers=["multipolygons"],
-        options=["-where", f"name = '{boundary_name}'", "-makevalid"]
-
+        options=["-where", where_filter, "-makevalid"]
     )
     gdf = gpd.read_file(geojson_vsimem)
     gdal.Unlink(geojson_vsimem)
-
-    # --- Filter in Python for robustness ---
-    gdf = gdf[
-        (gdf["name"] == boundary_name) &
-        (gdf["place"].isin(place_types))
-    ]
 
     if len(gdf) > 0:
         return gdf
 
-    # --- Fallback: look for amenities ---
+    # --- Fallback to amenities ---
+    amenity_filter = " OR ".join([f"amenity = '{a}'" for a in amenity_list])
+    where_filter = f"name = '{boundary_name}' AND ({amenity_filter})"
     gdal.VectorTranslate(
         geojson_vsimem,
         input_pbf,
         format="GeoJSON",
         layers=["multipolygons"],
-        options=[f"-where name = '{boundary_name}'", "-makevalid"]
+        options=["-where", where_filter, "-makevalid"]
     )
     gdf = gpd.read_file(geojson_vsimem)
     gdal.Unlink(geojson_vsimem)
 
-    gdf = gdf[
-        (gdf["name"] == boundary_name) &
-        (gdf["amenity"].isin(amenity_list))
-    ]
-
     return gdf
-
-

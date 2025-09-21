@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# env/geo3D_distV2
+# env/geo3D_wrkshp02
 #########################
 # helper functions to create LoD1 3D City Model from volunteered public data (OpenStreetMap) with elevation via a raster DEM.
 
@@ -24,8 +24,7 @@ import geopandas as gpd
 
 import shapely.geometry as sg
 from shapely.geometry import Point, LineString, Polygon, MultiPolygon, LinearRing, shape, mapping
-from shapely.ops import snap
-from shapely.ops import transform
+from shapely.ops import snap, transform
 
 import pyproj
 
@@ -36,106 +35,102 @@ from openlocationcode import openlocationcode as olc
 from cjio import cityjson, geom_help
 
 dps = 3
+WGS84 = "EPSG:4326"
 
-def calc_Bldheight(data, is_geojson=True, output_file='./data/fp_j.geojson'):
-    """Calculate building height and write to GeoJSON from either a GeoJSON dictionary or a GeoDataFrame."""
+def to_wgs84_point(point, src_crs=None):
+    """
+    Convert a Shapely point to WGS84 coordinates.
+    """
+    if src_crs and src_crs != "EPSG:4326":
+        # Create a GeoSeries for a simple CRS transformation
+        p = gpd.GeoSeries([point], crs=src_crs).to_crs("EPSG:4326").iloc[0]
+        return p.y, p.x
+    return point.y, point.x
+
+#def process_geometry(geometry):
+#    """Return a valid Polygon or None (skip if not area)."""
+#    return _ensure_polygon(geometry)
+
+# --- Consolidated and Streamlined Main Function ---
+def process_and_write_geojson(gdf, crs, jparams=None): #, output_file='./data/fp_j.geojson'):
+    """
+    Consolidates building height calculations and GeoJSON writing.
+    Accepts a single GeoDataFrame as input.
     
-    storeyheight = 2.8  # Default storey height assumption
-    footprints = {"type": "FeatureCollection", "features": []}
+    Args:
+        gdf (gpd.GeoDataFrame): The input GeoDataFrame with building data.
+        output_file (str): The path to the output GeoJSON file.
+    """
+    #df = gdf.set_crs(WGS84[5:])
+    #src_crs = getattr(gdf, "crs", None)
 
-    # Decide whether data comes from GeoJSON or a GeoDataFrame
-    iterable = data["features"] if is_geojson else data.iterrows()
-
-    for item in iterable:
-        f = {"type": "Feature", "properties": {}}
+    # 1. Filter out rows with missing 'building:levels'
+    if 'building:levels' not in gdf.columns:
+        print("Warning: 'building:levels' column not found. Skipping height calculations.")
+        return
         
-        # Extract row based on input type
-        row = item if is_geojson else item[1]
-        properties = row["properties"] if is_geojson else row.to_dict()
+    filtered_gdf = gdf[gdf['building:levels'].notna() & (gdf['building:levels'] != '')].copy()
+    
+    if filtered_gdf.empty:
+        print("No buildings with valid 'building:levels' found. No GeoJSON will be created.")
+        return
 
-        # Handle 'tags' dictionary (GeoJSON or within DataFrame)
-        tags = properties.get("tags", {}) if is_geojson else row.get("tags", {})
-        if not isinstance(tags, dict):
-            tags = {}  # Ensure tags is always a dictionary
+    # Process geometry to ensure all are polygons
+    filtered_gdf['geometry'] = filtered_gdf['geometry'].apply(process_geometry)
+    filtered_gdf['footprint'] = filtered_gdf['geometry'].apply(lambda g: mapping(g)["coordinates"]) 
+    filtered_gdf = filtered_gdf[filtered_gdf['geometry'].notna()]
 
-        # Skip if 'building:levels' is missing OR its value is None/empty
-        if is_geojson:
-            has_building_levels = "building:levels" in tags and tags.get("building:levels") not in [None, "", "null"]
-        else:
-            has_building_levels = (
-                ("building:levels" in row and pd.notna(row["building:levels"])) or
-                ("tags" in row and isinstance(row["tags"], dict) and "building:levels" in row["tags"] and row["tags"]["building:levels"] not in [None, "", "null"])
-            )
+    # 2. Add new columns using vectorized operations (faster than iterrows)
+    #print("Calculating building heights and processing data...")
+    height_df = filtered_gdf.apply(calculate_heights, axis=1, result_type='expand')
+    height_cols_to_drop = [col for col in height_df.columns if col in filtered_gdf.columns]
+    if height_cols_to_drop:
+        filtered_gdf = filtered_gdf.drop(columns=height_cols_to_drop)
+    #filtered_gdf = pd.concat([filtered_gdf.reset_index(drop=True), height_df.reset_index(drop=True)], axis=1)
+    filtered_gdf = filtered_gdf.assign(**height_df)
+
+    # 3. Add address and plus_code columns
+    filtered_gdf['address'] = filtered_gdf.apply(extract_address, axis=1)
+    
+    def get_plus_code(row, crs):
+        point = row.geometry.representative_point()
+        lat, lon = to_wgs84_point(point, crs)
+        return olc.encode(lat, lon, 11)
+    
+    filtered_gdf['plus_code'] = filtered_gdf.apply(get_plus_code, axis=1, args=(crs,))
+
+    # 4. Prepare for GeoJSON export by selecting and renaming columns
+    output_cols = [
+        'osm_id', 'address', 'building', 'building:levels', 'building:use',
+        'building:flats', 'building:units', 'beds', 'rooms', 'residential',
+        'amenity', 'social_facility', 'building_height', 'roof_height',
+        'ground_height', 'bottom_bridge_height', 'bottom_roof_height',
+        'plus_code', 'footprint', 'geometry'
+    ]
+    
+    # Ensure the output columns are unique before reindexing
+    final_output_cols = [c for c in output_cols if c in filtered_gdf.columns]
+    
+    #final_gdf = filtered_gdf.filter(items=output_cols).copy()
+    #final_gdf = filtered_gdf.reindex(columns=final_output_cols, fill_value=None).copy()
+    #filtered_gdf = filtered_gdf.loc[:, ~filtered_gdf.columns.duplicated()]
+    final_gdf = filtered_gdf[final_output_cols].copy()
+
+    # 5. Convert to GeoJSON dictionary and write to file
+    #final_geojson = final_gdf.to_json()
+
+    # -- Only write GeoJSON if jparams provided
+    if jparams is not None:
+        fout = jparams['osm_bldings']#.get("geojson_out", "./output.geojson")
+        final_geojson = final_gdf.to_json()
+        with open(fout, "w") as f:
+            f.write(final_geojson)
+    
+    #with open(jparams['osm_bldings'], 'w') as outfile:
+    #    outfile.write(final_geojson)
+
+    return final_gdf
         
-        if not has_building_levels:
-            continue
-
-        # Store OSM ID - Extract from properties (GeoJSON) or columns/tags (GeoDataFrame)
-        f["properties"]["osm_id"] = properties.get("id") if is_geojson else row.get("osm_way_id") or row.get("osm_id") or row.get("id")
-
-        # Harvest attributes (ensure only non-null values are stored)
-        attributes = [
-            'building', 'building:use', 'building:levels', 'building:flats', 'building:units',
-            'beds', 'rooms', 'residential', 'amenity', 'social_facility'
-        ]
-        
-        for key in attributes:
-            value = tags.get(key) if is_geojson else tags.get(key) if key in tags else row.get(key)
-            if value not in [None, "", {}, []]:  # Store only if valid
-                f["properties"][key] = value
-
-        # Extract address components (first check columns, then 'tags' dictionary)
-        address_keys = [
-            'addr:housename', 'addr:flats', 'addr:housenumber', 'addr:street',
-            'addr:suburb', 'addr:postcode', 'addr:city', 'addr:province'
-        ]
-        
-        properties = row["properties"] if is_geojson else row.to_dict()
-        tags = properties.get('tags', {}) if is_geojson else (
-            row["tags"] if isinstance(row.get("tags"), dict) else {}  # Extract from 'tags' column if DataFrame
-        )
-        
-        # Collect address parts and filter out None/empty values
-        address_parts = [tags.get(key) for key in address_keys if tags.get(key) is not None and tags.get(key) != ""]
-        
-        # Only add address if valid parts exist
-        if address_parts:
-            f["properties"]["address"] = " ".join(address_parts)
-        else:
-            f["properties"]["address"] = None  # Set None only if no valid parts exist
-
-        # Convert geometry to a valid polygon
-        osm_shape = shape(row["geometry"]) if is_geojson else row["geometry"]
-
-        if osm_shape.geom_type == 'LineString': 
-            osm_shape = Polygon(osm_shape)
-        elif osm_shape.geom_type == 'MultiPolygon': 
-            osm_shape = osm_shape.geoms[0]  # Use first polygon
-
-        f["geometry"] = mapping(osm_shape)
-        f["properties"]["footprint"] = mapping(osm_shape)
-
-        # Compute Plus Code
-        p = osm_shape.representative_point()
-        f["properties"]["plus_code"] = olc.encode(p.y, p.x, 11)
-
-        # Compute building height
-        levels = float(tags.get('building:levels', 1)) if is_geojson else \
-                 float(tags.get('building:levels', 1)) if 'building:levels' in tags else \
-                 float(row.get('building:levels', 1))  # Default to 1 if missing
-
-        if tags.get('building') == 'cabin':
-            f["properties"]['building_height'] = round(levels * storeyheight, 2)
-        else:
-            f["properties"]['building_height'] = round(levels * storeyheight + 1.3, 2)
-
-        footprints["features"].append(f)
-
-    # Store data as GeoJSON
-    with open(output_file, 'w') as outfile:
-        json.dump(footprints, outfile, indent=2)
-        
-
 def process_geometry(geometry):
     """Ensure valid polygon geometry for buildings."""
     if geometry.geom_type == 'LineString':
@@ -146,260 +141,73 @@ def process_geometry(geometry):
         return geometry
 
 def extract_address(row):
-    """Extract and format address components from the 'tags' dictionary in OSM data."""
+    """
+    Extract and format address components from a DataFrame row.
+    """
     address_keys = [
         'addr:housename', 'addr:flats', 'addr:housenumber', 'addr:street',
         'addr:suburb', 'addr:postcode', 'addr:city', 'addr:province'
     ]
-    tags = row.get('tags', {}) if isinstance(row.get('tags'), dict) else {}
-    address_parts = [tags.get(key) for key in address_keys if tags.get(key) is not None]
+    # Filter for valid, non-null values from the row
+    #address_parts = [row.get(key) for key in address_keys if row.get(key) not in [None, ""]]
+    address_parts = [
+        str(row.get(key)) for key in address_keys 
+        if row.get(key) not in [None, ""] and pd.notna(row.get(key))
+    ]
     return " ".join(address_parts) if address_parts else None
 
+def parse_levels(row, default=1.0):
+    """
+    Safely parse the 'building:levels' value from a DataFrame row.
+    Handles numeric strings, floats, and missing values.
+    """
+    val = row.get('building:levels', default)
+    try:
+        if isinstance(val, str):
+            # Try to convert string to float, stripping whitespace
+            return float(val.strip())
+        return float(val)
+    except (ValueError, TypeError):
+        return float(default)
 
-def calculate_building_heights(row, storeyheight=2.8):
-    """Compute ground, building, and roof heights based on building type."""
-    ground_height = round(row.get("mean", 0), 2)
-    tags = row.get('tags', {}) if isinstance(row.get('tags'), dict) else {}
+def calculate_heights(row, storeyheight=2.8):
+    """
+    Compute building and roof heights based on building type and levels.
+    """
+    # ensure numeric conversion with defaults
+    levels = pd.to_numeric(parse_levels(row), errors='coerce') or 0
+    building_type = row.get('building', None)
+    ground_height = pd.to_numeric(row.get('mean', 0), errors='coerce') or 0
+    min_height = pd.to_numeric(row.get('min_height', 0), errors='coerce') or 0
     
-    levels = tags.get('building:levels', row.get('building:levels', 1))
-    levels = float(levels) if str(levels).replace('.', '').isdigit() else 1.0
-    
-    building_type = tags.get('building', row.get('building'))
+    # Set default values
+    building_height = round(levels * storeyheight + 1.3, 2)
+    roof_height = round(building_height + ground_height, 2)
+    bottom_bridge_height = None
+    bottom_roof_height = None
     
     if building_type == 'cabin':
-        return {
-            'ground_height': ground_height,
-            'building_height': round(levels * storeyheight, 2),
-            'roof_height': round(levels * storeyheight + ground_height, 2)
-        }
-
-    if building_type == 'bridge':
-        min_height = tags.get('min_height', row.get('min_height'))
-        min_height = float(min_height) if str(min_height).replace('.', '').isdigit() else (
-            float(tags.get('building:min_level', row.get('building:min_level', 0))) * storeyheight
-        )
-        return {
-            'ground_height': ground_height,
-            'bottom_bridge_height': round(min_height + ground_height, 2),
-            'building_height': round(levels * storeyheight, 2),
-            'roof_height': round(levels * storeyheight + ground_height, 2)
-        }
+        building_height = round(levels * storeyheight, 2)
+        roof_height = round(building_height + ground_height, 2)
     
+    elif building_type == 'bridge':
+        #min_height = row.get('min_height', 0)
+        bottom_bridge_height = round(min_height + ground_height, 2)
+        # Note: 'building_height' remains the default calculation
+        
     elif building_type == 'roof':
-        return {
-            'ground_height': ground_height,
-            'bottom_roof_height': round(levels * storeyheight + ground_height, 2),
-            'roof_height': round(levels * storeyheight + ground_height + 1.3, 2)
-        }
-    
-    else:
-        return {
-            'ground_height': ground_height,
-            'building_height': round(levels * storeyheight + 1.3, 2),
-            'roof_height': round(levels * storeyheight + 1.3 + ground_height, 2)
-        }
-
-def write_geojson(ts, jparams):
-    """Process buildings and write results to GeoJSON."""
-    storeyheight = 2.8
-    footprints = {"type": "FeatureCollection", "features": []}
-    
-    for _, row in ts.iterrows():
-        if row.geometry.geom_type == 'LineString' and len(row.geometry.coords) < 3:
-            continue  # Skip invalid geometries
+        bottom_roof_height = round(levels * storeyheight + ground_height, 2)
+        roof_height = round(bottom_roof_height + 1.3, 2)
+        # Note: No 'building_height' for roofs
         
-        if row.get('type') == 'node' or row.get('tags') is None or 'building:levels' not in row.get('tags'):
-            continue  # Skip rows that don't meet the condition
+    return {
+        'ground_height': ground_height,
+        'building_height': building_height,
+        'roof_height': roof_height,
+        'bottom_bridge_height': bottom_bridge_height,
+        'bottom_roof_height': bottom_roof_height
+    }
         
-        f = {"type": "Feature", "properties": {}}
-        
-        #- harvest OSM 'id'
-        f["properties"]["osm_id"] = (
-            row.get("osm_way_id") if row.get("osm_way_id") is not None and pd.notna(row.get("osm_way_id")) 
-            else row.get("osm_id") if row.get("osm_id") is not None and pd.notna(row.get("osm_id")) 
-            else row.get("id")
-        )
-        
-        # Extract address
-        f["properties"]["address"] = extract_address(row)
-        
-        # Extract building type
-        f["properties"]["building"] = row.get("building")
-        
-        # Harvest attributes only if they exist
-        for key in [
-            'building:use', 'building:levels', 'building:flats', 'building:units',
-            'beds', 'rooms', 'residential', 'amenity', 'social_facility'
-        ]:
-            value = row.get('tags', {}).get(key)
-            if value is not None:
-                f["properties"][key] = value
-        
-        # Process geometry
-        osm_shape = process_geometry(row["geometry"])
-        f["geometry"] = mapping(osm_shape)
-        f["properties"]["footprint"] = mapping(osm_shape)
-        
-        # Compute plus_code
-        p = osm_shape.representative_point()
-        f["properties"]["plus_code"] = olc.encode(p.y, p.x, 11)
-        
-        # Compute height attributes
-        height_attributes = calculate_building_heights(row, storeyheight)
-        for key, value in height_attributes.items():
-            if key not in f["properties"]:
-                f["properties"][key] = value
-        
-        footprints['features'].append(f)
-    
-    # Store the data as GeoJSON
-    with open(jparams['osm_bldings'], 'w') as outfile:
-        json.dump(footprints, outfile, indent=2)
-        
-def extract_all_town_features(input_pbf, town_name, province_name=None):
-    """
-    Single query approach - extract all features at once
-    If initial query fails, try province-based hierarchical search
-    """
-    gdal.UseExceptions()
-    gdal.SetConfigOption("OGR_GEOMETRY_ACCEPT_UNCLOSED_RING", "NO")
-    
-    # Combined where clause matching your original query logic
-    where_clause = f"""
-    (boundary IN ('place', 'administrative') OR amenity IN ('university', 'research_institute') OR place IN ('suburb')) 
-    AND name LIKE '%{town_name}%'
-    """
-    
-    geojson_vsimem = "/vsimem/town_features.geojson"
-    
-    try:
-        # Build options
-        options = [
-            "-where", where_clause,
-            "-makevalid"
-        ]
-        
-        # Extract from all relevant layers
-        all_features = []
-        
-        for layer in ["multipolygons"]:
-            try:
-                gdal.VectorTranslate(
-                    geojson_vsimem,
-                    input_pbf,
-                    format="GeoJSON",
-                    layers=[layer],
-                    options=options
-                )
-                
-                gdf = gpd.read_file(geojson_vsimem)
-                if not gdf.empty:
-                    all_features.append(gdf)
-                
-                gdal.Unlink(geojson_vsimem)
-                
-            except Exception as e:
-                print(f"Warning: Could not process {layer}: {e}")
-                try:
-                    gdal.Unlink(geojson_vsimem)
-                except:
-                    pass
-        
-        # If no features found and province_name provided, try hierarchical search
-        if not all_features and province_name:
-            print(f"No direct matches found. Trying province-based search for {province_name}...")
-            return _hierarchical_province_search(input_pbf, town_name, province_name)
-        
-        # Combine all features
-        if all_features:
-            return pd.concat(all_features, ignore_index=True)
-        else:
-            return gpd.GeoDataFrame()
-            
-    except Exception as e:
-        print(f"Error in extraction: {e}")
-        try:
-            gdal.Unlink(geojson_vsimem)
-        except:
-            pass
-        return gpd.GeoDataFrame()
-
-def _hierarchical_province_search(input_pbf, town_name, province_name):
-    """
-    Two-step search: first find province boundary, then search within it for town
-    """
-    province_vsimem = "/vsimem/province.geojson"
-    town_vsimem = "/vsimem/town_within_province.geojson"
-    
-    try:
-        # Step 1: Extract province boundary
-        province_where = f"boundary = 'administrative' AND name = '{province_name}'"
-        province_options = ["-where", province_where, "-makevalid"]
-        
-        gdal.VectorTranslate(
-            province_vsimem,
-            input_pbf,
-            format="GeoJSON",
-            layers=["multipolygons"],
-            options=province_options
-        )
-        
-        province_gdf = gpd.read_file(province_vsimem)
-        gdal.Unlink(province_vsimem)
-        
-        if province_gdf.empty:
-            print(f"Province '{province_name}' not found")
-            return gpd.GeoDataFrame()
-        
-        print(f"Found province '{province_name}', searching for towns within...")
-        
-        # Step 2: Search for town within province boundary
-        # Get province bounds for spatial filter
-        bounds = province_gdf.total_bounds  # [minx, miny, maxx, maxy]
-        
-        town_where = f"""
-        (boundary IN ('place', 'administrative') OR amenity IN ('university', 'research_institute') OR place IN ('suburb')) 
-        AND name LIKE '%{town_name}%'
-        """
-        town_options = [
-            "-where", town_where,
-            "-makevalid",
-            "-spat", str(bounds[0]), str(bounds[1]), str(bounds[2]), str(bounds[3])
-        ]
-        
-        gdal.VectorTranslate(
-            town_vsimem,
-            input_pbf,
-            format="GeoJSON",
-            layers=["multipolygons"],
-            options=town_options
-        )
-        
-        town_gdf = gpd.read_file(town_vsimem)
-        gdal.Unlink(town_vsimem)
-        
-        if town_gdf.empty:
-            print(f"Town '{town_name}' not found within province '{province_name}'")
-            return gpd.GeoDataFrame()
-        
-        # Filter to only towns that are actually within the province geometry
-        town_within = gpd.sjoin(town_gdf, province_gdf, how='inner', predicate='within')
-        
-        print(f"Found {len(town_within)} town features within province")
-        return town_within
-        
-    except Exception as e:
-        print(f"Error in hierarchical search: {e}")
-        # Cleanup
-        for vsimem_path in [province_vsimem, town_vsimem]:
-            try:
-                gdal.Unlink(vsimem_path)
-            except:
-                pass
-        return gpd.GeoDataFrame()
-
-
-
 def getBldVertices(dis, gt_forward, rb):
     """
     retrieve vertices from building footprints ~ without duplicates 
@@ -493,8 +301,6 @@ def getAOIVertices(aoi, gt_forward, rb):
     
     return acoi, ca
 
-
-
 def concatCoords(gdf, ac):
     df2 = pd.concat([gdf, ac])
     
@@ -547,8 +353,8 @@ def doVcBndGeomRd(lsgeom, lsattributes, extent, minz, maxz, TerrainT, pts, acoi,
         extent[0],
         extent[1],
         minz ,
-        extent[1],
-        extent[1],
+        extent[2],
+        extent[3],
         maxz
       ],
     "datasetPointOfContact": {
@@ -844,3 +650,46 @@ def output_cityjson(extent, minz, maxz, TerrainT, pts, jparams, min_zbld, acoi, 
     #clean cityjson
     cm = cityjson.load(jparams['cjsn_out'])               
     cityjson.save(cm, jparams['cjsn_solid']) 
+
+def extract_boundaries_by_name(input_pbf, jparams):
+    """
+    Extract suburb (or other place-type) boundaries from an OSM PBF.
+    """
+    gdal.UseExceptions()
+    gdal.SetConfigOption("OGR_GEOMETRY_ACCEPT_UNCLOSED_RING", "NO")
+    
+    geojson_vsimem = "/vsimem/boundaries.geojson"
+    boundary_name = jparams.get("FocusArea")
+    place_types = ["neighbourhood", "suburb", "quarter", "borough", "village", "town", "city"]
+    amenity_list = ["university", "research_institute"]
+
+    # --- Try boundary name first, restricted to place types ---
+    place_filter = " OR ".join([f"place = '{p}'" for p in place_types])
+    where_filter = f"name = '{boundary_name}' AND ({place_filter})"
+    gdal.VectorTranslate(
+        geojson_vsimem,
+        input_pbf,
+        format="GeoJSON",
+        layers=["multipolygons"],
+        options=["-where", where_filter, "-makevalid"]
+    )
+    gdf = gpd.read_file(geojson_vsimem)
+    gdal.Unlink(geojson_vsimem)
+
+    if len(gdf) > 0:
+        return gdf
+
+    # --- Fallback to amenities ---
+    amenity_filter = " OR ".join([f"amenity = '{a}'" for a in amenity_list])
+    where_filter = f"name = '{boundary_name}' AND ({amenity_filter})"
+    gdal.VectorTranslate(
+        geojson_vsimem,
+        input_pbf,
+        format="GeoJSON",
+        layers=["multipolygons"],
+        options=["-where", where_filter, "-makevalid"]
+    )
+    gdf = gpd.read_file(geojson_vsimem)
+    gdal.Unlink(geojson_vsimem)
+
+    return gdf
