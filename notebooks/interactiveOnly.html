@@ -1910,12 +1910,33 @@ Datum: World Geodetic System 1984 ensemble
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- highlight crossing features (buildings). more buildings = more time</span>
-<span class="n">gdf2</span> <span class="o">=</span> <span class="n">gdf2</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">epsg</span><span class="p">)</span>
 
+<span class="n">gdf2</span> <span class="o">=</span> <span class="n">gdf2</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">epsg</span><span class="p">)</span>
 <span class="n">gdf_copy</span> <span class="o">=</span> <span class="n">gdf2</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">new_df1</span> <span class="o">=</span> <span class="n">gdf_copy</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">gdf_copy</span><span class="o">.</span><span class="n">overlaps</span><span class="p">(</span><span class="n">gdf_copy</span><span class="o">.</span><span class="n">unary_union</span><span class="p">)]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1">#-- perhaps no union?</span>
-<span class="n">gdf_copy</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">gdf_copy</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">gdf_copy</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;bridge&#39;</span><span class="p">],</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
-<span class="n">gdf_copy</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">gdf_copy</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">gdf_copy</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;roof&#39;</span><span class="p">],</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="c1">#new_df1 = gdf_copy.loc[gdf_copy.overlaps(gdf_copy.unary_union)].reset_index(drop=True)  #-- perhaps no union?</span>
+<span class="c1">#gdf_copy.drop(gdf_copy.index[gdf_copy[&#39;building&#39;] == &#39;bridge&#39;], inplace = True)</span>
+<span class="c1">#gdf_copy.drop(gdf_copy.index[gdf_copy[&#39;building&#39;] == &#39;roof&#39;], inplace = True)</span>
+
+<span class="n">joined</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">sjoin</span><span class="p">(</span><span class="n">gdf_copy</span><span class="p">,</span> <span class="n">gdf_copy</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;inner&quot;</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="s2">&quot;overlaps&quot;</span><span class="p">)</span>
+
+<span class="c1">#- joined index is changing. silence warning. future ready.</span>
+<span class="c1"># GeoPandas &lt;0.12 uses index_left/index_right</span>
+<span class="k">if</span> <span class="s2">&quot;index_left&quot;</span> <span class="ow">in</span> <span class="n">joined</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">left_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="p">[</span><span class="s2">&quot;index_left&quot;</span><span class="p">]</span>
+    <span class="n">right_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="p">[</span><span class="s2">&quot;index_right&quot;</span><span class="p">]</span>
+<span class="k">else</span><span class="p">:</span>  <span class="c1"># GeoPandas ≥0.12 uses _left/_right suffixes</span>
+    <span class="n">left_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="o">.</span><span class="n">index</span>
+    <span class="n">right_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="p">[</span><span class="s2">&quot;index_right&quot;</span><span class="p">]</span>
+
+<span class="c1"># remove self matches</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">left_idx</span> <span class="o">!=</span> <span class="n">right_idx</span>
+<span class="n">overlap_idx</span> <span class="o">=</span> <span class="n">left_idx</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+
+<span class="n">new_df1</span> <span class="o">=</span> <span class="n">gdf_copy</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">overlap_idx</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">))))</span>
 </pre></div>
 </div>
 </div>

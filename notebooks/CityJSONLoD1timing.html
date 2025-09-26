@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -1113,7 +1113,24 @@ document.write(`
 <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
 <span class="n">ts_copy</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">new_df1</span> <span class="o">=</span> <span class="n">ts_copy</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">ts_copy</span><span class="o">.</span><span class="n">overlaps</span><span class="p">(</span><span class="n">ts_copy</span><span class="o">.</span><span class="n">unary_union</span><span class="p">)]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1">#-- perhaps no union?</span>
+<span class="c1">#new_df1 = ts_copy.loc[ts_copy.overlaps(ts_copy.unary_union)].reset_index(drop=True)  #-- perhaps no union?</span>
+
+<span class="n">joined</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">sjoin</span><span class="p">(</span><span class="n">ts_copy</span><span class="p">,</span> <span class="n">ts_copy</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;inner&quot;</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="s2">&quot;overlaps&quot;</span><span class="p">)</span>
+
+<span class="c1">#- joined index is changing. silence warning. future ready.</span>
+<span class="c1"># GeoPandas &lt;0.12 uses index_left/index_right</span>
+<span class="k">if</span> <span class="s2">&quot;index_left&quot;</span> <span class="ow">in</span> <span class="n">joined</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">left_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="p">[</span><span class="s2">&quot;index_left&quot;</span><span class="p">]</span>
+    <span class="n">right_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="p">[</span><span class="s2">&quot;index_right&quot;</span><span class="p">]</span>
+<span class="k">else</span><span class="p">:</span>  <span class="c1"># GeoPandas ≥0.12 uses _left/_right suffixes</span>
+    <span class="n">left_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="o">.</span><span class="n">index</span>
+    <span class="n">right_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="p">[</span><span class="s2">&quot;index_right&quot;</span><span class="p">]</span>
+
+<span class="c1"># remove self matches</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">left_idx</span> <span class="o">!=</span> <span class="n">right_idx</span>
+<span class="n">overlap_idx</span> <span class="o">=</span> <span class="n">left_idx</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+
+<span class="n">new_df1</span> <span class="o">=</span> <span class="n">ts_copy</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">overlap_idx</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">))))</span>
@@ -1271,27 +1288,27 @@ document.write(`
 <span class="c1">#dis = gpd.read_file(jparams[&#39;osm_bldings&#39;])                   </span>
 <span class="c1">#dis.set_crs(epsg=int(epsg[-5:]), inplace=True, allow_override=True)</span>
 
-<span class="n">dict_vertices</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;bottom_bridge_height&#39;</span><span class="p">,</span> <span class="s1">&#39;bottom_roof_height&#39;</span><span class="p">,</span> <span class="s1">&#39;roof_height&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">dis</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
+<span class="c1">#dict_vertices = {}</span>
+<span class="c1">#cols = [c for c in [&#39;bottom_bridge_height&#39;, &#39;bottom_roof_height&#39;, &#39;roof_height&#39;] if c in dis.columns]</span>
 
-<span class="n">dis</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dis</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">polygon</span><span class="o">.</span><span class="n">orient</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="c1">#dis[&#39;geometry&#39;] = dis.geometry.apply(polygon.orient, 1)</span>
 
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">dis</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-    <span class="n">oring</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">row</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">coords</span><span class="p">)</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;osm_id&#39;</span><span class="p">]</span>
-    <span class="k">for</span> <span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">oring</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
-        <span class="n">vertex</span> <span class="o">=</span> <span class="p">(</span><span class="n">oring</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">oring</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
-        <span class="n">attr</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="n">c</span><span class="p">]</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cols</span><span class="p">]</span>
-        <span class="n">attr</span> <span class="o">=</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">attr</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span>  <span class="c1"># Remove np.nan values</span>
-        <span class="k">if</span> <span class="n">vertex</span> <span class="ow">in</span> <span class="n">dict_vertices</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="n">dict_vertices</span><span class="p">[</span><span class="n">vertex</span><span class="p">][</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;osm_id&#39;</span><span class="p">]]</span> <span class="o">=</span> <span class="n">attr</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">dict_vertices</span><span class="p">[</span><span class="n">vertex</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;osm_id&#39;</span><span class="p">]:</span> <span class="n">attr</span><span class="p">}</span>
+<span class="c1">#for i, row in dis.iterrows():</span>
+<span class="c1">#    oring = list(row.geometry.exterior.coords)</span>
+<span class="c1">#    name = row[&#39;osm_id&#39;]</span>
+<span class="c1">#    for (j, v) in enumerate(oring[:-1]):</span>
+<span class="c1">#        vertex = (oring[j][0], oring[j][1])</span>
+<span class="c1">#        attr = [row[c] for c in cols]</span>
+<span class="c1">#        attr = [x for x in attr if not np.isnan(x)]  # Remove np.nan values</span>
+<span class="c1">#        if vertex in dict_vertices.keys():</span>
+<span class="c1">#            dict_vertices[vertex][row[&#39;osm_id&#39;]] = attr</span>
+<span class="c1">#        else:</span>
+<span class="c1">#            dict_vertices[vertex] = {row[&#39;osm_id&#39;]: attr}</span>
 
-<span class="n">result</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">for</span> <span class="n">k1</span><span class="p">,</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">dict_vertices</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-    <span class="k">for</span> <span class="n">k2</span> <span class="ow">in</span> <span class="n">d</span><span class="p">:</span>
-        <span class="n">result</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">k2</span><span class="p">,</span> <span class="p">{})[</span><span class="n">k1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="n">j</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">d</span><span class="o">.</span><span class="n">values</span><span class="p">()</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">i</span><span class="p">])))</span>
+<span class="c1">#result = {}</span>
+<span class="c1">#for k1, d in dict_vertices.items():</span>
+<span class="c1">#    for k2 in d:</span>
+<span class="c1">#        result.setdefault(k2, {})[k1] = sorted(list(set([j for i in d.values() for j in i])))</span>
         
 <span class="n">dis</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">dis</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">dis</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;bridge&#39;</span><span class="p">],</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
 <span class="n">dis</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">dis</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">dis</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;roof&#39;</span><span class="p">],</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
@@ -1565,7 +1582,8 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># -- execute function. create CityJSON</span>
 <span class="n">crs</span> <span class="o">=</span> <span class="n">epsg</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span>
 
-<span class="n">city3D</span><span class="o">.</span><span class="n">output_cityjson</span><span class="p">(</span><span class="n">extent</span><span class="p">,</span> <span class="n">minz</span><span class="p">,</span> <span class="n">maxz</span><span class="p">,</span> <span class="n">terrTin</span><span class="p">,</span> <span class="n">pv_pts</span><span class="p">,</span> <span class="n">jparams</span><span class="p">,</span> <span class="n">min_zbld</span><span class="p">,</span> <span class="n">acoi</span><span class="p">,</span> <span class="n">result</span><span class="p">,</span> <span class="n">crs</span><span class="p">)</span> 
+<span class="c1">#city3D.output_cityjson(extent, minz, maxz, terrTin, pv_pts, jparams, min_zbld, acoi, result, crs) </span>
+<span class="n">city3D</span><span class="o">.</span><span class="n">output_cityjson</span><span class="p">(</span><span class="n">extent</span><span class="p">,</span> <span class="n">minz</span><span class="p">,</span> <span class="n">maxz</span><span class="p">,</span> <span class="n">terrTin</span><span class="p">,</span> <span class="n">pv_pts</span><span class="p">,</span> <span class="n">jparams</span><span class="p">,</span> <span class="n">min_zbld</span><span class="p">,</span> <span class="n">acoi</span><span class="p">,</span> <span class="n">crs</span><span class="p">)</span> 
 </pre></div>
 </div>
 </div>
