@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# env/geo3D_gthbRepo02
+# env/geo3D_wrkshp02
 #########################
 # helper functions to create LoD1 3D City Model from volunteered public data (OpenStreetMap) with elevation via a raster DEM.
 
@@ -145,7 +145,7 @@ def extract_address(row):
     Extract and format address components from a DataFrame row.
     """
     address_keys = [
-        'addr:housename', 'addr:flats', 'addr:housenumber', 'addr:street',
+        'name', 'addr:housename', 'addr:flats', 'addr:housenumber', 'addr:street',
         'addr:suburb', 'addr:postcode', 'addr:city', 'addr:province'
     ]
     # Filter for valid, non-null values from the row

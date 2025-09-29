@@ -1,0 +1,26 @@
+{
+    "LargeArea": "Western Cape",
+    "FocusArea": "Royal Observatory, Cape of Good Hope",
+    "osm_type": "way",
+    
+    "osm_bldings": "./data/fp_proj_z-saao.geojson",
+    
+    "in_raster": "./raster/LO19_050M_3318CD.tif",
+    "nodata": 3.402823466385289e+38,
+    "projClip_raster": "./raster/3318CDclip_utm34s.tif",
+    
+    "cjsn_out": "./result/citjsn_saao3d.json",
+    
+    "cjsn_title": "Royal Observatory, Cape of Good Hope",
+    "cjsn_referenceDate": "2022-01-31",
+    "cjsn_contactName": "arkriger", 
+    "cjsn_emailAddress": "adrian8kriger@gmail.com", 
+    "cjsn_website": "www.linkedin.com/in/adrian-kriger", 
+    "cjsn_contactType": "private",
+    "cjsn_+meta-description": "City of Cape Town",
+    "cjsn_+meta-sourceSpatialResolution": "25 meter bare-earth DEM",
+    "cjsn_+meta-sourceReferenceSystem": "urn:ogc:def:crs:EPSG:20481",
+    "cjsn_+meta-sourceCitation":"http://www.ngi.gov.za/",
+    
+    "cjsn_solid": "./result/citjsnClean_saao3d.json"
+}

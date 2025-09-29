@@ -188,6 +188,8 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="osm_LoD1_3D-noInternet.html">osm_LoD1_3DCityModel <em>(No Internet)</em></a></li>
 <li class="toctree-l1"><a class="reference internal" href="CityJSONdataScience-noInternet.html">Spatial Data Science with CityJSON <em>(No Internet)</em></a></li>
+
+
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LoD1 caveats</span></p>
 <ul class="nav bd-sidenav">
@@ -810,7 +812,7 @@ document.write(`
     </tr>
     <tr>
       <th>1</th>
-      <td>Kerk Street Mamre 7347 Cape Town</td>
+      <td>Mamre Moravian Church Kerk Street Mamre 7347 C...</td>
       <td>church</td>
       <td>2</td>
       <td>NaN</td>
@@ -1006,7 +1008,7 @@ document.write(`
     </tr>
     <tr>
       <th>1</th>
-      <td>Kerk Street Mamre 7347 Cape Town</td>
+      <td>Mamre Moravian Church Kerk Street Mamre 7347 C...</td>
       <td>church</td>
       <td>2</td>
       <td>NaN</td>
@@ -1434,7 +1436,7 @@ document.write(`
     </tr>
     <tr>
       <th>1</th>
-      <td>Kerk Street Mamre 7347 Cape Town</td>
+      <td>Mamre Moravian Church Kerk Street Mamre 7347 C...</td>
       <td>church</td>
       <td>2</td>
       <td>NaN</td>
@@ -1716,7 +1718,7 @@ Name: count, dtype: int64
     <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;house&#39;</span> <span class="ow">or</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;semidetached_house&#39;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">f_house</span>
     <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;terrace&#39;</span> <span class="ow">or</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;terraced&#39;</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:units&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;building:units&#39;</span> <span class="ow">in</span> <span class="n">c</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:units&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:units&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">f_house</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">f_house</span>
@@ -1736,7 +1738,7 @@ Name: count, dtype: int64
             <span class="k">return</span> <span class="n">inf_structure</span>
     <span class="c1">#-- social facility [shelter / carehome]</span>
     <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;residential&#39;</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;social_facility&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:units&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;building:units&#39;</span> <span class="ow">in</span> <span class="n">c</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:units&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:units&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">inf_structure</span>
         <span class="k">else</span><span class="p">:</span> 
             <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;beds&#39;</span><span class="p">]</span>
@@ -1820,9 +1822,26 @@ Name: count, dtype: int64
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">est_pop</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">r</span><span class="o">/</span><span class="mi">100</span><span class="p">))</span><span class="o">**</span><span class="n">years</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#p = est_pop * (1 + (r/100))**years</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;estimated population&#39;</span><span class="p">,</span> <span class="n">years</span> <span class="p">,</span><span class="s1">&#39;years from now:&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+<span class="c1">#print(&#39;estimated population&#39;, years ,&#39;years from now:&#39;, int(p))</span>
+
+<span class="c1">#- account for non-residential areas without failure</span>
+<span class="c1">#- helper function</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">safe_population_estimate</span><span class="p">(</span><span class="n">est_pop</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">years</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">est_pop</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">r</span> <span class="o">/</span> <span class="mi">100</span><span class="p">))</span><span class="o">**</span><span class="n">years</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Population estimate failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># keeps notebook running</span>
+
+<span class="c1">#- execute function</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">safe_population_estimate</span><span class="p">(</span><span class="n">est_pop</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">years</span><span class="p">)</span>
+
+<span class="c1">#- shows error and moves on</span>
+<span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;estimated population </span><span class="si">{</span><span class="n">years</span><span class="si">}</span><span class="s2"> years from now: </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1910,6 +1929,7 @@ Datum: World Geodetic System 1984 ensemble
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- highlight crossing features (buildings). more buildings = more time</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
 <span class="n">gdf2</span> <span class="o">=</span> <span class="n">gdf2</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">epsg</span><span class="p">)</span>
 <span class="n">gdf_copy</span> <span class="o">=</span> <span class="n">gdf2</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -1937,6 +1957,11 @@ Datum: World Geodetic System 1984 ensemble
 
 <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">))))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.065812
 </pre></div>
 </div>
 </div>
@@ -2225,11 +2250,6 @@ LoD2 would offer a more representative BVPC <a class="reference external" href="
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Tend</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">Tend</span> <span class="o">-</span> <span class="n">Tstart</span><span class="p">))))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:38.784879
 </pre></div>
 </div>
 </div>

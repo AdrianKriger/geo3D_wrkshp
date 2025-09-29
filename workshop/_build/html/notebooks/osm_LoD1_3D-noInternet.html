@@ -188,6 +188,8 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">osm_LoD1_3DCityModel <em>(No Internet)</em></a></li>
 <li class="toctree-l1"><a class="reference internal" href="CityJSONdataScience-noInternet.html">Spatial Data Science with CityJSON <em>(No Internet)</em></a></li>
+
+
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LoD1 caveats</span></p>
 <ul class="nav bd-sidenav">
@@ -476,9 +478,9 @@ document.write(`
 <p><strong>A <code class="docutils literal notranslate"><span class="pre">parameter.json</span></code> defines the path and files</strong>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#jparams = json.load(open(&#39;osm3DwStock_param.json&#39;))       </span>
-<span class="n">jparams</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;osm3DsRiver_param25m.json&#39;</span><span class="p">))</span>       
-<span class="c1">#jparams = json.load(open(&#39;osm3Dsaao_param.json&#39;))       </span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jparams</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;wStock_param.json&#39;</span><span class="p">))</span>       
+<span class="c1">#jparams = json.load(open(&#39;sRiver_param25m.json&#39;))       </span>
+<span class="c1">#jparams = json.load(open(&#39;saao_param.json&#39;))       </span>
 </pre></div>
 </div>
 </div>
@@ -507,7 +509,7 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Input OSM PBF file</span>
-<span class="n">input_pbf</span> <span class="o">=</span> <span class="s2">&quot;./data/CapeTownNew.osm.pbf&quot;</span>
+<span class="n">input_pbf</span> <span class="o">=</span> <span class="s2">&quot;./data/CapeTown.osm.pbf&quot;</span>
 <span class="c1">#input_pbf = &quot;./data/south-africa-latest.osm.pbf&quot;</span>
 
 <span class="c1"># GeoPackage file [will be created]</span>
@@ -521,7 +523,7 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-<span class="n">aoi</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">extract_boundaries_by_name2</span><span class="p">(</span><span class="n">input_pbf</span><span class="p">,</span> <span class="n">jparams</span><span class="p">)</span><span class="c1">#, country=&#39;yes&#39;, place_type=&#39;neighbourhood&#39;)</span>
+<span class="n">aoi</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">extract_boundaries_by_name</span><span class="p">(</span><span class="n">input_pbf</span><span class="p">,</span> <span class="n">jparams</span><span class="p">)</span><span class="c1">#, country=&#39;yes&#39;, place_type=&#39;neighbourhood&#39;)</span>
 
 <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">))))</span>
@@ -535,7 +537,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.911363
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.273473
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -560,7 +562,6 @@ document.write(`
       <th>name</th>
       <th>type</th>
       <th>boundary</th>
-      <th>natural</th>
       <th>place</th>
       <th>other_tags</th>
       <th>geometry</th>
@@ -568,15 +569,14 @@ document.write(`
   </thead>
   <tbody>
     <tr>
-      <th>1</th>
-      <td>2034284</td>
-      <td>Salt River</td>
+      <th>0</th>
+      <td>2034285</td>
+      <td>Woodstock</td>
       <td>boundary</td>
       <td>place</td>
-      <td>NaN</td>
       <td>suburb</td>
-      <td>"wikidata"=&gt;"Q2383969"</td>
-      <td>MULTIPOLYGON (((18.47713 -33.92691, 18.47688 -...</td>
+      <td>"wikidata"=&gt;"Q3644460"</td>
+      <td>MULTIPOLYGON (((18.44078 -33.92866, 18.44083 -...</td>
     </tr>
   </tbody>
 </table>
@@ -634,7 +634,7 @@ document.write(`
 ERROR 1: Non closed ring detected.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.429729
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.409832
 </pre></div>
 </div>
 </div>
@@ -686,12 +686,12 @@ ERROR 1: Non closed ring detected.
   <tbody>
     <tr>
       <th>0</th>
-      <td>6383946</td>
+      <td>11029147</td>
       <td>NaN</td>
-      <td>Western Cape Metrorail - Infrastructure Building</td>
+      <td>NaN</td>
       <td>multipolygon</td>
       <td>NaN</td>
-      <td>office</td>
+      <td>school</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -700,27 +700,27 @@ ERROR 1: Non closed ring detected.
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>"addr:city"=&gt;"Cape Town","addr:postcode"=&gt;"729...</td>
-      <td>MULTIPOLYGON (((18.47234 -33.92889, 18.47238 -...</td>
+      <td>"building:levels"=&gt;"2","ref:ZA:emis"=&gt;"1033103...</td>
+      <td>MULTIPOLYGON (((18.43904 -33.93415, 18.43955 -...</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>6691666</td>
+      <td>12227309</td>
       <td>NaN</td>
-      <td>NaN</td>
+      <td>The Neighbourgoods Market</td>
       <td>multipolygon</td>
-      <td>NaN</td>
-      <td>hall</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>marketplace</td>
+      <td>retail</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>"addr:housename"=&gt;"Parish Hall"</td>
-      <td>MULTIPOLYGON (((18.46860 -33.93602, 18.46862 -...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>"addr:city"=&gt;"Cape Town","addr:suburb"=&gt;"Woods...</td>
+      <td>MULTIPOLYGON (((18.45801 -33.92731, 18.45853 -...</td>
     </tr>
   </tbody>
 </table>
@@ -793,26 +793,26 @@ ERROR 1: Non closed ring detected.
       <th>man_made</th>
       <th>office</th>
       <th>...</th>
-      <th>diet:vegan</th>
-      <th>content</th>
-      <th>industrial</th>
-      <th>addr:unit</th>
-      <th>disused</th>
-      <th>sahra:criterea</th>
-      <th>opening_date</th>
+      <th>studio</th>
+      <th>guest_house</th>
+      <th>abandoned:building</th>
+      <th>motorcycle:rental</th>
+      <th>second_hand</th>
+      <th>drink:coffee</th>
       <th>bus</th>
       <th>network</th>
-      <th>construction</th>
+      <th>opening_date</th>
+      <th>unisex</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <td>6383946</td>
-      <td>Western Cape Metrorail - Infrastructure Building</td>
+      <th>1</th>
+      <td>12227309</td>
+      <td>The Neighbourgoods Market</td>
       <td>multipolygon</td>
-      <td>NaN</td>
-      <td>office</td>
+      <td>marketplace</td>
+      <td>retail</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -831,12 +831,12 @@ ERROR 1: Non closed ring detected.
       <td>NaN</td>
     </tr>
     <tr>
-      <th>7</th>
-      <td>13328172</td>
-      <td>NaN</td>
+      <th>2</th>
+      <td>12249345</td>
+      <td>Church  Square</td>
       <td>multipolygon</td>
       <td>NaN</td>
-      <td>school</td>
+      <td>apartments</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -856,7 +856,7 @@ ERROR 1: Non closed ring detected.
     </tr>
   </tbody>
 </table>
-<p>2 rows × 133 columns</p>
+<p>2 rows × 149 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -868,7 +868,7 @@ ERROR 1: Non closed ring detected.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 1449 buildings have been harvested from ./data/CapeTownNew.osm.pbf
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 3797 buildings have been harvested from ./data/CapeTown.osm.pbf
 </pre></div>
 </div>
 </div>
@@ -909,26 +909,26 @@ ERROR 1: Non closed ring detected.
       <th>man_made</th>
       <th>office</th>
       <th>...</th>
-      <th>diet:vegan</th>
-      <th>content</th>
-      <th>industrial</th>
-      <th>addr:unit</th>
-      <th>disused</th>
-      <th>sahra:criterea</th>
-      <th>opening_date</th>
+      <th>studio</th>
+      <th>guest_house</th>
+      <th>abandoned:building</th>
+      <th>motorcycle:rental</th>
+      <th>second_hand</th>
+      <th>drink:coffee</th>
       <th>bus</th>
       <th>network</th>
-      <th>construction</th>
+      <th>opening_date</th>
+      <th>unisex</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <td>6383946</td>
-      <td>Western Cape Metrorail - Infrastructure Building</td>
+      <th>1</th>
+      <td>12227309</td>
+      <td>The Neighbourgoods Market</td>
       <td>multipolygon</td>
-      <td>NaN</td>
-      <td>office</td>
+      <td>marketplace</td>
+      <td>retail</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -947,12 +947,12 @@ ERROR 1: Non closed ring detected.
       <td>NaN</td>
     </tr>
     <tr>
-      <th>7</th>
-      <td>13328172</td>
-      <td>NaN</td>
+      <th>2</th>
+      <td>12249345</td>
+      <td>Church  Square</td>
       <td>multipolygon</td>
       <td>NaN</td>
-      <td>school</td>
+      <td>apartments</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -972,7 +972,7 @@ ERROR 1: Non closed ring detected.
     </tr>
   </tbody>
 </table>
-<p>2 rows × 133 columns</p>
+<p>2 rows × 149 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -995,7 +995,7 @@ ERROR 1: Non closed ring detected.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold"> Salt River has </span> 1377 buildings
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold"> Woodstock has </span> 3715 buildings
 </pre></div>
 </div>
 </div>
@@ -1037,26 +1037,26 @@ ERROR 1: Non closed ring detected.
       <th>man_made</th>
       <th>office</th>
       <th>...</th>
-      <th>diet:vegan</th>
-      <th>content</th>
-      <th>industrial</th>
-      <th>addr:unit</th>
-      <th>disused</th>
-      <th>sahra:criterea</th>
-      <th>opening_date</th>
+      <th>studio</th>
+      <th>guest_house</th>
+      <th>abandoned:building</th>
+      <th>motorcycle:rental</th>
+      <th>second_hand</th>
+      <th>drink:coffee</th>
       <th>bus</th>
       <th>network</th>
-      <th>construction</th>
+      <th>opening_date</th>
+      <th>unisex</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>4384</th>
-      <td>1313817370</td>
+      <th>4388</th>
+      <td>1340498943</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>yes</td>
+      <td>semidetached_house</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1075,12 +1075,12 @@ ERROR 1: Non closed ring detected.
       <td>NaN</td>
     </tr>
     <tr>
-      <th>4385</th>
-      <td>1313817371</td>
+      <th>4389</th>
+      <td>1423081172</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>yes</td>
+      <td>warehouse</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1100,7 +1100,7 @@ ERROR 1: Non closed ring detected.
     </tr>
   </tbody>
 </table>
-<p>2 rows × 133 columns</p>
+<p>2 rows × 149 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -1283,7 +1283,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:10.831690
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.109842
 </pre></div>
 </div>
 </div>
@@ -1307,7 +1307,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/5dbaa7fb1fd51b41f106d3d16ee3c27b581071b98302f48915d35d465527ce4b.png" src="../_images/5dbaa7fb1fd51b41f106d3d16ee3c27b581071b98302f48915d35d465527ce4b.png" />
+<img alt="../_images/0169f86660f8cbc5409ed9d8497b2dede5034de9e2465150892dc62d7e3a3680.png" src="../_images/0169f86660f8cbc5409ed9d8497b2dede5034de9e2465150892dc62d7e3a3680.png" />
 </div>
 </div>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -1397,27 +1397,27 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <th>leisure</th>
       <th>man_made</th>
       <th>...</th>
-      <th>content</th>
-      <th>industrial</th>
-      <th>addr:unit</th>
-      <th>disused</th>
-      <th>sahra:criterea</th>
-      <th>opening_date</th>
+      <th>guest_house</th>
+      <th>abandoned:building</th>
+      <th>motorcycle:rental</th>
+      <th>second_hand</th>
+      <th>drink:coffee</th>
       <th>bus</th>
       <th>network</th>
-      <th>construction</th>
+      <th>opening_date</th>
+      <th>unisex</th>
       <th>mean</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <td>MULTIPOLYGON (((266353.277 6242850.213, 266357...</td>
-      <td>6383946</td>
-      <td>Western Cape Metrorail - Infrastructure Building</td>
+      <th>1</th>
+      <td>MULTIPOLYGON (((265023.481 6242993.344, 265021...</td>
+      <td>12227309</td>
+      <td>The Neighbourgoods Market</td>
       <td>multipolygon</td>
-      <td>NaN</td>
-      <td>office</td>
+      <td>marketplace</td>
+      <td>retail</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1432,16 +1432,16 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>4.110000</td>
+      <td>7.17</td>
     </tr>
     <tr>
-      <th>7</th>
-      <td>MULTIPOLYGON (((265366.084 6242509.527, 265364...</td>
-      <td>13328172</td>
-      <td>NaN</td>
+      <th>2</th>
+      <td>MULTIPOLYGON (((264360.391 6242908.633, 264361...</td>
+      <td>12249345</td>
+      <td>Church  Square</td>
       <td>multipolygon</td>
       <td>NaN</td>
-      <td>school</td>
+      <td>apartments</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1456,11 +1456,11 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>17.030001</td>
+      <td>10.45</td>
     </tr>
   </tbody>
 </table>
-<p>2 rows × 134 columns</p>
+<p>2 rows × 150 columns</p>
 </div></div></div>
 </div>
 <div class="alert alert-block alert-warning"><b>Calculate building height:</b> 
@@ -1519,7 +1519,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.181057
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.027310
 </pre></div>
 </div>
 </div>
@@ -1576,10 +1576,10 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
   </thead>
   <tbody>
     <tr>
-      <th>0</th>
-      <td>6383946</td>
-      <td>Western Cape Metrorail 7295 Cape Town</td>
-      <td>office</td>
+      <th>1</th>
+      <td>12227309</td>
+      <td>The Neighbourgoods Market Woodstock Cape Town</td>
+      <td>retail</td>
       <td>1.0</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1589,39 +1589,39 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <td>NaN</td>
       <td>...</td>
       <td>4.1</td>
-      <td>8.21</td>
-      <td>4.110000</td>
+      <td>11.27</td>
+      <td>7.17</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>4FRW3FCF+946</td>
-      <td>(((266353.2773689979, 6242850.212725159), (266...</td>
-      <td>POLYGON ((266353.277 6242850.213, 266357.266 6...</td>
-      <td>266394.180182</td>
-      <td>6.242829e+06</td>
+      <td>4FRW3FF5+27C</td>
+      <td>(((265023.4813864499, 6242993.344091462), (265...</td>
+      <td>POLYGON ((265023.481 6242993.344, 265021.289 6...</td>
+      <td>265035.863057</td>
+      <td>6.242978e+06</td>
     </tr>
     <tr>
-      <th>7</th>
-      <td>13328172</td>
-      <td>None</td>
-      <td>school</td>
-      <td>2.0</td>
+      <th>2</th>
+      <td>12249345</td>
+      <td>Church  Square 34 Dickson Street 7915 Woodstoc...</td>
+      <td>apartments</td>
+      <td>6.0</td>
       <td>NaN</td>
-      <td>NaN</td>
+      <td>105</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>...</td>
-      <td>6.9</td>
-      <td>23.93</td>
-      <td>17.030001</td>
+      <td>18.1</td>
+      <td>28.55</td>
+      <td>10.45</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>4FRW3F96+6MG</td>
-      <td>(((265366.0837814461, 6242509.526659243), (265...</td>
-      <td>POLYGON ((265366.084 6242509.527, 265364.518 6...</td>
-      <td>265378.733465</td>
-      <td>6.242489e+06</td>
+      <td>4FRW3FC2+R5G</td>
+      <td>(((264360.39058643614, 6242908.633245183), (26...</td>
+      <td>POLYGON ((264360.391 6242908.633, 264361.062 6...</td>
+      <td>264327.370820</td>
+      <td>6.242905e+06</td>
     </tr>
   </tbody>
 </table>
@@ -1681,7 +1681,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:01:50.879788
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:05:13.950176
 </pre></div>
 </div>
 </div>
@@ -1736,10 +1736,10 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
   </thead>
   <tbody>
     <tr>
-      <th>4383</th>
-      <td>1313817369</td>
+      <th>4387</th>
+      <td>1317425439</td>
       <td>None</td>
-      <td>yes</td>
+      <td>warehouse</td>
       <td>1.0</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1749,21 +1749,21 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <td>NaN</td>
       <td>...</td>
       <td>4.1</td>
-      <td>8.25</td>
-      <td>4.15</td>
+      <td>9.62</td>
+      <td>5.520000</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>4FRW3FF6+PQ8</td>
-      <td>(((265391.2593345288, 6243162.292011963), (265...</td>
-      <td>POLYGON ((265391.259 6243162.292, 265394.599 6...</td>
-      <td>265385.145162</td>
-      <td>6.243178e+06</td>
+      <td>4FRW3CFX+J23</td>
+      <td>(((264028.5833253484, 6243133.266593692), (264...</td>
+      <td>POLYGON ((264028.583 6243133.267, 264025.150 6...</td>
+      <td>264051.204336</td>
+      <td>6.243116e+06</td>
     </tr>
     <tr>
-      <th>4384</th>
-      <td>1313817370</td>
-      <td>None</td>
-      <td>yes</td>
+      <th>4388</th>
+      <td>1340498943</td>
+      <td>Balfour Street Woodstock Cape Town</td>
+      <td>semidetached_house</td>
       <td>1.0</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1773,21 +1773,21 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <td>NaN</td>
       <td>...</td>
       <td>4.1</td>
-      <td>8.25</td>
-      <td>4.15</td>
+      <td>60.00</td>
+      <td>55.900002</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>4FRW3FF6+QRJ</td>
-      <td>(((265395.6178618438, 6243201.899712501), (265...</td>
-      <td>POLYGON ((265395.618 6243201.900, 265382.518 6...</td>
-      <td>265388.558568</td>
-      <td>6.243198e+06</td>
+      <td>4FRW3C8X+7VX</td>
+      <td>(((264277.10057580634, 6242210.385846458), (26...</td>
+      <td>POLYGON ((264277.101 6242210.386, 264272.196 6...</td>
+      <td>264278.217939</td>
+      <td>6.242203e+06</td>
     </tr>
     <tr>
-      <th>4385</th>
-      <td>1313817371</td>
+      <th>4389</th>
+      <td>1423081172</td>
       <td>None</td>
-      <td>yes</td>
+      <td>warehouse</td>
       <td>1.0</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1797,15 +1797,15 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <td>NaN</td>
       <td>...</td>
       <td>4.1</td>
-      <td>8.58</td>
-      <td>4.48</td>
+      <td>9.21</td>
+      <td>5.110000</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>4FRW3FF6+HG2</td>
-      <td>(((265297.73004603817, 6243132.830577127), (26...</td>
-      <td>POLYGON ((265297.730 6243132.831, 265344.795 6...</td>
-      <td>265321.559683</td>
-      <td>6.243133e+06</td>
+      <td>4FRW3CFX+M65</td>
+      <td>(((264084.9472572068, 6243146.255961517), (264...</td>
+      <td>POLYGON ((264084.947 6243146.256, 264079.339 6...</td>
+      <td>264104.655982</td>
+      <td>6.243132e+06</td>
     </tr>
   </tbody>
 </table>
@@ -1897,7 +1897,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <strong>This particular area contains Buildings with courtyards. The courtyards</strong> (polygons) <strong>are islands of terrain disconnected from the <em>larger</em> TINRelief</strong> (shell); <strong>thus the error<sup>*</sup>.</strong>
 <br>
 <br>
-<sup>* <sub><em><strong>Don’t take my word for it. Test and see for yourself!</strong></em> <code class="docutils literal notranslate"><span class="pre">osm3Dsaao_param.json</span></code> (South African Royal Observatory, Cape Town) will produce a 100% topologically correct <a class="reference external" href="https://www.ogc.org/standard/citygml/">Open Geospatial Consortium (OGC)</a> standard LoD1 3D model that conforms to the <a class="reference external" href="https://www.iso.org/standard/66175.html">ISO 19107 spatial schema for 3D primatives</a> <em>[connecting and planar surfaces, correct orientation of the surfaces and watertight volumes]</em></sub></p>
+<sup>* <sub><em><strong>Don’t take my word for it. Test and see for yourself!</strong></em> <code class="docutils literal notranslate"><span class="pre">saao_param.json</span></code> (South African Royal Observatory, Cape Town) will produce a 100% topologically correct <a class="reference external" href="https://www.ogc.org/standard/citygml/">Open Geospatial Consortium (OGC)</a> standard LoD1 3D model that conforms to the <a class="reference external" href="https://www.iso.org/standard/66175.html">ISO 19107 spatial schema for 3D primatives</a> <em>[connecting and planar surfaces, correct orientation of the surfaces and watertight volumes]</em></sub></p>
 <div class="alert alert-block alert-warning"><b>NOW</b><br><br>
 <p><em><strong>To understand the value and usefulness of a 3D City Model</strong></em>; parse the result of this Notebook through <a class="reference external" href="https://github.com/AdrianKriger/geo3D/blob/main/CityJSONspatialDataScience.ipynb">CityJSONspatialDataScience.ipynb</a> to workthrough an example of:</p>
 <ul class="simple">
@@ -1923,12 +1923,12 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Tend</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">Tend</span> <span class="o">-</span> <span class="n">Tstart</span><span class="p">))))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">Tend</span> <span class="o">-</span> <span class="n">Tstart</span><span class="p">))))</span> <span class="c1"># previous wStock: 07:09:57</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:03:04.398173
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:05:33.548041
 </pre></div>
 </div>
 </div>
