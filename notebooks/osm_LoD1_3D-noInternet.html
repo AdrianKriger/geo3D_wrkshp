@@ -1480,31 +1480,6 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-<span class="c1">#dis = gpd.read_file(jparams[&#39;osm_bldings&#39;])                   </span>
-<span class="c1">#dis.set_crs(epsg=int(epsg[-5:]), inplace=True, allow_override=True)</span>
-
-<span class="c1">#dict_vertices = {}</span>
-<span class="c1">#cols = [c for c in [&#39;bottom_bridge_height&#39;, &#39;bottom_roof_height&#39;, &#39;roof_height&#39;] if c in dis.columns]</span>
-
-<span class="c1">#dis[&#39;geometry&#39;] = dis.geometry.apply(polygon.orient, 1)</span>
-
-<span class="c1">#for i, row in dis.iterrows():</span>
-<span class="c1">#    oring = list(row.geometry.exterior.coords)</span>
-<span class="c1">#    name = row[&#39;osm_id&#39;]</span>
-<span class="c1">#    for (j, v) in enumerate(oring[:-1]):</span>
-<span class="c1">#        vertex = (oring[j][0], oring[j][1])</span>
-<span class="c1">#        attr = [row[c] for c in cols]</span>
-<span class="c1">#        attr = [x for x in attr if not np.isnan(x)]  # Remove np.nan values</span>
-<span class="c1">#        if vertex in dict_vertices.keys():</span>
-<span class="c1">#            dict_vertices[vertex][row[&#39;osm_id&#39;]] = attr</span>
-<span class="c1">#        else:</span>
-<span class="c1">#            dict_vertices[vertex] = {row[&#39;osm_id&#39;]: attr}</span>
-
-<span class="c1">#result = {}</span>
-<span class="c1">#for k1, d in dict_vertices.items():</span>
-<span class="c1">#    for k2 in d:</span>
-<span class="c1">#        result.setdefault(k2, {})[k1] = sorted(list(set([j for i in d.values() for j in i])))</span>
-        
 <span class="n">dis</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">dis</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">dis</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;bridge&#39;</span><span class="p">],</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
 <span class="n">dis</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">dis</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">dis</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;roof&#39;</span><span class="p">],</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
 
@@ -1526,8 +1501,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#dis.sort_values(by = &#39;osm_building&#39;, inplace=True) </span>
-<span class="n">dis</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dis</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="c1">#dis.plot()</span>
 </pre></div>
 </div>
@@ -1871,7 +1845,6 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># -- execute function. create CityJSON</span>
 <span class="n">crs</span> <span class="o">=</span> <span class="n">epsg</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span>
 
-<span class="c1">#city3D.output_cityjson(extent, minz, maxz, terrTin, pv_pts, jparams, min_zbld, acoi, result, crs) </span>
 <span class="n">city3D</span><span class="o">.</span><span class="n">output_cityjson</span><span class="p">(</span><span class="n">extent</span><span class="p">,</span> <span class="n">minz</span><span class="p">,</span> <span class="n">maxz</span><span class="p">,</span> <span class="n">terrTin</span><span class="p">,</span> <span class="n">pv_pts</span><span class="p">,</span> <span class="n">jparams</span><span class="p">,</span> <span class="n">min_zbld</span><span class="p">,</span> <span class="n">acoi</span><span class="p">,</span> <span class="n">crs</span><span class="p">)</span> 
 </pre></div>
 </div>
