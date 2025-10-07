@@ -188,6 +188,8 @@
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">osm_LoD1_3DCityModel <em>(No Internet)</em></a></li>
 <li class="toctree-l1"><a class="reference internal" href="CityJSONdataScience-noInternet.html">Spatial Data Science with CityJSON <em>(No Internet)</em></a></li>
+
+
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LoD1 caveats</span></p>
 <ul class="nav bd-sidenav">
@@ -415,43 +417,39 @@ document.write(`
 <div class="alert alert-block alert-warning"><b>This notebook will:</b>
 <blockquote>
 <div><p><strong>1. allow the user to create a Level-of-Detail 1 (LoD1) <a class="reference external" href="https://en.wikipedia.org/wiki/3D_city_model">3D City Model</a>.</strong></p>
-<p><strong>2. propose several Geography and Sustainable Development Education <em>conversation starters</em> for Secondary and Tertiary level students</strong></p>
+<p><strong>2. propose several <a class="reference internal" href="#Section2"><span class="xref myst">Geography and Sustainable Development Education <em>conversation starters</em></span></a> for Secondary and Tertiary level students</strong></p>
 </div></blockquote>
 </div>
 <div class="alert alert-block alert-danger"><b></b>
 <p><em><strong>The <a class="reference external" href="https://github.com/AdrianKriger/geo3D/tree/main/suburb">suburb</a></strong></em> processing option is meant for areas with more than for <strong>2 500 buildings</strong>.</div></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- load the magic</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">chain</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
-
 <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">overpass</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">osm2geojson</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">topojson</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tp</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">polygon</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Point</span><span class="p">,</span> <span class="n">Polygon</span> 
-<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.ops</span><span class="w"> </span><span class="kn">import</span> <span class="n">snap</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.ops</span><span class="w"> </span><span class="kn">import</span> <span class="n">transform</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.strtree</span><span class="w"> </span><span class="kn">import</span> <span class="n">STRtree</span>
-
+<span class="c1">#import osm2geojson</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="c1">#import geopandas as gpd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">topojson</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tp</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">pyproj</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Point</span><span class="p">,</span> <span class="n">Polygon</span><span class="p">,</span> <span class="n">MultiPolygon</span><span class="p">,</span> <span class="n">polygon</span> 
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.ops</span><span class="w"> </span><span class="kn">import</span> <span class="n">snap</span><span class="p">,</span> <span class="n">transform</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.strtree</span><span class="w"> </span><span class="kn">import</span> <span class="n">STRtree</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">city3D</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyproj</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">osgeo</span><span class="w"> </span><span class="kn">import</span> <span class="n">gdal</span><span class="p">,</span> <span class="n">ogr</span><span class="p">,</span> <span class="n">osr</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">triangle</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tr</span>
@@ -459,6 +457,8 @@ document.write(`
 <span class="kn">from</span><span class="w"> </span><span class="nn">openlocationcode</span><span class="w"> </span><span class="kn">import</span> <span class="n">openlocationcode</span> <span class="k">as</span> <span class="n">olc</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Polygon</span> <span class="k">as</span> <span class="n">MplPolygon</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">PatchCollection</span>
 </pre></div>
 </div>
 </div>
@@ -507,7 +507,7 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Input OSM PBF file</span>
-<span class="n">input_pbf</span> <span class="o">=</span> <span class="s2">&quot;./data/CapeTown.osm.pbf&quot;</span>
+<span class="n">input_pbf</span> <span class="o">=</span> <span class="s2">&quot;./data/CapeTownNew.osm.pbf&quot;</span>
 <span class="c1">#input_pbf = &quot;./data/south-africa-latest.osm.pbf&quot;</span>
 
 <span class="c1"># GeoPackage file [will be created]</span>
@@ -521,21 +521,27 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-<span class="n">aoi</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">extract_boundaries_by_name</span><span class="p">(</span><span class="n">input_pbf</span><span class="p">,</span> <span class="n">jparams</span><span class="p">)</span><span class="c1">#, country=&#39;yes&#39;, place_type=&#39;neighbourhood&#39;)</span>
+<span class="c1">#- execute function from city3D and return GeoDataFrameLite | home-baked gdf</span>
+<span class="n">aoi</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">extract_boundaries_by_name</span><span class="p">(</span><span class="n">input_pbf</span><span class="p">,</span> <span class="n">jparams</span><span class="p">)</span>
 
 <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">))))</span>
 
 <span class="c1"># Drop rows where geometry is None or NaN</span>
-<span class="n">aoi</span> <span class="o">=</span> <span class="n">aoi</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">])</span>
-<span class="n">aoi</span> <span class="o">=</span> <span class="n">aoi</span><span class="o">.</span><span class="n">set_crs</span><span class="p">(</span><span class="mi">4326</span><span class="p">,</span> <span class="n">allow_override</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1">#aoi = aoi.dropna(subset=[&#39;geometry&#39;])</span>
+<span class="c1">#aoi = aoi.set_crs(4326, allow_override=True)</span>
 
+<span class="c1"># gt the bounding box (BBOX) of the GeoJSON boundary</span>
+<span class="c1">#minx, miny, maxx, maxy = aoi.total_bounds</span>
+<span class="c1">#bbox_filter = &quot;-spat&quot;, str(minx), str(miny), str(maxx), str(maxy)</span>
+
+<span class="c1">#- suppose &#39;aoi&#39; is your GeoDataFrameLite or list of geometries</span>
 <span class="n">aoi</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.273473
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.269769
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -556,25 +562,25 @@ document.write(`
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>osm_id</th>
-      <th>name</th>
-      <th>type</th>
       <th>boundary</th>
-      <th>place</th>
-      <th>other_tags</th>
       <th>geometry</th>
+      <th>name</th>
+      <th>osm_id</th>
+      <th>other_tags</th>
+      <th>place</th>
+      <th>type</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>2034285</td>
-      <td>Woodstock</td>
-      <td>boundary</td>
       <td>place</td>
-      <td>suburb</td>
+      <td>MULTIPOLYGON (((18.4407807 -33.9286635, 18.440...</td>
+      <td>Woodstock</td>
+      <td>2034285</td>
       <td>"wikidata"=&gt;"Q3644460"</td>
-      <td>MULTIPOLYGON (((18.44078 -33.92866, 18.44083 -...</td>
+      <td>suburb</td>
+      <td>boundary</td>
     </tr>
   </tbody>
 </table>
@@ -582,9 +588,17 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># gt the bounding box (BBOX) of the GeoJSON boundary</span>
-<span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span> <span class="o">=</span> <span class="n">aoi</span><span class="o">.</span><span class="n">total_bounds</span>
-<span class="n">bbox_filter</span> <span class="o">=</span> <span class="s2">&quot;-spat&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">minx</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">miny</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">maxx</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">maxy</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># gt the bounding box (BBOX) of the boundary</span>
+
+<span class="c1">#minx, miny, maxx, maxy = aoi.total_bounds</span>
+<span class="c1">#bbox_filter = &quot;-spat&quot;, str(minx), str(miny), str(maxx), str(maxy)</span>
+
+<span class="n">geoms</span> <span class="o">=</span> <span class="n">aoi</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="c1">#- combine all geometries into a single union</span>
+<span class="n">combined_geom</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">unary_union</span><span class="p">(</span><span class="n">geoms</span><span class="p">)</span>  <span class="c1"># returns Polygon or MultiPolygon</span>
+<span class="c1">#- compute bounding box</span>
+<span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span> <span class="o">=</span> <span class="n">combined_geom</span><span class="o">.</span><span class="n">bounds</span>
+<span class="c1">#extent = [minx - 250, miny - 250,maxx + 250, maxy + 250]</span>
 </pre></div>
 </div>
 </div>
@@ -613,8 +627,9 @@ document.write(`
                           <span class="s2">&quot;-spat&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">minx</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">miny</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">maxx</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">maxy</span><span class="p">)]</span>  <span class="c1"># Filter buildings &amp; fix geometries</span>
 <span class="p">)</span>
 
-<span class="c1">#- load into GeoDataFrame</span>
-<span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">geojson_vsimem</span><span class="p">)</span>
+<span class="c1">#- execute and return GeoDataFrameLite | home-baked gdf</span>
+<span class="c1">#gdf = gpd.read_file(geojson_vsimem)</span>
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">read_vsimem_geojson</span><span class="p">(</span><span class="n">geojson_vsimem</span><span class="p">)</span>
 
 <span class="c1">#- cleanup VSI Memory</span>
 <span class="n">gdal</span><span class="o">.</span><span class="n">Unlink</span><span class="p">(</span><span class="n">geojson_vsimem</span><span class="p">)</span>
@@ -632,7 +647,7 @@ document.write(`
 ERROR 1: Non closed ring detected.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.409832
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.309173
 </pre></div>
 </div>
 </div>
@@ -663,62 +678,62 @@ ERROR 1: Non closed ring detected.
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>osm_id</th>
-      <th>osm_way_id</th>
-      <th>name</th>
-      <th>type</th>
       <th>amenity</th>
       <th>building</th>
       <th>craft</th>
+      <th>geometry</th>
       <th>historic</th>
       <th>leisure</th>
       <th>man_made</th>
+      <th>name</th>
       <th>office</th>
+      <th>osm_id</th>
+      <th>osm_way_id</th>
+      <th>other_tags</th>
       <th>shop</th>
       <th>sport</th>
       <th>tourism</th>
-      <th>other_tags</th>
-      <th>geometry</th>
+      <th>type</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>11029147</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>multipolygon</td>
-      <td>NaN</td>
+      <td>None</td>
       <td>school</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>None</td>
+      <td>MULTIPOLYGON (((18.4390374 -33.9341504, 18.439...</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>11029147</td>
+      <td>None</td>
       <td>"building:levels"=&gt;"2","ref:ZA:emis"=&gt;"1033103...</td>
-      <td>MULTIPOLYGON (((18.43904 -33.93415, 18.43955 -...</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>multipolygon</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>12227309</td>
-      <td>NaN</td>
-      <td>The Neighbourgoods Market</td>
-      <td>multipolygon</td>
       <td>marketplace</td>
       <td>retail</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>None</td>
+      <td>MULTIPOLYGON (((18.4580079 -33.9273091, 18.458...</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>The Neighbourgoods Market</td>
+      <td>None</td>
+      <td>12227309</td>
+      <td>None</td>
       <td>"addr:city"=&gt;"Cape Town","addr:suburb"=&gt;"Woods...</td>
-      <td>MULTIPOLYGON (((18.45801 -33.92731, 18.45853 -...</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>multipolygon</td>
     </tr>
   </tbody>
 </table>
@@ -756,7 +771,10 @@ ERROR 1: Non closed ring detected.
 <span class="k">elif</span> <span class="s1">&#39;osm_way_id&#39;</span> <span class="ow">in</span> <span class="n">gdf</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
     <span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;osm_way_id&#39;</span><span class="p">:</span> <span class="s1">&#39;osm_id&#39;</span><span class="p">})</span>
 
-<span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">within</span><span class="p">(</span><span class="n">aoi</span><span class="o">.</span><span class="n">unary_union</span><span class="p">))]</span>
+<span class="c1">#gdf = gdf[gdf.geometry.apply(lambda x: x.within(aoi.unary_union))]</span>
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">within</span><span class="p">(</span><span class="n">shapely</span><span class="o">.</span><span class="n">unary_union</span><span class="p">(</span><span class="n">aoi</span><span class="o">.</span><span class="n">geometry</span><span class="p">)))]</span>
+<span class="n">gdf</span><span class="o">.</span><span class="n">crs</span> <span class="o">=</span> <span class="s2">&quot;EPSG:4326&quot;</span>
+
 <span class="n">gdf</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -780,16 +798,16 @@ ERROR 1: Non closed ring detected.
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>osm_id</th>
-      <th>name</th>
-      <th>type</th>
       <th>amenity</th>
       <th>building</th>
       <th>craft</th>
+      <th>geometry</th>
       <th>historic</th>
       <th>leisure</th>
       <th>man_made</th>
+      <th>name</th>
       <th>office</th>
+      <th>osm_id</th>
       <th>...</th>
       <th>studio</th>
       <th>guest_house</th>
@@ -806,16 +824,16 @@ ERROR 1: Non closed ring detected.
   <tbody>
     <tr>
       <th>1</th>
-      <td>12227309</td>
-      <td>The Neighbourgoods Market</td>
-      <td>multipolygon</td>
       <td>marketplace</td>
       <td>retail</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>None</td>
+      <td>MULTIPOLYGON (((18.4580079 -33.9273091, 18.458...</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>The Neighbourgoods Market</td>
+      <td>None</td>
+      <td>12227309</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -830,16 +848,16 @@ ERROR 1: Non closed ring detected.
     </tr>
     <tr>
       <th>2</th>
-      <td>12249345</td>
-      <td>Church  Square</td>
-      <td>multipolygon</td>
-      <td>NaN</td>
+      <td>None</td>
       <td>apartments</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>None</td>
+      <td>MULTIPOLYGON (((18.450818 -33.9279241, 18.4508...</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Church  Square</td>
+      <td>None</td>
+      <td>12249345</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -866,7 +884,7 @@ ERROR 1: Non closed ring detected.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 3797 buildings have been harvested from ./data/CapeTown.osm.pbf
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 3797 buildings have been harvested from ./data/CapeTownNew.osm.pbf
 </pre></div>
 </div>
 </div>
@@ -896,16 +914,16 @@ ERROR 1: Non closed ring detected.
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>osm_id</th>
-      <th>name</th>
-      <th>type</th>
       <th>amenity</th>
       <th>building</th>
       <th>craft</th>
+      <th>geometry</th>
       <th>historic</th>
       <th>leisure</th>
       <th>man_made</th>
+      <th>name</th>
       <th>office</th>
+      <th>osm_id</th>
       <th>...</th>
       <th>studio</th>
       <th>guest_house</th>
@@ -922,16 +940,16 @@ ERROR 1: Non closed ring detected.
   <tbody>
     <tr>
       <th>1</th>
-      <td>12227309</td>
-      <td>The Neighbourgoods Market</td>
-      <td>multipolygon</td>
       <td>marketplace</td>
       <td>retail</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>None</td>
+      <td>MULTIPOLYGON (((18.4580079 -33.9273091, 18.458...</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>The Neighbourgoods Market</td>
+      <td>None</td>
+      <td>12227309</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -946,16 +964,16 @@ ERROR 1: Non closed ring detected.
     </tr>
     <tr>
       <th>2</th>
-      <td>12249345</td>
-      <td>Church  Square</td>
-      <td>multipolygon</td>
-      <td>NaN</td>
+      <td>None</td>
       <td>apartments</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>None</td>
+      <td>MULTIPOLYGON (((18.450818 -33.9279241, 18.4508...</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Church  Square</td>
+      <td>None</td>
+      <td>12249345</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1024,16 +1042,16 @@ ERROR 1: Non closed ring detected.
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>osm_id</th>
-      <th>name</th>
-      <th>type</th>
       <th>amenity</th>
       <th>building</th>
       <th>craft</th>
+      <th>geometry</th>
       <th>historic</th>
       <th>leisure</th>
       <th>man_made</th>
+      <th>name</th>
       <th>office</th>
+      <th>osm_id</th>
       <th>...</th>
       <th>studio</th>
       <th>guest_house</th>
@@ -1050,16 +1068,16 @@ ERROR 1: Non closed ring detected.
   <tbody>
     <tr>
       <th>4388</th>
-      <td>1340498943</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>None</td>
       <td>semidetached_house</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>None</td>
+      <td>MULTIPOLYGON (((18.4497301 -33.9341967, 18.449...</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>1340498943</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1074,16 +1092,16 @@ ERROR 1: Non closed ring detected.
     </tr>
     <tr>
       <th>4389</th>
-      <td>1423081172</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>None</td>
       <td>warehouse</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>None</td>
+      <td>MULTIPOLYGON (((18.4479047 -33.9257214, 18.447...</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>1423081172</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1186,9 +1204,20 @@ Datum: World Geodetic System 1984 ensemble
         <span class="k">return</span> <span class="n">row</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="n">cap_style</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">join_style</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="n">aoibuffer</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">aoibuffer</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">buffer01</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    
-<span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="n">aoibuffer</span><span class="o">.</span><span class="n">total_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">250</span><span class="p">,</span> <span class="n">aoibuffer</span><span class="o">.</span><span class="n">total_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">250</span><span class="p">,</span> 
-          <span class="n">aoibuffer</span><span class="o">.</span><span class="n">total_bounds</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="mi">250</span><span class="p">,</span> <span class="n">aoibuffer</span><span class="o">.</span><span class="n">total_bounds</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="mi">250</span><span class="p">]</span>
+        
+<span class="c1">#extent = [aoibuffer.total_bounds[0] - 250, aoibuffer.total_bounds[1] - 250, </span>
+<span class="c1">#          aoibuffer.total_bounds[2] + 250, aoibuffer.total_bounds[3] + 250]</span>
+
+
+<span class="c1">#- suppose &#39;aoi&#39; is your GeoDataFrameLite or list of geometries</span>
+<span class="n">geoms</span> <span class="o">=</span> <span class="n">aoibuffer</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="c1">#- combine all geometries into a single union</span>
+<span class="n">combined_geom</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">unary_union</span><span class="p">(</span><span class="n">geoms</span><span class="p">)</span>  <span class="c1"># returns Polygon or MultiPolygon</span>
+<span class="c1">#- compute bounding box</span>
+<span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span> <span class="o">=</span> <span class="n">combined_geom</span><span class="o">.</span><span class="n">bounds</span>
+
+<span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="n">minx</span> <span class="o">-</span> <span class="mi">250</span><span class="p">,</span> <span class="n">miny</span> <span class="o">-</span> <span class="mi">250</span><span class="p">,</span>
+          <span class="n">maxx</span> <span class="o">+</span> <span class="mi">250</span><span class="p">,</span> <span class="n">maxy</span> <span class="o">+</span> <span class="mi">250</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1243,9 +1272,26 @@ Datum: World Geodetic System 1984 ensemble
 <span class="c1">#ts.drop(ts.index[ts[&#39;type&#39;] == &#39;node&#39;], inplace = True)</span>
 
 <span class="c1">#- orient segments and simplify topology</span>
-<span class="n">topo</span> <span class="o">=</span> <span class="n">tp</span><span class="o">.</span><span class="n">Topology</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">prequantize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">winding_order</span><span class="o">=</span><span class="s1">&#39;CCW_CW&#39;</span><span class="p">)</span>
-<span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">invalid</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">):</span>
-    <span class="n">ts</span> <span class="o">=</span> <span class="n">topo</span><span class="o">.</span><span class="n">toposimplify</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span><span class="o">.</span><span class="n">to_gdf</span><span class="p">()</span>
+<span class="c1">#topo = tp.Topology(ts, prequantize=False, winding_order=&#39;CCW_CW&#39;)</span>
+<span class="c1">#with np.errstate(invalid=&#39;ignore&#39;):</span>
+<span class="c1">#    ts = topo.toposimplify(0.25).to_gdf()</span>
+
+<span class="c1">#- simplify geometry</span>
+<span class="n">ts</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">GeoDataFrameLite</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+<span class="n">geojson_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">to_json</span><span class="p">())</span>
+
+<span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">geojson_dict</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">feat</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">feat</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;multipolygon&quot;</span>
+    <span class="k">if</span> <span class="n">feat</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;geometry&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">feat</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;MultiPolygon&quot;</span><span class="p">,</span><span class="s2">&quot;coordinates&quot;</span><span class="p">:[]}</span>
+
+<span class="n">topo</span> <span class="o">=</span> <span class="n">tp</span><span class="o">.</span><span class="n">Topology</span><span class="p">(</span><span class="n">geojson_dict</span><span class="p">,</span> <span class="n">prequantize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">winding_order</span><span class="o">=</span><span class="s1">&#39;CCW_CW&#39;</span><span class="p">)</span>
+<span class="n">simplified_geojson</span> <span class="o">=</span> <span class="n">topo</span><span class="o">.</span><span class="n">toposimplify</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span><span class="o">.</span><span class="n">to_geojson</span><span class="p">()</span>
+
+<span class="c1">#- back into home-baked gdf</span>
+<span class="n">ts</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">GeoDataFrameLite</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">simplified_geojson</span><span class="p">)</span>
+<span class="n">ts</span><span class="o">.</span><span class="n">crs</span> <span class="o">=</span> <span class="n">epsg</span>
 </pre></div>
 </div>
 </div>
@@ -1258,18 +1304,42 @@ Datum: World Geodetic System 1984 ensemble
 <span class="n">ts_copy</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="c1">#new_df1 = ts_copy.loc[ts_copy.overlaps(ts_copy.unary_union)].reset_index(drop=True)  #-- perhaps no union?</span>
 
-<span class="n">joined</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">sjoin</span><span class="p">(</span><span class="n">ts_copy</span><span class="p">,</span> <span class="n">ts_copy</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;inner&quot;</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="s2">&quot;overlaps&quot;</span><span class="p">)</span>
+<span class="c1">#joined = gpd.sjoin(ts_copy, ts_copy, how=&quot;inner&quot;, predicate=&quot;overlaps&quot;)</span>
+
+<span class="n">geoms</span> <span class="o">=</span> <span class="n">ts_copy</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">STRtree</span><span class="p">(</span><span class="n">geoms</span><span class="p">)</span>
+<span class="c1"># Find overlapping pairs</span>
+<span class="n">pairs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">geom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">geoms</span><span class="p">):</span>
+    <span class="c1"># query returns candidates that intersect envelope</span>
+    <span class="n">candidates</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">:</span>
+        <span class="c1"># find index by identity in the original geoms list</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">geoms</span><span class="p">)</span> <span class="k">if</span> <span class="n">g</span> <span class="ow">is</span> <span class="n">c</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+            <span class="k">continue</span>  <span class="c1"># skip if candidate is not found</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span> <span class="ow">and</span> <span class="n">geom</span><span class="o">.</span><span class="n">overlaps</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+            <span class="n">pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">))</span>
+
+<span class="n">joined</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;index_left&quot;</span><span class="p">,</span> <span class="s2">&quot;index_right&quot;</span><span class="p">])</span>
 
 <span class="c1">#- joined index is changing. silence warning. future ready.</span>
 <span class="c1"># GeoPandas &lt;0.12 uses index_left/index_right</span>
-<span class="k">if</span> <span class="s2">&quot;index_left&quot;</span> <span class="ow">in</span> <span class="n">joined</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-    <span class="n">left_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="p">[</span><span class="s2">&quot;index_left&quot;</span><span class="p">]</span>
-    <span class="n">right_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="p">[</span><span class="s2">&quot;index_right&quot;</span><span class="p">]</span>
-<span class="k">else</span><span class="p">:</span>  <span class="c1"># GeoPandas ≥0.12 uses _left/_right suffixes</span>
-    <span class="n">left_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="o">.</span><span class="n">index</span>
-    <span class="n">right_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="p">[</span><span class="s2">&quot;index_right&quot;</span><span class="p">]</span>
+<span class="c1">#if &quot;index_left&quot; in joined.columns:</span>
+<span class="c1">#    left_idx = joined[&quot;index_left&quot;]</span>
+<span class="c1">#    right_idx = joined[&quot;index_right&quot;]</span>
+<span class="c1">#else:  # GeoPandas ≥0.12 uses _left/_right suffixes</span>
+<span class="c1">#    left_idx = joined.index</span>
+<span class="c1">#    right_idx = joined[&quot;index_right&quot;]</span>
 
 <span class="c1"># remove self matches</span>
+<span class="c1">#mask = left_idx != right_idx</span>
+<span class="c1">#overlap_idx = left_idx[mask].unique()</span>
+
+<span class="c1">#- remove self matches and select overlapping geometries</span>
+<span class="n">left_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="p">[</span><span class="s2">&quot;index_left&quot;</span><span class="p">]</span>
+<span class="n">right_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="p">[</span><span class="s2">&quot;index_right&quot;</span><span class="p">]</span>
 <span class="n">mask</span> <span class="o">=</span> <span class="n">left_idx</span> <span class="o">!=</span> <span class="n">right_idx</span>
 <span class="n">overlap_idx</span> <span class="o">=</span> <span class="n">left_idx</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
 
@@ -1281,7 +1351,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.109842
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.817469
 </pre></div>
 </div>
 </div>
@@ -1292,12 +1362,44 @@ Datum: World Geodetic System 1984 ensemble
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#%matplotlib</span>
 
+<span class="c1">#fig, ax = plt.subplots(figsize=(11, 11))</span>
+<span class="c1">#ts.plot(ax=ax, facecolor=&#39;none&#39;, edgecolor=&#39;purple&#39;, alpha=0.2)</span>
+<span class="c1">#if len(new_df1) &gt; 0:</span>
+<span class="c1">#    new_df1.plot(ax=ax, edgecolor=&#39;red&#39;, facecolor=&#39;none&#39;)#, alpha=0.3)#, column=&#39;osm_building&#39;, legend=True)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">plot_geometries</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+
+    <span class="n">patches</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">geom</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]:</span>
+        <span class="k">if</span> <span class="n">geom</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">Polygon</span><span class="p">):</span>
+            <span class="c1"># Exterior ring</span>
+            <span class="n">patches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MplPolygon</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">geom</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">coords</span><span class="p">),</span> <span class="n">closed</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+            <span class="c1"># Interiors (holes)</span>
+            <span class="k">for</span> <span class="n">interior</span> <span class="ow">in</span> <span class="n">geom</span><span class="o">.</span><span class="n">interiors</span><span class="p">:</span>
+                <span class="n">patches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MplPolygon</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">interior</span><span class="o">.</span><span class="n">coords</span><span class="p">),</span> <span class="n">closed</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">geom</span><span class="p">,</span> <span class="n">MultiPolygon</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">poly</span> <span class="ow">in</span> <span class="n">geom</span><span class="o">.</span><span class="n">geoms</span><span class="p">:</span>
+                <span class="n">patches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MplPolygon</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">poly</span><span class="o">.</span><span class="n">exterior</span><span class="o">.</span><span class="n">coords</span><span class="p">),</span> <span class="n">closed</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+                <span class="k">for</span> <span class="n">interior</span> <span class="ow">in</span> <span class="n">poly</span><span class="o">.</span><span class="n">interiors</span><span class="p">:</span>
+                    <span class="n">patches</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">MplPolygon</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">interior</span><span class="o">.</span><span class="n">coords</span><span class="p">),</span> <span class="n">closed</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+    <span class="n">pc</span> <span class="o">=</span> <span class="n">PatchCollection</span><span class="p">(</span><span class="n">patches</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">facecolor</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="n">edgecolor</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">pc</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">autoscale</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ax</span>
+
+<span class="c1"># Example usage:</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">))</span>
-
-<span class="n">ts</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">plot_geometries</span><span class="p">(</span><span class="n">ts_copy</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_df1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-    <span class="n">new_df1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span><span class="c1">#, alpha=0.3)#, column=&#39;osm_building&#39;, legend=True)</span>
-
+    <span class="n">plot_geometries</span><span class="p">(</span><span class="n">new_df1</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="c1">#-- save</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;./data/topologyFig&#39;</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 <span class="c1">#plt.show()</span>
@@ -1305,7 +1407,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/0169f86660f8cbc5409ed9d8497b2dede5034de9e2465150892dc62d7e3a3680.png" src="../_images/0169f86660f8cbc5409ed9d8497b2dede5034de9e2465150892dc62d7e3a3680.png" />
+<img alt="../_images/8910b3b3170a01e84656af202b43ddb511702061ee8b5be43a095fd4370f9726.png" src="../_images/8910b3b3170a01e84656af202b43ddb511702061ee8b5be43a095fd4370f9726.png" />
 </div>
 </div>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -1384,18 +1486,17 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>geometry</th>
-      <th>osm_id</th>
-      <th>name</th>
-      <th>type</th>
       <th>amenity</th>
       <th>building</th>
       <th>craft</th>
       <th>historic</th>
       <th>leisure</th>
       <th>man_made</th>
+      <th>name</th>
+      <th>office</th>
+      <th>osm_id</th>
+      <th>shop</th>
       <th>...</th>
-      <th>guest_house</th>
       <th>abandoned:building</th>
       <th>motorcycle:rental</th>
       <th>second_hand</th>
@@ -1404,22 +1505,23 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <th>network</th>
       <th>opening_date</th>
       <th>unisex</th>
+      <th>geometry</th>
       <th>mean</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>1</th>
-      <td>MULTIPOLYGON (((265023.481 6242993.344, 265021...</td>
-      <td>12227309</td>
-      <td>The Neighbourgoods Market</td>
-      <td>multipolygon</td>
+      <th>0</th>
       <td>marketplace</td>
       <td>retail</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>The Neighbourgoods Market</td>
+      <td>None</td>
+      <td>12227309</td>
+      <td>None</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1429,21 +1531,21 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>NaN</td>
+      <td>MULTIPOLYGON (((265023.4813864499 6242993.3440...</td>
       <td>7.17</td>
     </tr>
     <tr>
-      <th>2</th>
-      <td>MULTIPOLYGON (((264360.391 6242908.633, 264361...</td>
-      <td>12249345</td>
-      <td>Church  Square</td>
-      <td>multipolygon</td>
-      <td>NaN</td>
+      <th>1</th>
+      <td>None</td>
       <td>apartments</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Church  Square</td>
+      <td>None</td>
+      <td>12249345</td>
+      <td>None</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1453,7 +1555,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>NaN</td>
+      <td>MULTIPOLYGON (((264360.39058643614 6242908.633...</td>
       <td>10.45</td>
     </tr>
   </tbody>
@@ -1469,7 +1571,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># -- execute function. write geoJSON</span>
 <span class="c1">#city3D.write_geojson(ts, jparams)</span>
-<span class="n">dis</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">process_and_write_geojson</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">crs</span><span class="p">,</span> <span class="n">jparams</span><span class="p">)</span>
+<span class="n">dis</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">process_and_write_geojson</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">jparams</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1478,12 +1580,46 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
+<span class="c1">#dis = gpd.read_file(jparams[&#39;osm_bldings&#39;])                   </span>
+<span class="c1">#dis.set_crs(epsg=int(epsg[-5:]), inplace=True, allow_override=True)</span>
+
+<span class="c1">#dict_vertices = {}</span>
+<span class="c1">#cols = [c for c in [&#39;bottom_bridge_height&#39;, &#39;bottom_roof_height&#39;, &#39;roof_height&#39;] if c in dis.columns]</span>
+
+<span class="c1">#dis[&#39;geometry&#39;] = dis.geometry.apply(polygon.orient, 1)</span>
+
+<span class="c1">#for i, row in dis.iterrows():</span>
+<span class="c1">#    oring = list(row.geometry.exterior.coords)</span>
+<span class="c1">#    name = row[&#39;osm_id&#39;]</span>
+<span class="c1">#    for (j, v) in enumerate(oring[:-1]):</span>
+<span class="c1">#        vertex = (oring[j][0], oring[j][1])</span>
+<span class="c1">#        attr = [row[c] for c in cols]</span>
+<span class="c1">#        attr = [x for x in attr if not np.isnan(x)]  # Remove np.nan values</span>
+<span class="c1">#        if vertex in dict_vertices.keys():</span>
+<span class="c1">#            dict_vertices[vertex][row[&#39;osm_id&#39;]] = attr</span>
+<span class="c1">#        else:</span>
+<span class="c1">#            dict_vertices[vertex] = {row[&#39;osm_id&#39;]: attr}</span>
+
+<span class="c1">#result = {}</span>
+<span class="c1">#for k1, d in dict_vertices.items():</span>
+<span class="c1">#    for k2 in d:</span>
+<span class="c1">#        result.setdefault(k2, {})[k1] = sorted(list(set([j for i in d.values() for j in i])))</span>
+        
 <span class="n">dis</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">dis</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">dis</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;bridge&#39;</span><span class="p">],</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
 <span class="n">dis</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">dis</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">dis</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;roof&#39;</span><span class="p">],</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
 
 <span class="c1">#- create a point representing the hole within each building  </span>
-<span class="n">dis</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dis</span><span class="o">.</span><span class="n">representative_point</span><span class="p">()</span><span class="o">.</span><span class="n">x</span>
-<span class="n">dis</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dis</span><span class="o">.</span><span class="n">representative_point</span><span class="p">()</span><span class="o">.</span><span class="n">y</span>
+<span class="c1">#dis[&#39;x&#39;] = dis.representative_point().x</span>
+<span class="c1">#dis[&#39;y&#39;] = dis.representative_point().y</span>
+
+<span class="c1">#- compute representative point for each geometry</span>
+<span class="n">dis</span><span class="p">[</span><span class="s2">&quot;rep_point&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dis</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">g</span><span class="p">:</span> <span class="n">g</span><span class="o">.</span><span class="n">representative_point</span><span class="p">()</span> <span class="k">if</span> <span class="n">g</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+<span class="c1">#- extract coordinates</span>
+<span class="n">dis</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dis</span><span class="p">[</span><span class="s2">&quot;rep_point&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">x</span> <span class="k">if</span> <span class="n">p</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">dis</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dis</span><span class="p">[</span><span class="s2">&quot;rep_point&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">y</span> <span class="k">if</span> <span class="n">p</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+<span class="c1">#- drop helper column if you want</span>
+<span class="n">dis</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s2">&quot;rep_point&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
 <span class="n">hs</span> <span class="o">=</span> <span class="n">dis</span><span class="p">[[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;ground_height&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
 <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
@@ -1492,14 +1628,15 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.027310
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.052985
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dis</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#dis.sort_values(by = &#39;osm_building&#39;, inplace=True) </span>
+<span class="n">dis</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 <span class="c1">#dis.plot()</span>
 </pre></div>
 </div>
@@ -1548,7 +1685,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
   </thead>
   <tbody>
     <tr>
-      <th>1</th>
+      <th>0</th>
       <td>12227309</td>
       <td>The Neighbourgoods Market Woodstock Cape Town</td>
       <td>retail</td>
@@ -1567,12 +1704,12 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <td>NaN</td>
       <td>4FRW3FF5+27C</td>
       <td>(((265023.4813864499, 6242993.344091462), (265...</td>
-      <td>POLYGON ((265023.481 6242993.344, 265021.289 6...</td>
+      <td>POLYGON ((265023.4813864499 6242993.344091462,...</td>
       <td>265035.863057</td>
       <td>6.242978e+06</td>
     </tr>
     <tr>
-      <th>2</th>
+      <th>1</th>
       <td>12249345</td>
       <td>Church  Square 34 Dickson Street 7915 Woodstoc...</td>
       <td>apartments</td>
@@ -1591,7 +1728,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <td>NaN</td>
       <td>4FRW3FC2+R5G</td>
       <td>(((264360.39058643614, 6242908.633245183), (26...</td>
-      <td>POLYGON ((264360.391 6242908.633, 264361.062 6...</td>
+      <td>POLYGON ((264360.39058643614 6242908.633245183...</td>
       <td>264327.370820</td>
       <td>6.242905e+06</td>
     </tr>
@@ -1627,25 +1764,39 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">xyz_str</span><span class="p">),</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">,</span>  <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
                  <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype_spec</span><span class="p">)</span>                     <span class="c1"># in memory fastest</span>
 
-<span class="c1">#geometry = [Point(xy) for xy in zip(df.x, df.y)]</span>
-<span class="n">geometry</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">points_from_xy</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>                                     <span class="c1">#- vectorization faster</span>
-<span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">epsg</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span><span class="p">)</span>  
+<span class="c1">#- Create the shapely &#39;geometry&#39; column directly (Vectorized) and GeoDataFrameLite | home-baked gdf</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">Point</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> 
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">GeoDataFrameLite</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> 
+<span class="n">gdf</span><span class="o">.</span><span class="n">crs</span> <span class="o">=</span> <span class="n">epsg</span>
+<span class="c1">#print(len(gdf))</span>
 
-<span class="n">_symdiff</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">overlay</span><span class="p">(</span><span class="n">aoibuffer</span><span class="p">,</span> <span class="n">dis_c</span><span class="p">,</span> <span class="n">keep_geom_type</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;symmetric_difference&#39;</span><span class="p">)</span>
+<span class="c1"># --- spatial filtering with STRtree (Replacement for GeoPandas overlay) ---</span>
+<span class="n">aoi_geom</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">unary_union</span><span class="p">(</span><span class="n">aoibuffer</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">])</span>
+<span class="n">dis_geom</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">unary_union</span><span class="p">(</span><span class="n">dis_c</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">])</span>
 
-<span class="c1">#_mask = gdf.within(_symdiff.loc[0, &#39;geometry&#39;])</span>
-<span class="c1">#gdf = gdf.loc[_mask]</span>
+<span class="n">mask_geom</span> <span class="o">=</span> <span class="n">aoi_geom</span><span class="o">.</span><span class="n">symmetric_difference</span><span class="p">(</span><span class="n">dis_geom</span><span class="p">)</span>
+<span class="c1"># Note: If mask_geom is a Multi-part geometry, we still need unary_union for STRtree query.</span>
+<span class="c1"># Here we use the .unary_union property on the result to simplify:</span>
+<span class="c1">#mask_geom = shapely.unary_union(mask_geom[&#39;geometry&#39;]) </span>
 
-<span class="c1">#- use STRtree for efficient spatial lookup instead of .within()</span>
-<span class="n">tree</span> <span class="o">=</span> <span class="n">STRtree</span><span class="p">(</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">)</span>
-<span class="n">possible_matches</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">_symdiff</span><span class="o">.</span><span class="n">unary_union</span><span class="p">)</span>                           <span class="c1">#- Faster than looping over individual geometries</span>
-<span class="c1">#- filter candidate points with actual within() check</span>
-<span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">possible_matches</span><span class="p">]</span>
-<span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">gdf</span><span class="o">.</span><span class="n">within</span><span class="p">(</span><span class="n">_symdiff</span><span class="o">.</span><span class="n">unary_union</span><span class="p">)]</span>
+<span class="c1">#- create the Spatial Index</span>
+<span class="c1"># This replaces: tree = STRtree(gdf.geometry)</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">STRtree</span><span class="p">(</span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> 
 
-<span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">jparams</span><span class="p">[</span><span class="s1">&#39;nodata&#39;</span><span class="p">]]</span>                              
+<span class="c1">#- query the Tree for Candidates</span>
+<span class="n">possible_matches_indices</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">mask_geom</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="s1">&#39;intersects&#39;</span><span class="p">)</span><span class="c1">#[0]</span>
+
+<span class="c1">#- filter the GeoDataFrameLite to candidate points</span>
+<span class="n">df_candidates</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">possible_matches_indices</span><span class="p">]</span>
+
+<span class="c1">#- apply the final, exact .within() filter</span>
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">df_candidates</span><span class="p">[</span><span class="n">df_candidates</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">geom</span><span class="p">:</span> <span class="n">geom</span><span class="o">.</span><span class="n">within</span><span class="p">(</span><span class="n">mask_geom</span><span class="p">))]</span>
+
+<span class="c1"># --- cleanup ---</span>
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">jparams</span><span class="p">[</span><span class="s1">&#39;nodata&#39;</span><span class="p">]]</span> 
 <span class="n">gdf</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1">#print(len(gdf))</span>
 
 <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">))))</span>
@@ -1653,136 +1804,17 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:05:13.950176
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:02:43.001138
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dis</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#dis.tail(2)</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>osm_id</th>
-      <th>address</th>
-      <th>building</th>
-      <th>building:levels</th>
-      <th>building:use</th>
-      <th>building:flats</th>
-      <th>building:units</th>
-      <th>beds</th>
-      <th>rooms</th>
-      <th>residential</th>
-      <th>...</th>
-      <th>building_height</th>
-      <th>roof_height</th>
-      <th>ground_height</th>
-      <th>bottom_bridge_height</th>
-      <th>bottom_roof_height</th>
-      <th>plus_code</th>
-      <th>footprint</th>
-      <th>geometry</th>
-      <th>x</th>
-      <th>y</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>4387</th>
-      <td>1317425439</td>
-      <td>None</td>
-      <td>warehouse</td>
-      <td>1.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>4.1</td>
-      <td>9.62</td>
-      <td>5.520000</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>4FRW3CFX+J23</td>
-      <td>(((264028.5833253484, 6243133.266593692), (264...</td>
-      <td>POLYGON ((264028.583 6243133.267, 264025.150 6...</td>
-      <td>264051.204336</td>
-      <td>6.243116e+06</td>
-    </tr>
-    <tr>
-      <th>4388</th>
-      <td>1340498943</td>
-      <td>Balfour Street Woodstock Cape Town</td>
-      <td>semidetached_house</td>
-      <td>1.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>4.1</td>
-      <td>60.00</td>
-      <td>55.900002</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>4FRW3C8X+7VX</td>
-      <td>(((264277.10057580634, 6242210.385846458), (26...</td>
-      <td>POLYGON ((264277.101 6242210.386, 264272.196 6...</td>
-      <td>264278.217939</td>
-      <td>6.242203e+06</td>
-    </tr>
-    <tr>
-      <th>4389</th>
-      <td>1423081172</td>
-      <td>None</td>
-      <td>warehouse</td>
-      <td>1.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>4.1</td>
-      <td>9.21</td>
-      <td>5.110000</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>4FRW3CFX+M65</td>
-      <td>(((264084.9472572068, 6243146.255961517), (264...</td>
-      <td>POLYGON ((264084.947 6243146.256, 264079.339 6...</td>
-      <td>264104.655982</td>
-      <td>6.243132e+06</td>
-    </tr>
-  </tbody>
-</table>
-<p>3 rows × 22 columns</p>
-</div></div></div>
 </div>
 <div class="alert alert-block alert-warning"><b>Prepare for Triangle:</b> </div>
 <p>The Python code to execute the <code class="docutils literal notranslate"><span class="pre">city3D.functions</span></code> are in the <code class="docutils literal notranslate"><span class="pre">city3D.py</span></code> script</p>
@@ -1875,7 +1907,8 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <li><p>population estimation and</p></li>
 <li><p>a calculation of [Building Volume per Capita]((https://www.researchgate.net/publication/343185735_Building_Volume_Per_Capita_BVPC_A_Spatially_Explicit_Measure_of_Inequality_Relevant_to_the_SDGs)</p></li>
 </ul>
-</div><div class="alert alert-block alert-success"><b>2. Possible Secondary and Tertiary level conversations starters:</b></div><div class="pst-scrollable-table-container"><table class="table">
+</div><p><a id='Section2'></a></p>
+<div class="alert alert-block alert-success"><b>2. Possible Secondary and Tertiary level conversations starters:</b></div><div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Topic</strong></p></th>
 <th class="head"><p><strong>Secondary Level Questions</strong></p></th>
@@ -1893,12 +1926,12 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Tend</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">Tend</span> <span class="o">-</span> <span class="n">Tstart</span><span class="p">))))</span> <span class="c1"># previous wStock: 07:09:57</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">Tend</span> <span class="o">-</span> <span class="n">Tstart</span><span class="p">))))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:05:33.548041
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:03:05.927645
 </pre></div>
 </div>
 </div>

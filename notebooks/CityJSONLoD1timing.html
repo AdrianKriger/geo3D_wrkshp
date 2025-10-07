@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -188,6 +188,8 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="osm_LoD1_3D-noInternet.html">osm_LoD1_3DCityModel <em>(No Internet)</em></a></li>
 <li class="toctree-l1"><a class="reference internal" href="CityJSONdataScience-noInternet.html">Spatial Data Science with CityJSON <em>(No Internet)</em></a></li>
+
+
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LoD1 caveats</span></p>
 <ul class="current nav bd-sidenav">
@@ -407,7 +409,7 @@ document.write(`
                   
   <section id="lod1-timing-and-quality-considerations">
 <h1>LoD1 Timing and Quality Considerations<a class="headerlink" href="#lod1-timing-and-quality-considerations" title="Link to this heading">#</a></h1>
-<p><a class="reference external" href="https://mybinder.org/v2/gh/AdrianKriger/geo3D_wrkshp/HEAD?urlpath=%2Fdoc%2Ftree%2Fworkshop%2Fnotebooks%2FCityJSONLoD1timing.ipynb"><img alt="Binder" src="../_images/launch-binder1.svg" /></a></p>
+<p><a class="reference external" href="https://mybinder.org/v2/gh/AdrianKriger/geo3D_wrkshp/HEAD?urlpath=%2Fdoc%2Ftree%2Fworkshop%2Fnotebooks%2CityJSONLoD1timing.ipynb"><img alt="Binder" src="../_images/launch-binder1.svg" /></a></p>
 <div class="alert alert-block alert-warning"><b>This notebook will:</b>
 <blockquote>
 <div><p><strong>illustrate how different resolution elevation models (25m, 15m and 10m DEM) affect;</strong></p>
@@ -418,36 +420,32 @@ document.write(`
 </div></blockquote>
 </div><div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- load the magic</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">timedelta</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">tempfile</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">chain</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
-
 <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">overpass</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">osm2geojson</span>
-
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">geopandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">gpd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">topojson</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tp</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">polygon</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Point</span><span class="p">,</span> <span class="n">Polygon</span> 
-<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.ops</span><span class="w"> </span><span class="kn">import</span> <span class="n">snap</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.ops</span><span class="w"> </span><span class="kn">import</span> <span class="n">transform</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.strtree</span><span class="w"> </span><span class="kn">import</span> <span class="n">STRtree</span>
-
+<span class="c1">#import osm2geojson</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="c1">#import geopandas as gpd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">topojson</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tp</span>
 
-<span class="kn">import</span><span class="w"> </span><span class="nn">pyproj</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Point</span><span class="p">,</span> <span class="n">Polygon</span><span class="p">,</span> <span class="n">polygon</span> 
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.ops</span><span class="w"> </span><span class="kn">import</span> <span class="n">snap</span><span class="p">,</span> <span class="n">transform</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shapely.strtree</span><span class="w"> </span><span class="kn">import</span> <span class="n">STRtree</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">city3D</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">pyproj</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">osgeo</span><span class="w"> </span><span class="kn">import</span> <span class="n">gdal</span><span class="p">,</span> <span class="n">ogr</span><span class="p">,</span> <span class="n">osr</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">triangle</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tr</span>
@@ -471,9 +469,9 @@ document.write(`
 <p><strong>A <code class="docutils literal notranslate"><span class="pre">parameter.json</span></code> defines the path and files</strong>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#jparams = json.load(open(&#39;sRiver_param10m.json&#39;))  # 11 min 30 sec </span>
-<span class="n">jparams</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;sRiver_param15m.json&#39;</span><span class="p">))</span>  <span class="c1"># 5 min 20 sec</span>
-<span class="c1">#jparams = json.load(open(&#39;sRiver_param25m.json&#39;))  # 2 min 13 sec </span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#jparams = json.load(open(&#39;sRiver_param10m.json&#39;))  # was 11 min 30 sec | now 0:05:12.30</span>
+<span class="n">jparams</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;sRiver_param15m.json&#39;</span><span class="p">))</span>  <span class="c1"># was 5 min 20 sec | now 0:02:24.49</span>
+<span class="c1">#jparams = json.load(open(&#39;sRiver_param25m.json&#39;))  # was 2 min 13 sec | now 0:01:00.15</span>
 </pre></div>
 </div>
 </div>
@@ -514,30 +512,37 @@ document.write(`
 <span class="s2">        out geom;</span>
 <span class="s2">        &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">jparams</span><span class="p">[</span><span class="s1">&#39;LargeArea&#39;</span><span class="p">],</span> <span class="n">jparams</span><span class="p">[</span><span class="s1">&#39;FocusArea&#39;</span><span class="p">])</span>
 
-<span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://overpass-api.de/api/interpreter&quot;</span>
-<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;data&#39;</span><span class="p">:</span> <span class="n">query</span><span class="p">})</span>
+<span class="c1">#url = &quot;http://overpass-api.de/api/interpreter&quot;</span>
+<span class="c1">#r = requests.get(url, params={&#39;data&#39;: query})</span>
 <span class="c1">#rr = r.read()</span>
-<span class="n">area</span> <span class="o">=</span> <span class="n">osm2geojson</span><span class="o">.</span><span class="n">json2geojson</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">json</span><span class="p">())</span>
+<span class="c1">#area = osm2geojson.json2geojson(r.json())</span>
 <span class="c1">#read into .gpd</span>
-<span class="n">aoi</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="o">.</span><span class="n">from_features</span><span class="p">(</span><span class="n">area</span><span class="p">[</span><span class="s1">&#39;features&#39;</span><span class="p">])</span>
+<span class="c1">#aoi = gpd.GeoDataFrame.from_features(area[&#39;features&#39;])</span>
 <span class="c1">#aoi = aoi.set_crs(4326, allow_override=True)</span>
-<span class="k">if</span> <span class="n">jparams</span><span class="p">[</span><span class="s1">&#39;osm_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;relation&#39;</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">aoi</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">aoi</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
-        <span class="k">if</span> <span class="n">row</span><span class="o">.</span><span class="n">tags</span> <span class="o">!=</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s1">&#39;place&#39;</span> <span class="ow">in</span> <span class="n">row</span><span class="o">.</span><span class="n">tags</span><span class="p">:</span>
-            <span class="n">focus</span> <span class="o">=</span> <span class="n">row</span>
+<span class="c1">#if jparams[&#39;osm_type&#39;] == &#39;relation&#39; and len(aoi) &gt; 1:</span>
+<span class="c1">#    for i, row in aoi.iterrows():</span>
+<span class="c1">#        if row.tags != None and &#39;place&#39; in row.tags:</span>
+<span class="c1">#            focus = row</span>
             
-    <span class="n">trim</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">focus</span><span class="p">)</span>
-    <span class="n">trim</span> <span class="o">=</span> <span class="n">trim</span><span class="o">.</span><span class="n">T</span>
-    <span class="n">aoi</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">trim</span><span class="p">,</span> <span class="n">geometry</span> <span class="o">=</span> <span class="n">trim</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">])</span>
+<span class="c1">#    trim = pd.DataFrame(focus)</span>
+<span class="c1">#    trim = trim.T</span>
+<span class="c1">#    aoi = gpd.GeoDataFrame(trim, geometry = trim[&#39;geometry&#39;])</span>
     <span class="c1">#aoi = aoi.set_crs(4326)</span>
 
 <span class="c1"># Drop rows where geometry is None or NaN</span>
-<span class="n">aoi</span> <span class="o">=</span> <span class="n">aoi</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">])</span>
-<span class="n">aoi</span> <span class="o">=</span> <span class="n">aoi</span><span class="o">.</span><span class="n">set_crs</span><span class="p">(</span><span class="mi">4326</span><span class="p">,</span> <span class="n">allow_override</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1">#aoi = aoi.dropna(subset=[&#39;geometry&#39;])</span>
+<span class="c1">#aoi = aoi.set_crs(4326, allow_override=True)</span>
 
-<span class="c1"># gt the bounding box (BBOX) of the GeoJSON boundary</span>
-<span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span> <span class="o">=</span> <span class="n">aoi</span><span class="o">.</span><span class="n">total_bounds</span>
-<span class="n">bbox_filter</span> <span class="o">=</span> <span class="s2">&quot;-spat&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">minx</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">miny</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">maxx</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">maxy</span><span class="p">)</span>
+<span class="c1">#- execute function from city3D and and return GeoDataFrameLite | home-baked gdf</span>
+<span class="n">aoi</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">overpass_to_gdf</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+
+<span class="c1">#- suppose &#39;aoi&#39; is your GeoDataFrameLite or list of geometries</span>
+<span class="n">geoms</span> <span class="o">=</span> <span class="n">aoi</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="c1">#- combine all geometries into a single union</span>
+<span class="n">combined_geom</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">unary_union</span><span class="p">(</span><span class="n">geoms</span><span class="p">)</span>  <span class="c1"># returns Polygon or MultiPolygon</span>
+<span class="c1">#- compute bounding box</span>
+<span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span> <span class="o">=</span> <span class="n">combined_geom</span><span class="o">.</span><span class="n">bounds</span>
+<span class="c1">#extent = [minx - 250, miny - 250,maxx + 250, maxy + 250]</span>
 <span class="n">aoi</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -561,19 +566,27 @@ document.write(`
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>geometry</th>
+      <th>boundary</th>
+      <th>name</th>
+      <th>place</th>
       <th>type</th>
-      <th>id</th>
-      <th>tags</th>
+      <th>wikidata</th>
+      <th>geometry</th>
+      <th>osm_id</th>
+      <th>osm_type</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>MULTIPOLYGON (((18.45298 -33.93697, 18.45347 -...</td>
-      <td>relation</td>
+      <td>place</td>
+      <td>Salt River</td>
+      <td>suburb</td>
+      <td>boundary</td>
+      <td>Q2383969</td>
+      <td>POLYGON ((18.4575251 -33.9411991, 18.4591488 -...</td>
       <td>2034284</td>
-      <td>{'boundary': 'place', 'name': 'Salt River', 'p...</td>
+      <td>relation</td>
     </tr>
   </tbody>
 </table>
@@ -604,7 +617,9 @@ document.write(`
 <span class="p">)</span>
 
 <span class="c1">#- load into GeoDataFrame</span>
-<span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">read_file</span><span class="p">(</span><span class="n">geojson_vsimem</span><span class="p">)</span>
+<span class="c1">#- load into GeoDataFrameLite | home-baked gdf</span>
+<span class="c1">#gdf = gpd.read_file(geojson_vsimem)</span>
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">read_vsimem_geojson</span><span class="p">(</span><span class="n">geojson_vsimem</span><span class="p">)</span>
 
 <span class="c1">#- cleanup VSI Memory</span>
 <span class="n">gdal</span><span class="o">.</span><span class="n">Unlink</span><span class="p">(</span><span class="n">geojson_vsimem</span><span class="p">)</span>
@@ -618,7 +633,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.628877
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.464370
 </pre></div>
 </div>
 </div>
@@ -649,62 +664,62 @@ document.write(`
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>osm_id</th>
-      <th>osm_way_id</th>
-      <th>name</th>
-      <th>type</th>
       <th>amenity</th>
       <th>building</th>
       <th>craft</th>
+      <th>geometry</th>
       <th>historic</th>
       <th>leisure</th>
       <th>man_made</th>
+      <th>name</th>
       <th>office</th>
+      <th>osm_id</th>
+      <th>osm_way_id</th>
+      <th>other_tags</th>
       <th>shop</th>
       <th>sport</th>
       <th>tourism</th>
-      <th>other_tags</th>
-      <th>geometry</th>
+      <th>type</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>6383946</td>
-      <td>NaN</td>
-      <td>Western Cape Metrorail - Infrastructure Building</td>
-      <td>multipolygon</td>
-      <td>NaN</td>
+      <td>None</td>
       <td>office</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>None</td>
+      <td>MULTIPOLYGON (((18.4723433 -33.9288948, 18.472...</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Western Cape Metrorail - Infrastructure Building</td>
+      <td>None</td>
+      <td>6383946</td>
+      <td>None</td>
       <td>"addr:city"=&gt;"Cape Town","addr:postcode"=&gt;"729...</td>
-      <td>MULTIPOLYGON (((18.47234 -33.92889, 18.47238 -...</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>multipolygon</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>6691666</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>multipolygon</td>
-      <td>NaN</td>
+      <td>None</td>
       <td>hall</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>None</td>
+      <td>MULTIPOLYGON (((18.4686004 -33.9360187, 18.468...</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>6691666</td>
+      <td>None</td>
       <td>"addr:housename"=&gt;"Parish Hall"</td>
-      <td>MULTIPOLYGON (((18.46860 -33.93602, 18.46862 -...</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>multipolygon</td>
     </tr>
   </tbody>
 </table>
@@ -742,7 +757,10 @@ document.write(`
 <span class="k">elif</span> <span class="s1">&#39;osm_way_id&#39;</span> <span class="ow">in</span> <span class="n">gdf</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
     <span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;osm_way_id&#39;</span><span class="p">:</span> <span class="s1">&#39;osm_id&#39;</span><span class="p">})</span>
 
-<span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">within</span><span class="p">(</span><span class="n">aoi</span><span class="o">.</span><span class="n">unary_union</span><span class="p">))]</span>
+<span class="c1">#gdf = gdf[gdf.geometry.apply(lambda x: x.within(aoi.unary_union))]</span>
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">within</span><span class="p">(</span><span class="n">shapely</span><span class="o">.</span><span class="n">unary_union</span><span class="p">(</span><span class="n">aoi</span><span class="o">.</span><span class="n">geometry</span><span class="p">)))]</span>
+<span class="n">gdf</span><span class="o">.</span><span class="n">crs</span> <span class="o">=</span> <span class="s2">&quot;EPSG:4326&quot;</span>
+
 <span class="n">gdf</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -766,16 +784,16 @@ document.write(`
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>osm_id</th>
-      <th>name</th>
-      <th>type</th>
       <th>amenity</th>
       <th>building</th>
       <th>craft</th>
+      <th>geometry</th>
       <th>historic</th>
       <th>leisure</th>
       <th>man_made</th>
+      <th>name</th>
       <th>office</th>
+      <th>osm_id</th>
       <th>...</th>
       <th>diet:vegan</th>
       <th>content</th>
@@ -792,16 +810,16 @@ document.write(`
   <tbody>
     <tr>
       <th>0</th>
-      <td>6383946</td>
-      <td>Western Cape Metrorail - Infrastructure Building</td>
-      <td>multipolygon</td>
-      <td>NaN</td>
+      <td>None</td>
       <td>office</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>None</td>
+      <td>MULTIPOLYGON (((18.4723433 -33.9288948, 18.472...</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Western Cape Metrorail - Infrastructure Building</td>
+      <td>None</td>
+      <td>6383946</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -816,16 +834,16 @@ document.write(`
     </tr>
     <tr>
       <th>7</th>
-      <td>13328172</td>
-      <td>NaN</td>
-      <td>multipolygon</td>
-      <td>NaN</td>
+      <td>None</td>
       <td>school</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>None</td>
+      <td>MULTIPOLYGON (((18.4615816 -33.9317448, 18.461...</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>13328172</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -856,108 +874,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>osm_id</th>
-      <th>name</th>
-      <th>type</th>
-      <th>amenity</th>
-      <th>building</th>
-      <th>craft</th>
-      <th>historic</th>
-      <th>leisure</th>
-      <th>man_made</th>
-      <th>office</th>
-      <th>...</th>
-      <th>diet:vegan</th>
-      <th>content</th>
-      <th>industrial</th>
-      <th>addr:unit</th>
-      <th>disused</th>
-      <th>sahra:criterea</th>
-      <th>opening_date</th>
-      <th>bus</th>
-      <th>network</th>
-      <th>construction</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>6383946</td>
-      <td>Western Cape Metrorail - Infrastructure Building</td>
-      <td>multipolygon</td>
-      <td>NaN</td>
-      <td>office</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>13328172</td>
-      <td>NaN</td>
-      <td>multipolygon</td>
-      <td>NaN</td>
-      <td>school</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-  </tbody>
-</table>
-<p>2 rows × 136 columns</p>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1020,8 +936,19 @@ document.write(`
 
 <span class="n">aoibuffer</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">aoibuffer</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">buffer01</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
     
-<span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="n">aoibuffer</span><span class="o">.</span><span class="n">total_bounds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">250</span><span class="p">,</span> <span class="n">aoibuffer</span><span class="o">.</span><span class="n">total_bounds</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">250</span><span class="p">,</span> 
-          <span class="n">aoibuffer</span><span class="o">.</span><span class="n">total_bounds</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="mi">250</span><span class="p">,</span> <span class="n">aoibuffer</span><span class="o">.</span><span class="n">total_bounds</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="mi">250</span><span class="p">]</span>
+<span class="c1">#extent = [aoibuffer.total_bounds[0] - 250, aoibuffer.total_bounds[1] - 250, </span>
+<span class="c1">#          aoibuffer.total_bounds[2] + 250, aoibuffer.total_bounds[3] + 250]</span>
+
+
+<span class="c1">#- suppose &#39;aoi&#39; is your GeoDataFrameLite or list of geometries</span>
+<span class="n">geoms</span> <span class="o">=</span> <span class="n">aoibuffer</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="c1">#- combine all geometries into a single union</span>
+<span class="n">combined_geom</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">unary_union</span><span class="p">(</span><span class="n">geoms</span><span class="p">)</span>  <span class="c1"># returns Polygon or MultiPolygon</span>
+<span class="c1">#- compute bounding box</span>
+<span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span> <span class="o">=</span> <span class="n">combined_geom</span><span class="o">.</span><span class="n">bounds</span>
+
+<span class="n">extent</span> <span class="o">=</span> <span class="p">[</span><span class="n">minx</span> <span class="o">-</span> <span class="mi">250</span><span class="p">,</span> <span class="n">miny</span> <span class="o">-</span> <span class="mi">250</span><span class="p">,</span>
+          <span class="n">maxx</span> <span class="o">+</span> <span class="mi">250</span><span class="p">,</span> <span class="n">maxy</span> <span class="o">+</span> <span class="mi">250</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
@@ -1096,13 +1023,21 @@ document.write(`
 <p><strong>Buildings</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- harvest buildings</span>
-<span class="n">ts</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">ts</span><span class="p">[</span><span class="s1">&#39;type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;node&#39;</span><span class="p">],</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- simplify geometry with GeoDataFrameLite | home-baked gdf</span>
+<span class="n">ts</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">GeoDataFrameLite</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
+<span class="n">geojson_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">to_json</span><span class="p">())</span>
 
-<span class="c1">#- orient segments and simplify topology</span>
-<span class="n">topo</span> <span class="o">=</span> <span class="n">tp</span><span class="o">.</span><span class="n">Topology</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">prequantize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">winding_order</span><span class="o">=</span><span class="s1">&#39;CCW_CW&#39;</span><span class="p">)</span>
-<span class="k">with</span> <span class="n">np</span><span class="o">.</span><span class="n">errstate</span><span class="p">(</span><span class="n">invalid</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">):</span>
-    <span class="n">ts</span> <span class="o">=</span> <span class="n">topo</span><span class="o">.</span><span class="n">toposimplify</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span><span class="o">.</span><span class="n">to_gdf</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">feat</span> <span class="ow">in</span> <span class="n">geojson_dict</span><span class="p">[</span><span class="s2">&quot;features&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">feat</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;type&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">feat</span><span class="p">[</span><span class="s2">&quot;type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;multipolygon&quot;</span>
+    <span class="k">if</span> <span class="n">feat</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;geometry&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">feat</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span><span class="s2">&quot;MultiPolygon&quot;</span><span class="p">,</span><span class="s2">&quot;coordinates&quot;</span><span class="p">:[]}</span>
+
+<span class="n">topo</span> <span class="o">=</span> <span class="n">tp</span><span class="o">.</span><span class="n">Topology</span><span class="p">(</span><span class="n">geojson_dict</span><span class="p">,</span> <span class="n">prequantize</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">winding_order</span><span class="o">=</span><span class="s1">&#39;CCW_CW&#39;</span><span class="p">)</span>
+<span class="n">simplified_geojson</span> <span class="o">=</span> <span class="n">topo</span><span class="o">.</span><span class="n">toposimplify</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span><span class="o">.</span><span class="n">to_geojson</span><span class="p">()</span>
+
+<span class="n">ts</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">GeoDataFrameLite</span><span class="o">.</span><span class="n">from_json</span><span class="p">(</span><span class="n">simplified_geojson</span><span class="p">)</span>
+<span class="n">ts</span><span class="o">.</span><span class="n">crs</span> <span class="o">=</span> <span class="n">epsg</span>
 </pre></div>
 </div>
 </div>
@@ -1115,18 +1050,42 @@ document.write(`
 <span class="n">ts_copy</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="c1">#new_df1 = ts_copy.loc[ts_copy.overlaps(ts_copy.unary_union)].reset_index(drop=True)  #-- perhaps no union?</span>
 
-<span class="n">joined</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">sjoin</span><span class="p">(</span><span class="n">ts_copy</span><span class="p">,</span> <span class="n">ts_copy</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">&quot;inner&quot;</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="s2">&quot;overlaps&quot;</span><span class="p">)</span>
+<span class="c1">#joined = gpd.sjoin(ts_copy, ts_copy, how=&quot;inner&quot;, predicate=&quot;overlaps&quot;)</span>
+
+<span class="n">geoms</span> <span class="o">=</span> <span class="n">ts_copy</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">STRtree</span><span class="p">(</span><span class="n">geoms</span><span class="p">)</span>
+<span class="c1"># Find overlapping pairs</span>
+<span class="n">pairs</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">geom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">geoms</span><span class="p">):</span>
+    <span class="c1"># query returns candidates that intersect envelope</span>
+    <span class="n">candidates</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">:</span>
+        <span class="c1"># find index by identity in the original geoms list</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">geoms</span><span class="p">)</span> <span class="k">if</span> <span class="n">g</span> <span class="ow">is</span> <span class="n">c</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+            <span class="k">continue</span>  <span class="c1"># skip if candidate is not found</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span> <span class="ow">and</span> <span class="n">geom</span><span class="o">.</span><span class="n">overlaps</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+            <span class="n">pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">))</span>
+
+<span class="n">joined</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;index_left&quot;</span><span class="p">,</span> <span class="s2">&quot;index_right&quot;</span><span class="p">])</span>
 
 <span class="c1">#- joined index is changing. silence warning. future ready.</span>
 <span class="c1"># GeoPandas &lt;0.12 uses index_left/index_right</span>
-<span class="k">if</span> <span class="s2">&quot;index_left&quot;</span> <span class="ow">in</span> <span class="n">joined</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-    <span class="n">left_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="p">[</span><span class="s2">&quot;index_left&quot;</span><span class="p">]</span>
-    <span class="n">right_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="p">[</span><span class="s2">&quot;index_right&quot;</span><span class="p">]</span>
-<span class="k">else</span><span class="p">:</span>  <span class="c1"># GeoPandas ≥0.12 uses _left/_right suffixes</span>
-    <span class="n">left_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="o">.</span><span class="n">index</span>
-    <span class="n">right_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="p">[</span><span class="s2">&quot;index_right&quot;</span><span class="p">]</span>
+<span class="c1">#if &quot;index_left&quot; in joined.columns:</span>
+<span class="c1">#    left_idx = joined[&quot;index_left&quot;]</span>
+<span class="c1">#    right_idx = joined[&quot;index_right&quot;]</span>
+<span class="c1">#else:  # GeoPandas ≥0.12 uses _left/_right suffixes</span>
+<span class="c1">#    left_idx = joined.index</span>
+<span class="c1">#    right_idx = joined[&quot;index_right&quot;]</span>
 
 <span class="c1"># remove self matches</span>
+<span class="c1">#mask = left_idx != right_idx</span>
+<span class="c1">#overlap_idx = left_idx[mask].unique()</span>
+
+<span class="c1">#- remove self matches and select overlapping geometries</span>
+<span class="n">left_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="p">[</span><span class="s2">&quot;index_left&quot;</span><span class="p">]</span>
+<span class="n">right_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="p">[</span><span class="s2">&quot;index_right&quot;</span><span class="p">]</span>
 <span class="n">mask</span> <span class="o">=</span> <span class="n">left_idx</span> <span class="o">!=</span> <span class="n">right_idx</span>
 <span class="n">overlap_idx</span> <span class="o">=</span> <span class="n">left_idx</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
 
@@ -1138,7 +1097,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:10.773552
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.160511
 </pre></div>
 </div>
 </div>
@@ -1150,10 +1109,43 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#%matplotlib</span>
 
 <span class="c1">#fig, ax = plt.subplots(figsize=(11, 11))</span>
-
 <span class="c1">#ts.plot(ax=ax, facecolor=&#39;none&#39;, edgecolor=&#39;purple&#39;, alpha=0.2)</span>
 <span class="c1">#if len(new_df1) &gt; 0:</span>
-<span class="c1">#    new_df1.plot(ax=ax, edgecolor=&#39;red&#39;, facecolor=&#39;none&#39;)</span>
+<span class="c1">#    new_df1.plot(ax=ax, edgecolor=&#39;red&#39;, facecolor=&#39;none&#39;)#, alpha=0.3)#, column=&#39;osm_building&#39;, legend=True)</span>
+
+<span class="c1">#def plot_geometries(df, ax=None, facecolor=&#39;none&#39;, edgecolor=&#39;purple&#39;, alpha=0.5):</span>
+<span class="c1">#    if ax is None:</span>
+<span class="c1">#        fig, ax = plt.subplots(figsize=(10,10))</span>
+
+<span class="c1">#    patches = []</span>
+
+<span class="c1">#    for geom in df[&#39;geometry&#39;]:</span>
+<span class="c1">#        if geom is None:</span>
+<span class="c1">#            continue</span>
+
+<span class="c1">#        if isinstance(geom, Polygon):</span>
+            <span class="c1"># Exterior ring</span>
+<span class="c1">#            patches.append(MplPolygon(list(geom.exterior.coords), closed=True))</span>
+            <span class="c1"># Interiors (holes)</span>
+<span class="c1">#            for interior in geom.interiors:</span>
+<span class="c1">#                patches.append(MplPolygon(list(interior.coords), closed=True))</span>
+<span class="c1">#        elif isinstance(geom, MultiPolygon):</span>
+<span class="c1">#            for poly in geom.geoms:</span>
+<span class="c1">#                patches.append(MplPolygon(list(poly.exterior.coords), closed=True))</span>
+<span class="c1">#                for interior in poly.interiors:</span>
+<span class="c1">#                    patches.append(MplPolygon(list(interior.coords), closed=True))</span>
+
+<span class="c1">#    pc = PatchCollection(patches, facecolor=facecolor, edgecolor=edgecolor, alpha=alpha)</span>
+<span class="c1">#    ax.add_collection(pc)</span>
+<span class="c1">#    ax.autoscale()</span>
+<span class="c1">#    ax.set_aspect(&#39;equal&#39;)</span>
+<span class="c1">#    return ax</span>
+
+<span class="c1">##-- Example usage:</span>
+<span class="c1">#fig, ax = plt.subplots(figsize=(11, 11))</span>
+<span class="c1">#plot_geometries(ts_copy, ax=ax, facecolor=&#39;none&#39;, edgecolor=&#39;purple&#39;, alpha=0.2)</span>
+<span class="c1">#if len(new_df1) &gt; 0:</span>
+<span class="c1">#    plot_geometries(new_df1, ax=ax, facecolor=&#39;none&#39;, edgecolor=&#39;red&#39;, alpha=0.5)</span>
 <span class="c1">#-- save</span>
 <span class="c1">#plt.savefig(&#39;./data/topologyFig&#39;, dpi=300)</span>
 <span class="c1">#plt.show()</span>
@@ -1188,18 +1180,17 @@ document.write(`
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>geometry</th>
-      <th>osm_id</th>
-      <th>name</th>
-      <th>type</th>
       <th>amenity</th>
       <th>building</th>
       <th>craft</th>
       <th>historic</th>
       <th>leisure</th>
       <th>man_made</th>
+      <th>name</th>
+      <th>office</th>
+      <th>osm_id</th>
+      <th>shop</th>
       <th>...</th>
-      <th>content</th>
       <th>industrial</th>
       <th>addr:unit</th>
       <th>disused</th>
@@ -1208,22 +1199,23 @@ document.write(`
       <th>bus</th>
       <th>network</th>
       <th>construction</th>
+      <th>geometry</th>
       <th>mean</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>MULTIPOLYGON (((266353.277 6242850.213, 266357...</td>
-      <td>6383946</td>
-      <td>Western Cape Metrorail - Infrastructure Building</td>
-      <td>multipolygon</td>
-      <td>NaN</td>
+      <td>None</td>
       <td>office</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>Western Cape Metrorail - Infrastructure Building</td>
+      <td>None</td>
+      <td>6383946</td>
+      <td>None</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1233,21 +1225,21 @@ document.write(`
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>NaN</td>
-      <td>4.315807</td>
+      <td>MULTIPOLYGON (((266353.2773689979 6242850.2127...</td>
+      <td>4.306250</td>
     </tr>
     <tr>
-      <th>7</th>
-      <td>MULTIPOLYGON (((265366.084 6242509.527, 265364...</td>
-      <td>13328172</td>
-      <td>NaN</td>
-      <td>multipolygon</td>
-      <td>NaN</td>
+      <th>1</th>
+      <td>None</td>
       <td>school</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
+      <td>13328172</td>
+      <td>None</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1257,8 +1249,8 @@ document.write(`
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>NaN</td>
-      <td>16.917141</td>
+      <td>MULTIPOLYGON (((265366.0837814461 6242509.5266...</td>
+      <td>16.895311</td>
     </tr>
   </tbody>
 </table>
@@ -1275,8 +1267,7 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># -- execute function. write geoJSON</span>
-<span class="c1">#city3D.write_geojson(ts, jparams)</span>
-<span class="n">dis</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">process_and_write_geojson</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">ts</span><span class="o">.</span><span class="n">crs</span><span class="p">,</span> <span class="n">jparams</span><span class="p">)</span><span class="c1">#, is_geojson=True, output_file=&#39;./data/fp_j.geojson&#39;)</span>
+<span class="n">dis</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">process_and_write_geojson</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">jparams</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1314,9 +1305,19 @@ document.write(`
 <span class="n">dis</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">dis</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">dis</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;roof&#39;</span><span class="p">],</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
 
 <span class="c1">#- create a point representing the hole within each building  </span>
-<span class="n">dis</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dis</span><span class="o">.</span><span class="n">representative_point</span><span class="p">()</span><span class="o">.</span><span class="n">x</span>
-<span class="n">dis</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dis</span><span class="o">.</span><span class="n">representative_point</span><span class="p">()</span><span class="o">.</span><span class="n">y</span>
+<span class="c1">#dis[&#39;x&#39;] = dis.representative_point().x</span>
+<span class="c1">#dis[&#39;y&#39;] = dis.representative_point().y</span>
+
+<span class="c1">#- compute representative point for each geometry</span>
+<span class="n">dis</span><span class="p">[</span><span class="s2">&quot;rep_point&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dis</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">g</span><span class="p">:</span> <span class="n">g</span><span class="o">.</span><span class="n">representative_point</span><span class="p">()</span> <span class="k">if</span> <span class="n">g</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+<span class="c1">#- extract coordinates</span>
+<span class="n">dis</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dis</span><span class="p">[</span><span class="s2">&quot;rep_point&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">x</span> <span class="k">if</span> <span class="n">p</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">dis</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dis</span><span class="p">[</span><span class="s2">&quot;rep_point&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">p</span><span class="p">:</span> <span class="n">p</span><span class="o">.</span><span class="n">y</span> <span class="k">if</span> <span class="n">p</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+<span class="c1">#- drop helper column if you want</span>
+<span class="n">dis</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="s2">&quot;rep_point&quot;</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
 <span class="n">hs</span> <span class="o">=</span> <span class="n">dis</span><span class="p">[[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;ground_height&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
 
 <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">))))</span>
@@ -1324,7 +1325,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.149447
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.022653
 </pre></div>
 </div>
 </div>
@@ -1389,7 +1390,7 @@ document.write(`
     <tr>
       <th>0</th>
       <td>6383946</td>
-      <td>Western Cape Metrorail 7295 Cape Town</td>
+      <td>Western Cape Metrorail - Infrastructure Buildi...</td>
       <td>office</td>
       <td>1.0</td>
       <td>NaN</td>
@@ -1400,18 +1401,18 @@ document.write(`
       <td>NaN</td>
       <td>...</td>
       <td>4.1</td>
-      <td>8.42</td>
-      <td>4.315807</td>
+      <td>8.41</td>
+      <td>4.306250</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>4FRW3FCF+946</td>
       <td>(((266353.2773689979, 6242850.212725159), (266...</td>
-      <td>POLYGON ((266353.277 6242850.213, 266357.266 6...</td>
+      <td>POLYGON ((266353.2773689979 6242850.212725159,...</td>
       <td>266394.180182</td>
       <td>6.242829e+06</td>
     </tr>
     <tr>
-      <th>7</th>
+      <th>1</th>
       <td>13328172</td>
       <td>None</td>
       <td>school</td>
@@ -1424,13 +1425,13 @@ document.write(`
       <td>NaN</td>
       <td>...</td>
       <td>6.9</td>
-      <td>23.82</td>
-      <td>16.917141</td>
+      <td>23.80</td>
+      <td>16.895311</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>4FRW3F96+6MG</td>
       <td>(((265366.0837814461, 6242509.526659243), (265...</td>
-      <td>POLYGON ((265366.084 6242509.527, 265364.518 6...</td>
+      <td>POLYGON ((265366.0837814461 6242509.526659243,...</td>
       <td>265378.733465</td>
       <td>6.242489e+06</td>
     </tr>
@@ -1469,25 +1470,39 @@ document.write(`
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">xyz_str</span><span class="p">),</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">,</span>  <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype_spec</span><span class="p">)</span>
 
 
-<span class="c1">#geometry = [Point(xy) for xy in zip(df.x, df.y)]</span>
-<span class="n">geometry</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">points_from_xy</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">df</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>                                     <span class="c1">#- vectorization faster</span>
-<span class="n">gdf</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">GeoDataFrame</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">epsg</span><span class="p">,</span> <span class="n">geometry</span><span class="o">=</span><span class="n">geometry</span><span class="p">)</span>  
+<span class="c1">#- Create the shapely &#39;geometry&#39; column directly (Vectorized) and GeoDataFrameLite | home-baked gdf</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">Point</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">]),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> 
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">GeoDataFrameLite</span><span class="p">(</span><span class="n">df</span><span class="p">)</span> 
+<span class="n">gdf</span><span class="o">.</span><span class="n">crs</span> <span class="o">=</span> <span class="n">epsg</span>
+<span class="c1">#print(len(gdf))</span>
 
-<span class="n">_symdiff</span> <span class="o">=</span> <span class="n">gpd</span><span class="o">.</span><span class="n">overlay</span><span class="p">(</span><span class="n">aoibuffer</span><span class="p">,</span> <span class="n">dis_c</span><span class="p">,</span> <span class="n">keep_geom_type</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;symmetric_difference&#39;</span><span class="p">)</span>
+<span class="c1"># --- spatial filtering with STRtree (Replacement for GeoPandas overlay) ---</span>
+<span class="n">aoi_geom</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">unary_union</span><span class="p">(</span><span class="n">aoibuffer</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">])</span>
+<span class="n">dis_geom</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">unary_union</span><span class="p">(</span><span class="n">dis_c</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">])</span>
 
-<span class="c1">#_mask = gdf.within(_symdiff.loc[0, &#39;geometry&#39;])</span>
-<span class="c1">#gdf = gdf.loc[_mask]</span>
+<span class="n">mask_geom</span> <span class="o">=</span> <span class="n">aoi_geom</span><span class="o">.</span><span class="n">symmetric_difference</span><span class="p">(</span><span class="n">dis_geom</span><span class="p">)</span>
+<span class="c1"># Note: If mask_geom is a Multi-part geometry, we still need unary_union for STRtree query.</span>
+<span class="c1"># Here we use the .unary_union property on the result to simplify:</span>
+<span class="c1">#mask_geom = shapely.unary_union(mask_geom[&#39;geometry&#39;]) </span>
 
-<span class="c1">#- use STRtree for efficient spatial lookup instead of .within()</span>
-<span class="n">tree</span> <span class="o">=</span> <span class="n">STRtree</span><span class="p">(</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">)</span>
-<span class="n">possible_matches</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">_symdiff</span><span class="o">.</span><span class="n">unary_union</span><span class="p">)</span>         <span class="c1">#- Faster than looping over individual geometries</span>
-<span class="c1">#- filter candidate points with actual within() check</span>
-<span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">possible_matches</span><span class="p">]</span>
-<span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">gdf</span><span class="o">.</span><span class="n">within</span><span class="p">(</span><span class="n">_symdiff</span><span class="o">.</span><span class="n">unary_union</span><span class="p">)]</span>
+<span class="c1">#- create the Spatial Index</span>
+<span class="c1"># This replaces: tree = STRtree(gdf.geometry)</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">STRtree</span><span class="p">(</span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> 
 
-<span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">jparams</span><span class="p">[</span><span class="s1">&#39;nodata&#39;</span><span class="p">]]</span>                              
+<span class="c1">#- query the Tree for Candidates</span>
+<span class="n">possible_matches_indices</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">mask_geom</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="s1">&#39;intersects&#39;</span><span class="p">)</span><span class="c1">#[0]</span>
+
+<span class="c1">#- filter the GeoDataFrameLite to candidate points</span>
+<span class="n">df_candidates</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">possible_matches_indices</span><span class="p">]</span>
+
+<span class="c1">#- apply the final, exact .within() filter</span>
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">df_candidates</span><span class="p">[</span><span class="n">df_candidates</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">geom</span><span class="p">:</span> <span class="n">geom</span><span class="o">.</span><span class="n">within</span><span class="p">(</span><span class="n">mask_geom</span><span class="p">))]</span>
+
+<span class="c1"># --- cleanup ---</span>
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;z&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="n">jparams</span><span class="p">[</span><span class="s1">&#39;nodata&#39;</span><span class="p">]]</span> 
 <span class="n">gdf</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1">#print(len(gdf))</span>
 
 <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">))))</span>
@@ -1495,7 +1510,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:04:57.549561
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:04:55.507845
 </pre></div>
 </div>
 </div>
@@ -1605,7 +1620,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:05:19.462364
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:05:12.304619
 </pre></div>
 </div>
 </div>
