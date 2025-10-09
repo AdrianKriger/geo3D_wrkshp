@@ -633,7 +633,11 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.464370
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ERROR 1: Non closed ring detected.
+ERROR 1: Non closed ring detected.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.851014
 </pre></div>
 </div>
 </div>
@@ -858,7 +862,7 @@ document.write(`
     </tr>
   </tbody>
 </table>
-<p>2 rows × 136 columns</p>
+<p>2 rows × 133 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -1097,7 +1101,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.160511
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.254930
 </pre></div>
 </div>
 </div>
@@ -1226,7 +1230,7 @@ document.write(`
       <td>NaN</td>
       <td>NaN</td>
       <td>MULTIPOLYGON (((266353.2773689979 6242850.2127...</td>
-      <td>4.306250</td>
+      <td>4.315807</td>
     </tr>
     <tr>
       <th>1</th>
@@ -1250,11 +1254,11 @@ document.write(`
       <td>NaN</td>
       <td>NaN</td>
       <td>MULTIPOLYGON (((265366.0837814461 6242509.5266...</td>
-      <td>16.895311</td>
+      <td>16.917141</td>
     </tr>
   </tbody>
 </table>
-<p>2 rows × 137 columns</p>
+<p>2 rows × 134 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -1325,7 +1329,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.022653
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.029014
 </pre></div>
 </div>
 </div>
@@ -1401,13 +1405,13 @@ document.write(`
       <td>NaN</td>
       <td>...</td>
       <td>4.1</td>
-      <td>8.41</td>
-      <td>4.306250</td>
+      <td>8.42</td>
+      <td>4.315807</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>4FRW3FCF+946</td>
-      <td>(((266353.2773689979, 6242850.212725159), (266...</td>
-      <td>POLYGON ((266353.2773689979 6242850.212725159,...</td>
+      <td>(((266353.2773689979, 6242850.21272516), (2663...</td>
+      <td>POLYGON ((266353.2773689979 6242850.21272516, ...</td>
       <td>266394.180182</td>
       <td>6.242829e+06</td>
     </tr>
@@ -1425,8 +1429,8 @@ document.write(`
       <td>NaN</td>
       <td>...</td>
       <td>6.9</td>
-      <td>23.80</td>
-      <td>16.895311</td>
+      <td>23.82</td>
+      <td>16.917141</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>4FRW3F96+6MG</td>
@@ -1437,7 +1441,7 @@ document.write(`
     </tr>
   </tbody>
 </table>
-<p>2 rows × 22 columns</p>
+<p>2 rows × 23 columns</p>
 </div></div></div>
 </div>
 <section id="timing">
@@ -1510,7 +1514,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:04:55.507845
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:02:37.101190
 </pre></div>
 </div>
 </div>
@@ -1597,7 +1601,6 @@ document.write(`
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># -- execute function. create CityJSON</span>
 <span class="n">crs</span> <span class="o">=</span> <span class="n">epsg</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span>
 
-<span class="c1">#city3D.output_cityjson(extent, minz, maxz, terrTin, pv_pts, jparams, min_zbld, acoi, result, crs) </span>
 <span class="n">city3D</span><span class="o">.</span><span class="n">output_cityjson</span><span class="p">(</span><span class="n">extent</span><span class="p">,</span> <span class="n">minz</span><span class="p">,</span> <span class="n">maxz</span><span class="p">,</span> <span class="n">terrTin</span><span class="p">,</span> <span class="n">pv_pts</span><span class="p">,</span> <span class="n">jparams</span><span class="p">,</span> <span class="n">min_zbld</span><span class="p">,</span> <span class="n">acoi</span><span class="p">,</span> <span class="n">crs</span><span class="p">)</span> 
 </pre></div>
 </div>
@@ -1620,7 +1623,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:05:12.304619
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:02:52.714348
 </pre></div>
 </div>
 </div>
