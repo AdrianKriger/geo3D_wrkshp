@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -442,7 +442,6 @@ document.write(`
 <span class="kn">import</span><span class="w"> </span><span class="nn">geojson</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="c1">#import geopandas as gpd</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="kn">import</span> <span class="n">Polygon</span><span class="p">,</span> <span class="n">shape</span><span class="p">,</span> <span class="n">mapping</span>
@@ -501,10 +500,6 @@ document.write(`
  * Debug mode: off
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Address already in use
-Port 8000 is in use by another program. Either identify and stop that program, or start the server with a different port.
-</pre></div>
-</div>
 </div>
 </div>
 <div class="cell docutils container">
@@ -521,8 +516,8 @@ Port 8000 is in use by another program. Either identify and stop that program, o
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- change to harvest the appropriate CityJSON</span>
 
-<span class="n">jparams</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;wStock_param.json&#39;</span><span class="p">))</span>     <span class="c1"># 4 min</span>
-<span class="c1">#jparams = json.load(open(&#39;sRiver_param25m.json&#39;))  # 1 min</span>
+<span class="c1">#jparams = json.load(open(&#39;wStock_param.json&#39;))     # 4 min</span>
+<span class="n">jparams</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;sRiver_param25m.json&#39;</span><span class="p">))</span>  <span class="c1"># 1 min</span>
 <span class="c1">#jparams = json.load(open(&#39;saao_param.json&#39;)) </span>
 </pre></div>
 </div>
@@ -544,10 +539,10 @@ Port 8000 is in use by another program. Either identify and stop that program, o
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CityJSON version = 1.1
 EPSG = 32734
-bbox = [262913.5697028779, 6241099.216253888, 0.0, 265653.17255661683, 6244328.73221083, 180.8]
+bbox = [264142.0606272015, 6240967.812376269, 0.03999999910593033, 267325.9684924788, 6244521.576538833, 132.14]
 === CityObjects ===
 |-- TINRelief (1)
-|-- Building (3715)
+|-- Building (1377)
 ===================
 materials = False
 textures = False
@@ -616,36 +611,35 @@ textures = False
       <th>address</th>
       <th>building</th>
       <th>building:levels</th>
-      <th>amenity</th>
       <th>building_height</th>
       <th>roof_height</th>
       <th>ground_height</th>
       <th>plus_code</th>
-      <th>building:flats</th>
-      <th>building:use</th>
       <th>operator</th>
-      <th>building:units</th>
+      <th>building:flats</th>
+      <th>amenity</th>
       <th>social_facility</th>
-      <th>beds</th>
       <th>bottom_roof_height</th>
-      <th>rooms</th>
+      <th>beds</th>
       <th>residential</th>
+      <th>building:use</th>
+      <th>rooms</th>
+      <th>building:units</th>
       <th>geometry</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>12227309</th>
+      <th>6383946</th>
       <td>0</td>
-      <td>12227309</td>
-      <td>The Neighbourgoods Market Woodstock Cape Town</td>
-      <td>retail</td>
+      <td>6383946</td>
+      <td>Western Cape Metrorail - Infrastructure Buildi...</td>
+      <td>office</td>
       <td>1.0</td>
-      <td>marketplace</td>
       <td>4.1</td>
-      <td>11.27</td>
-      <td>7.17</td>
-      <td>4FRW3FF5+27C</td>
+      <td>8.21</td>
+      <td>4.110000</td>
+      <td>4FRW3FCF+946</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -655,21 +649,20 @@ textures = False
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>POLYGON ((265023.4813864499 6242993.344091462,...</td>
+      <td>NaN</td>
+      <td>POLYGON ((266353.2773689979 6242850.21272516, ...</td>
     </tr>
     <tr>
-      <th>12249345</th>
+      <th>13328172</th>
       <td>1</td>
-      <td>12249345</td>
-      <td>Church  Square 34 Dickson Street 7915 Woodstoc...</td>
-      <td>apartments</td>
-      <td>6.0</td>
+      <td>13328172</td>
       <td>NaN</td>
-      <td>18.1</td>
-      <td>28.55</td>
-      <td>10.45</td>
-      <td>4FRW3FC2+R5G</td>
-      <td>105</td>
+      <td>school</td>
+      <td>2.0</td>
+      <td>6.9</td>
+      <td>23.93</td>
+      <td>17.030001</td>
+      <td>4FRW3F96+6MG</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -678,7 +671,9 @@ textures = False
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>POLYGON ((264360.39058643614 6242908.633245183...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>POLYGON ((265366.0837814461 6242509.526659243,...</td>
     </tr>
   </tbody>
 </table>
@@ -743,7 +738,7 @@ textures = False
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3715
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1377
 </pre></div>
 </div>
 </div>
@@ -757,16 +752,14 @@ textures = False
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;retail&#39;, &#39;apartments&#39;, &#39;residential&#39;, &#39;commercial&#39;, &#39;yes&#39;,
-       &#39;university&#39;, &#39;warehouse&#39;, &#39;school&#39;, &#39;house&#39;, &#39;train_station&#39;,
-       &#39;industrial&#39;, &#39;police&#39;, &#39;church&#39;, &#39;office&#39;, &#39;supermarket&#39;,
-       &#39;laboratory&#39;, &#39;mosque&#39;, &#39;terrace&#39;, &#39;college&#39;, &#39;semidetached_house&#39;,
-       &#39;hotel&#39;, &#39;clinic&#39;, &#39;civic&#39;, &#39;library&#39;, &#39;garage&#39;, &#39;shed&#39;,
-       &#39;construction&#39;, &#39;service&#39;, &#39;residence&#39;, &#39;roof&#39;, &#39;kindergarten&#39;,
-       &#39;manufacture&#39;, &#39;parking&#39;, &#39;restaurant&#39;, &#39;garages&#39;, &#39;carport&#39;,
-       &#39;community_centre&#39;, &#39;monastery&#39;, &#39;detached&#39;, &#39;synagogue&#39;, &#39;hall&#39;,
-       &#39;guest_house&#39;, &#39;transportation&#39;, &#39;toilets&#39;, &#39;student&#39;],
-      dtype=object)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;office&#39;, &#39;school&#39;, &#39;yes&#39;, &#39;apartments&#39;, &#39;industrial&#39;,
+       &#39;commercial&#39;, &#39;train_station&#39;, &#39;retail&#39;, &#39;garage&#39;, &#39;workshop&#39;,
+       &#39;church&#39;, &#39;roof&#39;, &#39;house&#39;, &#39;transportation&#39;, &#39;fire_station&#39;,
+       &#39;pavilion&#39;, &#39;college&#39;, &#39;dormitory&#39;, &#39;university&#39;, &#39;clubhouse&#39;,
+       &#39;student&#39;, &#39;warehouse&#39;, &#39;civic&#39;, &#39;parking&#39;, &#39;residential&#39;,
+       &#39;cinema&#39;, &#39;construction&#39;, &#39;manufacture&#39;, &#39;kindergarten&#39;, &#39;mosque&#39;,
+       &#39;hall&#39;, &#39;carport&#39;, &#39;terraced&#39;, &#39;guardhouse&#39;, &#39;terrace&#39;, &#39;silo&#39;,
+       &#39;storage_tank&#39;], dtype=object)
 </pre></div>
 </div>
 </div>
@@ -813,69 +806,69 @@ textures = False
       <th>address</th>
       <th>building</th>
       <th>building:levels</th>
-      <th>amenity</th>
       <th>building_height</th>
       <th>roof_height</th>
       <th>ground_height</th>
       <th>plus_code</th>
-      <th>building:flats</th>
-      <th>building:use</th>
       <th>operator</th>
-      <th>building:units</th>
+      <th>building:flats</th>
+      <th>amenity</th>
       <th>social_facility</th>
-      <th>beds</th>
       <th>bottom_roof_height</th>
-      <th>rooms</th>
+      <th>beds</th>
       <th>residential</th>
+      <th>building:use</th>
+      <th>rooms</th>
+      <th>building:units</th>
       <th>geometry</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>12227309</th>
+      <th>6383946</th>
       <td>0</td>
-      <td>12227309</td>
-      <td>The Neighbourgoods Market Woodstock Cape Town</td>
-      <td>retail</td>
+      <td>6383946</td>
+      <td>Western Cape Metrorail - Infrastructure Buildi...</td>
+      <td>office</td>
       <td>1.0</td>
-      <td>marketplace</td>
       <td>4.1</td>
-      <td>11.27</td>
-      <td>7.17</td>
-      <td>4FRW3FF5+27C</td>
+      <td>8.21</td>
+      <td>4.110000</td>
+      <td>4FRW3FCF+946</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
       <td>0</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>0</td>
-      <td>NaN</td>
       <td>0</td>
-      <td>NaN</td>
-      <td>0</td>
-      <td>NaN</td>
-      <td>POLYGON ((265023.4813864499 6242993.344091462,...</td>
+      <td>POLYGON ((266353.2773689979 6242850.21272516, ...</td>
     </tr>
     <tr>
-      <th>12249345</th>
+      <th>13328172</th>
       <td>1</td>
-      <td>12249345</td>
-      <td>Church  Square 34 Dickson Street 7915 Woodstoc...</td>
-      <td>apartments</td>
-      <td>6.0</td>
+      <td>13328172</td>
       <td>NaN</td>
-      <td>18.1</td>
-      <td>28.55</td>
-      <td>10.45</td>
-      <td>4FRW3FC2+R5G</td>
-      <td>105</td>
+      <td>school</td>
+      <td>2.0</td>
+      <td>6.9</td>
+      <td>23.93</td>
+      <td>17.030001</td>
+      <td>4FRW3F96+6MG</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>0</td>
       <td>NaN</td>
-      <td>0</td>
       <td>NaN</td>
       <td>0</td>
-      <td>NaN</td>
-      <td>POLYGON ((264360.39058643614 6242908.633245183...</td>
+      <td>0</td>
+      <td>POLYGON ((265366.0837814461 6242509.526659243,...</td>
     </tr>
   </tbody>
 </table>
@@ -904,7 +897,7 @@ textures = False
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2998
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>993
 </pre></div>
 </div>
 </div>
@@ -918,12 +911,13 @@ textures = False
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>building
-house                 2876
-semidetached_house      70
-apartments              31
-residential             15
-terrace                  5
-student                  1
+house          948
+apartments      23
+dormitory       10
+student          6
+terraced         4
+residential      1
+terrace          1
 Name: count, dtype: int64
 </pre></div>
 </div>
@@ -1025,7 +1019,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The estimated population is: 17062
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The estimated population is: 8031
 </pre></div>
 </div>
 </div>
@@ -1057,7 +1051,7 @@ These numbers are based on disaggregated <a class="reference external" href="htt
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>population growth rate of approximately: 2.49 %
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>population growth rate of approximately: -3.79 %
 </pre></div>
 </div>
 </div>
@@ -1076,11 +1070,7 @@ These numbers are based on disaggregated <a class="reference external" href="htt
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#p = est_pop * (1 + (r/100))**years</span>
-
-<span class="c1">#print(&#39;estimated population&#39;, years ,&#39;years from now:&#39;, int(p))</span>
-
-<span class="c1">#- account for non-residential areas without failure</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- account for non-residential areas without failure</span>
 <span class="c1">#- helper function</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">safe_population_estimate</span><span class="p">(</span><span class="n">est_pop</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">years</span><span class="p">):</span>
     <span class="k">try</span><span class="p">:</span>
@@ -1100,7 +1090,7 @@ These numbers are based on disaggregated <a class="reference external" href="htt
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated population 10 years from now: 21818
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated population 10 years from now: 5457
 </pre></div>
 </div>
 </div>
@@ -1160,17 +1150,17 @@ BVPC = total population of a community divided by sum of building volume</div><d
       <th>address</th>
       <th>building</th>
       <th>building:levels</th>
-      <th>amenity</th>
       <th>building_height</th>
       <th>roof_height</th>
       <th>ground_height</th>
       <th>plus_code</th>
+      <th>operator</th>
       <th>...</th>
-      <th>social_facility</th>
       <th>beds</th>
-      <th>bottom_roof_height</th>
-      <th>rooms</th>
       <th>residential</th>
+      <th>building:use</th>
+      <th>rooms</th>
+      <th>building:units</th>
       <th>geometry</th>
       <th>pop</th>
       <th>area</th>
@@ -1180,52 +1170,52 @@ BVPC = total population of a community divided by sum of building volume</div><d
   </thead>
   <tbody>
     <tr>
-      <th>1314777370</th>
-      <td>3710</td>
-      <td>1314777370</td>
-      <td>9 Caesar Street Woodstock Cape Town</td>
+      <th>1307654032</th>
+      <td>1371</td>
+      <td>1307654032</td>
+      <td>Goldsmith Road Salt River Cape Town</td>
       <td>house</td>
-      <td>2.0</td>
+      <td>1.0</td>
+      <td>4.1</td>
+      <td>13.81</td>
+      <td>9.71</td>
+      <td>4FRW3F97+XQ7</td>
       <td>NaN</td>
-      <td>6.9</td>
-      <td>27.11</td>
-      <td>20.209999</td>
-      <td>4FRW3C9X+VC6</td>
       <td>...</td>
-      <td>NaN</td>
       <td>0</td>
       <td>NaN</td>
-      <td>0</td>
       <td>NaN</td>
-      <td>POLYGON ((264148.10652020015 6242631.614835454...</td>
-      <td>4.0</td>
-      <td>100.207449</td>
-      <td>691.431398</td>
-      <td>172.857849</td>
+      <td>0</td>
+      <td>0</td>
+      <td>POLYGON ((265631.975787378 6242700.339320255, ...</td>
+      <td>4</td>
+      <td>151.280498</td>
+      <td>620.250042</td>
+      <td>155.062510</td>
     </tr>
     <tr>
-      <th>1340498943</th>
-      <td>3713</td>
-      <td>1340498943</td>
-      <td>Balfour Street Woodstock Cape Town</td>
-      <td>semidetached_house</td>
+      <th>1307654033</th>
+      <td>1372</td>
+      <td>1307654033</td>
+      <td>Goldsmith Road Salt River Cape Town</td>
+      <td>house</td>
       <td>1.0</td>
-      <td>NaN</td>
       <td>4.1</td>
-      <td>60.00</td>
-      <td>55.900002</td>
-      <td>4FRW3C8X+7VX</td>
+      <td>13.81</td>
+      <td>9.71</td>
+      <td>4FRW3F97+XQX</td>
+      <td>NaN</td>
       <td>...</td>
-      <td>NaN</td>
       <td>0</td>
       <td>NaN</td>
-      <td>0</td>
       <td>NaN</td>
-      <td>POLYGON ((264277.10057580634 6242210.385846458...</td>
-      <td>4.0</td>
-      <td>91.278866</td>
-      <td>374.243351</td>
-      <td>93.560838</td>
+      <td>0</td>
+      <td>0</td>
+      <td>POLYGON ((265631.975787378 6242700.339320255, ...</td>
+      <td>4</td>
+      <td>197.021823</td>
+      <td>807.789474</td>
+      <td>201.947368</td>
     </tr>
   </tbody>
 </table>
@@ -1239,14 +1229,14 @@ BVPC = total population of a community divided by sum of building volume</div><d
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>count    2996.000000
-mean             inf
-std              NaN
-min        30.084609
-25%        89.761428
-50%       117.238453
-75%       166.938368
-max              inf
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>count    993.000000
+mean            inf
+std             NaN
+min       26.640456
+25%       79.901437
+50%       92.058707
+75%      123.962463
+max             inf
 Name: bvpc, dtype: float64
 </pre></div>
 </div>
@@ -1261,7 +1251,7 @@ Name: bvpc, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 137.25
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 121.545
 </pre></div>
 </div>
 </div>
@@ -1297,11 +1287,11 @@ Name: bvpc, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FORMAL: Population:  15738  with Building Volume Per Capita (BVPC): 142.163
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FORMAL: Population:  6791  with Building Volume Per Capita (BVPC): 118.228
 
-STUDENT RESIDENCE: Population:  45  with Building Volume Per Capita (BVPC): 109.497
+STUDENT RESIDENCE: Population:  1210  with Building Volume Per Capita (BVPC): 140.779
 
-INFORMAL: Population:  1279  with Building Volume Per Capita (BVPC) 77.776
+INFORMAL: Population:  30  with Building Volume Per Capita (BVPC) 96.626
 </pre></div>
 </div>
 </div>
@@ -1372,12 +1362,6 @@ Datum: World Geodetic System 1984 ensemble
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># -- get the location for pydeck</span>
-<span class="c1">#with warnings.catch_warnings():</span>
-<span class="c1">#    warnings.simplefilter(&#39;ignore&#39;)</span>
-<span class="c1">#    [xy] = gdf.dissolve().centroid</span>
-
-<span class="c1">#bbox = [gdf.total_bounds[0], gdf.total_bounds[1], </span>
-<span class="c1">#        gdf.total_bounds[2], gdf.total_bounds[3]]</span>
 
 <span class="c1">#- re-project to geographic</span>
 <span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf2</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">epsg</span><span class="p">)</span>
@@ -1402,16 +1386,14 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;retail&#39;, &#39;apartments&#39;, &#39;residential&#39;, &#39;commercial&#39;, &#39;yes&#39;,
-       &#39;university&#39;, &#39;warehouse&#39;, &#39;school&#39;, &#39;house&#39;, &#39;train_station&#39;,
-       &#39;industrial&#39;, &#39;police&#39;, &#39;church&#39;, &#39;office&#39;, &#39;supermarket&#39;,
-       &#39;laboratory&#39;, &#39;mosque&#39;, &#39;terrace&#39;, &#39;college&#39;, &#39;semidetached_house&#39;,
-       &#39;hotel&#39;, &#39;clinic&#39;, &#39;civic&#39;, &#39;library&#39;, &#39;garage&#39;, &#39;shed&#39;,
-       &#39;construction&#39;, &#39;service&#39;, &#39;residence&#39;, &#39;roof&#39;, &#39;kindergarten&#39;,
-       &#39;manufacture&#39;, &#39;parking&#39;, &#39;restaurant&#39;, &#39;garages&#39;, &#39;carport&#39;,
-       &#39;community_centre&#39;, &#39;monastery&#39;, &#39;detached&#39;, &#39;synagogue&#39;, &#39;hall&#39;,
-       &#39;guest_house&#39;, &#39;transportation&#39;, &#39;toilets&#39;, &#39;student&#39;],
-      dtype=object)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([&#39;office&#39;, &#39;school&#39;, &#39;yes&#39;, &#39;apartments&#39;, &#39;industrial&#39;,
+       &#39;commercial&#39;, &#39;train_station&#39;, &#39;retail&#39;, &#39;garage&#39;, &#39;workshop&#39;,
+       &#39;church&#39;, &#39;roof&#39;, &#39;house&#39;, &#39;transportation&#39;, &#39;fire_station&#39;,
+       &#39;pavilion&#39;, &#39;college&#39;, &#39;dormitory&#39;, &#39;university&#39;, &#39;clubhouse&#39;,
+       &#39;student&#39;, &#39;warehouse&#39;, &#39;civic&#39;, &#39;parking&#39;, &#39;residential&#39;,
+       &#39;cinema&#39;, &#39;construction&#39;, &#39;manufacture&#39;, &#39;kindergarten&#39;, &#39;mosque&#39;,
+       &#39;hall&#39;, &#39;carport&#39;, &#39;terraced&#39;, &#39;guardhouse&#39;, &#39;terrace&#39;, &#39;silo&#39;,
+       &#39;storage_tank&#39;], dtype=object)
 </pre></div>
 </div>
 </div>
@@ -1493,72 +1475,72 @@ Datum: World Geodetic System 1984 ensemble
       <th>address</th>
       <th>building</th>
       <th>building:levels</th>
-      <th>amenity</th>
       <th>building_height</th>
       <th>roof_height</th>
       <th>ground_height</th>
       <th>plus_code</th>
-      <th>...</th>
-      <th>building:use</th>
       <th>operator</th>
-      <th>building:units</th>
+      <th>...</th>
+      <th>amenity</th>
       <th>social_facility</th>
-      <th>beds</th>
       <th>bottom_roof_height</th>
-      <th>rooms</th>
+      <th>beds</th>
       <th>residential</th>
+      <th>building:use</th>
+      <th>rooms</th>
+      <th>building:units</th>
       <th>geometry</th>
       <th>color</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>12227309</th>
+      <th>6383946</th>
       <td>0</td>
-      <td>12227309</td>
-      <td>The Neighbourgoods Market Woodstock Cape Town</td>
-      <td>retail</td>
+      <td>6383946</td>
+      <td>Western Cape Metrorail - Infrastructure Buildi...</td>
+      <td>office</td>
       <td>1.0</td>
-      <td>marketplace</td>
       <td>4.1</td>
-      <td>11.27</td>
-      <td>7.17</td>
-      <td>4FRW3FF5+27C</td>
+      <td>8.21</td>
+      <td>4.110000</td>
+      <td>4FRW3FCF+946</td>
+      <td>NaN</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0</td>
       <td>NaN</td>
       <td>0</td>
       <td>NaN</td>
-      <td>0</td>
       <td>NaN</td>
-      <td>POLYGON ((18.4580079 -33.927309099999995, 18.4...</td>
-      <td>[253, 141, 60]</td>
+      <td>0</td>
+      <td>0</td>
+      <td>POLYGON ((18.4723433 -33.928894799999995, 18.4...</td>
+      <td>[185, 206, 37]</td>
     </tr>
     <tr>
-      <th>12249345</th>
+      <th>13328172</th>
       <td>1</td>
-      <td>12249345</td>
-      <td>Church  Square 34 Dickson Street 7915 Woodstoc...</td>
-      <td>apartments</td>
-      <td>6.0</td>
+      <td>13328172</td>
       <td>NaN</td>
-      <td>18.1</td>
-      <td>28.55</td>
-      <td>10.45</td>
-      <td>4FRW3FC2+R5G</td>
+      <td>school</td>
+      <td>2.0</td>
+      <td>6.9</td>
+      <td>23.93</td>
+      <td>17.030001</td>
+      <td>4FRW3F96+6MG</td>
+      <td>NaN</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>0</td>
       <td>NaN</td>
       <td>0</td>
       <td>NaN</td>
-      <td>0</td>
       <td>NaN</td>
-      <td>POLYGON ((18.450818 -33.92792409999999, 18.450...</td>
-      <td>[252, 194, 3]</td>
+      <td>0</td>
+      <td>0</td>
+      <td>POLYGON ((18.4615816 -33.9317448, 18.4615639 -...</td>
+      <td>[128, 0, 38]</td>
     </tr>
   </tbody>
 </table>

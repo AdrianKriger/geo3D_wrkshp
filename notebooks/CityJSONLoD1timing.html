@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -430,12 +430,10 @@ document.write(`
 <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">overpass</span>
-<span class="c1">#import osm2geojson</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="c1">#import geopandas as gpd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">topojson</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tp</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
@@ -456,6 +454,12 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/adriankriger/miniconda3/envs/geo3D_gthbRepo07/lib/python3.9/site-packages/cjio/cityjson.py:12: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools&lt;81.
+  from pkg_resources import resource_filename
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -470,7 +474,7 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#jparams = json.load(open(&#39;sRiver_param10m.json&#39;))  # was 11 min 30 sec | now 0:05:12.30</span>
-<span class="n">jparams</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;sRiver_param15m.json&#39;</span><span class="p">))</span>  <span class="c1"># was 5 min 20 sec | now 0:02:24.49</span>
+<span class="n">jparams</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;sRiver_param15m.json&#39;</span><span class="p">))</span>  <span class="c1"># was 5 min 20 sec | now 0:02:43.49</span>
 <span class="c1">#jparams = json.load(open(&#39;sRiver_param25m.json&#39;))  # was 2 min 13 sec | now 0:01:00.15</span>
 </pre></div>
 </div>
@@ -511,27 +515,6 @@ document.write(`
 <span class="s2">        );</span>
 <span class="s2">        out geom;</span>
 <span class="s2">        &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">jparams</span><span class="p">[</span><span class="s1">&#39;LargeArea&#39;</span><span class="p">],</span> <span class="n">jparams</span><span class="p">[</span><span class="s1">&#39;FocusArea&#39;</span><span class="p">])</span>
-
-<span class="c1">#url = &quot;http://overpass-api.de/api/interpreter&quot;</span>
-<span class="c1">#r = requests.get(url, params={&#39;data&#39;: query})</span>
-<span class="c1">#rr = r.read()</span>
-<span class="c1">#area = osm2geojson.json2geojson(r.json())</span>
-<span class="c1">#read into .gpd</span>
-<span class="c1">#aoi = gpd.GeoDataFrame.from_features(area[&#39;features&#39;])</span>
-<span class="c1">#aoi = aoi.set_crs(4326, allow_override=True)</span>
-<span class="c1">#if jparams[&#39;osm_type&#39;] == &#39;relation&#39; and len(aoi) &gt; 1:</span>
-<span class="c1">#    for i, row in aoi.iterrows():</span>
-<span class="c1">#        if row.tags != None and &#39;place&#39; in row.tags:</span>
-<span class="c1">#            focus = row</span>
-            
-<span class="c1">#    trim = pd.DataFrame(focus)</span>
-<span class="c1">#    trim = trim.T</span>
-<span class="c1">#    aoi = gpd.GeoDataFrame(trim, geometry = trim[&#39;geometry&#39;])</span>
-    <span class="c1">#aoi = aoi.set_crs(4326)</span>
-
-<span class="c1"># Drop rows where geometry is None or NaN</span>
-<span class="c1">#aoi = aoi.dropna(subset=[&#39;geometry&#39;])</span>
-<span class="c1">#aoi = aoi.set_crs(4326, allow_override=True)</span>
 
 <span class="c1">#- execute function from city3D and and return GeoDataFrameLite | home-baked gdf</span>
 <span class="n">aoi</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">overpass_to_gdf</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
@@ -600,8 +583,6 @@ document.write(`
 <span class="n">gdal</span><span class="o">.</span><span class="n">UseExceptions</span><span class="p">()</span>
 <span class="n">gdal</span><span class="o">.</span><span class="n">SetConfigOption</span><span class="p">(</span><span class="s2">&quot;OGR_GEOMETRY_ACCEPT_UNCLOSED_RING&quot;</span><span class="p">,</span> <span class="s2">&quot;NO&quot;</span><span class="p">)</span> 
 <span class="c1">#gdal.SetConfigOption(&quot;USE_CUSTOM_INDEXING&quot;, &quot;NO&quot;)</span>
-<span class="c1"># Input OSM PBF file</span>
-<span class="c1">#input_pbf = &quot;your_data.osm.pbf&quot;</span>
 
 <span class="c1"># GDAL Virtual File System (VSI) to avoid writing to disk</span>
 <span class="n">geojson_vsimem</span> <span class="o">=</span> <span class="s2">&quot;/vsimem/temp.geojson&quot;</span>
@@ -616,9 +597,7 @@ document.write(`
                           <span class="s2">&quot;-spat&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">minx</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">miny</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">maxx</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">maxy</span><span class="p">)]</span>  <span class="c1"># Filter buildings &amp; fix geometries</span>
 <span class="p">)</span>
 
-<span class="c1">#- load into GeoDataFrame</span>
 <span class="c1">#- load into GeoDataFrameLite | home-baked gdf</span>
-<span class="c1">#gdf = gpd.read_file(geojson_vsimem)</span>
 <span class="n">gdf</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">read_vsimem_geojson</span><span class="p">(</span><span class="n">geojson_vsimem</span><span class="p">)</span>
 
 <span class="c1">#- cleanup VSI Memory</span>
@@ -637,7 +616,7 @@ document.write(`
 ERROR 1: Non closed ring detected.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.851014
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.845234
 </pre></div>
 </div>
 </div>
@@ -761,7 +740,6 @@ ERROR 1: Non closed ring detected.
 <span class="k">elif</span> <span class="s1">&#39;osm_way_id&#39;</span> <span class="ow">in</span> <span class="n">gdf</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
     <span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;osm_way_id&#39;</span><span class="p">:</span> <span class="s1">&#39;osm_id&#39;</span><span class="p">})</span>
 
-<span class="c1">#gdf = gdf[gdf.geometry.apply(lambda x: x.within(aoi.unary_union))]</span>
 <span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">within</span><span class="p">(</span><span class="n">shapely</span><span class="o">.</span><span class="n">unary_union</span><span class="p">(</span><span class="n">aoi</span><span class="o">.</span><span class="n">geometry</span><span class="p">)))]</span>
 <span class="n">gdf</span><span class="o">.</span><span class="n">crs</span> <span class="o">=</span> <span class="s2">&quot;EPSG:4326&quot;</span>
 
@@ -1052,9 +1030,6 @@ ERROR 1: Non closed ring detected.
 <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
 <span class="n">ts_copy</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="c1">#new_df1 = ts_copy.loc[ts_copy.overlaps(ts_copy.unary_union)].reset_index(drop=True)  #-- perhaps no union?</span>
-
-<span class="c1">#joined = gpd.sjoin(ts_copy, ts_copy, how=&quot;inner&quot;, predicate=&quot;overlaps&quot;)</span>
 
 <span class="n">geoms</span> <span class="o">=</span> <span class="n">ts_copy</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 <span class="n">tree</span> <span class="o">=</span> <span class="n">STRtree</span><span class="p">(</span><span class="n">geoms</span><span class="p">)</span>
@@ -1074,19 +1049,6 @@ ERROR 1: Non closed ring detected.
 
 <span class="n">joined</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;index_left&quot;</span><span class="p">,</span> <span class="s2">&quot;index_right&quot;</span><span class="p">])</span>
 
-<span class="c1">#- joined index is changing. silence warning. future ready.</span>
-<span class="c1"># GeoPandas &lt;0.12 uses index_left/index_right</span>
-<span class="c1">#if &quot;index_left&quot; in joined.columns:</span>
-<span class="c1">#    left_idx = joined[&quot;index_left&quot;]</span>
-<span class="c1">#    right_idx = joined[&quot;index_right&quot;]</span>
-<span class="c1">#else:  # GeoPandas ≥0.12 uses _left/_right suffixes</span>
-<span class="c1">#    left_idx = joined.index</span>
-<span class="c1">#    right_idx = joined[&quot;index_right&quot;]</span>
-
-<span class="c1"># remove self matches</span>
-<span class="c1">#mask = left_idx != right_idx</span>
-<span class="c1">#overlap_idx = left_idx[mask].unique()</span>
-
 <span class="c1">#- remove self matches and select overlapping geometries</span>
 <span class="n">left_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="p">[</span><span class="s2">&quot;index_left&quot;</span><span class="p">]</span>
 <span class="n">right_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="p">[</span><span class="s2">&quot;index_right&quot;</span><span class="p">]</span>
@@ -1101,58 +1063,7 @@ ERROR 1: Non closed ring detected.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.254930
-</pre></div>
-</div>
-</div>
-</div>
-<p><strong>Plot</strong></p>
-<p><em>Browse the saved <code class="docutils literal notranslate"><span class="pre">'./data/topologyFig'</span></code> at your leisure</em></p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#%matplotlib</span>
-
-<span class="c1">#fig, ax = plt.subplots(figsize=(11, 11))</span>
-<span class="c1">#ts.plot(ax=ax, facecolor=&#39;none&#39;, edgecolor=&#39;purple&#39;, alpha=0.2)</span>
-<span class="c1">#if len(new_df1) &gt; 0:</span>
-<span class="c1">#    new_df1.plot(ax=ax, edgecolor=&#39;red&#39;, facecolor=&#39;none&#39;)#, alpha=0.3)#, column=&#39;osm_building&#39;, legend=True)</span>
-
-<span class="c1">#def plot_geometries(df, ax=None, facecolor=&#39;none&#39;, edgecolor=&#39;purple&#39;, alpha=0.5):</span>
-<span class="c1">#    if ax is None:</span>
-<span class="c1">#        fig, ax = plt.subplots(figsize=(10,10))</span>
-
-<span class="c1">#    patches = []</span>
-
-<span class="c1">#    for geom in df[&#39;geometry&#39;]:</span>
-<span class="c1">#        if geom is None:</span>
-<span class="c1">#            continue</span>
-
-<span class="c1">#        if isinstance(geom, Polygon):</span>
-            <span class="c1"># Exterior ring</span>
-<span class="c1">#            patches.append(MplPolygon(list(geom.exterior.coords), closed=True))</span>
-            <span class="c1"># Interiors (holes)</span>
-<span class="c1">#            for interior in geom.interiors:</span>
-<span class="c1">#                patches.append(MplPolygon(list(interior.coords), closed=True))</span>
-<span class="c1">#        elif isinstance(geom, MultiPolygon):</span>
-<span class="c1">#            for poly in geom.geoms:</span>
-<span class="c1">#                patches.append(MplPolygon(list(poly.exterior.coords), closed=True))</span>
-<span class="c1">#                for interior in poly.interiors:</span>
-<span class="c1">#                    patches.append(MplPolygon(list(interior.coords), closed=True))</span>
-
-<span class="c1">#    pc = PatchCollection(patches, facecolor=facecolor, edgecolor=edgecolor, alpha=alpha)</span>
-<span class="c1">#    ax.add_collection(pc)</span>
-<span class="c1">#    ax.autoscale()</span>
-<span class="c1">#    ax.set_aspect(&#39;equal&#39;)</span>
-<span class="c1">#    return ax</span>
-
-<span class="c1">##-- Example usage:</span>
-<span class="c1">#fig, ax = plt.subplots(figsize=(11, 11))</span>
-<span class="c1">#plot_geometries(ts_copy, ax=ax, facecolor=&#39;none&#39;, edgecolor=&#39;purple&#39;, alpha=0.2)</span>
-<span class="c1">#if len(new_df1) &gt; 0:</span>
-<span class="c1">#    plot_geometries(new_df1, ax=ax, facecolor=&#39;none&#39;, edgecolor=&#39;red&#39;, alpha=0.5)</span>
-<span class="c1">#-- save</span>
-<span class="c1">#plt.savefig(&#39;./data/topologyFig&#39;, dpi=300)</span>
-<span class="c1">#plt.show()</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.252897
 </pre></div>
 </div>
 </div>
@@ -1280,37 +1191,8 @@ ERROR 1: Non closed ring detected.
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-<span class="c1">#dis = gpd.read_file(jparams[&#39;osm_bldings&#39;])                   </span>
-<span class="c1">#dis.set_crs(epsg=int(epsg[-5:]), inplace=True, allow_override=True)</span>
-
-<span class="c1">#dict_vertices = {}</span>
-<span class="c1">#cols = [c for c in [&#39;bottom_bridge_height&#39;, &#39;bottom_roof_height&#39;, &#39;roof_height&#39;] if c in dis.columns]</span>
-
-<span class="c1">#dis[&#39;geometry&#39;] = dis.geometry.apply(polygon.orient, 1)</span>
-
-<span class="c1">#for i, row in dis.iterrows():</span>
-<span class="c1">#    oring = list(row.geometry.exterior.coords)</span>
-<span class="c1">#    name = row[&#39;osm_id&#39;]</span>
-<span class="c1">#    for (j, v) in enumerate(oring[:-1]):</span>
-<span class="c1">#        vertex = (oring[j][0], oring[j][1])</span>
-<span class="c1">#        attr = [row[c] for c in cols]</span>
-<span class="c1">#        attr = [x for x in attr if not np.isnan(x)]  # Remove np.nan values</span>
-<span class="c1">#        if vertex in dict_vertices.keys():</span>
-<span class="c1">#            dict_vertices[vertex][row[&#39;osm_id&#39;]] = attr</span>
-<span class="c1">#        else:</span>
-<span class="c1">#            dict_vertices[vertex] = {row[&#39;osm_id&#39;]: attr}</span>
-
-<span class="c1">#result = {}</span>
-<span class="c1">#for k1, d in dict_vertices.items():</span>
-<span class="c1">#    for k2 in d:</span>
-<span class="c1">#        result.setdefault(k2, {})[k1] = sorted(list(set([j for i in d.values() for j in i])))</span>
-        
 <span class="n">dis</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">dis</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">dis</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;bridge&#39;</span><span class="p">],</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
 <span class="n">dis</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">dis</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">dis</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;roof&#39;</span><span class="p">],</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
-
-<span class="c1">#- create a point representing the hole within each building  </span>
-<span class="c1">#dis[&#39;x&#39;] = dis.representative_point().x</span>
-<span class="c1">#dis[&#39;y&#39;] = dis.representative_point().y</span>
 
 <span class="c1">#- compute representative point for each geometry</span>
 <span class="n">dis</span><span class="p">[</span><span class="s2">&quot;rep_point&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dis</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">g</span><span class="p">:</span> <span class="n">g</span><span class="o">.</span><span class="n">representative_point</span><span class="p">()</span> <span class="k">if</span> <span class="n">g</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
@@ -1322,21 +1204,13 @@ ERROR 1: Non closed ring detected.
 
 <span class="n">hs</span> <span class="o">=</span> <span class="n">dis</span><span class="p">[[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;ground_height&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-
 <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">))))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.029014
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#print(len(dis), &#39;buildings have been harvested from the osm.pbf for the&#39;, jparams[&quot;FocusArea&quot;], &#39;area&#39;) </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.028041
 </pre></div>
 </div>
 </div>
@@ -1344,7 +1218,6 @@ ERROR 1: Non closed ring detected.
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dis</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="c1">#dis.plot()</span>
 </pre></div>
 </div>
 </div>
@@ -1468,9 +1341,6 @@ ERROR 1: Non closed ring detected.
     <span class="s2">&quot;z&quot;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span>
 <span class="p">}</span>
 
-<span class="c1">#df = pd.read_csv(jparams[&#39;xyz&#39;], delimiter = &#39; &#39;, header=None, names=[&quot;x&quot;, &quot;y&quot;, &quot;z&quot;])</span>
-<span class="c1">#df = pd.read_csv(jparams[&#39;xyz&#39;], delimiter=&quot; &quot;, header=None, names=[&quot;x&quot;, &quot;y&quot;, &quot;z&quot;], dtype=dtype_spec, engine=&quot;pyarrow&quot;)</span>
-                                                                                 <span class="c1">#, reduced memory, parallelized reading)</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">common</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">xyz_str</span><span class="p">),</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">,</span>  <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;x&quot;</span><span class="p">,</span> <span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="s2">&quot;z&quot;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">dtype_spec</span><span class="p">)</span>
 
 
@@ -1514,7 +1384,7 @@ ERROR 1: Non closed ring detected.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:02:37.101190
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:02:35.461151
 </pre></div>
 </div>
 </div>
@@ -1623,7 +1493,7 @@ ERROR 1: Non closed ring detected.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:02:52.714348
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:02:58.076836
 </pre></div>
 </div>
 </div>

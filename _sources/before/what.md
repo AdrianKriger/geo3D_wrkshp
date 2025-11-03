@@ -107,7 +107,7 @@ Further; *geo3D* can produce a pseudo-3D HTML-based visualisation serves to faci
 %```{raw} html
 %<iframe src="_static/interactiveOnly.html" width="400" height="200"></iframe>
 
-<iframe src="../_static/interactiveOnly.html" width="800" height="350" frameborder="0"></iframe>
+<iframe src="../_static/interactive.html" width="800" height="350" frameborder="0"></iframe>
 
 The `iframe` above illustrates building stock differentiated by colour. A school, housing, retail, healthcare and community focused facilities are easily identified while the tooltips highlight the underlying data. Additional features unique to any area can also be included. Here farmland, streams, recreational spaces and bus rapid transit routes have been added *- you are thus limited only through data and your imagination*. 
 
