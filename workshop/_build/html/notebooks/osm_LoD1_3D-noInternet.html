@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -432,14 +432,10 @@ document.write(`
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">itertools</span><span class="w"> </span><span class="kn">import</span> <span class="n">chain</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">overpass</span>
-<span class="c1">#import osm2geojson</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="c1">#import geopandas as gpd</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">topojson</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">tp</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">shapely</span>
@@ -482,8 +478,8 @@ document.write(`
 <p><strong>A <code class="docutils literal notranslate"><span class="pre">parameter.json</span></code> defines the path and files</strong>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jparams</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;wStock_param.json&#39;</span><span class="p">))</span>       
-<span class="c1">#jparams = json.load(open(&#39;sRiver_param25m.json&#39;))       </span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#jparams = json.load(open(&#39;wStock_param.json&#39;))       </span>
+<span class="n">jparams</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;sRiver_param25m.json&#39;</span><span class="p">))</span>       
 <span class="c1">#jparams = json.load(open(&#39;saao_param.json&#39;))       </span>
 </pre></div>
 </div>
@@ -533,21 +529,13 @@ document.write(`
 <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">))))</span>
 
-<span class="c1"># Drop rows where geometry is None or NaN</span>
-<span class="c1">#aoi = aoi.dropna(subset=[&#39;geometry&#39;])</span>
-<span class="c1">#aoi = aoi.set_crs(4326, allow_override=True)</span>
-
-<span class="c1"># gt the bounding box (BBOX) of the GeoJSON boundary</span>
-<span class="c1">#minx, miny, maxx, maxy = aoi.total_bounds</span>
-<span class="c1">#bbox_filter = &quot;-spat&quot;, str(minx), str(miny), str(maxx), str(maxy)</span>
-
 <span class="c1">#- suppose &#39;aoi&#39; is your GeoDataFrameLite or list of geometries</span>
 <span class="n">aoi</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.906125
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.898402
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -581,10 +569,10 @@ document.write(`
     <tr>
       <th>0</th>
       <td>place</td>
-      <td>MULTIPOLYGON (((18.4407807 -33.9286635, 18.440...</td>
-      <td>Woodstock</td>
-      <td>2034285</td>
-      <td>"wikidata"=&gt;"Q3644460"</td>
+      <td>MULTIPOLYGON (((18.4771301 -33.9269071, 18.476...</td>
+      <td>Salt River</td>
+      <td>2034284</td>
+      <td>"wikidata"=&gt;"Q2383969"</td>
       <td>suburb</td>
       <td>boundary</td>
     </tr>
@@ -594,10 +582,7 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># gt the bounding box (BBOX) of the boundary</span>
-
-<span class="c1">#minx, miny, maxx, maxy = aoi.total_bounds</span>
-<span class="c1">#bbox_filter = &quot;-spat&quot;, str(minx), str(miny), str(maxx), str(maxy)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># get the bounding box (BBOX) of the boundary</span>
 
 <span class="n">geoms</span> <span class="o">=</span> <span class="n">aoi</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 <span class="c1">#- combine all geometries into a single union</span>
@@ -617,8 +602,6 @@ document.write(`
 <span class="n">gdal</span><span class="o">.</span><span class="n">UseExceptions</span><span class="p">()</span>
 <span class="n">gdal</span><span class="o">.</span><span class="n">SetConfigOption</span><span class="p">(</span><span class="s2">&quot;OGR_GEOMETRY_ACCEPT_UNCLOSED_RING&quot;</span><span class="p">,</span> <span class="s2">&quot;NO&quot;</span><span class="p">)</span> 
 <span class="c1">#gdal.SetConfigOption(&quot;USE_CUSTOM_INDEXING&quot;, &quot;NO&quot;)</span>
-<span class="c1"># Input OSM PBF file</span>
-<span class="c1">#input_pbf = &quot;your_data.osm.pbf&quot;</span>
 
 <span class="c1"># GDAL Virtual File System (VSI) to avoid writing to disk</span>
 <span class="n">geojson_vsimem</span> <span class="o">=</span> <span class="s2">&quot;/vsimem/temp.geojson&quot;</span>
@@ -634,7 +617,6 @@ document.write(`
 <span class="p">)</span>
 
 <span class="c1">#- execute and return GeoDataFrameLite | home-baked gdf</span>
-<span class="c1">#gdf = gpd.read_file(geojson_vsimem)</span>
 <span class="n">gdf</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">read_vsimem_geojson</span><span class="p">(</span><span class="n">geojson_vsimem</span><span class="p">)</span>
 
 <span class="c1">#- cleanup VSI Memory</span>
@@ -653,7 +635,7 @@ document.write(`
 ERROR 1: Non closed ring detected.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.838845
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.800648
 </pre></div>
 </div>
 </div>
@@ -706,17 +688,17 @@ ERROR 1: Non closed ring detected.
     <tr>
       <th>0</th>
       <td>None</td>
-      <td>school</td>
+      <td>office</td>
       <td>None</td>
-      <td>MULTIPOLYGON (((18.4390374 -33.9341504, 18.439...</td>
-      <td>None</td>
-      <td>None</td>
+      <td>MULTIPOLYGON (((18.4723433 -33.9288948, 18.472...</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>11029147</td>
+      <td>Western Cape Metrorail - Infrastructure Building</td>
       <td>None</td>
-      <td>"building:levels"=&gt;"2","ref:ZA:emis"=&gt;"1033103...</td>
+      <td>6383946</td>
+      <td>None</td>
+      <td>"addr:city"=&gt;"Cape Town","addr:postcode"=&gt;"729...</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
@@ -724,18 +706,18 @@ ERROR 1: Non closed ring detected.
     </tr>
     <tr>
       <th>1</th>
-      <td>marketplace</td>
-      <td>retail</td>
       <td>None</td>
-      <td>MULTIPOLYGON (((18.4580079 -33.9273091, 18.458...</td>
+      <td>hall</td>
+      <td>None</td>
+      <td>MULTIPOLYGON (((18.4686004 -33.9360187, 18.468...</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>The Neighbourgoods Market</td>
       <td>None</td>
-      <td>12227309</td>
       <td>None</td>
-      <td>"addr:city"=&gt;"Cape Town","addr:suburb"=&gt;"Woods...</td>
+      <td>6691666</td>
+      <td>None</td>
+      <td>"addr:housename"=&gt;"Parish Hall"</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
@@ -777,7 +759,6 @@ ERROR 1: Non closed ring detected.
 <span class="k">elif</span> <span class="s1">&#39;osm_way_id&#39;</span> <span class="ow">in</span> <span class="n">gdf</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
     <span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;osm_way_id&#39;</span><span class="p">:</span> <span class="s1">&#39;osm_id&#39;</span><span class="p">})</span>
 
-<span class="c1">#gdf = gdf[gdf.geometry.apply(lambda x: x.within(aoi.unary_union))]</span>
 <span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">gdf</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">within</span><span class="p">(</span><span class="n">shapely</span><span class="o">.</span><span class="n">unary_union</span><span class="p">(</span><span class="n">aoi</span><span class="o">.</span><span class="n">geometry</span><span class="p">)))]</span>
 <span class="n">gdf</span><span class="o">.</span><span class="n">crs</span> <span class="o">=</span> <span class="s2">&quot;EPSG:4326&quot;</span>
 
@@ -815,31 +796,31 @@ ERROR 1: Non closed ring detected.
       <th>office</th>
       <th>osm_id</th>
       <th>...</th>
-      <th>studio</th>
-      <th>guest_house</th>
-      <th>abandoned:building</th>
-      <th>motorcycle:rental</th>
-      <th>second_hand</th>
-      <th>drink:coffee</th>
+      <th>diet:vegan</th>
+      <th>content</th>
+      <th>industrial</th>
+      <th>addr:unit</th>
+      <th>disused</th>
+      <th>sahra:criterea</th>
+      <th>opening_date</th>
       <th>bus</th>
       <th>network</th>
-      <th>opening_date</th>
-      <th>unisex</th>
+      <th>construction</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>1</th>
-      <td>marketplace</td>
-      <td>retail</td>
+      <th>0</th>
       <td>None</td>
-      <td>MULTIPOLYGON (((18.4580079 -33.9273091, 18.458...</td>
+      <td>office</td>
+      <td>None</td>
+      <td>MULTIPOLYGON (((18.4723433 -33.9288948, 18.472...</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>The Neighbourgoods Market</td>
+      <td>Western Cape Metrorail - Infrastructure Building</td>
       <td>None</td>
-      <td>12227309</td>
+      <td>6383946</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -853,17 +834,17 @@ ERROR 1: Non closed ring detected.
       <td>NaN</td>
     </tr>
     <tr>
-      <th>2</th>
+      <th>7</th>
       <td>None</td>
-      <td>apartments</td>
+      <td>school</td>
       <td>None</td>
-      <td>MULTIPOLYGON (((18.450818 -33.9279241, 18.4508...</td>
+      <td>MULTIPOLYGON (((18.4615816 -33.9317448, 18.461...</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>Church  Square</td>
       <td>None</td>
-      <td>12249345</td>
+      <td>None</td>
+      <td>13328172</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -878,19 +859,18 @@ ERROR 1: Non closed ring detected.
     </tr>
   </tbody>
 </table>
-<p>2 rows × 149 columns</p>
+<p>2 rows × 133 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()]</span>
-<span class="c1">#len(ts)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">),</span> <span class="s2">&quot;buildings have been harvested from&quot;</span><span class="p">,</span> <span class="n">input_pbf</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 3797 buildings have been harvested from ./data/CapeTown.osm.pbf
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 1449 buildings have been harvested from ./data/CapeTown.osm.pbf
 </pre></div>
 </div>
 </div>
@@ -931,31 +911,31 @@ ERROR 1: Non closed ring detected.
       <th>office</th>
       <th>osm_id</th>
       <th>...</th>
-      <th>studio</th>
-      <th>guest_house</th>
-      <th>abandoned:building</th>
-      <th>motorcycle:rental</th>
-      <th>second_hand</th>
-      <th>drink:coffee</th>
+      <th>diet:vegan</th>
+      <th>content</th>
+      <th>industrial</th>
+      <th>addr:unit</th>
+      <th>disused</th>
+      <th>sahra:criterea</th>
+      <th>opening_date</th>
       <th>bus</th>
       <th>network</th>
-      <th>opening_date</th>
-      <th>unisex</th>
+      <th>construction</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>1</th>
-      <td>marketplace</td>
-      <td>retail</td>
+      <th>0</th>
       <td>None</td>
-      <td>MULTIPOLYGON (((18.4580079 -33.9273091, 18.458...</td>
+      <td>office</td>
+      <td>None</td>
+      <td>MULTIPOLYGON (((18.4723433 -33.9288948, 18.472...</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>The Neighbourgoods Market</td>
+      <td>Western Cape Metrorail - Infrastructure Building</td>
       <td>None</td>
-      <td>12227309</td>
+      <td>6383946</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -969,17 +949,17 @@ ERROR 1: Non closed ring detected.
       <td>NaN</td>
     </tr>
     <tr>
-      <th>2</th>
+      <th>7</th>
       <td>None</td>
-      <td>apartments</td>
+      <td>school</td>
       <td>None</td>
-      <td>MULTIPOLYGON (((18.450818 -33.9279241, 18.4508...</td>
+      <td>MULTIPOLYGON (((18.4615816 -33.9317448, 18.461...</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>Church  Square</td>
       <td>None</td>
-      <td>12249345</td>
+      <td>None</td>
+      <td>13328172</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -994,7 +974,7 @@ ERROR 1: Non closed ring detected.
     </tr>
   </tbody>
 </table>
-<p>2 rows × 149 columns</p>
+<p>2 rows × 133 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -1009,15 +989,13 @@ ERROR 1: Non closed ring detected.
 <span class="p">)</span>
 
 <span class="c1">#- without building:part</span>
-<span class="c1">#ts = ts[ts[&#39;building:part&#39;].isnull()]</span>
 <span class="n">ts</span> <span class="o">=</span> <span class="n">ts</span><span class="p">[</span><span class="n">ts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;building:part&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span> <span class="k">if</span> <span class="s2">&quot;building:part&quot;</span> <span class="ow">in</span> <span class="n">ts</span> <span class="k">else</span> <span class="n">ts</span>
-<span class="c1">#ts = ts.explode()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\033</span><span class="s1">[1m&#39;</span><span class="p">,</span> <span class="n">jparams</span><span class="p">[</span><span class="s1">&#39;FocusArea&#39;</span><span class="p">],</span> <span class="s1">&#39;has </span><span class="se">\033</span><span class="s1">[0m&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">),</span> <span class="s1">&#39;buildings&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold"> Woodstock has </span> 3715 buildings
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold"> Salt River has </span> 1377 buildings
 </pre></div>
 </div>
 </div>
@@ -1059,31 +1037,31 @@ ERROR 1: Non closed ring detected.
       <th>office</th>
       <th>osm_id</th>
       <th>...</th>
-      <th>studio</th>
-      <th>guest_house</th>
-      <th>abandoned:building</th>
-      <th>motorcycle:rental</th>
-      <th>second_hand</th>
-      <th>drink:coffee</th>
+      <th>diet:vegan</th>
+      <th>content</th>
+      <th>industrial</th>
+      <th>addr:unit</th>
+      <th>disused</th>
+      <th>sahra:criterea</th>
+      <th>opening_date</th>
       <th>bus</th>
       <th>network</th>
-      <th>opening_date</th>
-      <th>unisex</th>
+      <th>construction</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>4388</th>
+      <th>4384</th>
       <td>None</td>
-      <td>semidetached_house</td>
+      <td>yes</td>
       <td>None</td>
-      <td>MULTIPOLYGON (((18.4497301 -33.9341967, 18.449...</td>
-      <td>None</td>
-      <td>None</td>
+      <td>MULTIPOLYGON (((18.462086 -33.925513, 18.46194...</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>1340498943</td>
+      <td>None</td>
+      <td>None</td>
+      <td>1313817370</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1097,17 +1075,17 @@ ERROR 1: Non closed ring detected.
       <td>NaN</td>
     </tr>
     <tr>
-      <th>4389</th>
+      <th>4385</th>
       <td>None</td>
-      <td>warehouse</td>
+      <td>yes</td>
       <td>None</td>
-      <td>MULTIPOLYGON (((18.4479047 -33.9257214, 18.447...</td>
-      <td>None</td>
-      <td>None</td>
+      <td>MULTIPOLYGON (((18.4610095 -33.9261135, 18.461...</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>1423081172</td>
+      <td>None</td>
+      <td>None</td>
+      <td>1313817371</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1122,7 +1100,7 @@ ERROR 1: Non closed ring detected.
     </tr>
   </tbody>
 </table>
-<p>2 rows × 149 columns</p>
+<p>2 rows × 133 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -1219,10 +1197,6 @@ Datum: World Geodetic System 1984 ensemble
         <span class="k">return</span> <span class="n">row</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="n">cap_style</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">join_style</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="n">aoibuffer</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">aoibuffer</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">buffer01</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-        
-<span class="c1">#extent = [aoibuffer.total_bounds[0] - 250, aoibuffer.total_bounds[1] - 250, </span>
-<span class="c1">#          aoibuffer.total_bounds[2] + 250, aoibuffer.total_bounds[3] + 250]</span>
-
 
 <span class="c1">#- suppose &#39;aoi&#39; is your GeoDataFrameLite or list of geometries</span>
 <span class="n">geoms</span> <span class="o">=</span> <span class="n">aoibuffer</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
@@ -1283,15 +1257,7 @@ Datum: World Geodetic System 1984 ensemble
 <p><strong>Buildings</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- harvest buildings</span>
-<span class="c1">#ts.drop(ts.index[ts[&#39;type&#39;] == &#39;node&#39;], inplace = True)</span>
-
-<span class="c1">#- orient segments and simplify topology</span>
-<span class="c1">#topo = tp.Topology(ts, prequantize=False, winding_order=&#39;CCW_CW&#39;)</span>
-<span class="c1">#with np.errstate(invalid=&#39;ignore&#39;):</span>
-<span class="c1">#    ts = topo.toposimplify(0.25).to_gdf()</span>
-
-<span class="c1">#- simplify geometry</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- simplify geometry</span>
 <span class="n">ts</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">GeoDataFrameLite</span><span class="p">(</span><span class="n">ts</span><span class="p">)</span>
 <span class="n">geojson_dict</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">ts</span><span class="o">.</span><span class="n">to_json</span><span class="p">())</span>
 
@@ -1317,9 +1283,6 @@ Datum: World Geodetic System 1984 ensemble
 <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
 <span class="n">ts_copy</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="c1">#new_df1 = ts_copy.loc[ts_copy.overlaps(ts_copy.unary_union)].reset_index(drop=True)  #-- perhaps no union?</span>
-
-<span class="c1">#joined = gpd.sjoin(ts_copy, ts_copy, how=&quot;inner&quot;, predicate=&quot;overlaps&quot;)</span>
 
 <span class="n">geoms</span> <span class="o">=</span> <span class="n">ts_copy</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 <span class="n">tree</span> <span class="o">=</span> <span class="n">STRtree</span><span class="p">(</span><span class="n">geoms</span><span class="p">)</span>
@@ -1339,19 +1302,6 @@ Datum: World Geodetic System 1984 ensemble
 
 <span class="n">joined</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;index_left&quot;</span><span class="p">,</span> <span class="s2">&quot;index_right&quot;</span><span class="p">])</span>
 
-<span class="c1">#- joined index is changing. silence warning. future ready.</span>
-<span class="c1"># GeoPandas &lt;0.12 uses index_left/index_right</span>
-<span class="c1">#if &quot;index_left&quot; in joined.columns:</span>
-<span class="c1">#    left_idx = joined[&quot;index_left&quot;]</span>
-<span class="c1">#    right_idx = joined[&quot;index_right&quot;]</span>
-<span class="c1">#else:  # GeoPandas ≥0.12 uses _left/_right suffixes</span>
-<span class="c1">#    left_idx = joined.index</span>
-<span class="c1">#    right_idx = joined[&quot;index_right&quot;]</span>
-
-<span class="c1"># remove self matches</span>
-<span class="c1">#mask = left_idx != right_idx</span>
-<span class="c1">#overlap_idx = left_idx[mask].unique()</span>
-
 <span class="c1">#- remove self matches and select overlapping geometries</span>
 <span class="n">left_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="p">[</span><span class="s2">&quot;index_left&quot;</span><span class="p">]</span>
 <span class="n">right_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="p">[</span><span class="s2">&quot;index_right&quot;</span><span class="p">]</span>
@@ -1366,7 +1316,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.529921
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.261355
 </pre></div>
 </div>
 </div>
@@ -1376,11 +1326,6 @@ Datum: World Geodetic System 1984 ensemble
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#%matplotlib</span>
-
-<span class="c1">#fig, ax = plt.subplots(figsize=(11, 11))</span>
-<span class="c1">#ts.plot(ax=ax, facecolor=&#39;none&#39;, edgecolor=&#39;purple&#39;, alpha=0.2)</span>
-<span class="c1">#if len(new_df1) &gt; 0:</span>
-<span class="c1">#    new_df1.plot(ax=ax, edgecolor=&#39;red&#39;, facecolor=&#39;none&#39;)#, alpha=0.3)#, column=&#39;osm_building&#39;, legend=True)</span>
 
 <span class="k">def</span><span class="w"> </span><span class="nf">plot_geometries</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
     <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1422,7 +1367,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/8910b3b3170a01e84656af202b43ddb511702061ee8b5be43a095fd4370f9726.png" src="../_images/8910b3b3170a01e84656af202b43ddb511702061ee8b5be43a095fd4370f9726.png" />
+<img alt="../_images/5aa5c38d6694a561a447f6e10239219934e7188dc3b93135a2a8b3005be49767.png" src="../_images/5aa5c38d6694a561a447f6e10239219934e7188dc3b93135a2a8b3005be49767.png" />
 </div>
 </div>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -1512,14 +1457,14 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <th>osm_id</th>
       <th>shop</th>
       <th>...</th>
-      <th>abandoned:building</th>
-      <th>motorcycle:rental</th>
-      <th>second_hand</th>
-      <th>drink:coffee</th>
+      <th>industrial</th>
+      <th>addr:unit</th>
+      <th>disused</th>
+      <th>sahra:criterea</th>
+      <th>opening_date</th>
       <th>bus</th>
       <th>network</th>
-      <th>opening_date</th>
-      <th>unisex</th>
+      <th>construction</th>
       <th>geometry</th>
       <th>mean</th>
     </tr>
@@ -1527,15 +1472,15 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
   <tbody>
     <tr>
       <th>0</th>
-      <td>marketplace</td>
-      <td>retail</td>
+      <td>None</td>
+      <td>office</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>The Neighbourgoods Market</td>
+      <td>Western Cape Metrorail - Infrastructure Building</td>
       <td>None</td>
-      <td>12227309</td>
+      <td>6383946</td>
       <td>None</td>
       <td>...</td>
       <td>NaN</td>
@@ -1546,20 +1491,20 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>MULTIPOLYGON (((265023.4813864499 6242993.3440...</td>
-      <td>7.17</td>
+      <td>MULTIPOLYGON (((266353.2773689979 6242850.2127...</td>
+      <td>4.110000</td>
     </tr>
     <tr>
       <th>1</th>
       <td>None</td>
-      <td>apartments</td>
+      <td>school</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>Church  Square</td>
       <td>None</td>
-      <td>12249345</td>
+      <td>None</td>
+      <td>13328172</td>
       <td>None</td>
       <td>...</td>
       <td>NaN</td>
@@ -1570,12 +1515,12 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>MULTIPOLYGON (((264360.39058643614 6242908.633...</td>
-      <td>10.45</td>
+      <td>MULTIPOLYGON (((265366.0837814461 6242509.5266...</td>
+      <td>17.030001</td>
     </tr>
   </tbody>
 </table>
-<p>2 rows × 150 columns</p>
+<p>2 rows × 134 columns</p>
 </div></div></div>
 </div>
 <div class="alert alert-block alert-warning"><b>Calculate building height:</b> 
@@ -1585,7 +1530,6 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># -- execute function. write geoJSON</span>
-<span class="c1">#city3D.write_geojson(ts, jparams)</span>
 <span class="n">dis</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">process_and_write_geojson</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">jparams</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1594,38 +1538,9 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
-
-<span class="c1">#dis = gpd.read_file(jparams[&#39;osm_bldings&#39;])                   </span>
-<span class="c1">#dis.set_crs(epsg=int(epsg[-5:]), inplace=True, allow_override=True)</span>
-
-<span class="c1">#dict_vertices = {}</span>
-<span class="c1">#cols = [c for c in [&#39;bottom_bridge_height&#39;, &#39;bottom_roof_height&#39;, &#39;roof_height&#39;] if c in dis.columns]</span>
-
-<span class="c1">#dis[&#39;geometry&#39;] = dis.geometry.apply(polygon.orient, 1)</span>
-
-<span class="c1">#for i, row in dis.iterrows():</span>
-<span class="c1">#    oring = list(row.geometry.exterior.coords)</span>
-<span class="c1">#    name = row[&#39;osm_id&#39;]</span>
-<span class="c1">#    for (j, v) in enumerate(oring[:-1]):</span>
-<span class="c1">#        vertex = (oring[j][0], oring[j][1])</span>
-<span class="c1">#        attr = [row[c] for c in cols]</span>
-<span class="c1">#        attr = [x for x in attr if not np.isnan(x)]  # Remove np.nan values</span>
-<span class="c1">#        if vertex in dict_vertices.keys():</span>
-<span class="c1">#            dict_vertices[vertex][row[&#39;osm_id&#39;]] = attr</span>
-<span class="c1">#        else:</span>
-<span class="c1">#            dict_vertices[vertex] = {row[&#39;osm_id&#39;]: attr}</span>
-
-<span class="c1">#result = {}</span>
-<span class="c1">#for k1, d in dict_vertices.items():</span>
-<span class="c1">#    for k2 in d:</span>
-<span class="c1">#        result.setdefault(k2, {})[k1] = sorted(list(set([j for i in d.values() for j in i])))</span>
         
 <span class="n">dis</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">dis</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">dis</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;bridge&#39;</span><span class="p">],</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
 <span class="n">dis</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">dis</span><span class="o">.</span><span class="n">index</span><span class="p">[</span><span class="n">dis</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;roof&#39;</span><span class="p">],</span> <span class="n">inplace</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
-
-<span class="c1">#- create a point representing the hole within each building  </span>
-<span class="c1">#dis[&#39;x&#39;] = dis.representative_point().x</span>
-<span class="c1">#dis[&#39;y&#39;] = dis.representative_point().y</span>
 
 <span class="c1">#- compute representative point for each geometry</span>
 <span class="n">dis</span><span class="p">[</span><span class="s2">&quot;rep_point&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dis</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">g</span><span class="p">:</span> <span class="n">g</span><span class="o">.</span><span class="n">representative_point</span><span class="p">()</span> <span class="k">if</span> <span class="n">g</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
@@ -1643,7 +1558,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.069425
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.026920
 </pre></div>
 </div>
 </div>
@@ -1652,7 +1567,6 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#dis.sort_values(by = &#39;osm_building&#39;, inplace=True) </span>
 <span class="n">dis</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="c1">#dis.plot()</span>
 </pre></div>
 </div>
 </div>
@@ -1701,9 +1615,9 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
   <tbody>
     <tr>
       <th>0</th>
-      <td>12227309</td>
-      <td>The Neighbourgoods Market Woodstock Cape Town</td>
-      <td>retail</td>
+      <td>6383946</td>
+      <td>Western Cape Metrorail - Infrastructure Buildi...</td>
+      <td>office</td>
       <td>1.0</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1713,39 +1627,39 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <td>NaN</td>
       <td>...</td>
       <td>4.1</td>
-      <td>11.27</td>
-      <td>7.17</td>
+      <td>8.21</td>
+      <td>4.110000</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>4FRW3FF5+27C</td>
-      <td>(((265023.4813864499, 6242993.344091462), (265...</td>
-      <td>POLYGON ((265023.4813864499 6242993.344091462,...</td>
-      <td>265035.863057</td>
-      <td>6.242978e+06</td>
+      <td>4FRW3FCF+946</td>
+      <td>(((266353.2773689979, 6242850.21272516), (2663...</td>
+      <td>POLYGON ((266353.2773689979 6242850.21272516, ...</td>
+      <td>266394.180182</td>
+      <td>6.242829e+06</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>12249345</td>
-      <td>Church  Square 34 Dickson Street 7915 Woodstoc...</td>
-      <td>apartments</td>
-      <td>6.0</td>
+      <td>13328172</td>
+      <td>None</td>
+      <td>school</td>
+      <td>2.0</td>
       <td>NaN</td>
-      <td>105</td>
+      <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>...</td>
-      <td>18.1</td>
-      <td>28.55</td>
-      <td>10.45</td>
+      <td>6.9</td>
+      <td>23.93</td>
+      <td>17.030001</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>4FRW3FC2+R5G</td>
-      <td>(((264360.39058643614, 6242908.633245183), (26...</td>
-      <td>POLYGON ((264360.39058643614 6242908.633245183...</td>
-      <td>264327.370820</td>
-      <td>6.242905e+06</td>
+      <td>4FRW3F96+6MG</td>
+      <td>(((265366.0837814461, 6242509.526659243), (265...</td>
+      <td>POLYGON ((265366.0837814461 6242509.526659243,...</td>
+      <td>265378.733465</td>
+      <td>6.242489e+06</td>
     </tr>
   </tbody>
 </table>
@@ -1795,7 +1709,6 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <span class="c1">#mask_geom = shapely.unary_union(mask_geom[&#39;geometry&#39;]) </span>
 
 <span class="c1">#- create the Spatial Index</span>
-<span class="c1"># This replaces: tree = STRtree(gdf.geometry)</span>
 <span class="n">tree</span> <span class="o">=</span> <span class="n">STRtree</span><span class="p">(</span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span> 
 
 <span class="c1">#- query the Tree for Candidates</span>
@@ -1819,7 +1732,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:03:19.183923
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:56.726068
 </pre></div>
 </div>
 </div>
@@ -1946,7 +1859,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:03:48.805123
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:01:10.319395
 </pre></div>
 </div>
 </div>
