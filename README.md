@@ -11,4 +11,4 @@ ___
 This repository is available on Zenodo to provide a **permanent, citable record** of the exact code and data used to produce the results. 
 The Digital Object Identifier (DOI) is:
 
-[![DOI](https://zenodo.org/badge/17598022.svg)](https://doi.org/10.5281/zenodo.17598022)
+[![DOI](https://zenodo.org/badge/948145783.svg)](https://doi.org/10.5281/zenodo.17598022)
