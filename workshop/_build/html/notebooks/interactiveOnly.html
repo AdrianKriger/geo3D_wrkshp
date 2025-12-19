@@ -395,12 +395,13 @@ document.write(`
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-visualization">1. Interactive Visualization</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-data-science">2. Spatial Data Science</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-data-science-demography-and-housing">2. Spatial Data Science <em>(demography and housing)</em></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-estimate-population">2. a) Estimate Population:</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-building-volume-per-capita-bvpc">2. b) Building Volume Per Capita (BVPC)</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#possible-secondary-and-tertiary-level-conversations-starters">3. Possible Secondary and Tertiary level <em>conversations starters</em>:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-examples-of-spatial-data-science-renewable-energy">3. Further examples of Spatial Data Science <em>(renewable energy)</em>:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#possible-secondary-and-tertiary-level-conversations-starters">4. Possible Secondary and Tertiary level <em>conversations starters</em>:</a></li>
 </ul>
             </nav>
         </div>
@@ -427,7 +428,11 @@ document.write(`
 <div><p><strong>i)  population estimation</strong> <em>–with a previous census metric population growth rate and projected (future) population are also possible</em>  <strong>and</strong><br />
 <strong>ii)  a measure of Building Volume per Capita.</strong></p>
 </div></blockquote>
-<p><strong>3. propose several Geography and Sustainable Development Education <em>conversation starters</em> for Secondary and Tertiary level students</strong></p>
+<p><strong>3. further applications of Spatial Data Science</strong></p>
+<blockquote>
+<div><p><strong>-  calculate percentage homes and population with direct access to on-site renewable energy infrastructure</strong> <em>–rooftop photovoltaic panels (PV) and solar water heaters (SWH).</em></p>
+</div></blockquote>
+<p><strong>4. propose several Geography and Sustainable Development Education <em>conversation starters</em> for Secondary and Tertiary level students</strong></p>
 </div></blockquote>
 </div><div class="alert alert-block alert-danger"><b>Please Note:</b>
 <p><em><strong>The <a class="reference external" href="https://github.com/AdrianKriger/geo3D/tree/main/village">village</a></strong></em> processing option is meant for areas with no more than for <strong>2 500 buildings</strong>.</div></p>
@@ -460,12 +465,6 @@ document.write(`
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Polygon</span> <span class="k">as</span> <span class="n">MplPolygon</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">PatchCollection</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pydeck</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pdk</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/adriankriger/miniconda3/envs/geo3D_gthbRepo07/lib/python3.9/site-packages/cjio/cityjson.py:12: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools&lt;81.
-  from pkg_resources import resource_filename
 </pre></div>
 </div>
 </div>
@@ -545,8 +544,8 @@ document.write(`
       <th>addr:suburb</th>
       <th>amenity</th>
       <th>denomination</th>
+      <th>diocese</th>
       <th>heritage</th>
-      <th>name</th>
       <th>...</th>
       <th>building:use</th>
       <th>street_vendor</th>
@@ -595,8 +594,8 @@ document.write(`
       <td>Mamre</td>
       <td>place_of_worship</td>
       <td>moravian</td>
+      <td>Cape Town North</td>
       <td>building</td>
-      <td>Mamre Moravian Church</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -611,7 +610,7 @@ document.write(`
     </tr>
   </tbody>
 </table>
-<p>2 rows × 60 columns</p>
+<p>2 rows × 62 columns</p>
 </div></div></div>
 </div>
 <div class="alert alert-block alert-danger"><b>NOTICE:</b>
@@ -631,7 +630,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mamre has 2300 buildings
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mamre has 2305 buildings
 
 <span class=" -Color -Color-Bold">All the buildings</span>  in Mamre have been harvested
 </pre></div>
@@ -661,7 +660,7 @@ document.write(`
 <span class="s2">        area[boundary=administrative][name=&#39;</span><span class="si">{0}</span><span class="s2">&#39;] -&gt; .a;</span>
 <span class="s2">            (</span>
 <span class="s2">            way[amenity~&#39;university|research_institute&#39;][name=&#39;</span><span class="si">{2}</span><span class="s2">&#39;](area.a);</span>
-<span class="s2">            </span><span class="si">{1}</span><span class="s2">[place][place~&quot;sub|town|city|count|state|village|borough|quarter|neighbourhood&quot;][name=&#39;</span><span class="si">{2}</span><span class="s2">&#39;](area.a);</span>
+<span class="s2">            </span><span class="si">{1}</span><span class="s2">[place][place~&quot;suburb|town|city|count|state|village|borough|quarter|neighbourhood&quot;][name=&#39;</span><span class="si">{2}</span><span class="s2">&#39;](area.a);</span>
 <span class="s2">            );</span>
 <span class="s2">        out geom;</span>
 <span class="s2">        &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">large</span><span class="p">,</span> <span class="n">osm_type</span><span class="p">,</span> <span class="n">focus</span><span class="p">)</span>
@@ -798,7 +797,7 @@ document.write(`
     <tr>
       <th>1</th>
       <td>328118447</td>
-      <td>Mamre Moravian Church Kerk Street Mamre 7347 C...</td>
+      <td>Moravian Church South Africa Kerk Street Mamre...</td>
       <td>church</td>
       <td>2</td>
       <td>NaN</td>
@@ -842,7 +841,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2270
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2275
 </pre></div>
 </div>
 </div>
@@ -993,7 +992,7 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
     <tr>
       <th>1</th>
       <td>328118447</td>
-      <td>Mamre Moravian Church Kerk Street Mamre 7347 C...</td>
+      <td>Moravian Church South Africa Kerk Street Mamre...</td>
       <td>church</td>
       <td>2</td>
       <td>NaN</td>
@@ -1422,8 +1421,8 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
 <p><strong>Now you do your community.</strong> ~ If your area needs <a class="reference external" href="https://en.wikipedia.org/wiki/OpenStreetMap">OpenStreetMap</a>  data and you want to contribute please follow the <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Beginners%27_guide">Guide</a>.</p>
 <hr class="docutils" />
 <div class="alert alert-block alert-danger"><b>GO FURTHER</b></div></section>
-<section id="spatial-data-science">
-<h2>2. Spatial Data Science<a class="headerlink" href="#spatial-data-science" title="Link to this heading">#</a></h2>
+<section id="spatial-data-science-demography-and-housing">
+<h2>2. Spatial Data Science <em>(demography and housing)</em><a class="headerlink" href="#spatial-data-science-demography-and-housing" title="Link to this heading">#</a></h2>
 <div class="alert alert-block alert-warning"><b>Now that we have a visualization of building stock (buildings colorized by `use`); lets do some basic spatial analysis:</b>  
 <ul class="simple">
 <li><p>We’ll estimate the population, within our area of interest, and then</p></li>
@@ -1501,7 +1500,7 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
     <tr>
       <th>1</th>
       <td>328118447</td>
-      <td>Mamre Moravian Church Kerk Street Mamre 7347 C...</td>
+      <td>Moravian Church South Africa Kerk Street Mamre...</td>
       <td>church</td>
       <td>2</td>
       <td>NaN</td>
@@ -1649,7 +1648,7 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1973
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1977
 </pre></div>
 </div>
 </div>
@@ -1751,8 +1750,8 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>building
-house    1642
-cabin     331
+house    1644
+cabin     333
 Name: count, dtype: int64
 </pre></div>
 </div>
@@ -1849,7 +1848,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The estimated population is: 11176
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The estimated population is: 11196
 </pre></div>
 </div>
 </div>
@@ -1881,7 +1880,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>population growth rate of approximately: 1.51 %
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>population growth rate of approximately: 1.52 %
 </pre></div>
 </div>
 </div>
@@ -1920,7 +1919,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated population 10 years from now: 12981
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated population 10 years from now: 13020
 </pre></div>
 </div>
 </div>
@@ -2040,7 +2039,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.330136
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.337547
 </pre></div>
 </div>
 </div>
@@ -2090,7 +2089,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/93766deeb3d6147147fd1807210ee5cc4f0e808ec8129c5ffe2ca749c07e63a1.png" src="../_images/93766deeb3d6147147fd1807210ee5cc4f0e808ec8129c5ffe2ca749c07e63a1.png" />
+<img alt="../_images/fa3246e0455ba5d329d183398c37c29a40197f5ad634489412b011273197f26f.png" src="../_images/fa3246e0455ba5d329d183398c37c29a40197f5ad634489412b011273197f26f.png" />
 </div>
 </div>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -2184,7 +2183,7 @@ The goal is to be as representative as possible.</p>
   </thead>
   <tbody>
     <tr>
-      <th>2297</th>
+      <th>2302</th>
       <td>12289266</td>
       <td>22 Clarkeson Street Mamre 7347 Cape Town</td>
       <td>house</td>
@@ -2208,7 +2207,7 @@ The goal is to be as representative as possible.</p>
       <td>235.531169</td>
     </tr>
     <tr>
-      <th>2298</th>
+      <th>2303</th>
       <td>12357148</td>
       <td>2 Tol Street Mamre 7347 Cape Town</td>
       <td>house</td>
@@ -2243,13 +2242,13 @@ The goal is to be as representative as possible.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>count    1973.000000
-mean       75.974348
-std        50.270773
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>count    1977.000000
+mean       76.073596
+std        50.337560
 min        11.089562
 25%        34.480285
-50%        66.680999
-75%       102.536876
+50%        66.734589
+75%       102.864767
 max       400.204480
 Name: bvpc, dtype: float64
 </pre></div>
@@ -2265,7 +2264,7 @@ Name: bvpc, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 78.204
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 78.318
 </pre></div>
 </div>
 </div>
@@ -2301,11 +2300,11 @@ Name: bvpc, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FORMAL: Population:  9852  with Building Volume Per Capita (BVPC): 83.562
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FORMAL: Population:  9864  with Building Volume Per Capita (BVPC): 83.715
 
 STUDENT RESIDENCE: Population:  0  with Building Volume Per Capita (BVPC): 0
 
-INFORMAL: Population:  1324  with Building Volume Per Capita (BVPC) 38.334
+INFORMAL: Population:  1332  with Building Volume Per Capita (BVPC) 38.349
 </pre></div>
 </div>
 </div>
@@ -2317,8 +2316,329 @@ LoD2 would offer a more representative BVPC <a class="reference external" href="
 <p><em><strong>consider</strong></em>: <em>geo3D</em> seperates <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Tag:building%3Dcabin">building:cabin</a> (shack) from <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> to more precisely represent informal structures without typical roof trussess but account for <a class="reference external" href="https://en.wikipedia.org/wiki/Public_housing">social housing</a> that does</div></p>
 </section>
 </section>
+<section id="further-examples-of-spatial-data-science-renewable-energy">
+<h2>3. Further examples of Spatial Data Science <em>(renewable energy)</em>:<a class="headerlink" href="#further-examples-of-spatial-data-science-renewable-energy" title="Link to this heading">#</a></h2>
+<div class="alert alert-block alert-warning"><b></b>
+<p><strong>Let’s attempt to understand the % of homes and population served with renewable energy.</strong></p>
+</div>
+<p><a class="reference external" href="https://sdgs.un.org/goals"><strong>SDG</strong></a> indicators are typically calculated at <strong>region and national scales</strong>.<br />
+Here, because we are working with highly detailed, local data, we can explore what a <a class="reference external" href="https://unstats.un.org/sdgs/metadata/"><strong>Tier 3 local indicator</strong></a> might look like at a <em><strong>neighbourhood level</strong></em>.
+<br></p>
+<p>In this section 3. we evaluate <a class="reference external" href="https://sdgs.un.org/goals/goal7"><strong>SDG 7: Ensure access to affordable, reliable, sustainable and modern energy for all</strong></a> at a community level and estimate the <strong>proportion of residential units and population</strong> that have <strong>direct access to on-site renewable energy infrastructure</strong> <em>–rooftop photovoltaic panels (PV) and solar water heaters (SWH)</em>.</p>
+<ul class="simple">
+<li><p>Percentage of <strong>households</strong> served by rooftop renewable energy</p></li>
+<li><p>Percentage of the <strong>population</strong> served by rooftop renewable energy</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- harvest rooftop solar</span>
+
+<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">     [out:json][timeout:30];</span>
+<span class="s2">    // --when areas have duplicate names given the world has a limited amount of uniquely named places</span>
+<span class="s2">    area[name=&#39;</span><span class="si">{0}</span><span class="s2">&#39;] -&gt;.b;</span>
+<span class="s2">    // -- target area ~ can be way or relation</span>
+<span class="s2">    wr(area.b)[name=&#39;</span><span class="si">{1}</span><span class="s2">&#39;];</span>
+<span class="s2">    map_to_area -&gt; .a;</span>
+<span class="s2">    (</span>
+<span class="s2">        way[&quot;power&quot;=&quot;generator&quot;][&quot;generator:source&quot;=&quot;solar&quot;](area.a);                // Catches simple generators</span>
+<span class="s2">       //  way[&quot;power&quot;=&quot;solar_photovoltaic_panel&quot;](area.a);                          // Catches the alternate tag</span>
+<span class="s2">    );</span>
+<span class="s2">    out geom;</span>
+<span class="s2">    &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">large</span><span class="p">,</span> <span class="n">focus</span><span class="p">)</span>
+
+<span class="c1">#- execute function from city3D, harvest generator solar and return GeoDataFrameLite | home-baked gdf</span>
+<span class="n">sol</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">overpass_to_gdf</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
+<span class="n">sol</span> <span class="o">=</span> <span class="n">sol</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">epsg</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sol</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[0m No rooftop solar are mapped in&quot;</span><span class="p">,</span> <span class="n">focus</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- look</span>
+<span class="n">sol</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>generator:method</th>
+      <th>generator:output:hot_water</th>
+      <th>generator:source</th>
+      <th>generator:type</th>
+      <th>location</th>
+      <th>power</th>
+      <th>start_date</th>
+      <th>geometry</th>
+      <th>osm_id</th>
+      <th>osm_type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>thermal</td>
+      <td>yes</td>
+      <td>solar</td>
+      <td>solar_thermal_collector</td>
+      <td>roof</td>
+      <td>generator</td>
+      <td>NaN</td>
+      <td>POLYGON ((266074.7976815852 6288576.002370844,...</td>
+      <td>1095737675</td>
+      <td>way</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>thermal</td>
+      <td>yes</td>
+      <td>solar</td>
+      <td>solar_thermal_collector</td>
+      <td>roof</td>
+      <td>generator</td>
+      <td>NaN</td>
+      <td>POLYGON ((266194.47713799647 6288764.539267579...</td>
+      <td>1095739760</td>
+      <td>way</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- we only want rooftop or roof</span>
+<span class="c1">#sol = sol[sol[&#39;location&#39;].isin([&#39;rooftop&#39;, &#39;roof&#39;])]</span>
+<span class="c1">#sol = sol.reset_index(drop=True)</span>
+<span class="c1"># how many of each type PV and SHW on all blds</span>
+
+<span class="c1">#- the number of renewable in AREA</span>
+<span class="n">sol</span><span class="p">[</span><span class="s1">&#39;generator:method&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>generator:method
+thermal    54
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># join (link) rooftop renewable energy to the appropriate bld</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">buildings_with_solar</span><span class="p">(</span><span class="n">gdf_buildings</span><span class="p">,</span> <span class="n">gdf_solar</span><span class="p">):</span>
+    <span class="c1"># Prepare output arrays</span>
+    <span class="n">solar_ids_per_building</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gdf_buildings</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]))]</span>
+    <span class="n">solar_types_per_building</span> <span class="o">=</span> <span class="p">[[]</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">gdf_buildings</span><span class="p">))]</span>
+    
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">b_geom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">gdf_buildings</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">s_geom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">gdf_solar</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]):</span>
+            <span class="c1">#if b_geom.intersects(s_geom):</span>
+            <span class="k">if</span> <span class="n">b_geom</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">s_geom</span><span class="p">):</span>
+                <span class="n">solar_ids_per_building</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gdf_solar</span><span class="p">[</span><span class="s2">&quot;osm_id&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+                <span class="n">solar_types_per_building</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gdf_solar</span><span class="p">[</span><span class="s2">&quot;generator:method&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+
+    <span class="c1">#- keep only unique values</span>
+    <span class="c1">#unique_methods_per_building = [list(set(lst)) for lst in solar_types_per_building]</span>
+    
+    <span class="n">gdf_buildings</span><span class="p">[</span><span class="s2">&quot;solar_ids&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">solar_ids_per_building</span>
+    <span class="n">gdf_buildings</span><span class="p">[</span><span class="s2">&quot;generator:method&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">solar_types_per_building</span> <span class="c1">#unique_methods_per_building</span>
+    <span class="n">gdf_buildings</span><span class="p">[</span><span class="s2">&quot;has_solar&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">for</span> <span class="n">lst</span> <span class="ow">in</span> <span class="n">solar_ids_per_building</span><span class="p">]</span>
+    <span class="n">gdf_buildings</span><span class="p">[</span><span class="s2">&quot;solar_ids&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">solar_ids_per_building</span>
+    
+    <span class="k">return</span> <span class="n">gdf_buildings</span>
+
+<span class="n">blds</span> <span class="o">=</span> <span class="n">buildings_with_solar</span><span class="p">(</span><span class="n">gdf2</span><span class="p">,</span> <span class="n">sol</span><span class="p">)</span>
+<span class="n">blds</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>osm_id</th>
+      <th>address</th>
+      <th>building</th>
+      <th>building:levels</th>
+      <th>building:use</th>
+      <th>residential</th>
+      <th>amenity</th>
+      <th>operator</th>
+      <th>building_height</th>
+      <th>roof_height</th>
+      <th>...</th>
+      <th>footprint</th>
+      <th>geometry</th>
+      <th>fill_color</th>
+      <th>pop</th>
+      <th>area</th>
+      <th>volume</th>
+      <th>bvpc</th>
+      <th>solar_ids</th>
+      <th>generator:method</th>
+      <th>has_solar</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>7</th>
+      <td>656840974</td>
+      <td>39 Dove Lane Mamre 7347 Cape Town</td>
+      <td>house</td>
+      <td>1</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>4.1</td>
+      <td>4.1</td>
+      <td>...</td>
+      <td>(((18.4684317, -33.5150664), (18.4684262, -33....</td>
+      <td>POLYGON ((264864.98193212313 6288741.008398377...</td>
+      <td>[255, 255, 204]</td>
+      <td>6</td>
+      <td>38.658416</td>
+      <td>158.499506</td>
+      <td>26.416584</td>
+      <td>[]</td>
+      <td>[]</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>656840975</td>
+      <td>37 Dove Lane Mamre 7347 Cape Town</td>
+      <td>house</td>
+      <td>1</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>4.1</td>
+      <td>4.1</td>
+      <td>...</td>
+      <td>(((18.4684378, -33.5149932), (18.4684327, -33....</td>
+      <td>POLYGON ((264865.3504529182 6288749.140981195,...</td>
+      <td>[255, 255, 204]</td>
+      <td>6</td>
+      <td>39.833421</td>
+      <td>163.317028</td>
+      <td>27.219505</td>
+      <td>[1096772168]</td>
+      <td>[thermal]</td>
+      <td>True</td>
+    </tr>
+  </tbody>
+</table>
+<p>2 rows × 24 columns</p>
+</div></div></div>
+</div>
+<div class="alert alert-block alert-success"><b>Percentage of households served by rooftop renewable energy</b></div><p>$$ \text{% homes with renewable energy} = \frac{\text{Number of dwellings with mapped solar PV or SWH}}{\text{Total number of dwellings}} \times 100 $$</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#solHms = round(len(sol) / len(gdf2) * 100, 2)</span>
+
+<span class="c1">#- harvest columns</span>
+<span class="n">with_solar</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">blds</span><span class="p">[</span><span class="s2">&quot;has_solar&quot;</span><span class="p">])</span>
+<span class="n">pop</span> <span class="o">=</span> <span class="n">est_pop</span> <span class="c1">#gdf[&quot;pop&quot;]</span>
+<span class="n">total_homes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">gdf2</span><span class="p">)</span>
+
+<span class="n">solHms</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">with_solar</span> <span class="o">/</span> <span class="n">total_homes</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Percentage homes, in&#39;</span><span class="p">,</span> <span class="n">focus</span><span class="p">,</span><span class="s1">&#39;, with rooftop photovoltaic panels (PV) and solar water heaters (SWH):&#39;</span><span class="p">,</span> <span class="n">solHms</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Percentage homes, in Mamre , with rooftop photovoltaic panels (PV) and solar water heaters (SWH): 2.68
+</pre></div>
+</div>
+</div>
+</div>
+<div class="alert alert-block alert-success"><b>Percentage of population served by rooftop renewable energy</b></div>
+<p>$$ \text{% population with renewable energy} = \frac{\text{Number of residents with mapped solar PV or SWH}}{\text{Estimated population}} \times 100 $$</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#solPop = round(len(sol) / len(gdf2) * 100, 2)</span>
+
+<span class="n">pop_total</span> <span class="o">=</span> <span class="n">blds</span><span class="p">[</span><span class="s2">&quot;pop&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="n">pop_solar</span> <span class="o">=</span> <span class="n">blds</span><span class="p">[</span><span class="s2">&quot;pop&quot;</span><span class="p">][</span><span class="n">blds</span><span class="p">[</span><span class="s2">&quot;has_solar&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+<span class="n">solPop</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">pop_solar</span> <span class="o">/</span> <span class="n">pop_total</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Percentage population, in&#39;</span><span class="p">,</span> <span class="n">focus</span><span class="p">,</span><span class="s1">&#39;, with rooftop photovoltaic panels (PV) and solar water heaters (SWH):&#39;</span><span class="p">,</span> <span class="n">solPop</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Percentage population, in Mamre , with rooftop photovoltaic panels (PV) and solar water heaters (SWH): 2.84
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- number of solar renewable per residential unit (home). </span>
+<span class="c1">#blds[&quot;generator:method&quot;] = blds[&quot;generator:method&quot;].apply(</span>
+<span class="c1">#    lambda lst: np.nan if len(lst) == 0 else lst</span>
+<span class="c1">#)</span>
+<span class="c1"># number of solar renewable on HOMES</span>
+<span class="n">blds</span><span class="p">[</span><span class="s1">&#39;generator:method&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">explode</span><span class="p">()</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<span class="c1">#therm = blds[blds[&quot;has_solar&quot;] == True ]</span>
+<span class="c1">#therm</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>generator:method
+thermal    53
+Name: count, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+</section>
 <section id="possible-secondary-and-tertiary-level-conversations-starters">
-<h2>3. Possible Secondary and Tertiary level <em>conversations starters</em>:<a class="headerlink" href="#possible-secondary-and-tertiary-level-conversations-starters" title="Link to this heading">#</a></h2>
+<h2>4. Possible Secondary and Tertiary level <em>conversations starters</em>:<a class="headerlink" href="#possible-secondary-and-tertiary-level-conversations-starters" title="Link to this heading">#</a></h2>
 <div class="alert alert-block alert-success"><b>communicate and exchange ideas and understanding</b></div><div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Topic</strong></p></th>
@@ -2364,11 +2684,6 @@ LoD2 would offer a more representative BVPC <a class="reference external" href="
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Tend</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">Tend</span> <span class="o">-</span> <span class="n">Tstart</span><span class="p">))))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:24.794843
 </pre></div>
 </div>
 </div>
@@ -2441,12 +2756,13 @@ LoD2 would offer a more representative BVPC <a class="reference external" href="
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-visualization">1. Interactive Visualization</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-data-science">2. Spatial Data Science</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-data-science-demography-and-housing">2. Spatial Data Science <em>(demography and housing)</em></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-estimate-population">2. a) Estimate Population:</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-building-volume-per-capita-bvpc">2. b) Building Volume Per Capita (BVPC)</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#possible-secondary-and-tertiary-level-conversations-starters">3. Possible Secondary and Tertiary level <em>conversations starters</em>:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#further-examples-of-spatial-data-science-renewable-energy">3. Further examples of Spatial Data Science <em>(renewable energy)</em>:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#possible-secondary-and-tertiary-level-conversations-starters">4. Possible Secondary and Tertiary level <em>conversations starters</em>:</a></li>
 </ul>
   </nav></div>
 
