@@ -38,6 +38,8 @@ from osgeo import gdal
 
 from openlocationcode import openlocationcode as olc
 
+import warnings
+warnings.filterwarnings("ignore", message="pkg_resources is deprecated as an API")
 from cjio import cityjson, geom_help
 
 dps = 3
