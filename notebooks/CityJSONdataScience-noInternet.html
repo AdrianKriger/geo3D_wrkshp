@@ -502,10 +502,6 @@ b)  a measure of <strong>Building Volume per Capita</strong></p>
  * Debug mode: off
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Address already in use
-Port 8000 is in use by another program. Either identify and stop that program, or start the server with a different port.
-</pre></div>
-</div>
 </div>
 </div>
 <div class="cell docutils container">
@@ -1269,7 +1265,7 @@ Name: bvpc, dtype: float64
 <div class="alert alert-block alert-info"><b></b>
 <p><strong>This BVPC value is general.</strong></p>
 <p>We can seperate <code class="docutils literal notranslate"><span class="pre">building:house</span></code> from <code class="docutils literal notranslate"><span class="pre">building:cabin</span></code> and <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> to undertand the differences between <em><strong>formal and informal</strong></em> housing in this area.</p>
-<p><strong>We want to understand the living space <em>(the cubic-meter BVPC value)</em> each person has in thier home</strong></p>
+<p><strong>We want to understand the living space <em>(the cubic-meter BVPC value)</em> each person has in their home</strong></p>
 </div><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">formal</span> <span class="o">=</span> <span class="n">gdf_pop</span><span class="p">[</span><span class="n">gdf_pop</span><span class="p">[</span><span class="s2">&quot;building&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;house&#39;</span><span class="p">,</span> <span class="s1">&#39;semidetached_house&#39;</span><span class="p">,</span> <span class="s1">&#39;terrace&#39;</span><span class="p">,</span> <span class="s1">&#39;terraced&#39;</span><span class="p">,</span> <span class="s1">&#39;apartments&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>

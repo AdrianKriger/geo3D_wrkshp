@@ -190,6 +190,7 @@
 <li class="toctree-l1"><a class="reference internal" href="CityJSONdataScience-noInternet.html">Spatial Data Science with CityJSON <em>(No Internet)</em></a></li>
 
 
+
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LoD1 caveats</span></p>
 <ul class="nav bd-sidenav">
@@ -2272,7 +2273,7 @@ Name: bvpc, dtype: float64
 <div class="alert alert-block alert-info"><b></b>
 <p><strong>This BVPC value is general.</strong></p>
 <p>We can seperate <code class="docutils literal notranslate"><span class="pre">building:house</span></code> from <code class="docutils literal notranslate"><span class="pre">building:cabin</span></code> and <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> to understand the differences between <em><strong>formal and informal</strong></em> housing in this area.</p>
-<p><strong>We want to understand the living space <em>(the cubic-meter BVPC value)</em> each person has in thier home</strong></p>
+<p><strong>We want to understand the living space <em>(the cubic-meter BVPC value)</em> each person has in their home</strong></p>
 </div><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">formal</span> <span class="o">=</span> <span class="n">gdf2</span><span class="p">[</span><span class="n">gdf2</span><span class="p">[</span><span class="s2">&quot;building&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;house&#39;</span><span class="p">,</span> <span class="s1">&#39;semidetached_house&#39;</span><span class="p">,</span> <span class="s1">&#39;terrace&#39;</span><span class="p">,</span> <span class="s1">&#39;apartment&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
