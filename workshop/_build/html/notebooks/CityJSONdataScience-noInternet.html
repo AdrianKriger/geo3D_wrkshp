@@ -397,7 +397,12 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Spatial Data Science with CityJSON <em>(No Internet)</em></a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-data-science-demography-and-housing">1. Spatial Data Science <em>(demography and housing)</em></a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#further-examples-of-spatial-data-science-renewable-energy">2. Further examples of Spatial Data Science <em>(renewable energy)</em>:</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#further-examples-of-spatial-data-science-renewable-energy">2. Further examples of Spatial Data Science <em>(renewable energy)</em>:</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-household-rooftop-solar">2. a) Household rooftop solar</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-rooftop-solar-population">2. b) Rooftop solar population</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-solar-potential-mwh">3. c) Solar potential (MWh)</a></li>
+</ul>
+</li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-visualization">3. Interactive Visualization</a></li>
 </ul>
 
@@ -417,7 +422,9 @@ document.write(`
 <div class="alert alert-block alert-info""><b>This is a stand-alone Notebook for use in low resource settings. NO internet connection is necessary.</b> 
 <br>
 <br>
-<p>While an internet connection is <strong>NOT</strong> necessary you will <strong>NEED</strong> to have sourced an <strong><a class="reference external" href="https://wiki.openstreetmap.org/wiki/PBF_Format">osm.pbf</a></strong> and an <strong><a class="reference external" href="https://wiki.openstreetmap.org/wiki/PBF_Format">.mbtiles vector tile dataset</a></strong>.</div></p>
+<p>While an internet connection is <strong>NOT</strong> necessary you will <strong>NEED</strong> to have sourced an <strong><a class="reference external" href="https://wiki.openstreetmap.org/wiki/PBF_Format">osm.pbf</a></strong> and an <strong><a class="reference external" href="https://wiki.openstreetmap.org/wiki/PBF_Format">.mbtiles vector tile dataset</a></strong>.</p>
+<p>If you would like to do the entire Notebook and estimate the <strong>Average solar potential, per home for this community</strong> you will <strong>NEED</strong> to have sourced a <strong>ghi.tif</strong>.<br />
+A <strong>ghi.tif</strong> raster comes with the <strong>LTAy_YearlySum.GeoTiff</strong> dataset. These can be harvested from the <strong><a class="reference external" href="https://globalsolaratlas.info/download/south-africa">NASA Global Solar Atlas download section</a> and are available for each country on Earth.</strong>   </div></p>
 <p>The purpose of this Notebook is to <em><strong>work with</strong></em> the product of <a class="reference external" href="https://github.com/AdrianKriger/osm_LoD1_3DCityModel">osm_LoD1_3DCityModel</a>; a previously created CityJSON city model.</p>
 <div class="alert alert-block alert-warning"><b>This notebook will:</b>
 <blockquote>
@@ -430,6 +437,7 @@ b)  a measure of <strong>Building Volume per Capita</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><p>calculate percentage <strong>homes and population with direct access to on-site renewable energy infrastructure</strong> <em>–rooftop photovoltaic panels (PV) and solar water heaters (SWH).</em></p></li>
+<li><p>estimate the <strong>Annual Average Solar Potential, per home.</strong></p></li>
 </ul>
 </div></blockquote>
 <p><strong>3. produce an interactive visualization</strong> <em>-via <a class="reference external" href="https://deckgl.readthedocs.io/en/latest/">pydeck</a>- which a user can navigate, query and share</em> <strong>that</strong>;</p>
@@ -457,6 +465,8 @@ b)  a measure of <strong>Building Volume per Capita</strong></p>
 <span class="kn">import</span><span class="w"> </span><span class="nn">city3D</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">cjio</span><span class="w"> </span><span class="kn">import</span> <span class="n">cityjson</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">osgeo</span><span class="w"> </span><span class="kn">import</span> <span class="n">gdal</span><span class="p">,</span> <span class="n">osr</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">pydeck</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pdk</span>
@@ -1317,10 +1327,11 @@ LoD2 would offer a more representative BVpC <a class="reference external" href="
 Here, because we are working with highly detailed, local data, we can explore what a <a class="reference external" href="https://unstats.un.org/sdgs/metadata/"><strong>Tier 3 local indicator</strong></a> might look like at a <em><strong>neighbourhood level</strong></em>.
 <br></p>
 <p>In this section 3. we evaluate <a class="reference external" href="https://sdgs.un.org/goals/goal7"><strong>SDG 7: Ensure access to affordable, reliable, sustainable and modern energy for all</strong></a> at a community level and estimate the <strong>proportion of residential units and population</strong> that have <strong>direct access to on-site renewable energy infrastructure</strong> <em>–rooftop photovoltaic panels (PV) and solar water heaters (SWH)</em>.</p>
-<ul class="simple">
-<li><p>Percentage of <strong>households</strong> served by rooftop renewable energy</p></li>
-<li><p>Percentage of the <strong>population</strong> served by rooftop renewable energy</p></li>
-</ul>
+<blockquote>
+<div><p><strong>a.</strong> Percentage of <strong>households</strong> served by rooftop renewable energy<br />
+<strong>b.</strong> Percentage of the <strong>population</strong> served by rooftop renewable energy</p>
+<p><strong>c.</strong> And then we go even further to estimate the <strong>Annual Solar Potential in MWh</strong> <em>(theoretical maximum electricity)</em> that homes can harvest from the sun over the course of one year.</p>
+</div></blockquote>
 <div class="alert alert-block alert-info"><b></b> 
 <p><strong>PLEASE SUPPLY YOUR OWN <a class="reference external" href="https://wiki.openstreetmap.org/wiki/PBF_Format">osm.pbf</a>.</strong></p>
 <p><strong>Either crop an area directly from <a class="reference internal" href="#"><span class="xref myst">OpenStreetMap</span></a> with the <em><strong><a class="reference external" href="https://www.openstreetmap.org/export#map=3/0.70/22.15">official tool</a></strong></em>, select a predefined area <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Planet.osm">from any number of providers</a>, such as <em><strong><a class="reference external" href="https://download.geofabrik.de">Geofabrik</a></strong></em>, or…</strong></p>
@@ -1652,6 +1663,8 @@ Name: count, dtype: int64
 <p>2 rows × 27 columns</p>
 </div></div></div>
 </div>
+<section id="a-household-rooftop-solar">
+<h2>2. a) Household rooftop solar<a class="headerlink" href="#a-household-rooftop-solar" title="Link to this heading">#</a></h2>
 <div class="alert alert-block alert-success"><b>Percentage of households served by rooftop renewable energy</b></div><p>$$ \text{% homes with renewable energy} = \frac{\text{Number of dwellings with mapped solar PV and SWH}}{\text{Total number of dwellings}} \times 100 $$</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1680,6 +1693,9 @@ Name: count, dtype: int64
 </div>
 </div>
 </div>
+</section>
+<section id="b-rooftop-solar-population">
+<h2>2. b) Rooftop solar population<a class="headerlink" href="#b-rooftop-solar-population" title="Link to this heading">#</a></h2>
 <div class="alert alert-block alert-success"><b>Percentage of population served by rooftop renewable energy</b></div>
 <p>$$ \text{% population with renewable energy} = \frac{\text{Number of residents with mapped solar PV and SWH}}{\text{Estimated population}} \times 100 $$</p>
 <div class="cell docutils container">
@@ -1720,6 +1736,229 @@ Name: count, dtype: int64
 </div>
 </div>
 </div>
+</section>
+<section id="c-solar-potential-mwh">
+<h2>3. c) Solar potential (MWh)<a class="headerlink" href="#c-solar-potential-mwh" title="Link to this heading">#</a></h2>
+<div class="alert alert-block alert-warning"><b></b>
+<p>In this section, we attempt to understand how much <em><strong>‘fuel’</strong></em> a rooftop can get from the sun.</p>
+</div>
+<div class="alert alert-block alert-info"><b></b> 
+<p><strong>PLEASE SUPPLY YOUR OWN <code class="docutils literal notranslate"><span class="pre">ghi.tif</span></code>. The <code class="docutils literal notranslate"><span class="pre">ghi.tif</span></code> raster comes with the <code class="docutils literal notranslate"><span class="pre">LTAy_YearlySum.GeoTiff</span></code> dataset, can be harvested from the <a class="reference external" href="https://globalsolaratlas.info/download/south-africa">NASA Global Solar Atlas download section</a> and are available for each country on Earth.</strong></p>
+</div>
+<p>We will query the <strong>Global Horizontal Irradiation (GHI)</strong> dataset that uses <strong><a class="reference external" href="https://power.larc.nasa.gov">NASA satellite observations and weather models</a></strong> to tell us how much solar radiation hits a specific coordinate on Earth.</p>
+<blockquote>
+<div><p><strong>Source:</strong> NASA’s satellite-derived solar database.</p>
+<p><strong>Goal:</strong>
+To calculate the Annual Total GHI (kWh/m2/year). This value tells us the cumulative <strong>‘solar pressure’</strong> hitting our rooftops over an entire year, which we then use to calculate <strong>how many Megawatt-hours (MWh) of clean electricity our neighborhood can generate</strong>.</p>
+</div></blockquote>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- where is the GHI.tif</span>
+<span class="n">raster_file</span> <span class="o">=</span> <span class="s2">&quot;./raster/GHI.tif&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- data wrangling</span>
+<span class="n">prj</span> <span class="o">=</span> <span class="n">gdf2</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="s1">&#39;EPSG:4326&#39;</span><span class="p">)</span>
+<span class="n">geom</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">unary_union</span><span class="p">(</span><span class="n">prj</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">])</span>
+<span class="n">xy</span> <span class="o">=</span> <span class="p">(</span><span class="n">geom</span><span class="o">.</span><span class="n">centroid</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">geom</span><span class="o">.</span><span class="n">centroid</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">get_ghi_from_raster_gdal</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">raster_path</span><span class="p">):</span>
+    <span class="c1"># Open the dataset</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">raster_path</span><span class="p">)</span>
+    <span class="n">gt</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">GetGeoTransform</span><span class="p">()</span>  <span class="c1"># Help map coordinates to pixel indices</span>
+    <span class="n">rb</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">GetRasterBand</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>   <span class="c1"># Get the GHI data band</span>
+    
+    <span class="c1"># 1. Coordinate Transformation (Standardize to Raster CRS)</span>
+    <span class="c1"># Most Global Solar Atlas rasters are WGS84 (EPSG:4326)</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">osr</span><span class="o">.</span><span class="n">SpatialReference</span><span class="p">()</span>
+    <span class="n">target</span><span class="o">.</span><span class="n">ImportFromWkt</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">GetProjection</span><span class="p">())</span>
+    
+    <span class="n">source</span> <span class="o">=</span> <span class="n">osr</span><span class="o">.</span><span class="n">SpatialReference</span><span class="p">()</span>
+    <span class="n">source</span><span class="o">.</span><span class="n">ImportFromEPSG</span><span class="p">(</span><span class="mi">4326</span><span class="p">)</span> <span class="c1"># Assuming input is Lat/Lon</span>
+    
+    <span class="n">transform</span> <span class="o">=</span> <span class="n">osr</span><span class="o">.</span><span class="n">CoordinateTransformation</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+    <span class="n">point</span> <span class="o">=</span> <span class="n">transform</span><span class="o">.</span><span class="n">TransformPoint</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span> <span class="c1"># Note: GDAL uses (x, y)</span>
+    
+    <span class="c1"># 2. Convert Map Coordinates to Pixel Coordinates</span>
+    <span class="c1"># Formula: Pixel = (Map - Origin) / PixelSize</span>
+    <span class="n">px</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">gt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">gt</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">py</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">gt</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">/</span> <span class="n">gt</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+    
+    <span class="c1"># 3. Read the pixel value</span>
+    <span class="n">structval</span> <span class="o">=</span> <span class="n">rb</span><span class="o">.</span><span class="n">ReadAsArray</span><span class="p">(</span><span class="n">px</span><span class="p">,</span> <span class="n">py</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">structval</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+
+<span class="c1"># If your building data is in a Pandas DataFrame &#39;df&#39; with &#39;lat&#39; and &#39;lon&#39; columns:</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;ghi_yearly&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">row</span><span class="p">:</span> <span class="n">get_ghi_from_raster_gdal</span><span class="p">(</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">raster_file</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Annual Average GHI:&quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;ghi_yearly&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span><span class="mi">2</span><span class="p">)</span> <span class="p">,</span><span class="s2">&quot;kWh/m²/year&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Annual Average GHI: 1895.0 kWh/m²/year
+</pre></div>
+</div>
+</div>
+</div>
+<div class="alert alert-block alert-success"><b>Annual Solar Potential (MWh)</b></div>
+<p>We use a simplified formula to provide a clear baseline.</p>
+<p>$$
+\text{Potential (MWh)} = \frac{(\text{Surface Area} \times \text{utilization factor}) \times \text{GHI}_{\text{annual}} \times 0.2}{1000}
+$$</p>
+<div class="alert alert-block alert-warning"><b></b>
+<p><sub><em><strong>Theoretical Framework:</strong> The annual energy output of a photovoltaic system (E) is determined by the product of the total solar resource (GHI), the active area of the array (A), and the system’s overall efficiency (η), adjusted by a Performance Ratio (PR) to account for real-world losses. — based on <a class="reference external" href="https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis_en">NREL (2022)</a> &amp; <a class="reference external" href="https://webstore.iec.ch/en/publication/65561">IEC 61724-1</a>. We then adapt this formula and represents a combined value of 25% nominal panel efficiency and a 0.80 Performance Ratio with a <strong>single 0.20 system efficiency value and account for usable area</strong>, a heuristic for gabled roofs.</em></sub></p>
+</div>
+<div class="alert alert-block alert-danger"><b>Your Participation! </b>
+<p><strong>Fill in the <code class="docutils literal notranslate"><span class="pre">utilization_factor</span></code> below</strong></p>
+</div>
+<p>As a <strong>‘rule-of-thumb’</strong> a community with traditional gabled houses: <code class="docutils literal notranslate"><span class="pre">utilization_factor</span> <span class="pre">=</span> <span class="pre">0.5</span></code>, while a high-density suburb with flat-roofed apartments: <code class="docutils literal notranslate"><span class="pre">utilization_factor</span> <span class="pre">=</span> <span class="pre">0.7</span></code></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># on average, how much of the roof faces the sun? Adjust based on roof types</span>
+<span class="n">utilization_factor</span> <span class="o">=</span> <span class="mf">0.5</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Potential (MWh) = (Area * GHI_Yearly * 0.20) / 1000</span>
+<span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;solar_mwh&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;area&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">utilization_factor</span><span class="p">)</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;ghi_yearly&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.20</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span>
+<span class="n">gdf_pop</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>osm_id</th>
+      <th>address</th>
+      <th>building</th>
+      <th>building:levels</th>
+      <th>amenity</th>
+      <th>building_height</th>
+      <th>roof_height</th>
+      <th>ground_height</th>
+      <th>plus_code</th>
+      <th>...</th>
+      <th>residential</th>
+      <th>geometry</th>
+      <th>pop</th>
+      <th>area</th>
+      <th>volume</th>
+      <th>bvpc</th>
+      <th>solar_ids</th>
+      <th>generator:method</th>
+      <th>has_solar</th>
+      <th>solar_mwh</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>12249345</th>
+      <td>1</td>
+      <td>12249345</td>
+      <td>Church  Square 34 Dickson Street 7915 Woodstoc...</td>
+      <td>apartments</td>
+      <td>6.0</td>
+      <td>NaN</td>
+      <td>18.1</td>
+      <td>28.55</td>
+      <td>10.450000</td>
+      <td>4FRW3FC2+R5G</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>POLYGON ((264360.39058643614 6242908.633245183...</td>
+      <td>315.0</td>
+      <td>1419.190431</td>
+      <td>25687.346796</td>
+      <td>81.547133</td>
+      <td>[]</td>
+      <td>[]</td>
+      <td>False</td>
+      <td>268.936587</td>
+    </tr>
+    <tr>
+      <th>12286281</th>
+      <td>2</td>
+      <td>12286281</td>
+      <td>Cissie Gool House Victoria Walk Woodstock 7925...</td>
+      <td>residential</td>
+      <td>4.0</td>
+      <td>NaN</td>
+      <td>12.5</td>
+      <td>46.45</td>
+      <td>33.950001</td>
+      <td>4FRW3C9X+5F5</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>POLYGON ((264241.43133293843 6242483.337398058...</td>
+      <td>930.0</td>
+      <td>5308.038636</td>
+      <td>66350.482947</td>
+      <td>71.344605</td>
+      <td>[]</td>
+      <td>[]</td>
+      <td>False</td>
+      <td>1005.873321</td>
+    </tr>
+  </tbody>
+</table>
+<p>2 rows × 28 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">average_solar_potential</span> <span class="o">=</span> <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;solar_mwh&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1mThe average solar potential, per home</span><span class="se">\033</span><span class="s2">[0m, for&quot;</span><span class="p">,</span> <span class="n">jparams</span><span class="p">[</span><span class="s1">&#39;FocusArea&#39;</span><span class="p">],</span> <span class="s2">&quot;is:&quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">average_solar_potential</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s2">&quot;MWh/year&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">The average solar potential, per home</span>, for Woodstock is: 25.2 MWh/year
+</pre></div>
+</div>
+</div>
+</div>
+<div class="alert alert-block alert-info"><b></b>
+<p>What does this <strong>MWh/year</strong> value mean?
+<br></p>
+<p>To put the value in context, <strong>15 MWh/year:</strong></p>
+<ul class="simple">
+<li><p>is enough to provide <strong>100% of the electricity</strong> for 4 to 5 average UK homes <em>(which use ~3.4 MWh each)</em> or 1.5 average US homes <em>(~10.7 MWh each)</em></p></li>
+<li><p>is enough power to drive an Electric Vehicle for <strong>75,000 kilometers</strong> <em>–that’s almost two full trips around the Earth</em>.</p></li>
+<li><p>roughly saves <strong>10 metric tons of Carbon Dioxide</strong> from entering the atmosphere.</p></li>
+</ul>
+</div><div class="alert alert-block alert-danger"><b>Sanity Check!</b>
+<br>
+<br>
+<p>Cape Town typically yields ~1.6–1.7 MWh <strong>per installed kWp per year</strong>; the higher per-household values reported here reflect <strong>rooftop potential derived from available area</strong> <em>–that considers a <code class="docutils literal notranslate"><span class="pre">utilization_factor</span></code></em>, not a 1 kWp system.</p>
+<p>A 1 kWp solar PV system typically requires approximately 5–8 m² of panel area (e.g. panels of roughly 1 m × 1.7 m, depending on technology).</p>
+<p>We are NOT asking: How much energy (MWh/year) would a single 1 kWp PV system generate on a roof?<br />
+We are asking: <strong>How much energy (MWh/year) could these roofs harvest, given their available area and a realistic utilization factor?</strong></p>
+</div></section>
 </section>
 <section id="interactive-visualization">
 <h1>3. Interactive Visualization<a class="headerlink" href="#interactive-visualization" title="Link to this heading">#</a></h1>
@@ -2160,7 +2399,12 @@ Datum: World Geodetic System 1984 ensemble
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Spatial Data Science with CityJSON <em>(No Internet)</em></a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-data-science-demography-and-housing">1. Spatial Data Science <em>(demography and housing)</em></a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#further-examples-of-spatial-data-science-renewable-energy">2. Further examples of Spatial Data Science <em>(renewable energy)</em>:</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#further-examples-of-spatial-data-science-renewable-energy">2. Further examples of Spatial Data Science <em>(renewable energy)</em>:</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#a-household-rooftop-solar">2. a) Household rooftop solar</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#b-rooftop-solar-population">2. b) Rooftop solar population</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#c-solar-potential-mwh">3. c) Solar potential (MWh)</a></li>
+</ul>
+</li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-visualization">3. Interactive Visualization</a></li>
 </ul>
 
