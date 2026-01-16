@@ -424,7 +424,7 @@ document.write(`
 <br>
 <p>While an internet connection is <strong>NOT</strong> necessary you will <strong>NEED</strong> to have sourced an <strong><a class="reference external" href="https://wiki.openstreetmap.org/wiki/PBF_Format">osm.pbf</a></strong> and an <strong><a class="reference external" href="https://wiki.openstreetmap.org/wiki/PBF_Format">.mbtiles vector tile dataset</a></strong>.</p>
 <p>If you would like to do the entire Notebook and estimate the <strong>Average solar potential, per home for this community</strong> you will <strong>NEED</strong> to have sourced a <strong>ghi.tif</strong>.<br />
-A <strong>ghi.tif</strong> raster comes with the <strong>LTAy_YearlySum.GeoTiff</strong> dataset. These can be harvested from the <strong><a class="reference external" href="https://globalsolaratlas.info/download/south-africa">NASA Global Solar Atlas download section</a> and are available for each country on Earth.</strong>   </div></p>
+A <strong>ghi.tif</strong> raster comes with the <strong>LTAy_YearlySum.GeoTiff</strong> dataset. These can be harvested from the <strong><a class="reference external" href="https://globalsolaratlas.info/download/">Global Solar Atlas download section</a> and are available for each country on Earth.</strong>   </div></p>
 <p>The purpose of this Notebook is to <em><strong>work with</strong></em> the product of <a class="reference external" href="https://github.com/AdrianKriger/osm_LoD1_3DCityModel">osm_LoD1_3DCityModel</a>; a previously created CityJSON city model.</p>
 <div class="alert alert-block alert-warning"><b>This notebook will:</b>
 <blockquote>
@@ -1743,11 +1743,12 @@ Name: count, dtype: int64
 <p>In this section, we attempt to understand how much <em><strong>‘fuel’</strong></em> a rooftop can get from the sun.</p>
 </div>
 <div class="alert alert-block alert-info"><b></b> 
-<p><strong>PLEASE SUPPLY YOUR OWN <code class="docutils literal notranslate"><span class="pre">ghi.tif</span></code>. The <code class="docutils literal notranslate"><span class="pre">ghi.tif</span></code> raster comes with the <code class="docutils literal notranslate"><span class="pre">LTAy_YearlySum.GeoTiff</span></code> dataset, can be harvested from the <a class="reference external" href="https://globalsolaratlas.info/download/south-africa">NASA Global Solar Atlas download section</a> and are available for each country on Earth.</strong></p>
+<p><strong>PLEASE SUPPLY YOUR OWN <code class="docutils literal notranslate"><span class="pre">ghi.tif</span></code>. The <code class="docutils literal notranslate"><span class="pre">ghi.tif</span></code> raster comes with the <code class="docutils literal notranslate"><span class="pre">LTAy_YearlySum.GeoTiff</span></code> dataset.<br />
+These can be harvested from the <a class="reference external" href="https://data360.worldbank.org/en/dataset/WB_SOLAR_ATLAS">Global Solar Atlas</a></strong> <em>–a World Bank Group and ESMAP project–</em> <strong><a class="reference external" href="https://globalsolaratlas.info/download">download section</a> and are available for each country on Earth.</strong></p>
 </div>
-<p>We will query the <strong>Global Horizontal Irradiation (GHI)</strong> dataset that uses <strong><a class="reference external" href="https://power.larc.nasa.gov">NASA satellite observations and weather models</a></strong> to tell us how much solar radiation hits a specific coordinate on Earth.</p>
+<p>We will query the <strong>Global Horizontal Irradiation (GHI</strong>) dataset. This high-resolution raster uses a combination of satellite observations and advanced meteorological models to tell us the <em>‘solar weight’</em> hitting our neighborhood.</p>
 <blockquote>
-<div><p><strong>Source:</strong> NASA’s satellite-derived solar database.</p>
+<div><p><strong>Source:</strong> The <strong>Global Solar Atlas GHI Raster</strong> provides a ~20-year historical average of solar radiation. This ensures our communities solar potential is based on <strong>long-term climate trends</strong> rather than a single year of weather.</p>
 <p><strong>Goal:</strong>
 To calculate the Annual Total GHI (kWh/m2/year). This value tells us the cumulative <strong>‘solar pressure’</strong> hitting our rooftops over an entire year, which we then use to calculate <strong>how many Megawatt-hours (MWh) of clean electricity our neighborhood can generate</strong>.</p>
 </div></blockquote>
@@ -1990,22 +1991,18 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 </div>
-<img src="_static/proj.png" alt="proj" width="550" align="right"/>
-<br>
-<br>
-<p>We need a <em><strong>Geographic</strong></em> Coordinate Reference System.</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>    &lt;Geographic 2D CRS: EPSG:4326&gt;
-    Name: WGS 84
-    Axis Info [ellipsoidal]:
-    - Lat[north]: Geodetic latitude (degree)
-    - Lon[east]: Geodetic longitude (degree)
-    Area of Use:
-    - name: World.
-    - bounds: (-180.0, -90.0, 180.0, 90.0)
-    Datum: World Geodetic System 1984 ensemble
-    - Ellipsoid: WGS 84
-    - Prime Meridian: Greenwich
-</pre></div>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p></p></th>
+<th class="head text-center"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p>We need a <em><strong>Geographic</strong></em> Coordinate Reference System. <br><br> <br><br> <br> We need to convert coordinates from a <em><strong>Geographic</strong></em> to a local <em><strong>Projected</strong></em> system.</p></td>
+<td class="text-center"><p><img alt="proj.png" src="../_images/proj.png" /></p></td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="alert alert-block alert-danger"><b>Your Participation! </b>
 <p><strong>Fill in the proper <code class="docutils literal notranslate"><span class="pre">espg</span></code> in the <em><code class="docutils literal notranslate"><span class="pre">cell</span></code></em> below</strong> </div></p>
@@ -2431,7 +2428,7 @@ By arkriger
 
   <p class="copyright">
     
-      © Copyright 2023-2025.
+      © Copyright 2023-2026.
       <br/>
     
   </p>

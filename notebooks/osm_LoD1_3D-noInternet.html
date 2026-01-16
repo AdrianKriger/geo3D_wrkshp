@@ -1787,16 +1787,21 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <p><strong>Go over to <a class="reference external" href="https://ninja.cityjson.org/#">Ninja the online CityJSON viewer</a> and explore!</strong></p>
 </div><p><strong>You are welcome to further investigate the quality of a 3D Model.</strong></p>
 <p><strong>The <a class="reference external" href="http://geovalidation.bk.tudelft.nl/val3dity/">val3dity</a> web app will test CityJSON geometric primitives.</strong></p>
-<p><strong>If you parse the result of this notebook through <a class="reference external" href="http://geovalidation.bk.tudelft.nl/val3dity/">val3dity</a> it will return a report with an invalid <a class="reference external" href="https://www.cityjson.org/specs/1.1.1/#tinrelief">TINRelief</a> and error.</strong>
-<br>
-<br>
-<img src="./_static/iso19107_error.jpg" width="550"/>
-<br>
-<br>
-<strong>This particular area contains Buildings with courtyards. The courtyards</strong> (polygons) <strong>are islands of terrain disconnected from the <em>larger</em> TINRelief</strong> (shell); <strong>thus the error<sup>*</sup>.</strong>
-<br>
-<br>
-<sup>* <sub><em><strong>Don’t take my word for it. Test and see for yourself!</strong></em> <code class="docutils literal notranslate"><span class="pre">saao_param.json</span></code> (South African Royal Observatory, Cape Town) will produce a 100% topologically correct <a class="reference external" href="https://www.ogc.org/standard/citygml/">Open Geospatial Consortium (OGC)</a> standard LoD1 3D model that conforms to the <a class="reference external" href="https://www.iso.org/standard/66175.html">ISO 19107 spatial schema for 3D primatives</a> <em>[connecting and planar surfaces, correct orientation of the surfaces and watertight volumes]</em></sub></p>
+<p><strong>If you parse the result of this notebook through <a class="reference external" href="http://geovalidation.bk.tudelft.nl/val3dity/">val3dity</a> it will return a report with an invalid <a class="reference external" href="https://www.cityjson.org/specs/1.1.1/#tinrelief">TINRelief</a> and error.</strong></p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p></p></th>
+<th class="head text-center"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><strong>This particular area contains Buildings with courtyards. <br><br> The courtyards</strong> (polygons) <strong>are islands of terrain disconnected from the <em>larger</em> TINRelief</strong> (shell); <strong>thus the error<sup>*</sup>.</strong></p></td>
+<td class="text-center"><p><img alt="proj.png" src="../_images/iso19107_error.jpg" /></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><sup>* <sub><em><strong>Don’t take my word for it. Test and see for yourself!</strong></em> <code class="docutils literal notranslate"><span class="pre">saao_param.json</span></code> (South African Royal Observatory, Cape Town) will produce a 100% topologically correct <a class="reference external" href="https://www.ogc.org/standard/citygml/">Open Geospatial Consortium (OGC)</a> standard LoD1 3D model that conforms to the <a class="reference external" href="https://www.iso.org/standard/66175.html">ISO 19107 spatial schema for 3D primatives</a> <em>[connecting and planar surfaces, correct orientation of the surfaces and watertight volumes]</em></sub></p>
 <div class="alert alert-block alert-warning"><b>NOW</b><br><br>
 <p><em><strong>To understand the value and usefulness of a 3D City Model</strong></em>; parse the result of this Notebook through <a class="reference external" href="https://github.com/AdrianKriger/geo3D/blob/main/CityJSONspatialDataScience.ipynb">CityJSONspatialDataScience.ipynb</a> to workthrough an example of:</p>
 <ul class="simple">
@@ -1924,7 +1929,7 @@ By arkriger
 
   <p class="copyright">
     
-      © Copyright 2023-2025.
+      © Copyright 2023-2026.
       <br/>
     
   </p>
