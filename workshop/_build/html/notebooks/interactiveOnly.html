@@ -2046,7 +2046,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.426203
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.356094
 </pre></div>
 </div>
 </div>
@@ -2643,8 +2643,6 @@ Name: count, dtype: int64
 <span class="c1">#)</span>
 <span class="c1"># number of solar renewable on HOMES</span>
 <span class="n">blds</span><span class="p">[</span><span class="s1">&#39;generator:method&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">explode</span><span class="p">()</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
-<span class="c1">#therm = blds[blds[&quot;has_solar&quot;] == True ]</span>
-<span class="c1">#therm</span>
 </pre></div>
 </div>
 </div>
@@ -2666,35 +2664,22 @@ Name: count, dtype: int64
 <p>We are calling the <a class="reference external" href="https://power.larc.nasa.gov/docs/services/api/temporal/monthly/">NASA POWER API (Prediction Of Worldwide Energy Resources)</a>. This is a global dataset that uses <a class="reference external" href="https://power.larc.nasa.gov">NASA satellite observations and weather models</a> to tell us exactly how much solar radiation hits a specific coordinate on Earth.</p>
 <p>What we are requesting:</p>
 <blockquote>
-<div><p><strong>Parameter:</strong> <code class="docutils literal notranslate"><span class="pre">ALLSKY_SFC_SW_DWN</span></code> (Global Horizontal Irradiance).<br />
-<strong>Source:</strong> NASA’s satellite-derived solar database.</p>
+<div><p><strong>Parameter:</strong> <code class="docutils literal notranslate"><span class="pre">ALLSKY_SFC_SW_DWN</span></code> (Global Horizontal Irradiance): a 30-year historical average of solar radiation. This ensures our communities solar potential is based on <em><strong>long-term climate trends</strong></em> rather than a single year of weather.</p>
+<p><strong>Source:</strong> <a class="reference external" href="https://power.larc.nasa.gov/docs/services/api/temporal/climatology/">NASA POWER Climatology API</a></p>
 <p><strong>Goal:</strong>
 To calculate the Annual Total GHI (kWh/m2/year). This value tells us the cumulative <strong>‘solar pressure’</strong> hitting our rooftops over an entire year, which we then use to calculate <strong>how many Megawatt-hours (MWh) of clean electricity our neighborhood can generate</strong>.</p>
 </div></blockquote>
-<div class="alert alert-block alert-danger"><b>Your Participation! </b>
-<p><strong>Fill in the <code class="docutils literal notranslate"><span class="pre">year</span></code> below</strong></p>
-</div>
-<p>Typically this current year won’t be available. To be safe enter the year before last.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- the dataset </span>
-<span class="n">year</span> <span class="o">=</span> <span class="s1">&#39;2024&#39;</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_ghi_data</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">year</span><span class="o">=</span><span class="s2">&quot;2020&quot;</span><span class="p">):</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">get_ghi_data</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">):</span><span class="c1">#, year=&quot;2020&quot;):</span>
     <span class="c1">#url = &quot;https://power.larc.nasa.gov/api/temporal/daily/point&quot;</span>
-    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://power.larc.nasa.gov/api/temporal/monthly/point&quot;</span>
+    <span class="c1">#url = &quot;https://power.larc.nasa.gov/api/temporal/monthly/point&quot;</span>
+    <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;https://power.larc.nasa.gov/api/temporal/climatology/point&quot;</span>
     <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s2">&quot;parameters&quot;</span><span class="p">:</span> <span class="s2">&quot;ALLSKY_SFC_SW_DWN&quot;</span><span class="p">,</span> <span class="c1"># This is NASA&#39;s GHI code</span>
         <span class="s2">&quot;community&quot;</span><span class="p">:</span> <span class="s2">&quot;RE&quot;</span><span class="p">,</span>                 <span class="c1"># Renewable Energy community</span>
         <span class="s2">&quot;longitude&quot;</span><span class="p">:</span> <span class="n">lon</span><span class="p">,</span>
         <span class="s2">&quot;latitude&quot;</span><span class="p">:</span> <span class="n">lat</span><span class="p">,</span>
-        <span class="s2">&quot;start&quot;</span><span class="p">:</span> <span class="n">year</span><span class="p">,</span> <span class="c1">#&quot;20240101&quot;,</span>
-        <span class="s2">&quot;end&quot;</span><span class="p">:</span> <span class="n">year</span><span class="p">,</span> <span class="c1">#&quot;20241231&quot;,</span>
         <span class="s2">&quot;format&quot;</span><span class="p">:</span> <span class="s2">&quot;JSON&quot;</span>
     <span class="p">}</span>
     
@@ -2703,24 +2688,21 @@ To calculate the Annual Total GHI (kWh/m2/year). This value tells us the cumulat
     
     <span class="c1"># Extract the GHI values into a list</span>
     <span class="n">ghi_values</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;properties&#39;</span><span class="p">][</span><span class="s1">&#39;parameter&#39;</span><span class="p">][</span><span class="s1">&#39;ALLSKY_SFC_SW_DWN&#39;</span><span class="p">]</span>
-    
-    <span class="n">annual_daily_avg</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">ghi_values</span><span class="o">.</span><span class="n">values</span><span class="p">())[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>          <span class="c1">#- this should be: annual_daily_avg = ghi_values[&#39;ANN&#39;] but not returning anything.</span>
-                                                              <span class="c1">#- dict has 13 values. 1 per month + weighted yearly average. </span>
-                                                              <span class="c1">#- we grab the last one [&#39;ANN&#39;]</span>
+    <span class="n">long_term_monthly</span> <span class="o">=</span> <span class="n">ghi_values</span><span class="p">[</span><span class="s1">&#39;ANN&#39;</span><span class="p">]</span>
     
     <span class="c1"># CONVERSION: Multiply by 365 to get the Yearly Total Sum</span>
-    <span class="n">annual_total_sum</span> <span class="o">=</span> <span class="n">annual_daily_avg</span> <span class="o">*</span> <span class="mi">365</span>
+    <span class="n">annual_total_sum</span> <span class="o">=</span> <span class="n">long_term_monthly</span> <span class="o">*</span> <span class="mi">365</span>
     
     <span class="k">return</span> <span class="n">annual_total_sum</span>
 
 <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span> <span class="o">=</span> <span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> 
-<span class="n">annual_avg</span> <span class="o">=</span> <span class="n">get_ghi_data</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">,</span> <span class="n">year</span><span class="p">)</span>
+<span class="n">annual_avg</span> <span class="o">=</span> <span class="n">get_ghi_data</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span><span class="c1">#, year)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Annual Average GHI: </span><span class="si">{</span><span class="nb">round</span><span class="p">(</span><span class="n">annual_avg</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="si">}</span><span class="s2"> kWh/m²/year&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Annual Average GHI: 2020.31 kWh/m²/year
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Annual Average GHI: 2029.76 kWh/m²/year
 </pre></div>
 </div>
 </div>
@@ -2817,7 +2799,7 @@ $$</p>
       <td>[]</td>
       <td>[]</td>
       <td>False</td>
-      <td>7.810204</td>
+      <td>7.846750</td>
     </tr>
     <tr>
       <th>8</th>
@@ -2841,7 +2823,7 @@ $$</p>
       <td>[1096772168]</td>
       <td>[thermal]</td>
       <td>True</td>
-      <td>8.047592</td>
+      <td>8.085248</td>
     </tr>
   </tbody>
 </table>
@@ -2858,7 +2840,7 @@ $$</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> <span class=" -Color -Color-Bold">The average solar potential, per home</span> , for Mamre is: 21.89 MWh/year
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> <span class=" -Color -Color-Bold">The average solar potential, per home</span> , for Mamre is: 22.0 MWh/year
 </pre></div>
 </div>
 </div>
@@ -2928,6 +2910,11 @@ We are asking: <strong>How much energy (MWh/year) could these roofs harvest, giv
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Tend</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">Tend</span> <span class="o">-</span> <span class="n">Tstart</span><span class="p">))))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:02:46.069372
 </pre></div>
 </div>
 </div>
@@ -3036,7 +3023,7 @@ By arkriger
 
   <p class="copyright">
     
-      © Copyright 2023-2025.
+      © Copyright 2023-2026.
       <br/>
     
   </p>
