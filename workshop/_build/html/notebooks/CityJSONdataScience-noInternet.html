@@ -437,7 +437,7 @@ b)  a measure of <strong>Building Volume per Capita</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><p>calculate percentage <strong>homes and population with direct access to on-site renewable energy infrastructure</strong> <em>–rooftop photovoltaic panels (PV) and solar water heaters (SWH).</em></p></li>
-<li><p>estimate the <strong>Annual Average Solar Potential, per home.</strong></p></li>
+<li><p>estimate the <a class="reference external" href="https://www.worldbank.org/en/topic/energy/publication/solar-photovoltaic-power-potential-by-country"><strong>Annual Average Solar</strong> <em>(photovoltaic)</em> <strong>Potential</strong></a>, per home.**</p></li>
 </ul>
 </div></blockquote>
 <p><strong>3. produce an interactive visualization</strong> <em>-via <a class="reference external" href="https://deckgl.readthedocs.io/en/latest/">pydeck</a>- which a user can navigate, query and share</em> <strong>that</strong>;</p>
@@ -1817,11 +1817,11 @@ $$</p>
 <div class="alert alert-block alert-danger"><b>Your Participation! </b>
 <p><strong>Fill in the <code class="docutils literal notranslate"><span class="pre">utilization_factor</span></code> below</strong></p>
 </div>
-<p>As a <strong>‘rule-of-thumb’</strong> a community with traditional gabled houses: <code class="docutils literal notranslate"><span class="pre">utilization_factor</span> <span class="pre">=</span> <span class="pre">0.5</span></code>, while a high-density suburb with flat-roofed apartments: <code class="docutils literal notranslate"><span class="pre">utilization_factor</span> <span class="pre">=</span> <span class="pre">0.7</span></code></p>
+<p>As a <strong>‘rule-of-thumb’</strong> a community with traditional gabled houses: <code class="docutils literal notranslate"><span class="pre">utilization_factor</span> <span class="pre">=</span> <span class="pre">0.4</span></code> <em>(less than half)</em>, while a high-density suburb with flat-roofed apartments: <code class="docutils literal notranslate"><span class="pre">utilization_factor</span> <span class="pre">=</span> <span class="pre">0.6</span></code></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># on average, how much of the roof faces the sun? Adjust based on roof types</span>
-<span class="n">utilization_factor</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">utilization_factor</span> <span class="o">=</span> <span class="mf">0.4</span>
 </pre></div>
 </div>
 </div>
@@ -1899,7 +1899,7 @@ $$</p>
       <td>[]</td>
       <td>[]</td>
       <td>False</td>
-      <td>268.936587</td>
+      <td>215.149269</td>
     </tr>
     <tr>
       <th>12286281</th>
@@ -1923,7 +1923,7 @@ $$</p>
       <td>[]</td>
       <td>[]</td>
       <td>False</td>
-      <td>1005.873321</td>
+      <td>804.698657</td>
     </tr>
   </tbody>
 </table>
@@ -1938,7 +1938,7 @@ $$</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">The average solar potential, per home</span>, for Woodstock is: 25.2 MWh/year
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">The average solar potential, per home</span>, for Woodstock is: 20.16 MWh/year
 </pre></div>
 </div>
 </div>
@@ -1998,7 +1998,7 @@ Datum: World Geodetic System 1984 ensemble
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td class="text-center"><p>We need a <em><strong>Geographic</strong></em> Coordinate Reference System. <br><br> <br><br> <br> We need to convert coordinates from a <em><strong>Geographic</strong></em> to a local <em><strong>Projected</strong></em> system.</p></td>
+<tr class="row-even"><td class="text-center"><p><br><br> We need a <em><strong>Geographic</strong></em> Coordinate Reference System. <br> <br><br> <br> We need to convert coordinates from a <em><strong>Geographic</strong></em> to a local <em><strong>Projected</strong></em> system.</p></td>
 <td class="text-center"><p><img alt="proj.png" src="../_images/proj.png" /></p></td>
 </tr>
 </tbody>
