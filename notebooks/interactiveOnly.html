@@ -1530,8 +1530,8 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#--we only want building=house or =apartment or =residential</span>
-<span class="n">gdf</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="n">df2</span><span class="p">[</span><span class="s2">&quot;building&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;house&#39;</span><span class="p">,</span> <span class="s1">&#39;semidetached_house&#39;</span><span class="p">,</span> <span class="s1">&#39;terrace&#39;</span><span class="p">,</span> <span class="s1">&#39;terraced&#39;</span><span class="p">,</span> <span class="s1">&#39;apartments&#39;</span><span class="p">,</span> <span class="s1">&#39;residential&#39;</span><span class="p">,</span> <span class="s1">&#39;dormitory&#39;</span><span class="p">,</span> <span class="s1">&#39;cabin&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#--we only want building=house or =apartment or =residential, etc.</span>
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="n">df2</span><span class="p">[</span><span class="s2">&quot;building&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;house&#39;</span><span class="p">,</span> <span class="s1">&#39;semidetached_house&#39;</span><span class="p">,</span> <span class="s1">&#39;terrace&#39;</span><span class="p">,</span> <span class="s1">&#39;terraced&#39;</span><span class="p">,</span> <span class="s1">&#39;apartments&#39;</span><span class="p">,</span> <span class="s1">&#39;residential&#39;</span><span class="p">,</span> <span class="s1">&#39;dormitory&#39;</span><span class="p">,</span> <span class="s1">&#39;cabin&#39;</span><span class="p">,</span> <span class="s1">&#39;garage&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">gdf</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1655,7 +1655,7 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2024
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2135
 </pre></div>
 </div>
 </div>
@@ -1757,8 +1757,9 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>building
-house    1642
-cabin     382
+house     1642
+cabin      382
+garage     111
 Name: count, dtype: int64
 </pre></div>
 </div>
@@ -2046,7 +2047,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.412350
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.429125
 </pre></div>
 </div>
 </div>
@@ -2096,7 +2097,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/3037b80bd800ed4a4c56c0360f2012d43bdfcb7f252e72f3624d83b90abb776a.png" src="../_images/3037b80bd800ed4a4c56c0360f2012d43bdfcb7f252e72f3624d83b90abb776a.png" />
+<img alt="../_images/37edcb32c87bd0ac8df5a7f43ae0b7a6a36bd05a573331b7281a312cc5c89d7d.png" src="../_images/37edcb32c87bd0ac8df5a7f43ae0b7a6a36bd05a573331b7281a312cc5c89d7d.png" />
 </div>
 </div>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -2208,7 +2209,7 @@ The goal is to be as representative as possible.</p>
       <td>(((18.4731456, -33.5150462), (18.4729719, -33....</td>
       <td>POLYGON ((265302.8715881496 6288753.930217357,...</td>
       <td>[255, 255, 204]</td>
-      <td>6</td>
+      <td>6.0</td>
       <td>344.679759</td>
       <td>1413.187012</td>
       <td>235.531169</td>
@@ -2232,7 +2233,7 @@ The goal is to be as representative as possible.</p>
       <td>(((18.4805967, -33.5130179), (18.4807154, -33....</td>
       <td>POLYGON ((265989.6485932828 6288995.734908563,...</td>
       <td>[255, 255, 204]</td>
-      <td>6</td>
+      <td>6.0</td>
       <td>327.808101</td>
       <td>1344.013215</td>
       <td>224.002202</td>
@@ -2271,7 +2272,7 @@ Name: bvpc, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 77.528
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 79.252
 </pre></div>
 </div>
 </div>
@@ -2307,11 +2308,11 @@ Name: bvpc, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FORMAL: Population:  9852  with Building Volume Per Capita (BVPC): 83.861
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FORMAL: Population:  9852.0  with Building Volume Per Capita (BVPC): 83.861
 
-STUDENT RESIDENCE: Population:  0  with Building Volume Per Capita (BVPC): 0
+STUDENT RESIDENCE: Population:  0.0  with Building Volume Per Capita (BVPC): 0
 
-INFORMAL: Population:  1528  with Building Volume Per Capita (BVPC) 36.694
+INFORMAL: Population:  1528.0  with Building Volume Per Capita (BVPC) 36.694
 </pre></div>
 </div>
 </div>
@@ -2550,7 +2551,7 @@ Name: count, dtype: int64
       <td>(((18.4684317, -33.5150664), (18.4684262, -33....</td>
       <td>POLYGON ((264864.98193212313 6288741.008398377...</td>
       <td>[255, 255, 204]</td>
-      <td>6</td>
+      <td>6.0</td>
       <td>38.658416</td>
       <td>158.499506</td>
       <td>26.416584</td>
@@ -2574,7 +2575,7 @@ Name: count, dtype: int64
       <td>(((18.4684378, -33.5149932), (18.4684327, -33....</td>
       <td>POLYGON ((264865.3504529182 6288749.140981195,...</td>
       <td>[255, 255, 204]</td>
-      <td>6</td>
+      <td>6.0</td>
       <td>39.833421</td>
       <td>163.317028</td>
       <td>27.219505</td>
@@ -2606,12 +2607,14 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">Percentage homes</span>, in Mamre , with rooftop photovoltaic panels (PV) and solar water heaters (SWH): 2.77
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">Percentage homes</span>, in Mamre , with rooftop photovoltaic panels (PV) and solar water heaters (SWH): 2.62
 </pre></div>
 </div>
 </div>
 </div>
-</section>
+<div style="text-align: left;"> <br>
+<small> <b>NB:</b> this number includes the <a href="https://wiki.openstreetmap.org/wiki/Tag:building%3Dgarage">OpenStreetMap <code>building=garage</code></a> building type. Go to <code>Cell &plusmn22</code> to exclude this building type from the estimate.</small>
+</div></section>
 <section id="b-rooftop-solar-population">
 <h3>3. b) Rooftop solar population<a class="headerlink" href="#b-rooftop-solar-population" title="Link to this heading">#</a></h3>
 <div class="alert alert-block alert-success"><b>Percentage of population served by rooftop renewable energy</b></div>
@@ -2792,7 +2795,7 @@ $$</p>
       <td>...</td>
       <td>POLYGON ((264864.98193212313 6288741.008398377...</td>
       <td>[255, 255, 204]</td>
-      <td>6</td>
+      <td>6.0</td>
       <td>38.658416</td>
       <td>158.499506</td>
       <td>26.416584</td>
@@ -2816,7 +2819,7 @@ $$</p>
       <td>...</td>
       <td>POLYGON ((264865.3504529182 6288749.140981195,...</td>
       <td>[255, 255, 204]</td>
-      <td>6</td>
+      <td>6.0</td>
       <td>39.833421</td>
       <td>163.317028</td>
       <td>27.219505</td>
@@ -2840,11 +2843,15 @@ $$</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> <span class=" -Color -Color-Bold">The average solar potential, per home</span> , for Mamre is: 17.6 MWh/year
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> <span class=" -Color -Color-Bold">The average solar potential, per home</span> , for Mamre is: 17.05 MWh/year
 </pre></div>
 </div>
 </div>
 </div>
+<div style="text-align: left;"> 
+<small> <b>NB:</b> this number includes the <a href="https://wiki.openstreetmap.org/wiki/Tag:building%3Dgarage">OpenStreetMap <code>building=garage</code></a> building type. Go to <code>Cell &plusmn22</code> to exclude this building type from the estimate.</small>
+</div
+<br><br>
 <div class="alert alert-block alert-info"><b></b>
 <p>What does this <strong>MWh/year</strong> value mean?
 <br></p>
@@ -2858,7 +2865,7 @@ $$</p>
 <br>
 <br>
 <p>Cape Town typically yields ~1.6–1.7 MWh <strong>per installed kWp per year</strong>; the higher per-household values reported here reflect <strong>rooftop potential derived from available area</strong> <em>–that considers a <code class="docutils literal notranslate"><span class="pre">utilization_factor</span></code></em>, not a 1 kWp system.</p>
-<p>A 1 kWp solar PV system typically requires approximately 5–8 m² of panel area (e.g. panels of roughly 1 m × 1.7 m, depending on technology).</p>
+<p>A 1 kWp solar PV system requires approximately 5–8 m² of panel area (e.g. panels of roughly 1 m × 1.7 m, depending on technology).</p>
 <p>We are NOT asking: How much energy (MWh/year) would a single 1 kWp PV system generate on a roof?<br />
 We are asking: <strong>How much energy (MWh/year) could these roofs harvest, given their available area and a realistic utilization factor?</strong></p>
 </div></section>
@@ -2910,11 +2917,6 @@ We are asking: <strong>How much energy (MWh/year) could these roofs harvest, giv
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Tend</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">Tend</span> <span class="o">-</span> <span class="n">Tstart</span><span class="p">))))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:01:07.140124
 </pre></div>
 </div>
 </div>

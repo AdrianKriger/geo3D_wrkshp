@@ -900,8 +900,8 @@ textures = False
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#--we only want building=house or =apartment or =residential</span>
-<span class="n">gdf_pop</span> <span class="o">=</span> <span class="n">gdf2</span><span class="p">[</span><span class="n">gdf2</span><span class="p">[</span><span class="s2">&quot;building&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;house&#39;</span><span class="p">,</span> <span class="s1">&#39;semidetached_house&#39;</span><span class="p">,</span> <span class="s1">&#39;terrace&#39;</span><span class="p">,</span> <span class="s1">&#39;terraced&#39;</span><span class="p">,</span> <span class="s1">&#39;apartments&#39;</span><span class="p">,</span> <span class="s1">&#39;residential&#39;</span><span class="p">,</span> <span class="s1">&#39;dormitory&#39;</span><span class="p">,</span> <span class="s1">&#39;cabin&#39;</span><span class="p">,</span> <span class="s1">&#39;student&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#--we only want building=house or =apartment or =residential, etc.</span>
+<span class="n">gdf_pop</span> <span class="o">=</span> <span class="n">gdf2</span><span class="p">[</span><span class="n">gdf2</span><span class="p">[</span><span class="s2">&quot;building&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;house&#39;</span><span class="p">,</span> <span class="s1">&#39;semidetached_house&#39;</span><span class="p">,</span> <span class="s1">&#39;terrace&#39;</span><span class="p">,</span> <span class="s1">&#39;terraced&#39;</span><span class="p">,</span> <span class="s1">&#39;apartments&#39;</span><span class="p">,</span> <span class="s1">&#39;residential&#39;</span><span class="p">,</span> <span class="s1">&#39;dormitory&#39;</span><span class="p">,</span> <span class="s1">&#39;cabin&#39;</span><span class="p">,</span> <span class="s1">&#39;student&#39;</span><span class="p">,</span> <span class="s1">&#39;garage&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -914,7 +914,7 @@ textures = False
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2998
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3057
 </pre></div>
 </div>
 </div>
@@ -930,6 +930,7 @@ textures = False
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>building
 house                 2876
 semidetached_house      70
+garage                  59
 apartments              31
 residential             15
 terrace                  5
@@ -1186,28 +1187,28 @@ BVPC = total population of a community divided by sum of building volume</div><d
   </thead>
   <tbody>
     <tr>
-      <th>1314777370</th>
-      <td>3710</td>
-      <td>1314777370</td>
-      <td>9 Caesar Street Woodstock Cape Town</td>
-      <td>house</td>
-      <td>2.0</td>
+      <th>1314777371</th>
+      <td>3711</td>
+      <td>1314777371</td>
       <td>NaN</td>
-      <td>6.9</td>
-      <td>27.11</td>
+      <td>garage</td>
+      <td>1.0</td>
+      <td>NaN</td>
+      <td>4.1</td>
+      <td>24.31</td>
       <td>20.209999</td>
-      <td>4FRW3C9X+VC6</td>
+      <td>4FRW3C9X+R9X</td>
       <td>...</td>
       <td>NaN</td>
       <td>0</td>
       <td>NaN</td>
       <td>0</td>
       <td>NaN</td>
-      <td>POLYGON ((264148.10652020015 6242631.614835454...</td>
-      <td>4.0</td>
-      <td>100.207449</td>
-      <td>691.431398</td>
-      <td>172.857849</td>
+      <td>POLYGON ((264153.94115337124 6242630.250540572...</td>
+      <td>NaN</td>
+      <td>22.900846</td>
+      <td>93.893467</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>1340498943</th>
@@ -1267,7 +1268,7 @@ Name: bvpc, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 137.25
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 138.042
 </pre></div>
 </div>
 </div>
@@ -1688,11 +1689,15 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold"> Percentage homes, </span> in Woodstock , with rooftop photovoltaic panels (PV) and solar water heaters (SWH): 0.77
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold"> Percentage homes, </span> in Woodstock , with rooftop photovoltaic panels (PV) and solar water heaters (SWH): 0.79
 </pre></div>
 </div>
 </div>
 </div>
+<div style="text-align: left;"> 
+<small> <b>NB:</b> this number includes the <a href="https://wiki.openstreetmap.org/wiki/Tag:building%3Dgarage">OpenStreetMap <code>building=garage</code></a> building type. Go to <code>Cell &plusmn14</code> to exclude this building type from the estimate.</small>
+</div
+<br>
 </section>
 <section id="b-rooftop-solar-population">
 <h2>2. b) Rooftop solar population<a class="headerlink" href="#b-rooftop-solar-population" title="Link to this heading">#</a></h2>
@@ -1730,7 +1735,7 @@ Name: count, dtype: int64
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>generator:method
 thermal         22
-photovoltaic    11
+photovoltaic    13
 Name: count, dtype: int64
 </pre></div>
 </div>
@@ -1938,11 +1943,15 @@ $$</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">The average solar potential, per home</span>, for Woodstock is: 20.16 MWh/year
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">The average solar potential, per home</span>, for Woodstock is: 19.93 MWh/year
 </pre></div>
 </div>
 </div>
 </div>
+<div style="text-align: left;"> 
+<small> <b>NB:</b> this number includes the <a href="https://wiki.openstreetmap.org/wiki/Tag:building%3Dgarage">OpenStreetMap <code>building=garage</code></a> building type. Go to <code>Cell &plusmn14</code> to exclude this building type from the estimate.</small>
+</div
+<br><br>
 <div class="alert alert-block alert-info"><b></b>
 <p>What does this <strong>MWh/year</strong> value mean?
 <br></p>
@@ -1956,7 +1965,7 @@ $$</p>
 <br>
 <br>
 <p>Cape Town typically yields ~1.6–1.7 MWh <strong>per installed kWp per year</strong>; the higher per-household values reported here reflect <strong>rooftop potential derived from available area</strong> <em>–that considers a <code class="docutils literal notranslate"><span class="pre">utilization_factor</span></code></em>, not a 1 kWp system.</p>
-<p>A 1 kWp solar PV system typically requires approximately 5–8 m² of panel area (e.g. panels of roughly 1 m × 1.7 m, depending on technology).</p>
+<p>A 1 kWp solar PV system requires approximately 5–8 m² of panel area (e.g. panels of roughly 1 m × 1.7 m, depending on technology).</p>
 <p>We are NOT asking: How much energy (MWh/year) would a single 1 kWp PV system generate on a roof?<br />
 We are asking: <strong>How much energy (MWh/year) could these roofs harvest, given their available area and a realistic utilization factor?</strong></p>
 </div></section>
