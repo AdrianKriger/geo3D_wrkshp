@@ -1962,11 +1962,16 @@ $$</p>
 </ul>
 </div><div class="alert alert-block alert-danger"><b>Sanity Check!</b>
 <br>
-<br>
-<p>Cape Town typically yields ~1.6–1.7 MWh <strong>per installed kWp per year</strong>; the higher per-household values reported here reflect <strong>rooftop potential derived from available area</strong> <em>–that considers a <code class="docutils literal notranslate"><span class="pre">utilization_factor</span></code></em>, not a 1 kWp system.</p>
+<ul>
+<li><p>Cape Town typically yields ~1.6–1.7 MWh <strong>per installed kWp per year</strong>; the higher per-household values reported here reflect <strong>rooftop potential derived from available area</strong> <em>–that considers a <code class="docutils literal notranslate"><span class="pre">utilization_factor</span></code></em>, not a 1 kWp system.</p>
 <p>A 1 kWp solar PV system requires approximately 5–8 m² of panel area (e.g. panels of roughly 1 m × 1.7 m, depending on technology).</p>
 <p>We are NOT asking: How much energy (MWh/year) would a single 1 kWp PV system generate on a roof?<br />
 We are asking: <strong>How much energy (MWh/year) could these roofs harvest, given their available area and a realistic utilization factor?</strong></p>
+</li>
+<li><p>The <strong>BVPC Warning</strong> applies here too. These are <strong>LoD1 3D City Models</strong>, which represent buildings as simple extrusions.</p>
+<p>LoD2 models <em>—that capture roof form (e.g. gable, hipped, mansard, domes)—</em> would provide more representative estimates of both <strong>BVPC and Average Annual Solar Potential</strong>. In such cases, the <code class="docutils literal notranslate"><span class="pre">utilization_factor</span></code> becomes less critical, as usable roof geometry is explicitly modelled.</p>
+</li>
+</ul>
 </div></section>
 </section>
 <section id="interactive-visualization">
