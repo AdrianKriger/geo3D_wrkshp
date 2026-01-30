@@ -503,7 +503,7 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">     [out:json][timeout:30];</span>
+<span class="s2">     [out:json][timeout:180];</span>
 <span class="s2">    // --when areas have duplicate names given the world has a limited amount of uniquely named places</span>
 <span class="s2">    area[name=&#39;</span><span class="si">{0}</span><span class="s2">&#39;] -&gt;.b;</span>
 <span class="s2">    // -- target area ~ can be way or relation</span>
@@ -663,7 +663,7 @@ document.write(`
 <p><strong><a class="reference external" href="https://deckgl.readthedocs.io/en/latest/">pydeck</a> needs an area and a center</strong>, harvest from osm.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;[out:json][timeout:30];</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;[out:json][timeout:180];</span>
 <span class="s2">        area[boundary=administrative][name=&#39;</span><span class="si">{0}</span><span class="s2">&#39;] -&gt; .a;</span>
 <span class="s2">            (</span>
 <span class="s2">            way[amenity~&#39;university|research_institute&#39;][name=&#39;</span><span class="si">{2}</span><span class="s2">&#39;](area.a);</span>
@@ -1024,7 +1024,7 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
 <p>To show the potential and power of <strong>3D City Models</strong> we can add additional features to the visualization; <em>namely: bus rapid transit, parks, agricultural land and waterways (streams). We get this from <a class="reference external" href="https://en.wikipedia.org/wiki/OpenStreetMap">OpenStreetMap</a> as well.</em>.</div></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;[out:json][timeout:30];</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;[out:json][timeout:180];</span>
 <span class="s2">            // --main area</span>
 <span class="s2">            area[name=&#39;</span><span class="si">{0}</span><span class="s2">&#39;]-&gt;.b;</span>
 <span class="s2">            // -- target area ~ can be way or relation</span>
@@ -1043,7 +1043,7 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
 
 <span class="n">green_spaces</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">overpass_to_gdf</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">geojson</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;[out:json][timeout:30];</span>
+<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;[out:json][timeout:180];</span>
 <span class="s2">            // --main area</span>
 <span class="s2">            area[name=&#39;</span><span class="si">{0}</span><span class="s2">&#39;]-&gt;.b;</span>
 <span class="s2">            // -- target area ~ can be way or relation</span>
@@ -1060,7 +1060,7 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
 
 <span class="n">water_spaces</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">overpass_to_gdf</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">geojson</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;[out:json][timeout:30];</span>
+<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;[out:json][timeout:180];</span>
 <span class="s2">        // --main area</span>
 <span class="s2">        area[name=&#39;</span><span class="si">{0}</span><span class="s2">&#39;]-&gt;.b;</span>
 <span class="s2">        // -- target area ~ can be way or relation</span>
@@ -1083,7 +1083,7 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the bus route ~~ note we only choose routes with a &#39;colour&#39; tag</span>
 <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">[out:json][timeout:30];</span>
+<span class="s2">[out:json][timeout:180];</span>
 <span class="s2">area[name=&#39;</span><span class="si">{0}</span><span class="s2">&#39;];</span>
 <span class="s2">// -- target area ~ can be way or relation</span>
 <span class="s2">    // gather results</span>
@@ -1531,93 +1531,11 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#--we only want building=house or =apartment or =residential, etc.</span>
-<span class="n">gdf</span> <span class="o">=</span> <span class="n">df2</span><span class="p">[</span><span class="n">df2</span><span class="p">[</span><span class="s2">&quot;building&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;house&#39;</span><span class="p">,</span> <span class="s1">&#39;semidetached_house&#39;</span><span class="p">,</span> <span class="s1">&#39;terrace&#39;</span><span class="p">,</span> <span class="s1">&#39;terraced&#39;</span><span class="p">,</span> <span class="s1">&#39;apartments&#39;</span><span class="p">,</span> <span class="s1">&#39;residential&#39;</span><span class="p">,</span> <span class="s1">&#39;dormitory&#39;</span><span class="p">,</span> <span class="s1">&#39;cabin&#39;</span><span class="p">,</span> <span class="s1">&#39;garage&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="n">gdf</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="c1">#gdf = df2[df2[&quot;building&quot;].isin([&#39;house&#39;, &#39;semidetached_house&#39;, &#39;terrace&#39;, &#39;terraced&#39;, &#39;apartments&#39;, &#39;residential&#39;, &#39;dormitory&#39;, &#39;cabin&#39;, &#39;garage&#39;])].copy()</span>
+<span class="c1">#gdf.head(2)</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>osm_id</th>
-      <th>address</th>
-      <th>building</th>
-      <th>building:levels</th>
-      <th>building:use</th>
-      <th>residential</th>
-      <th>amenity</th>
-      <th>operator</th>
-      <th>building_height</th>
-      <th>roof_height</th>
-      <th>ground_height</th>
-      <th>bottom_bridge_height</th>
-      <th>bottom_roof_height</th>
-      <th>plus_code</th>
-      <th>footprint</th>
-      <th>geometry</th>
-      <th>fill_color</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>7</th>
-      <td>656840974</td>
-      <td>39 Dove Lane Mamre 7347 Cape Town</td>
-      <td>house</td>
-      <td>1</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>4.1</td>
-      <td>4.1</td>
-      <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>4FRWFFM9+X98</td>
-      <td>(((18.4684317, -33.5150664), (18.4684262, -33....</td>
-      <td>POLYGON ((18.4684317 -33.5150664, 18.4684262 -...</td>
-      <td>[255, 255, 204]</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>656840975</td>
-      <td>37 Dove Lane Mamre 7347 Cape Town</td>
-      <td>house</td>
-      <td>1</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>4.1</td>
-      <td>4.1</td>
-      <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>4FRWFFM9+X9X</td>
-      <td>(((18.4684378, -33.5149932), (18.4684327, -33....</td>
-      <td>POLYGON ((18.4684378 -33.5149932, 18.4684327 -...</td>
-      <td>[255, 255, 204]</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <section id="a-estimate-population">
 <h3>2. a) Estimate Population:<a class="headerlink" href="#a-estimate-population" title="Link to this heading">#</a></h3>
@@ -1626,7 +1544,7 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- some data wrangling to replace &#39;bld:residential&#39; to &#39;bld:student&#39; if &#39;residential:student&#39; -- like cell [15]:</span>
-<span class="n">gdf2</span> <span class="o">=</span> <span class="n">gdf</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">gdf2</span> <span class="o">=</span> <span class="n">df2</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">gdf2</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
     <span class="c1"># The condition to find rows where &#39;residential&#39; is &#39;student&#39;</span>
     <span class="c1"># This check ensures the column exists, preventing a KeyError</span>
@@ -1655,7 +1573,7 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2135
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2340
 </pre></div>
 </div>
 </div>
@@ -1706,10 +1624,10 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
   </thead>
   <tbody>
     <tr>
-      <th>7</th>
-      <td>656840974</td>
-      <td>39 Dove Lane Mamre 7347 Cape Town</td>
-      <td>house</td>
+      <th>0</th>
+      <td>328118446</td>
+      <td>None</td>
+      <td>yes</td>
       <td>1</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1720,30 +1638,30 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
       <td>0.0</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>4FRWFFM9+X98</td>
-      <td>(((18.4684317, -33.5150664), (18.4684262, -33....</td>
-      <td>POLYGON ((18.4684317 -33.5150664, 18.4684262 -...</td>
+      <td>4FRWFFVC+P79</td>
+      <td>(((18.4706033, -33.5057876), (18.4706995, -33....</td>
+      <td>POLYGON ((18.4706033 -33.5057876, 18.4706995 -...</td>
       <td>[255, 255, 204]</td>
     </tr>
     <tr>
-      <th>8</th>
-      <td>656840975</td>
-      <td>37 Dove Lane Mamre 7347 Cape Town</td>
-      <td>house</td>
-      <td>1</td>
+      <th>1</th>
+      <td>328118447</td>
+      <td>Moravian Church South Africa Kerk Street Mamre...</td>
+      <td>church</td>
+      <td>2</td>
       <td>NaN</td>
       <td>NaN</td>
+      <td>place_of_worship</td>
       <td>NaN</td>
-      <td>NaN</td>
-      <td>4.1</td>
-      <td>4.1</td>
+      <td>6.9</td>
+      <td>6.9</td>
       <td>0.0</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>4FRWFFM9+X9X</td>
-      <td>(((18.4684378, -33.5149932), (18.4684327, -33....</td>
-      <td>POLYGON ((18.4684378 -33.5149932, 18.4684327 -...</td>
-      <td>[255, 255, 204]</td>
+      <td>4FRWFFVC+H9Q</td>
+      <td>(((18.4709153, -33.5059178), (18.4709287, -33....</td>
+      <td>POLYGON ((18.4709153 -33.5059178, 18.4709287 -...</td>
+      <td>[225, 225, 51]</td>
     </tr>
   </tbody>
 </table>
@@ -1757,9 +1675,26 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>building
-house     1642
-cabin      382
-garage     111
+house           1642
+cabin            382
+yes              158
+garage           111
+retail            11
+civic              7
+roof               7
+school             5
+church             3
+public             2
+construction       2
+detached           2
+office             1
+clinic             1
+greenhouse         1
+kindergarten       1
+clubhouse          1
+guest_house        1
+service            1
+shed               1
 Name: count, dtype: int64
 </pre></div>
 </div>
@@ -2047,7 +1982,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.429125
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.482070
 </pre></div>
 </div>
 </div>
@@ -2097,7 +2032,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/37edcb32c87bd0ac8df5a7f43ae0b7a6a36bd05a573331b7281a312cc5c89d7d.png" src="../_images/37edcb32c87bd0ac8df5a7f43ae0b7a6a36bd05a573331b7281a312cc5c89d7d.png" />
+<img alt="../_images/73e351f3579194a4297dde2193573d84c8769991a6c6414d8aabe34314c83482.png" src="../_images/73e351f3579194a4297dde2193573d84c8769991a6c6414d8aabe34314c83482.png" />
 </div>
 </div>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -2272,14 +2207,14 @@ Name: bvpc, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 79.252
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 89.672
 </pre></div>
 </div>
 </div>
 </div>
 <div class="alert alert-block alert-info"><b></b>
-<p><strong>This BVPC value is general.</strong></p>
-<p>We can seperate <code class="docutils literal notranslate"><span class="pre">building:house</span></code> from <code class="docutils literal notranslate"><span class="pre">building:cabin</span></code> and <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> to understand the differences between <em><strong>formal and informal</strong></em> housing in this area.</p>
+<p><strong>This BVPC value is for all the buildings; we only want buildings people live in</strong> <em>(homes)</em>.</p>
+<p>And we can seperate <code class="docutils literal notranslate"><span class="pre">building:house</span></code> from <code class="docutils literal notranslate"><span class="pre">building:cabin</span></code> and <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> to understand the differences between <em><strong>formal and informal</strong></em> housing in this area.</p>
 <p><strong>We want to understand the living space <em>(the cubic-meter BVPC value)</em> each person has in their home</strong></p>
 </div><div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2343,7 +2278,7 @@ Here, because we are working with highly detailed, local data, we can explore wh
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- harvest rooftop solar</span>
 
 <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">     [out:json][timeout:30];</span>
+<span class="s2">     [out:json][timeout:180];</span>
 <span class="s2">    // --when areas have duplicate names given the world has a limited amount of uniquely named places</span>
 <span class="s2">    area[name=&#39;</span><span class="si">{0}</span><span class="s2">&#39;] -&gt;.b;</span>
 <span class="s2">    // -- target area ~ can be way or relation</span>
@@ -2536,10 +2471,10 @@ Name: count, dtype: int64
   </thead>
   <tbody>
     <tr>
-      <th>7</th>
-      <td>656840974</td>
-      <td>39 Dove Lane Mamre 7347 Cape Town</td>
-      <td>house</td>
+      <th>0</th>
+      <td>328118446</td>
+      <td>None</td>
+      <td>yes</td>
       <td>1</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -2548,45 +2483,53 @@ Name: count, dtype: int64
       <td>4.1</td>
       <td>4.1</td>
       <td>...</td>
-      <td>(((18.4684317, -33.5150664), (18.4684262, -33....</td>
-      <td>POLYGON ((264864.98193212313 6288741.008398377...</td>
+      <td>(((18.4706033, -33.5057876), (18.4706995, -33....</td>
+      <td>POLYGON ((265041.6351569728 6289775.0592048075...</td>
       <td>[255, 255, 204]</td>
-      <td>6.0</td>
-      <td>38.658416</td>
-      <td>158.499506</td>
-      <td>26.416584</td>
+      <td>NaN</td>
+      <td>268.409550</td>
+      <td>1100.479153</td>
+      <td>NaN</td>
       <td>[]</td>
       <td>[]</td>
       <td>False</td>
     </tr>
     <tr>
-      <th>8</th>
-      <td>656840975</td>
-      <td>37 Dove Lane Mamre 7347 Cape Town</td>
-      <td>house</td>
-      <td>1</td>
+      <th>1</th>
+      <td>328118447</td>
+      <td>Moravian Church South Africa Kerk Street Mamre...</td>
+      <td>church</td>
+      <td>2</td>
       <td>NaN</td>
       <td>NaN</td>
+      <td>place_of_worship</td>
       <td>NaN</td>
-      <td>NaN</td>
-      <td>4.1</td>
-      <td>4.1</td>
+      <td>6.9</td>
+      <td>6.9</td>
       <td>...</td>
-      <td>(((18.4684378, -33.5149932), (18.4684327, -33....</td>
-      <td>POLYGON ((264865.3504529182 6288749.140981195,...</td>
-      <td>[255, 255, 204]</td>
-      <td>6.0</td>
-      <td>39.833421</td>
-      <td>163.317028</td>
-      <td>27.219505</td>
-      <td>[1096772168]</td>
-      <td>[thermal]</td>
-      <td>True</td>
+      <td>(((18.4709153, -33.5059178), (18.4709287, -33....</td>
+      <td>POLYGON ((265070.9766813367 6289761.325392997,...</td>
+      <td>[225, 225, 51]</td>
+      <td>NaN</td>
+      <td>371.168875</td>
+      <td>2561.065235</td>
+      <td>NaN</td>
+      <td>[]</td>
+      <td>[]</td>
+      <td>False</td>
     </tr>
   </tbody>
 </table>
 <p>2 rows × 24 columns</p>
 </div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- we only want buildings people live in (homes)</span>
+<span class="n">blds</span> <span class="o">=</span> <span class="n">blds</span><span class="p">[</span><span class="n">blds</span><span class="p">[</span><span class="s2">&quot;building&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;house&#39;</span><span class="p">,</span> <span class="s1">&#39;semidetached_house&#39;</span><span class="p">,</span> <span class="s1">&#39;terrace&#39;</span><span class="p">,</span> <span class="s1">&#39;terraced&#39;</span><span class="p">,</span> <span class="s1">&#39;apartments&#39;</span><span class="p">,</span> <span class="s1">&#39;residential&#39;</span><span class="p">,</span> <span class="s1">&#39;dormitory&#39;</span><span class="p">,</span> <span class="s1">&#39;cabin&#39;</span><span class="p">,</span> <span class="s1">&#39;garage&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
 </div>
 <section id="a-household-rooftop-solar">
 <h3>3. a) Household rooftop solar<a class="headerlink" href="#a-household-rooftop-solar" title="Link to this heading">#</a></h3>
@@ -2598,7 +2541,7 @@ Name: count, dtype: int64
 <span class="c1">#- harvest columns</span>
 <span class="n">with_solar</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">blds</span><span class="p">[</span><span class="s2">&quot;has_solar&quot;</span><span class="p">])</span>
 <span class="n">pop</span> <span class="o">=</span> <span class="n">est_pop</span> <span class="c1">#gdf[&quot;pop&quot;]</span>
-<span class="n">total_homes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">gdf2</span><span class="p">)</span>
+<span class="n">total_homes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">blds</span><span class="p">)</span>
 
 <span class="n">solHms</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">with_solar</span> <span class="o">/</span> <span class="n">total_homes</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
@@ -2613,7 +2556,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div style="text-align: left;">
-<small> <b>NB:</b> this number includes the <a href="https://wiki.openstreetmap.org/wiki/Tag:building%3Dgarage">OpenStreetMap <code>building=garage</code></a> building type. Go to <code>Cell &plusmn;22</code> to exclude this building type from the estimate.</small>
+<small> <b>NB:</b> this number includes the <a href="https://wiki.openstreetmap.org/wiki/Tag:building%3Dgarage">OpenStreetMap <code>building=garage</code></a> building type. Go to <code>Cell &plusmn;42</code> (above) to exclude this building type from the estimate.</small>
 </div></section>
 <section id="b-rooftop-solar-population">
 <h3>3. b) Rooftop solar population<a class="headerlink" href="#b-rooftop-solar-population" title="Link to this heading">#</a></h3>
@@ -2732,8 +2675,8 @@ $$</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf2</span><span class="p">[</span><span class="s1">&#39;solar_mwh&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(((</span><span class="n">gdf2</span><span class="p">[</span><span class="s1">&#39;area&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">utilization_factor</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">annual_avg</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.20</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span>
-<span class="n">gdf2</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">blds</span><span class="p">[</span><span class="s1">&#39;solar_mwh&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(((</span><span class="n">blds</span><span class="p">[</span><span class="s1">&#39;area&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">utilization_factor</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">annual_avg</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.20</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span><span class="p">)</span>
+<span class="n">blds</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2836,7 +2779,7 @@ $$</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate the average annual solar potential</span>
-<span class="n">average_solar_potential</span> <span class="o">=</span> <span class="n">gdf2</span><span class="p">[</span><span class="s1">&#39;solar_mwh&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">average_solar_potential</span> <span class="o">=</span> <span class="n">blds</span><span class="p">[</span><span class="s1">&#39;solar_mwh&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; </span><span class="se">\033</span><span class="s2">[1mThe average solar potential, per home</span><span class="se">\033</span><span class="s2">[0m , for&quot;</span><span class="p">,</span> <span class="n">focus</span><span class="p">,</span> <span class="s2">&quot;is:&quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">average_solar_potential</span><span class="p">,</span><span class="mi">2</span><span class="p">),</span> <span class="s2">&quot;MWh/year&quot;</span><span class="p">)</span>
 </pre></div>
@@ -2849,7 +2792,7 @@ $$</p>
 </div>
 </div>
 <div style="text-align: left;"> 
-<small> <b>NB:</b> this number includes the <a href="https://wiki.openstreetmap.org/wiki/Tag:building%3Dgarage">OpenStreetMap <code>building=garage</code></a> building type. Go to <code>Cell &plusmn;22</code> to exclude this building type from the estimate.</small>
+<small> <b>NB:</b> this number includes the <a href="https://wiki.openstreetmap.org/wiki/Tag:building%3Dgarage">OpenStreetMap <code>building=garage</code></a> building type. Go to <code>Cell &plusmn;42</code> to exclude this building type from the estimate.</small>
 </div>
 <br>
 <div class="alert alert-block alert-info"><b></b>
@@ -2864,6 +2807,7 @@ $$</p>
 </div><div class="alert alert-block alert-danger"><b>Sanity Check!</b>
 <br>    
 <ul>
+<li><p>In <code>Cell ±42</code> we excluded non-residential building types <code class="docutils literal notranslate"><span class="pre">=office,</span> <span class="pre">commercial,</span> <span class="pre">retail,</span> <span class="pre">warehouse,</span> <span class="pre">industrial,</span> <span class="pre">etc.</span></code> from the analysis.</p></li>
 <li><p>Cape Town typically yields ~1.6–1.7 MWh <strong>per installed kWp per year</strong>; the higher per-household values reported here reflect <strong>rooftop potential derived from available area</strong> <em>–that considers a <code class="docutils literal notranslate"><span class="pre">utilization_factor</span></code></em>, not a 1 kWp system.</p>
 <p>A 1 kWp solar PV system requires approximately 5–8 m² of panel area (e.g. panels of roughly 1 m × 1.7 m, depending on technology).</p>
 <p>We are NOT asking: How much energy (MWh/year) would a single 1 kWp PV system generate on a roof?<br />
