@@ -632,7 +632,6 @@ textures = False
       <th>plus_code</th>
       <th>building:flats</th>
       <th>building:use</th>
-      <th>operator</th>
       <th>building:units</th>
       <th>social_facility</th>
       <th>beds</th>
@@ -663,7 +662,6 @@ textures = False
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>NaN</td>
       <td>POLYGON ((265023.4813864499 6242993.344091462,...</td>
     </tr>
     <tr>
@@ -679,7 +677,6 @@ textures = False
       <td>10.45</td>
       <td>4FRW3FC2+R5G</td>
       <td>105</td>
-      <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -829,7 +826,6 @@ textures = False
       <th>plus_code</th>
       <th>building:flats</th>
       <th>building:use</th>
-      <th>operator</th>
       <th>building:units</th>
       <th>social_facility</th>
       <th>beds</th>
@@ -854,7 +850,6 @@ textures = False
       <td>4FRW3FF5+27C</td>
       <td>0</td>
       <td>NaN</td>
-      <td>NaN</td>
       <td>0</td>
       <td>NaN</td>
       <td>0</td>
@@ -876,7 +871,6 @@ textures = False
       <td>10.45</td>
       <td>4FRW3FC2+R5G</td>
       <td>105</td>
-      <td>NaN</td>
       <td>NaN</td>
       <td>0</td>
       <td>NaN</td>
@@ -901,7 +895,8 @@ textures = False
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#--we only want building=house or =apartment or =residential, etc.</span>
-<span class="n">gdf_pop</span> <span class="o">=</span> <span class="n">gdf2</span><span class="p">[</span><span class="n">gdf2</span><span class="p">[</span><span class="s2">&quot;building&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;house&#39;</span><span class="p">,</span> <span class="s1">&#39;semidetached_house&#39;</span><span class="p">,</span> <span class="s1">&#39;terrace&#39;</span><span class="p">,</span> <span class="s1">&#39;terraced&#39;</span><span class="p">,</span> <span class="s1">&#39;apartments&#39;</span><span class="p">,</span> <span class="s1">&#39;residential&#39;</span><span class="p">,</span> <span class="s1">&#39;dormitory&#39;</span><span class="p">,</span> <span class="s1">&#39;cabin&#39;</span><span class="p">,</span> <span class="s1">&#39;student&#39;</span><span class="p">,</span> <span class="s1">&#39;garage&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="c1">#gdf_pop = gdf2[gdf2[&quot;building&quot;].isin([&#39;house&#39;, &#39;semidetached_house&#39;, &#39;terrace&#39;, &#39;terraced&#39;, &#39;apartments&#39;, &#39;residential&#39;, &#39;dormitory&#39;, &#39;cabin&#39;, &#39;student&#39;, &#39;garage&#39;])].copy()</span>
+<span class="n">gdf_pop</span> <span class="o">=</span> <span class="n">gdf2</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
@@ -914,7 +909,7 @@ textures = False
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3057
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3715
 </pre></div>
 </div>
 </div>
@@ -929,11 +924,49 @@ textures = False
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>building
 house                 2876
+yes                    234
+retail                 140
+industrial             121
 semidetached_house      70
 garage                  59
+commercial              39
 apartments              31
+office                  19
+school                  17
 residential             15
+church                  12
+manufacture              8
+roof                     7
+service                  7
+carport                  6
 terrace                  5
+warehouse                5
+detached                 4
+kindergarten             4
+police                   3
+garages                  2
+restaurant               2
+hall                     2
+civic                    2
+supermarket              2
+hotel                    2
+college                  2
+mosque                   2
+train_station            2
+monastery                1
+toilets                  1
+transportation           1
+guest_house              1
+university               1
+synagogue                1
+shed                     1
+community_centre         1
+construction             1
+laboratory               1
+parking                  1
+clinic                   1
+residence                1
+library                  1
 student                  1
 Name: count, dtype: int64
 </pre></div>
@@ -1187,30 +1220,6 @@ BVPC = total population of a community divided by sum of building volume</div><d
   </thead>
   <tbody>
     <tr>
-      <th>1314777371</th>
-      <td>3711</td>
-      <td>1314777371</td>
-      <td>NaN</td>
-      <td>garage</td>
-      <td>1.0</td>
-      <td>NaN</td>
-      <td>4.1</td>
-      <td>24.31</td>
-      <td>20.209999</td>
-      <td>4FRW3C9X+R9X</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>0</td>
-      <td>NaN</td>
-      <td>0</td>
-      <td>NaN</td>
-      <td>POLYGON ((264153.94115337124 6242630.250540572...</td>
-      <td>NaN</td>
-      <td>22.900846</td>
-      <td>93.893467</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
       <th>1340498943</th>
       <td>3713</td>
       <td>1340498943</td>
@@ -1234,9 +1243,33 @@ BVPC = total population of a community divided by sum of building volume</div><d
       <td>374.243351</td>
       <td>93.560838</td>
     </tr>
+    <tr>
+      <th>1423081172</th>
+      <td>3714</td>
+      <td>1423081172</td>
+      <td>NaN</td>
+      <td>warehouse</td>
+      <td>1.0</td>
+      <td>NaN</td>
+      <td>4.1</td>
+      <td>9.21</td>
+      <td>5.110000</td>
+      <td>4FRW3CFX+M65</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>POLYGON ((264084.9472572068 6243146.255961517,...</td>
+      <td>NaN</td>
+      <td>1068.332068</td>
+      <td>4380.161477</td>
+      <td>NaN</td>
+    </tr>
   </tbody>
 </table>
-<p>2 rows × 24 columns</p>
+<p>2 rows × 23 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -1268,14 +1301,14 @@ Name: bvpc, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 138.042
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 272.324
 </pre></div>
 </div>
 </div>
 </div>
 <div class="alert alert-block alert-info"><b></b>
-<p><strong>This BVPC value is general.</strong></p>
-<p>We can seperate <code class="docutils literal notranslate"><span class="pre">building:house</span></code> from <code class="docutils literal notranslate"><span class="pre">building:cabin</span></code> and <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> to undertand the differences between <em><strong>formal and informal</strong></em> housing in this area.</p>
+<p><strong>This BVPC value is for all the buildings; we only want buildings people live in</strong> <em>(homes)</em>.</p>
+<p>And we can seperate <code class="docutils literal notranslate"><span class="pre">building:house</span></code> from <code class="docutils literal notranslate"><span class="pre">building:cabin</span></code> and <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> to undertand the differences between <em><strong>formal and informal</strong></em> housing in this area.</p>
 <p><strong>We want to understand the living space <em>(the cubic-meter BVPC value)</em> each person has in their home</strong></p>
 </div><div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1612,6 +1645,30 @@ Name: count, dtype: int64
   </thead>
   <tbody>
     <tr>
+      <th>12227309</th>
+      <td>0</td>
+      <td>12227309</td>
+      <td>The Neighbourgoods Market Woodstock Cape Town</td>
+      <td>retail</td>
+      <td>1.0</td>
+      <td>marketplace</td>
+      <td>4.1</td>
+      <td>11.27</td>
+      <td>7.17</td>
+      <td>4FRW3FF5+27C</td>
+      <td>...</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>POLYGON ((265023.4813864499 6242993.344091462,...</td>
+      <td>NaN</td>
+      <td>822.291163</td>
+      <td>3371.393767</td>
+      <td>NaN</td>
+      <td>[]</td>
+      <td>[]</td>
+      <td>False</td>
+    </tr>
+    <tr>
       <th>12249345</th>
       <td>1</td>
       <td>12249345</td>
@@ -1621,7 +1678,7 @@ Name: count, dtype: int64
       <td>NaN</td>
       <td>18.1</td>
       <td>28.55</td>
-      <td>10.450000</td>
+      <td>10.45</td>
       <td>4FRW3FC2+R5G</td>
       <td>...</td>
       <td>0</td>
@@ -1635,34 +1692,18 @@ Name: count, dtype: int64
       <td>[]</td>
       <td>False</td>
     </tr>
-    <tr>
-      <th>12286281</th>
-      <td>2</td>
-      <td>12286281</td>
-      <td>Cissie Gool House Victoria Walk Woodstock 7925...</td>
-      <td>residential</td>
-      <td>4.0</td>
-      <td>NaN</td>
-      <td>12.5</td>
-      <td>46.45</td>
-      <td>33.950001</td>
-      <td>4FRW3C9X+5F5</td>
-      <td>...</td>
-      <td>0</td>
-      <td>NaN</td>
-      <td>POLYGON ((264241.43133293843 6242483.337398058...</td>
-      <td>930.0</td>
-      <td>5308.038636</td>
-      <td>66350.482947</td>
-      <td>71.344605</td>
-      <td>[]</td>
-      <td>[]</td>
-      <td>False</td>
-    </tr>
   </tbody>
 </table>
-<p>2 rows × 27 columns</p>
+<p>2 rows × 26 columns</p>
 </div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#--we only want buildings people live in (homes). building=house or =apartment or =residential, etc.</span>
+<span class="n">blds</span> <span class="o">=</span> <span class="n">blds</span><span class="p">[</span><span class="n">blds</span><span class="p">[</span><span class="s2">&quot;building&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;house&#39;</span><span class="p">,</span> <span class="s1">&#39;semidetached_house&#39;</span><span class="p">,</span> <span class="s1">&#39;terrace&#39;</span><span class="p">,</span> <span class="s1">&#39;terraced&#39;</span><span class="p">,</span> <span class="s1">&#39;apartments&#39;</span><span class="p">,</span> <span class="s1">&#39;residential&#39;</span><span class="p">,</span> <span class="s1">&#39;dormitory&#39;</span><span class="p">,</span> <span class="s1">&#39;cabin&#39;</span><span class="p">,</span> <span class="s1">&#39;student&#39;</span><span class="p">,</span> <span class="s1">&#39;garage&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
 </div>
 <section id="a-household-rooftop-solar">
 <h2>2. a) Household rooftop solar<a class="headerlink" href="#a-household-rooftop-solar" title="Link to this heading">#</a></h2>
@@ -1680,7 +1721,7 @@ Name: count, dtype: int64
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- harvest columns</span>
 <span class="n">with_solar</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">blds</span><span class="p">[</span><span class="s2">&quot;has_solar&quot;</span><span class="p">])</span>
 <span class="n">pop</span> <span class="o">=</span> <span class="n">est_pop</span> <span class="c1">#gdf[&quot;pop&quot;]</span>
-<span class="n">total_homes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">gdf_pop</span><span class="p">)</span>
+<span class="n">total_homes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">blds</span><span class="p">)</span>
 
 <span class="n">solHms</span> <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">with_solar</span> <span class="o">/</span> <span class="n">total_homes</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
@@ -1695,7 +1736,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div style="text-align: left;"> 
-<small> <b>NB:</b> this number includes the <a href="https://wiki.openstreetmap.org/wiki/Tag:building%3Dgarage">OpenStreetMap <code>building=garage</code></a> building type. Go to <code>Cell &plusmn;14</code> to exclude this building type from the estimate.</small>
+<small> <b>NB:</b> this number includes the <a href="https://wiki.openstreetmap.org/wiki/Tag:building%3Dgarage">OpenStreetMap <code>building=garage</code></a> building type. Go to <code>Cell &plusmn;34</code> (above) to exclude this building type from the estimate.</small>
 </div>
 </section>
 <section id="b-rooftop-solar-population">
@@ -1833,8 +1874,8 @@ $$</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Potential (MWh) = (Area * GHI_Yearly * 0.20) / 1000</span>
-<span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;solar_mwh&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;area&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">utilization_factor</span><span class="p">)</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;ghi_yearly&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.20</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span>
-<span class="n">gdf_pop</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">blds</span><span class="p">[</span><span class="s1">&#39;solar_mwh&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">blds</span><span class="p">[</span><span class="s1">&#39;area&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">utilization_factor</span><span class="p">)</span> <span class="o">*</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;ghi_yearly&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.20</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span>
+<span class="n">blds</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1919,7 +1960,7 @@ $$</p>
       <td>4FRW3C9X+5F5</td>
       <td>...</td>
       <td>NaN</td>
-      <td>POLYGON ((264241.43133293843 6242483.337398058...</td>
+      <td>POLYGON ((264241.4313329385 6242483.337398058,...</td>
       <td>930.0</td>
       <td>5308.038636</td>
       <td>66350.482947</td>
@@ -1931,12 +1972,12 @@ $$</p>
     </tr>
   </tbody>
 </table>
-<p>2 rows × 28 columns</p>
+<p>2 rows × 27 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">average_solar_potential</span> <span class="o">=</span> <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;solar_mwh&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">average_solar_potential</span> <span class="o">=</span> <span class="n">blds</span><span class="p">[</span><span class="s1">&#39;solar_mwh&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\033</span><span class="s2">[1mThe average solar potential, per home</span><span class="se">\033</span><span class="s2">[0m, for&quot;</span><span class="p">,</span> <span class="n">jparams</span><span class="p">[</span><span class="s1">&#39;FocusArea&#39;</span><span class="p">],</span> <span class="s2">&quot;is:&quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">average_solar_potential</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s2">&quot;MWh/year&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1948,7 +1989,7 @@ $$</p>
 </div>
 </div>
 <div style="text-align: left;"> 
-<small> <b>NB:</b> this number includes the <a href="https://wiki.openstreetmap.org/wiki/Tag:building%3Dgarage">OpenStreetMap <code>building=garage</code></a> building type. Go to <code>Cell &plusmn;14</code> to exclude this building type from the estimate.</small>
+<small> <b>NB:</b> this number includes the <a href="https://wiki.openstreetmap.org/wiki/Tag:building%3Dgarage">OpenStreetMap <code>building=garage</code></a> building type. Go to <code>Cell &plusmn;34</code> to exclude this building type from the estimate.</small>
 </div>
 <br>
 <div class="alert alert-block alert-info"><b></b>
@@ -1963,6 +2004,7 @@ $$</p>
 </div><div class="alert alert-block alert-danger"><b>Sanity Check!</b>
 <br>
 <ul>
+<li><p>In <code>Cell ±34</code> we excluded non-residential building types <code class="docutils literal notranslate"><span class="pre">=office,</span> <span class="pre">commercial,</span> <span class="pre">retail,</span> <span class="pre">warehouse,</span> <span class="pre">industrial,</span> <span class="pre">etc.</span></code> from the analysis.</p></li>
 <li><p>Cape Town typically yields ~1.6–1.7 MWh <strong>per installed kWp per year</strong>; the higher per-household values reported here reflect <strong>rooftop potential derived from available area</strong> <em>–that considers a <code class="docutils literal notranslate"><span class="pre">utilization_factor</span></code></em>, not a 1 kWp system.</p>
 <p>A 1 kWp solar PV system requires approximately 5–8 m² of panel area (e.g. panels of roughly 1 m × 1.7 m, depending on technology).</p>
 <p>We are NOT asking: How much energy (MWh/year) would a single 1 kWp PV system generate on a roof?<br />
@@ -2150,9 +2192,8 @@ Datum: World Geodetic System 1984 ensemble
       <th>roof_height</th>
       <th>ground_height</th>
       <th>plus_code</th>
-      <th>...</th>
+      <th>building:flats</th>
       <th>building:use</th>
-      <th>operator</th>
       <th>building:units</th>
       <th>social_facility</th>
       <th>beds</th>
@@ -2176,8 +2217,7 @@ Datum: World Geodetic System 1984 ensemble
       <td>11.27</td>
       <td>7.17</td>
       <td>4FRW3FF5+27C</td>
-      <td>...</td>
-      <td>NaN</td>
+      <td>0</td>
       <td>NaN</td>
       <td>0</td>
       <td>NaN</td>
@@ -2200,8 +2240,7 @@ Datum: World Geodetic System 1984 ensemble
       <td>28.55</td>
       <td>10.45</td>
       <td>4FRW3FC2+R5G</td>
-      <td>...</td>
-      <td>NaN</td>
+      <td>105</td>
       <td>NaN</td>
       <td>0</td>
       <td>NaN</td>
@@ -2214,7 +2253,6 @@ Datum: World Geodetic System 1984 ensemble
     </tr>
   </tbody>
 </table>
-<p>2 rows × 21 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
