@@ -3,7 +3,7 @@
 #########################
 # helper functions to create LoD1 3D City Model from volunteered public data (OpenStreetMap) with elevation via a raster DEM.
 
-# author: arkriger - 2023 - 2025
+# author: arkriger - 2023 - 2026
 # github: https://github.com/AdrianKriger/geo3D
 
 # script credit:
@@ -13,7 +13,7 @@
 # additional thanks:
 #    - cityjson community: https://github.com/cityjson
 #########################
-
+import os
 import math
 import json
 import fiona
@@ -25,6 +25,7 @@ import numpy as np
 import pandas as pd
 #import geopandas as gpd
 
+import shapely.wkt
 import shapely.geometry as sg
 from shapely.geometry import Point, LineString, Polygon, MultiPolygon, LinearRing, MultiPolygon, MultiLineString, MultiPoint, shape, mapping
 from shapely.ops import snap, transform
@@ -41,6 +42,8 @@ from openlocationcode import openlocationcode as olc
 import warnings
 warnings.filterwarnings("ignore", message="pkg_resources is deprecated as an API")
 from cjio import cityjson, geom_help
+
+from IPython.display import IFrame, display
 
 dps = 3
 WGS84 = "EPSG:4326"
@@ -633,38 +636,38 @@ def gdf_to_pathlayer(df, color_col='colour'):
                 paths.append({'path': list(line.coords), 'colour': row[color_col]})
     return paths
 
-def gdf_to_geojson(df):
-    """
-    Convert a DataFrame with a 'geometry' column to a GeoJSON dict.
-    All columns except 'geometry' are included in 'properties'.
-    """
-    def coords_to_list(coords):
-        """Recursively convert tuples to lists for JSON."""
-        if isinstance(coords, (float, int)):
-            return coords
-        return [coords_to_list(c) for c in coords]
-    
-    features = []
-    for idx, row in df.iterrows():
-        geom = mapping(row['geometry'])
-        geom["coordinates"] = coords_to_list(geom["coordinates"])
-        
-        # Include all columns except 'geometry' in properties
-        props = row.drop(labels='geometry').to_dict()
-        
-        features.append({
-            "type": "Feature",
-            "geometry": geom,
-            "properties": props
-        })
-    
-    geojson_dict = {
-        "type": "FeatureCollection",
-        "crs": {"type": "name", "properties": {"name": "EPSG:4326"}},
-        "features": features
-    }
-    
-    return geojson_dict
+#def gdf_to_geojson(df):
+#    """
+#    Convert a DataFrame with a 'geometry' column to a GeoJSON dict.
+#    All columns except 'geometry' are included in 'properties'.
+#    """
+#    def coords_to_list(coords):
+#        """Recursively convert tuples to lists for JSON."""
+#        if isinstance(coords, (float, int)):
+#            return coords
+#        return [coords_to_list(c) for c in coords]
+#    
+#    features = []
+#    for idx, row in df.iterrows():
+#        geom = mapping(row['geometry'])
+#        geom["coordinates"] = coords_to_list(geom["coordinates"])
+#        
+#        # Include all columns except 'geometry' in properties
+#        props = row.drop(labels='geometry').to_dict()
+#        
+#        features.append({
+#            "type": "Feature",
+#            "geometry": geom,
+#            "properties": props
+#        })
+#    
+#    geojson_dict = {
+#        "type": "FeatureCollection",
+#        "crs": {"type": "name", "properties": {"name": "EPSG:4326"}},
+#        "features": features
+#    }
+#    
+#    return geojson_dict
 
 def rasterQuery2(mx, my, gt_forward, rb):
     
@@ -1200,3 +1203,343 @@ def _harvestSolar(input_pbf, jparams, minx, miny, maxx, maxy, crs):
     gdal.Unlink(geojson_vsimem_lines)
 
     return gdf_solar_combined
+
+def process_osm_geoms(vsimem_path, input_pbf, layer_name, sql_where, aoi_geom):
+    """Generic helper to extract, parse tags, and clip OSM data"""
+    
+    #-extent
+    minx, miny, maxx, maxy = aoi_geom.bounds
+    
+    gdal.UseExceptions()
+    gdal.SetConfigOption("OGR_GEOMETRY_ACCEPT_UNCLOSED_RING", "NO")
+    
+    gdal.VectorTranslate(
+        vsimem_path,
+        input_pbf,
+        format="GeoJSON",
+        layers=[layer_name],
+        options=[
+            "-where", sql_where,
+            "-spat", str(minx), str(miny), str(maxx), str(maxy)
+        ]
+    )
+    
+    gdf = read_vsimem_geojson(vsimem_path)
+    gdal.Unlink(vsimem_path)
+    
+    if gdf.empty:
+        return gdf
+
+    # Convert valid strings, ignore None/NaN
+    def safe_convert(tag_string):
+        if isinstance(tag_string, str):
+            try:
+                # Replace "=>" with ":" and fix newlines
+                formatted_string = "{" + tag_string.replace("=>", ":").replace("\n", " ") + "}"
+                return json.loads(formatted_string)  # Parse safely
+            except json.JSONDecodeError:
+                return {}  # Return empty dict on failure
+        return {}  # Return empty dict if NaN or None
+
+    # Apply conversion function
+    gdf["tags"] = gdf["other_tags"].apply(safe_convert)
+
+    # Extract values safely - Normalize the 'tags' column to create a new DataFrame
+    tags_df = pd.json_normalize(gdf['tags'])
+    # Join the new columns back to the original GeoDataFrame
+    gdf = pd.concat([gdf, tags_df], axis=1)
+    # (Optional) Drop the original 'tags' column
+    #gdf = gdf.drop(columns=['other_tags'])
+    if 'other_tags' in gdf.columns: gdf = gdf.drop(columns=['other_tags'])
+
+    # Ensure a single 'osm_id' column
+    if 'osm_id' in gdf.columns:
+        if 'osm_way_id' in gdf.columns:
+            gdf['osm_id'] = [o if pd.notna(o) else w 
+                             for o, w in zip(gdf['osm_id'], gdf['osm_way_id'])]
+            gdf = gdf.drop(columns=['osm_way_id'])
+    elif 'osm_way_id' in gdf.columns:
+        gdf = gdf.rename(columns={'osm_way_id': 'osm_id'})
+
+    # Geometry Clip to AOI
+    gdf = gdf[gdf.geometry.apply(lambda x: x.intersects(aoi_geom))]
+    gdf.crs = "EPSG:4326"
+    gdf = gdf.fillna("")
+    return gdf
+
+def show_interactive_html(html_path, width="100%", height=500):
+    """
+    Display a local MapLibre HTML file inside a Jupyter notebook.
+    """
+    if not os.path.exists(html_path):
+        raise FileNotFoundError(html_path)
+
+    display(
+        IFrame(
+            src=html_path,
+            width=width,
+            height=height,
+            extras=['allow-scripts', 'allow-same-origin']
+        )
+    )
+
+def gdf_to_geojson(obj, geom_col="geometry"):
+    """
+    Accepts:
+    - pandas DataFrame with shapely geometries
+    - GeoJSON dict
+    - None
+
+    Returns a GeoJSON FeatureCollection dict.
+    """
+
+    # Case 1: None
+    if obj is None:
+        return {"type": "FeatureCollection", "features": []}
+
+    # Case 2: already GeoJSON
+    if isinstance(obj, dict):
+        # minimal sanity check
+        if obj.get("type") == "FeatureCollection":
+            return obj
+        else:
+            raise ValueError("Dict provided is not a GeoJSON FeatureCollection")
+
+    # Case 3: pandas DataFrame
+    if hasattr(obj, "iterrows"):
+        if len(obj) == 0:
+            return {"type": "FeatureCollection", "features": []}
+
+        features = []
+        for _, row in obj.iterrows():
+            geom = row[geom_col]
+            if geom is None or geom.is_empty:
+                continue
+
+            props = {
+                k: v for k, v in row.items()
+                if k != geom_col
+            }
+
+            features.append({
+                "type": "Feature",
+                "geometry": shapely.geometry.mapping(geom),
+                "properties": props
+            })
+
+        return {
+            "type": "FeatureCollection",
+            "features": features
+        }
+
+    # Anything else is an error
+    raise TypeError(f"Unsupported layer type: {type(obj)}")
+
+def create_maplibre_3Dviz(
+    result_dir,
+    buildings_gdf,
+    roads_gdf=None,
+    water_gdf=None,
+    green_gdf=None,
+    brt_gdf=None,
+    center=None,
+    zoom=16,
+    offline=False,
+    local_js_path="./data/maplibre-gl.js",
+    local_css_path="./data/maplibre-gl.css",
+    remote_style="https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
+):
+    # 1. Determine map center safely
+    if center is None:
+        try:
+            # Union all geometries to find the true center
+            all_geoms = [g for g in buildings_gdf['geometry'] if g is not None]
+            combined = shapely.ops.unary_union(all_geoms)
+            center = [combined.centroid.x, combined.centroid.y]
+        except:
+            center = [0, 0] # Fallback if data is empty
+
+    # 2. ROBUST HARVESTING & CULLING (Handles Pandas + Shapely + Empty Data)
+    def harvest_and_cull(df, columns_to_keep):
+        # Shield: Check if it's a valid DataFrame-like object with data
+        if df is None or not hasattr(df, 'empty') or df.empty:
+            return {"type": "FeatureCollection", "features": []}
+        
+        # Keep ONLY the columns needed to minimize file size
+        existing_cols = [c for c in columns_to_keep if c in df.columns]
+        # Ensure we have geometry
+        if 'geometry' not in df.columns:
+            return {"type": "FeatureCollection", "features": []}
+            
+        temp = df[existing_cols + ['geometry']].copy()
+        
+        # COORDINATE CULLING: Round to 5 decimal places for efficiency
+        def truncate_geom(g):
+            if g is None: return None
+            return shapely.wkt.loads(shapely.wkt.dumps(g, rounding_precision=5))
+            
+        temp['geometry'] = temp['geometry'].apply(truncate_geom)
+        temp = temp.fillna("")
+
+        # Handle building height specifically
+        if 'building_height' in temp.columns:
+            temp['building_height'] = pd.to_numeric(temp['building_height'], errors='coerce').fillna(10)
+        
+        # Manual GeoJSON conversion (Stable for home-baked DFs)
+        features = []
+        for _, row in temp.iterrows():
+            if not row['geometry']: continue
+            feat = {
+                "type": "Feature",
+                "properties": {c: row[c] for c in existing_cols},
+                "geometry": shapely.geometry.mapping(row['geometry'])
+            }
+            features.append(feat)
+            
+        return {"type": "FeatureCollection", "features": features}
+
+    # Harvest Data 
+    building_data = harvest_and_cull(buildings_gdf, ['building_height', 'fill_color', 'osm_id', 'address', 'building', 'plus_code'])
+    road_data = harvest_and_cull(roads_gdf, ['highway'])
+    water_data = harvest_and_cull(water_gdf, ['natural', 'waterway'])
+    green_data = harvest_and_cull(green_gdf, ['leisure', 'name'])
+    brt_data = harvest_and_cull(brt_gdf, ['colour'])
+
+    # 3. Asset Logic
+    if offline:
+        try:
+            with open(local_js_path, 'r', encoding='utf-8') as f:
+                js_content = f"<script>{f.read()}</script>"
+            with open(local_css_path, 'r', encoding='utf-8') as f:
+                css_content = f"<style>{f.read()}</style>"
+        except FileNotFoundError:
+            # Fallback to CDN if local files aren't found to prevent a broken map
+            js_content = '<script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>'
+            css_content = '<link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />'
+        
+        style_js = json.dumps({
+            "version": 8, "sources": {}, 
+            "layers": [{"id":"bg","type":"background","paint":{"background-color":"#0e0e0e"}}]
+        })
+    else:
+        js_content = '<script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>'
+        css_content = '<link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />'
+        style_js = f"'{remote_style}'"
+
+    # 4. HTML Template
+    html_content = f"""
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>geo3D. 3D City Models for Geography and Sustainable Development Education</title>
+    {css_content}
+    {js_content}
+    <style>
+        body {{ margin: 0; padding: 0; }}
+        #map {{ position: absolute; top: 0; bottom: 0; width: 100%; background: #0e0e0e; }}
+        .popup-content {{ font-family: sans-serif; font-size: 12px; line-height: 1.5; color: #333; }}
+        hr {{ border: 0; border-top: 1px solid #eee; margin: 5px 0; }}
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+    const map = new maplibregl.Map({{
+        container: 'map',
+        style: {style_js},
+        center: {json.dumps(center)},
+        zoom: {zoom},
+        pitch: 60,
+        bearing: -10,
+        antialias: true
+    }});
+
+    map.on('load', () => {{
+        map.addControl(new maplibregl.NavigationControl({{ visualizePitch: true }}), 'top-right');
+
+        map.addSource('roads', {{ type: 'geojson', data: {json.dumps(road_data)} }});
+        map.addSource('buildings', {{ type: 'geojson', data: {json.dumps(building_data)} }});
+        map.addSource('water', {{ type: 'geojson', data: {json.dumps(water_data)} }});
+        map.addSource('parks', {{ type: 'geojson', data: {json.dumps(green_data)} }});
+        map.addSource('bus', {{ type: 'geojson', data: {json.dumps(brt_data)} }});
+
+        // Layer: Water
+        map.addLayer({{
+            'id': 'water', 'type': 'fill', 'source': 'water',
+            'paint': {{ 'fill-color': '#01579b', 'fill-opacity': 1 }}
+        }});
+
+        // Layer: Parks
+        map.addLayer({{
+        'id': 'parks', 'type': 'fill', 'source': 'parks',
+            'paint': {{ 'fill-color': '#66bb6a', 'fill-opacity': 0.4 }}
+        }});
+
+        // Layer: Road Hierarchy
+        const roadLayers = [
+            {{ id: 'road-motorway', filter: ['==', 'highway', 'motorway'], color: '#666666', width: [8, 1, 14, 6] }},
+            {{ id: 'road-primary', filter: ['==', 'highway', 'primary'], color: '#8b949e', width: [8, 0.75, 14, 4] }},
+            {{ id: 'road-secondary', filter: ['==', 'highway', 'secondary'], color: '#6e7681', width: [9, 0.5, 14, 3] }},
+            {{ id: 'road-tertiary', filter: ['==', 'highway', 'tertiary'], color: '#5a5f66', width: [10, 0.4, 14, 2.5] }},
+            {{ id: 'road-residential', filter: ['==', 'highway', 'residential'], color: '#444c56', width: [11, 0.3, 16, 2] }},
+            {{ id: 'road-service', filter: ['in', 'highway', 'service', 'track', 'minor', 'motorway_link'], color: '#363b42', width: [12, 0.25, 16, 1] }}
+        ];
+
+        roadLayers.forEach(layer => {{
+            map.addLayer({{
+                'id': layer.id, 'type': 'line', 'source': 'roads',
+                'filter': layer.filter,
+                'paint': {{
+                    'line-color': layer.color,
+                    'line-width': ['interpolate', ['linear'], ['zoom'], ...layer.width]
+                }}
+            }});
+        }});
+
+        // Bus Routes (Styled by the RGB column you created)
+        map.addLayer({{
+            id: 'bus-layer',
+            type: 'line',
+            source: 'bus',
+            layout: {{ 'line-join': 'round', 'line-cap': 'round' }},
+            paint: {{
+                'line-color': [
+                    'case',
+                    ['has', 'colour'],
+                    ['rgb', ['at', 0, ['get', 'colour']], ['at', 1, ['get', 'colour']], ['at', 2, ['get', 'colour']]],
+                    '#FF4500'
+                ],
+                'line-width': 3
+            }}
+        }});
+
+        // Layer: 3D Buildings
+        map.addLayer({{
+            'id': '3d-buildings', 'type': 'fill-extrusion', 'source': 'buildings',
+            'paint': {{
+                'fill-extrusion-color': ['case', ['has', 'fill_color'], ['get', 'fill_color'], '#4a4e5a'],
+                'fill-extrusion-height': ['coalesce', ['to-number', ['get', 'building_height']], 10],
+                'fill-extrusion-opacity': 0.6
+            }}
+        }});
+
+        // Popup Logic with Plus Code
+        map.on('click', '3d-buildings', (e) => {{
+            const p = e.features[0].properties;
+            const content = '<div class="popup-content">' +
+                '<strong>Building:</strong> ' + (p.building || 'N/A') + '<br><hr>' +
+                '<strong>Address:</strong> ' + (p.address || 'N/A') + '<br>' +
+                '<strong>Height:</strong> ' + (p.building_height || 0) + 'm<br>' +
+                '<strong>Plus Code:</strong> ' + (p.plus_code || 'N/A') +
+                '</div>';
+            new maplibregl.Popup().setLngLat(e.lngLat).setHTML(content).addTo(map);
+        }});
+    }});
+</script>
+</body>
+</html>
+"""
+    with open(result_dir, "w", encoding="utf-8") as f:
+        f.write(html_content)
+    return result_dir
