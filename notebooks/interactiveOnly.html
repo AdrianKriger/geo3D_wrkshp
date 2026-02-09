@@ -191,6 +191,7 @@
 
 
 
+
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LoD1 caveats</span></p>
 <ul class="nav bd-sidenav">
@@ -424,7 +425,7 @@ document.write(`
 <p><a class="reference external" href="https://mybinder.org/v2/gh/AdrianKriger/geo3D_wrkshp/HEAD?urlpath=%2Fdoc%2Ftree%2Fworkshop%2Fnotebooks%2FinteractiveOnly.ipynb"><img alt="Binder" src="../_images/launch-binder1.svg" /></a></p>
 <div class="alert alert-block alert-warning"><b>This notebook will:</b>
 <blockquote>
-<div><p><strong>1. produce an interactive <em>pseudo-3D</em> Building Model visualization</strong> <em>- via <a class="reference external" href="https://deckgl.readthedocs.io/en/latest/">pydeck</a> - which a user can navigate, query, share</em> <strong>that</strong>;</p>
+<div><p><strong>1. produce an interactive <em>pseudo-3D</em> Building Model visualization</strong> <em>- which a user can navigate, query, share</em> <strong>that</strong>;</p>
 <blockquote>
 <div><p><strong>i) colour buildings by type</strong> <em>(to easily visualize building stock)</em><br />
 <strong>ii) includes additional features</strong> <em>(parks, bus rapid transit route, etc.)</em></p>
@@ -454,7 +455,6 @@ document.write(`
 <span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
-<span class="c1">#from IPython.display import HTML</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">fiona</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">overpass</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
@@ -471,7 +471,9 @@ document.write(`
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Polygon</span> <span class="k">as</span> <span class="n">MplPolygon</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">PatchCollection</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pydeck</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pdk</span>
+<span class="c1">#import pydeck as pdk</span>
+
+<span class="c1">#from IPython.display import IFrame, display</span>
 </pre></div>
 </div>
 </div>
@@ -660,71 +662,10 @@ document.write(`
 </div>
 </div>
 </div>
-<p><strong><a class="reference external" href="https://deckgl.readthedocs.io/en/latest/">pydeck</a> needs an area and a center</strong>, harvest from osm.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;[out:json][timeout:180];</span>
-<span class="s2">        area[boundary=administrative][name=&#39;</span><span class="si">{0}</span><span class="s2">&#39;] -&gt; .a;</span>
-<span class="s2">            (</span>
-<span class="s2">            way[amenity~&#39;university|research_institute&#39;][name=&#39;</span><span class="si">{2}</span><span class="s2">&#39;](area.a);</span>
-<span class="s2">            </span><span class="si">{1}</span><span class="s2">[place][place~&quot;suburb|town|city|count|state|village|borough|quarter|neighbourhood&quot;][name=&#39;</span><span class="si">{2}</span><span class="s2">&#39;](area.a);</span>
-<span class="s2">            );</span>
-<span class="s2">        out geom;</span>
-<span class="s2">        &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">large</span><span class="p">,</span> <span class="n">osm_type</span><span class="p">,</span> <span class="n">focus</span><span class="p">)</span>
-
-<span class="c1">#- execute function from city3D, harvest aoi and return GeoDataFrameLite | hoem-baked gdf</span>
-<span class="n">aoi</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">overpass_to_gdf</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
-<span class="n">aoi</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>boundary</th>
-      <th>name</th>
-      <th>place</th>
-      <th>type</th>
-      <th>geometry</th>
-      <th>osm_id</th>
-      <th>osm_type</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>place</td>
-      <td>Mamre</td>
-      <td>village</td>
-      <td>boundary</td>
-      <td>POLYGON ((18.4837963 -33.5141526, 18.4838104 -...</td>
-      <td>2198487</td>
-      <td>relation</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- get the location for pydeck. combine all geometries</span>
-<span class="n">geom</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">unary_union</span><span class="p">(</span><span class="n">aoi</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">])</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- get the location for the pseudo-3D viz. combine all geometries</span>
+<span class="n">geom</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">unary_union</span><span class="p">(</span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">])</span>
 <span class="c1"># centroid</span>
 <span class="n">xy</span> <span class="o">=</span> <span class="p">(</span><span class="n">geom</span><span class="o">.</span><span class="n">centroid</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">geom</span><span class="o">.</span><span class="n">centroid</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
 
@@ -1041,7 +982,7 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
 <span class="s2">           out geom;</span>
 <span class="s2">           &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">large</span><span class="p">,</span> <span class="n">focus</span><span class="p">)</span>
 
-<span class="n">green_spaces</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">overpass_to_gdf</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">geojson</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">green_spaces</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">overpass_to_gdf</span><span class="p">(</span><span class="n">query</span><span class="p">)</span><span class="c1">#, geojson=True)</span>
 
 <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;[out:json][timeout:180];</span>
 <span class="s2">            // --main area</span>
@@ -1058,23 +999,23 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
 <span class="s2">            out geom;</span>
 <span class="s2">            &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">large</span><span class="p">,</span> <span class="n">focus</span><span class="p">)</span>
 
-<span class="n">water_spaces</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">overpass_to_gdf</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">geojson</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">water_spaces</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">overpass_to_gdf</span><span class="p">(</span><span class="n">query</span><span class="p">)</span><span class="c1">#, geojson=True)</span>
 
-<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;[out:json][timeout:180];</span>
-<span class="s2">        // --main area</span>
-<span class="s2">        area[name=&#39;</span><span class="si">{0}</span><span class="s2">&#39;]-&gt;.b;</span>
-<span class="s2">        // -- target area ~ can be way or relation</span>
-<span class="s2">        wr(area.b)[name=&#39;</span><span class="si">{1}</span><span class="s2">&#39;];</span>
-<span class="s2">        map_to_area -&gt; .a;</span>
-<span class="s2">            (</span>
-<span class="s2">            // query</span>
-<span class="s2">            way[&#39;landuse&#39;=&#39;farmland&#39;](area.a);</span>
-<span class="s2">            );</span>
-<span class="s2">        // print results</span>
-<span class="s2">        out geom;</span>
-<span class="s2">        &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">large</span><span class="p">,</span> <span class="n">focus</span><span class="p">)</span>
-
-<span class="n">p_spaces</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">overpass_to_gdf</span><span class="p">(</span><span class="n">query</span><span class="p">,</span> <span class="n">geojson</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1">#query = &quot;&quot;&quot;[out:json][timeout:180];</span>
+<span class="c1">#        // --main area</span>
+<span class="c1">#        area[name=&#39;{0}&#39;]-&gt;.b;</span>
+<span class="c1">#        // -- target area ~ can be way or relation</span>
+<span class="c1">#        wr(area.b)[name=&#39;{1}&#39;];</span>
+<span class="c1">#        map_to_area -&gt; .a;</span>
+<span class="c1">#            (</span>
+<span class="c1">#            // query</span>
+<span class="c1">#            way[&#39;landuse&#39;=&#39;farmland&#39;](area.a);</span>
+<span class="c1">#            );</span>
+<span class="c1">#        // print results</span>
+<span class="c1">#        out geom;</span>
+<span class="c1">#        &quot;&quot;&quot;.format(large, focus)</span>
+<span class="c1">#</span>
+<span class="c1">#p_spaces = city3D.overpass_to_gdf(query, geojson=True)</span>
 </pre></div>
 </div>
 </div>
@@ -1317,107 +1258,34 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## ~ (x, y) - bl, tl, tr, br  ~~ or ~~ sw, nw, ne, se</span>
-<span class="c1">#area = [[[18.4377, -33.9307], [18.4377, -33.9283], [18.4418, -33.9283], [18.4418, -33.9307]]]</span>
-<span class="n">area</span> <span class="o">=</span> <span class="p">[[[</span><span class="n">bbox</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="n">bbox</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">3</span><span class="p">]],</span> 
-         <span class="p">[</span><span class="n">bbox</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">3</span><span class="p">]],</span> <span class="p">[</span><span class="n">bbox</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">bbox</span><span class="p">[</span><span class="mi">1</span><span class="p">]]]]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- create pseudo-3D viz</span>
 
-<span class="c1">#- pydeck can’t serialize Shapely objects directly. convert it to a list of coordinates</span>
-<span class="n">paths</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">gdf_to_pathlayer</span><span class="p">(</span><span class="n">Rgdf</span><span class="p">)</span>
-<span class="n">builds</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">gdf_to_geojson</span><span class="p">(</span><span class="n">df2</span><span class="p">)</span>
+<span class="n">file</span> <span class="o">=</span> <span class="s1">&#39;./result/interactiveOnly.html&#39;</span> <span class="c1"># will name and save html here</span>
 
-<span class="c1">## ~ (y, x)</span>
-<span class="n">view_state</span> <span class="o">=</span> <span class="n">pdk</span><span class="o">.</span><span class="n">ViewState</span><span class="p">(</span><span class="n">latitude</span><span class="o">=</span><span class="n">xy</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">longitude</span><span class="o">=</span><span class="n">xy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">zoom</span><span class="o">=</span><span class="mf">16.5</span><span class="p">,</span> <span class="n">max_zoom</span><span class="o">=</span><span class="mi">19</span><span class="p">,</span> <span class="n">pitch</span><span class="o">=</span><span class="mi">72</span><span class="p">,</span> 
-                                   <span class="n">bearing</span><span class="o">=</span><span class="mi">80</span><span class="p">)</span>
-
-<span class="n">land</span> <span class="o">=</span> <span class="n">pdk</span><span class="o">.</span><span class="n">Layer</span><span class="p">(</span>
-    <span class="s2">&quot;PolygonLayer&quot;</span><span class="p">,</span>
-    <span class="c1">#&quot;GeoJsonLayer&quot;,</span>
-    <span class="n">area</span><span class="p">,</span>
-    <span class="c1">#build_df,</span>
-    <span class="n">stroked</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="c1"># processes the data as a flat longitude-latitude pair</span>
-    <span class="n">get_polygon</span><span class="o">=</span><span class="s2">&quot;-&quot;</span><span class="p">,</span>
-    <span class="n">get_fill_color</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-
-<span class="p">)</span>
-<span class="n">building_layer</span> <span class="o">=</span> <span class="n">pdk</span><span class="o">.</span><span class="n">Layer</span><span class="p">(</span>
-    <span class="c1">#&quot;PolygonLayer&quot;,</span>
-    <span class="s2">&quot;GeoJsonLayer&quot;</span><span class="p">,</span>
-    <span class="n">builds</span><span class="p">,</span>
-    <span class="n">opacity</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
-    <span class="n">stroked</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">get_polygon</span><span class="o">=</span><span class="s2">&quot;geometry.coordinates&quot;</span><span class="p">,</span>
-    <span class="n">filled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">extruded</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">wireframe</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">get_elevation</span><span class="o">=</span><span class="s2">&quot;properties.building_height&quot;</span><span class="p">,</span>
-    <span class="c1">#get_fill_color=&quot;[255, 255, 255]&quot;, #255, 255, 255</span>
-    <span class="n">get_fill_color</span><span class="o">=</span><span class="s2">&quot;properties.fill_color&quot;</span><span class="p">,</span>
-    <span class="n">get_line_color</span><span class="o">=</span><span class="s2">&quot;properties.fill_color&quot;</span><span class="p">,</span><span class="c1">#[255, 255, 255],</span>
-    <span class="n">auto_highlight</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">pickable</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">greenspaces_layer</span> <span class="o">=</span>  <span class="n">pdk</span><span class="o">.</span><span class="n">Layer</span><span class="p">(</span>
-    <span class="s2">&quot;GeoJsonLayer&quot;</span><span class="p">,</span>
-    <span class="n">green_spaces</span><span class="p">,</span>
-    <span class="n">opacity</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
-    <span class="n">stroked</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">filled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">wireframe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">get_fill_color</span><span class="o">=</span><span class="s2">&quot;[14, 140, 58]&quot;</span><span class="p">,</span>
-    <span class="n">get_line_color</span><span class="o">=</span><span class="s1">&#39;[14, 140, 58]&#39;</span><span class="p">,</span>
+<span class="n">html</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">create_maplibre_3Dviz</span><span class="p">(</span>
+    <span class="n">result_dir</span> <span class="o">=</span> <span class="n">file</span><span class="p">,</span> 
+    <span class="n">buildings_gdf</span> <span class="o">=</span> <span class="n">df2</span><span class="p">,</span>
+    <span class="n">water_gdf</span> <span class="o">=</span> <span class="n">water_spaces</span><span class="p">,</span>
+    <span class="n">green_gdf</span> <span class="o">=</span> <span class="n">green_spaces</span><span class="p">,</span>
+    <span class="n">brt_gdf</span> <span class="o">=</span> <span class="n">Rgdf</span><span class="p">,</span>
+    <span class="n">center</span> <span class="o">=</span> <span class="n">xy</span>
 <span class="p">)</span>
 
-<span class="n">water_layer</span> <span class="o">=</span>  <span class="n">pdk</span><span class="o">.</span><span class="n">Layer</span><span class="p">(</span>
-    <span class="s2">&quot;GeoJsonLayer&quot;</span><span class="p">,</span>
-    <span class="n">water_spaces</span><span class="p">,</span>
-    <span class="n">opacity</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
-    <span class="n">stroked</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">filled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">wireframe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">get_fill_color</span><span class="o">=</span><span class="s2">&quot;[35, 35, 142]&quot;</span><span class="p">,</span>
-    <span class="n">get_line_color</span><span class="o">=</span><span class="s1">&#39;[35, 35, 142]&#39;</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">r_layer</span> <span class="o">=</span> <span class="n">pdk</span><span class="o">.</span><span class="n">Layer</span><span class="p">(</span>
-    <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;PathLayer&quot;</span><span class="p">,</span>
-    <span class="n">data</span><span class="o">=</span><span class="n">paths</span><span class="p">,</span>
-    <span class="n">get_color</span><span class="o">=</span><span class="s1">&#39;colour&#39;</span><span class="p">,</span> 
-    <span class="n">get_path</span><span class="o">=</span><span class="s2">&quot;path&quot;</span><span class="p">,</span>
-    <span class="n">get_width</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-    <span class="n">auto_highlight</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>      
-    <span class="n">pickable</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>             
-<span class="p">)</span>
-<span class="n">p_layer</span> <span class="o">=</span>  <span class="n">pdk</span><span class="o">.</span><span class="n">Layer</span><span class="p">(</span>
-    <span class="s2">&quot;GeoJsonLayer&quot;</span><span class="p">,</span>
-    <span class="n">p_spaces</span><span class="p">,</span>
-    <span class="n">opacity</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span>
-    <span class="n">stroked</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">filled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">wireframe</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">get_fill_color</span><span class="o">=</span><span class="s2">&quot;[170, 83, 3]&quot;</span><span class="p">,</span>
-    <span class="n">get_line_color</span><span class="o">=</span><span class="s1">&#39;[170, 83, 3]&#39;</span><span class="p">,</span>
-<span class="p">)</span>
-
-<span class="n">tooltip</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;html&quot;</span><span class="p">:</span> <span class="s2">&quot;&lt;b&gt;Levels:&lt;/b&gt; {building:levels} &lt;br/&gt; &lt;b&gt;Address:&lt;/b&gt; </span><span class="si">{address}</span><span class="se">\</span>
-<span class="s2">&lt;br/&gt; &lt;b&gt;Plus Code:&lt;/b&gt; </span><span class="si">{plus_code}</span><span class="s2"> &lt;br/&gt; &lt;b&gt;Building Type:&lt;/b&gt; </span><span class="si">{building}</span><span class="s2">&quot;</span><span class="p">}</span>
-
-<span class="c1">#change the tooltip to show bus routes and comment out the previous</span>
-<span class="c1">#tooltip = {&quot;html&quot;: &quot;&lt;b&gt;Route:&lt;/b&gt; {name} &lt;br/&gt;&quot;}</span>
-
-<span class="n">r</span> <span class="o">=</span> <span class="n">pdk</span><span class="o">.</span><span class="n">Deck</span><span class="p">(</span><span class="n">layers</span><span class="o">=</span><span class="p">[</span><span class="n">greenspaces_layer</span><span class="p">,</span> <span class="n">p_layer</span><span class="p">,</span> <span class="n">water_layer</span><span class="p">,</span> <span class="n">r_layer</span><span class="p">,</span> <span class="n">building_layer</span><span class="p">],</span>
-             <span class="c1">#views=[{&quot;@@type&quot;: &quot;MapView&quot;, &quot;controller&quot;: True}],</span>
-             <span class="n">initial_view_state</span><span class="o">=</span><span class="n">view_state</span><span class="p">,</span>
-             <span class="n">map_style</span> <span class="o">=</span> <span class="s1">&#39;dark_no_labels&#39;</span><span class="p">,</span> <span class="c1">#pdk.map_styles.LIGHT,</span>
-             <span class="n">tooltip</span><span class="o">=</span><span class="n">tooltip</span><span class="p">)</span>
-<span class="c1">#save</span>
-<span class="c1">#r.to_html(&quot;_static/interactive.html&quot;, offline=True)   #- uncomment</span>
-
-<span class="c1"># Show the HTML file in a JupyterBook for rendering - below (it might be hidden / narrow) we open. delete this in practice</span>
+<span class="n">city3D</span><span class="o">.</span><span class="n">show_interactive_html</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+        <iframe
+            width="100%"
+            height="500"
+            src="./result/interactiveOnly.html"
+            frameborder="0"
+            allowfullscreen
+            allow-scripts allow-same-origin
+        ></iframe>
+        </div></div>
 </div>
 <iframe src="../_static/interactive.html" width="100%" height="600" frameborder="0"></iframe><p><strong>on a laptop without a mouse:</strong></p>
 <ul class="simple">
@@ -1982,7 +1850,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.482070
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.443360
 </pre></div>
 </div>
 </div>
@@ -2866,6 +2734,11 @@ We are asking: <strong>How much energy (MWh/year) could these roofs harvest, giv
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Tend</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">Tend</span> <span class="o">-</span> <span class="n">Tstart</span><span class="p">))))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:02:30.446895
 </pre></div>
 </div>
 </div>
