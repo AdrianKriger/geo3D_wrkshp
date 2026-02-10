@@ -9,7 +9,6 @@ dependencies:
 - gdal=3.7.3
 - pyproj=3.6.1
 - mapbox_earcut=1.0.1
-- pydeck=0.8.0
 - topojson=1.7
 - jupyter-book
 - jupyterlab
@@ -23,5 +22,3 @@ dependencies:
   - cjio==0.7.3                                        #- python CLI to process and manipulate CityJSON files
   - overpass==0.7
   - openlocationcode==1.0.1                            #- google 'plus codes' at https://github.com/google/open-location-code
-  - flask==3.1.2
-
