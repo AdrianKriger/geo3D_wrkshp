@@ -439,7 +439,7 @@ b)  a measure of <strong>Building Volume per Capita</strong></p>
 <blockquote>
 <div><ul class="simple">
 <li><p>calculate percentage <strong>homes and population with direct access to on-site renewable energy infrastructure</strong> <em>–rooftop photovoltaic panels (PV) and solar water heaters (SWH).</em></p></li>
-<li><p>estimate the <a class="reference external" href="https://www.worldbank.org/en/topic/energy/publication/solar-photovoltaic-power-potential-by-country"><strong>Annual Average Solar</strong> <em>(photovoltaic)</em> <strong>Potential</strong></a>, per home.**</p></li>
+<li><p>estimate the <a class="reference external" href="https://www.worldbank.org/en/topic/energy/publication/solar-photovoltaic-power-potential-by-country"><strong>Annual Average Solar</strong> <em>(photovoltaic)</em> <strong>Potential</strong></a>, per home.</p></li>
 </ul>
 </div></blockquote>
 <p><strong>3. produce an interactive visualization</strong> <em>- which a user can navigate, query and share</em> <strong>that</strong>;</p>
@@ -2254,7 +2254,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 <div class="alert alert-block alert-success"><b>Additional Features:</b> 
 <p>Because we do NOT harvest an online basemap for the pseudo-3D visualisation we need to create our own.<br />
-We add features to our home-baked visualization; <em>namely: roads and parks. We get this from <a class="reference external" href="https://en.wikipedia.org/wiki/OpenStreetMap">OpenStreetMap</a> as well.</em>.</div></p>
+We add features to our home-baked visualization; <em>namely: roads and parks. We get this from the <a class="reference external" href="https://en.wikipedia.org/wiki/OpenStreetMap">OpenStreetMap</a> as well.</em>.</div></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- harvest ROADS </span>
@@ -2377,9 +2377,9 @@ We add features to our home-baked visualization; <em>namely: roads and parks. We
     <span class="n">combined_ageom</span>
 <span class="p">)</span>
 
-<span class="n">green_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;park&#39;</span><span class="p">,</span> <span class="s1">&#39;garden&#39;</span><span class="p">,</span> <span class="s1">&#39;nature_reserve&#39;</span><span class="p">,</span> <span class="s1">&#39;common&#39;</span><span class="p">,</span> <span class="s1">&#39;grass&#39;</span><span class="p">,</span> <span class="s1">&#39;pitch&#39;</span><span class="p">]</span>
+<span class="n">green_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;park&#39;</span><span class="p">,</span> <span class="s1">&#39;garden&#39;</span><span class="p">,</span> <span class="s1">&#39;nature_reserve&#39;</span><span class="p">,</span> <span class="s1">&#39;common&#39;</span><span class="p">,</span> <span class="s1">&#39;grass&#39;</span><span class="p">,</span> <span class="s1">&#39;pitch&#39;</span><span class="p">]</span> <span class="c1">#, recreation_ground</span>
 
-<span class="c1"># This checks: &quot;Is the value in the leisure column one of the items in my list?&quot;</span>
+<span class="c1"># This checks: &quot;Is one of the items in the green_types list in the leisure column of the gdf_green.gdf?&quot;</span>
 <span class="n">gdf_green</span> <span class="o">=</span> <span class="n">gdf_green</span><span class="p">[</span><span class="n">gdf_green</span><span class="p">[</span><span class="s1">&#39;leisure&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">green_types</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">gdf_green</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
@@ -2499,14 +2499,14 @@ ERROR 1: Non closed ring detected.
 <span class="n">city3D</span><span class="o">.</span><span class="n">create_maplibre_3Dviz</span><span class="p">(</span>
     <span class="n">file</span><span class="p">,</span>
     <span class="n">buildings_gdf</span><span class="o">=</span><span class="n">gdf</span><span class="p">,</span>
-    <span class="n">roads_gdf</span><span class="o">=</span><span class="n">gdf_roads</span><span class="p">,</span>    <span class="c1"># Added: Your home-baked roads</span>
+    <span class="n">roads_gdf</span><span class="o">=</span><span class="n">gdf_roads</span><span class="p">,</span>    <span class="c1"># Add: home-baked roads</span>
     <span class="n">green_gdf</span><span class="o">=</span><span class="n">gdf_green</span><span class="p">,</span>
     <span class="n">center</span><span class="o">=</span><span class="n">xy</span><span class="p">,</span>
-    <span class="n">offline</span><span class="o">=</span><span class="kc">True</span>           <span class="c1"># Toggle for Full Bakery mode   </span>
+    <span class="n">offline</span><span class="o">=</span><span class="kc">True</span>            <span class="c1"># toggle home-bakery   </span>
 <span class="p">)</span>
     
-<span class="c1">#- will open in a new browser window. Jupyter security restrictions prevent opening here. </span>
-<span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;file://&#39;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">file</span><span class="p">))</span>
+<span class="c1">#- uncomment. will open in a new browser window. Jupyter sercurity restrictions prevent opening here. </span>
+<span class="c1">#webbrowser.open(&#39;file://&#39; + os.path.realpath(file))</span>
 </pre></div>
 </div>
 </div>
