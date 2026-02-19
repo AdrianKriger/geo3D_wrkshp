@@ -1283,28 +1283,37 @@ Datum: World Geodetic System 1984 ensemble
 <span class="n">geoms</span> <span class="o">=</span> <span class="n">ts_copy</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 <span class="n">tree</span> <span class="o">=</span> <span class="n">STRtree</span><span class="p">(</span><span class="n">geoms</span><span class="p">)</span>
 <span class="c1"># Find overlapping pairs</span>
-<span class="n">pairs</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">geom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">geoms</span><span class="p">):</span>
+<span class="c1">#pairs = []</span>
+<span class="c1">#for i, geom in enumerate(geoms):</span>
     <span class="c1"># query returns candidates that intersect envelope</span>
-    <span class="n">candidates</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">:</span>
+<span class="c1">#    candidates = tree.query(geom)</span>
+<span class="c1">#    for c in candidates:</span>
         <span class="c1"># find index by identity in the original geoms list</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">j</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">geoms</span><span class="p">)</span> <span class="k">if</span> <span class="n">g</span> <span class="ow">is</span> <span class="n">c</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
-            <span class="k">continue</span>  <span class="c1"># skip if candidate is not found</span>
-        <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span> <span class="ow">and</span> <span class="n">geom</span><span class="o">.</span><span class="n">overlaps</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
-            <span class="n">pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">))</span>
+<span class="c1">#        try:</span>
+<span class="c1">#            j = next(idx for idx, g in enumerate(geoms) if g is c)</span>
+<span class="c1">#        except StopIteration:</span>
+<span class="c1">#            continue  # skip if candidate is not found</span>
+<span class="c1">#        if i != j and geom.overlaps(c):</span>
+<span class="c1">#            pairs.append((i, j))</span>
 
-<span class="n">joined</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;index_left&quot;</span><span class="p">,</span> <span class="s2">&quot;index_right&quot;</span><span class="p">])</span>
+<span class="c1">#joined = pd.DataFrame(pairs, columns=[&quot;index_left&quot;, &quot;index_right&quot;])</span>
 
 <span class="c1">#- remove self matches and select overlapping geometries</span>
-<span class="n">left_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="p">[</span><span class="s2">&quot;index_left&quot;</span><span class="p">]</span>
-<span class="n">right_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="p">[</span><span class="s2">&quot;index_right&quot;</span><span class="p">]</span>
-<span class="n">mask</span> <span class="o">=</span> <span class="n">left_idx</span> <span class="o">!=</span> <span class="n">right_idx</span>
-<span class="n">overlap_idx</span> <span class="o">=</span> <span class="n">left_idx</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+<span class="c1">#left_idx = joined[&quot;index_left&quot;]</span>
+<span class="c1">#right_idx = joined[&quot;index_right&quot;]</span>
+<span class="c1">#mask = left_idx != right_idx</span>
+<span class="c1">#overlap_idx = left_idx[mask].unique()</span>
 
-<span class="n">new_df1</span> <span class="o">=</span> <span class="n">ts_copy</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">overlap_idx</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1">#- Query the tree for overlaps</span>
+<span class="c1"># This returns two arrays: &#39;i&#39; (index in geoms we are checking) and &#39;j&#39; (index in the tree it overlapped with)</span>
+<span class="c1"># Vectorized query: fastest way to find overlaps</span>
+<span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">geoms</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="s2">&quot;overlaps&quot;</span><span class="p">)</span>
+
+<span class="c1">#- filter self-matches and get unique indices of all involved buildings</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span>
+<span class="n">overlap_idx</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="n">mask</span><span class="p">])</span>
+
+<span class="n">new_df1</span> <span class="o">=</span> <span class="n">gdf_copy</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">overlap_idx</span><span class="p">)]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">))))</span>

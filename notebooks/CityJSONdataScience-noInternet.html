@@ -1140,7 +1140,12 @@ BVPC = total population of a community divided by sum of building volume</div><d
     <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">gdf_pop</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()</span>
 <span class="p">]</span>
 
-<span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;bvpc&#39;</span><span class="p">]</span> <span class="o">=</span>  <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;volume&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;pop&#39;</span><span class="p">]</span>
+<span class="c1">#gdf_pop[&#39;bvpc&#39;] =  gdf_pop[&#39;volume&#39;] / gdf_pop[&#39;pop&#39;]</span>
+<span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;bvpc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
+    <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;pop&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;volume&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;pop&#39;</span><span class="p">],</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="p">)</span>
 
 <span class="n">gdf_pop</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
@@ -1249,14 +1254,14 @@ BVPC = total population of a community divided by sum of building volume</div><d
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>count    2996.000000
-mean             inf
-std              NaN
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>count    2981.000000
+mean      145.564958
+std       100.921840
 min        30.084609
-25%        89.761428
-50%       117.238453
-75%       166.938368
-max              inf
+25%        89.679216
+50%       116.849891
+75%       165.807902
+max      2315.095961
 Name: bvpc, dtype: float64
 </pre></div>
 </div>
@@ -1277,7 +1282,7 @@ Name: bvpc, dtype: float64
 </div>
 </div>
 <div class="alert alert-block alert-info"><b></b>
-<p><strong>This BVPC value is for all the buildings; we only want buildings people live in</strong> <em>(homes)</em>.</p>
+<p><strong>This BVPC value is for all buildings with a <code class="docutils literal notranslate"><span class="pre">population</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>. Buildings people live in</strong> <em>(homes)</em>.</p>
 <p>And we can seperate <code class="docutils literal notranslate"><span class="pre">building:house</span></code> from <code class="docutils literal notranslate"><span class="pre">building:cabin</span></code> and <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> to undertand the differences between <em><strong>formal and informal</strong></em> housing in this area.</p>
 <p><strong>We want to understand the living space <em>(the cubic-meter BVPC value)</em> each person has in their home</strong></p>
 </div><div class="cell docutils container">
@@ -2293,20 +2298,20 @@ We add features to our home-baked visualization; <em>namely: roads and parks. We
       <th>name</th>
       <th>osm_id</th>
       <th>z_order</th>
-      <th>tags</th>
-      <th>destination:lanes</th>
-      <th>destination:ref:to</th>
+      <th>bridge</th>
       <th>lanes</th>
-      <th>maxheight:signed</th>
+      <th>layer</th>
+      <th>maxspeed</th>
+      <th>name:etymology:wikidata</th>
       <th>...</th>
-      <th>placement:start</th>
+      <th>crossing</th>
+      <th>tactile_paving</th>
+      <th>placement:backward</th>
+      <th>placement:forward</th>
+      <th>cycleway:right</th>
+      <th>crossing:island</th>
       <th>parking:left</th>
       <th>parking:left:orientation</th>
-      <th>crossing:island</th>
-      <th>tactile_paving</th>
-      <th>handrail</th>
-      <th>ramp</th>
-      <th>horse</th>
       <th>indoor</th>
       <th>level</th>
     </tr>
@@ -2314,16 +2319,16 @@ We add features to our home-baked visualization; <em>namely: roads and parks. We
   <tbody>
     <tr>
       <th>0</th>
-      <td>LINESTRING (18.4387715 -33.9314325, 18.4393724...</td>
+      <td>LINESTRING (18.4342734 -33.9196189, 18.4321211...</td>
       <td>motorway</td>
       <td>Nelson Mandela Boulevard</td>
-      <td>4256067</td>
-      <td>9</td>
-      <td>{'destination:lanes': 'Cape Town International...</td>
-      <td>Cape Town International Airport;Somerset West;...</td>
-      <td>M3</td>
-      <td>3</td>
-      <td>no</td>
+      <td>4252036</td>
+      <td>29</td>
+      <td>yes</td>
+      <td>2</td>
+      <td>1</td>
+      <td>80</td>
+      <td>Q8023</td>
       <td>...</td>
       <td></td>
       <td></td>
@@ -2338,16 +2343,16 @@ We add features to our home-baked visualization; <em>namely: roads and parks. We
     </tr>
     <tr>
       <th>1</th>
-      <td>LINESTRING (18.4405801 -33.9321036, 18.4404843...</td>
+      <td>LINESTRING (18.4330495 -33.9248143, 18.4330235...</td>
       <td>motorway</td>
       <td>Nelson Mandela Boulevard</td>
-      <td>4256068</td>
-      <td>9</td>
-      <td>{'destination:lanes': 'Cape Town||', 'lanes': ...</td>
-      <td>Cape Town||</td>
-      <td></td>
-      <td>3</td>
-      <td></td>
+      <td>4252037</td>
+      <td>39</td>
+      <td>yes</td>
+      <td>2</td>
+      <td>2</td>
+      <td>80</td>
+      <td>Q8023</td>
       <td>...</td>
       <td></td>
       <td></td>
@@ -2362,7 +2367,7 @@ We add features to our home-baked visualization; <em>namely: roads and parks. We
     </tr>
   </tbody>
 </table>
-<p>2 rows × 91 columns</p>
+<p>2 rows × 120 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -2415,24 +2420,24 @@ ERROR 1: Non closed ring detected.
   <thead>
     <tr style="text-align: right;">
       <th></th>
+      <th>barrier</th>
       <th>building</th>
       <th>geometry</th>
       <th>leisure</th>
       <th>name</th>
       <th>osm_id</th>
       <th>sport</th>
-      <th>tags</th>
-      <th>operator</th>
-      <th>operator:type</th>
-      <th>operator:wikidata</th>
+      <th>surface</th>
+      <th>wikidata</th>
+      <th>wikimedia_commons</th>
       <th>...</th>
+      <th>charge:adult</th>
       <th>charge:child</th>
       <th>fee</th>
       <th>swimming_pool</th>
+      <th>garden:style</th>
       <th>garden:type</th>
       <th>hoops</th>
-      <th>addr:housenumber</th>
-      <th>building:levels</th>
       <th>phone</th>
       <th>contact:facebook</th>
       <th>opening_hours</th>
@@ -2440,17 +2445,17 @@ ERROR 1: Non closed ring detected.
   </thead>
   <tbody>
     <tr>
-      <th>1</th>
+      <th>3</th>
       <td></td>
-      <td>MULTIPOLYGON (((18.4423637 -33.9280685, 18.442...</td>
-      <td>park</td>
-      <td>Trafalgar Park</td>
-      <td>32441919</td>
       <td></td>
-      <td>{'operator': 'City of Cape Town', 'operator:ty...</td>
-      <td>City of Cape Town</td>
-      <td>government</td>
-      <td>Q1185115</td>
+      <td>MULTIPOLYGON (((18.4392484 -33.9360002, 18.438...</td>
+      <td>pitch</td>
+      <td></td>
+      <td>23872559</td>
+      <td>multi</td>
+      <td></td>
+      <td></td>
+      <td></td>
       <td>...</td>
       <td></td>
       <td></td>
@@ -2464,17 +2469,17 @@ ERROR 1: Non closed ring detected.
       <td></td>
     </tr>
     <tr>
-      <th>6</th>
+      <th>5</th>
       <td></td>
-      <td>MULTIPOLYGON (((18.4549953 -33.9361833, 18.454...</td>
+      <td></td>
+      <td>MULTIPOLYGON (((18.4423637 -33.9280685, 18.442...</td>
       <td>park</td>
-      <td>Queens Park Sports Ground</td>
-      <td>476408297</td>
+      <td>Trafalgar Park</td>
+      <td>32441919</td>
       <td></td>
-      <td>{'operator': 'City of Cape Town', 'operator:ty...</td>
-      <td>City of Cape Town</td>
-      <td>government</td>
-      <td>Q1185115</td>
+      <td></td>
+      <td></td>
+      <td></td>
       <td>...</td>
       <td></td>
       <td></td>
@@ -2489,12 +2494,12 @@ ERROR 1: Non closed ring detected.
     </tr>
   </tbody>
 </table>
-<p>2 rows × 36 columns</p>
+<p>2 rows × 41 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">file</span> <span class="o">=</span> <span class="s1">&#39;./result/interactiveOnlyAlt.html&#39;</span> <span class="c1"># will name and save html here</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">file</span> <span class="o">=</span> <span class="s1">&#39;./result/interactiveAlt.html&#39;</span> <span class="c1"># will name and save html here</span>
 
 <span class="n">city3D</span><span class="o">.</span><span class="n">create_maplibre_3Dviz</span><span class="p">(</span>
     <span class="n">file</span><span class="p">,</span>
@@ -2511,7 +2516,7 @@ ERROR 1: Non closed ring detected.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;./result/interactiveAlt.html&#39;
 </pre></div>
 </div>
 </div>

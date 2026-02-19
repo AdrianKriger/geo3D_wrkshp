@@ -191,6 +191,7 @@
 
 
 
+
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LoD1 caveats</span></p>
 <ul class="current nav bd-sidenav">
@@ -455,12 +456,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/adriankriger/miniconda3/envs/geo3D_gthbRepo07/lib/python3.9/site-packages/cjio/cityjson.py:12: UserWarning: pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools&lt;81.
-  from pkg_resources import resource_filename
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -508,7 +503,7 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- get the area [suburb]</span>
-<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;[out:json][timeout:30];</span>
+<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;[out:json][timeout:180];</span>
 <span class="s2">        area[boundary=administrative][name=&#39;</span><span class="si">{0}</span><span class="s2">&#39;] -&gt; .a;</span>
 <span class="s2">        (</span>
 <span class="s2">        way[amenity~&#39;university|research_institute&#39;][name=&#39;</span><span class="si">{1}</span><span class="s2">&#39;](area.a);</span>
@@ -617,7 +612,7 @@ document.write(`
 ERROR 1: Non closed ring detected.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.845234
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.854379
 </pre></div>
 </div>
 </div>
@@ -1035,28 +1030,37 @@ ERROR 1: Non closed ring detected.
 <span class="n">geoms</span> <span class="o">=</span> <span class="n">ts_copy</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 <span class="n">tree</span> <span class="o">=</span> <span class="n">STRtree</span><span class="p">(</span><span class="n">geoms</span><span class="p">)</span>
 <span class="c1"># Find overlapping pairs</span>
-<span class="n">pairs</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">geom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">geoms</span><span class="p">):</span>
+<span class="c1">#pairs = []</span>
+<span class="c1">#for i, geom in enumerate(geoms):</span>
     <span class="c1"># query returns candidates that intersect envelope</span>
-    <span class="n">candidates</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">geom</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">candidates</span><span class="p">:</span>
+<span class="c1">#    candidates = tree.query(geom)</span>
+<span class="c1">#    for c in candidates:</span>
         <span class="c1"># find index by identity in the original geoms list</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">j</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">g</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">geoms</span><span class="p">)</span> <span class="k">if</span> <span class="n">g</span> <span class="ow">is</span> <span class="n">c</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
-            <span class="k">continue</span>  <span class="c1"># skip if candidate is not found</span>
-        <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span> <span class="ow">and</span> <span class="n">geom</span><span class="o">.</span><span class="n">overlaps</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
-            <span class="n">pairs</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">))</span>
+<span class="c1">#        try:</span>
+<span class="c1">#            j = next(idx for idx, g in enumerate(geoms) if g is c)</span>
+<span class="c1">#        except StopIteration:</span>
+<span class="c1">#            continue  # skip if candidate is not found</span>
+<span class="c1">#        if i != j and geom.overlaps(c):</span>
+<span class="c1">#            pairs.append((i, j))</span>
 
-<span class="n">joined</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;index_left&quot;</span><span class="p">,</span> <span class="s2">&quot;index_right&quot;</span><span class="p">])</span>
+<span class="c1">#joined = pd.DataFrame(pairs, columns=[&quot;index_left&quot;, &quot;index_right&quot;])</span>
 
 <span class="c1">#- remove self matches and select overlapping geometries</span>
-<span class="n">left_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="p">[</span><span class="s2">&quot;index_left&quot;</span><span class="p">]</span>
-<span class="n">right_idx</span> <span class="o">=</span> <span class="n">joined</span><span class="p">[</span><span class="s2">&quot;index_right&quot;</span><span class="p">]</span>
-<span class="n">mask</span> <span class="o">=</span> <span class="n">left_idx</span> <span class="o">!=</span> <span class="n">right_idx</span>
-<span class="n">overlap_idx</span> <span class="o">=</span> <span class="n">left_idx</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+<span class="c1">#left_idx = joined[&quot;index_left&quot;]</span>
+<span class="c1">#right_idx = joined[&quot;index_right&quot;]</span>
+<span class="c1">#mask = left_idx != right_idx</span>
+<span class="c1">#overlap_idx = left_idx[mask].unique()</span>
 
-<span class="n">new_df1</span> <span class="o">=</span> <span class="n">ts_copy</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">overlap_idx</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1">#- Query the tree for overlaps</span>
+<span class="c1"># This returns two arrays: &#39;i&#39; (index in geoms we are checking) and &#39;j&#39; (index in the tree it overlapped with)</span>
+<span class="c1"># Vectorized query: fastest way to find overlaps</span>
+<span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">geoms</span><span class="p">,</span> <span class="n">predicate</span><span class="o">=</span><span class="s2">&quot;overlaps&quot;</span><span class="p">)</span>
+
+<span class="c1">#- filter self-matches and get unique indices of all involved buildings</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span>
+<span class="n">overlap_idx</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="n">mask</span><span class="p">])</span>
+
+<span class="n">new_df1</span> <span class="o">=</span> <span class="n">ts_copy</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">overlap_idx</span><span class="p">)]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">))))</span>
@@ -1064,7 +1068,7 @@ ERROR 1: Non closed ring detected.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.252897
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.087169
 </pre></div>
 </div>
 </div>
@@ -1142,7 +1146,7 @@ ERROR 1: Non closed ring detected.
       <td>NaN</td>
       <td>NaN</td>
       <td>MULTIPOLYGON (((266353.2773689979 6242850.2127...</td>
-      <td>4.315807</td>
+      <td>4.110000</td>
     </tr>
     <tr>
       <th>1</th>
@@ -1166,7 +1170,7 @@ ERROR 1: Non closed ring detected.
       <td>NaN</td>
       <td>NaN</td>
       <td>MULTIPOLYGON (((265366.0837814461 6242509.5266...</td>
-      <td>16.917141</td>
+      <td>17.030001</td>
     </tr>
   </tbody>
 </table>
@@ -1211,7 +1215,7 @@ ERROR 1: Non closed ring detected.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.028041
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.028146
 </pre></div>
 </div>
 </div>
@@ -1279,8 +1283,8 @@ ERROR 1: Non closed ring detected.
       <td>NaN</td>
       <td>...</td>
       <td>4.1</td>
-      <td>8.42</td>
-      <td>4.315807</td>
+      <td>8.21</td>
+      <td>4.110000</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>4FRW3FCF+946</td>
@@ -1303,8 +1307,8 @@ ERROR 1: Non closed ring detected.
       <td>NaN</td>
       <td>...</td>
       <td>6.9</td>
-      <td>23.82</td>
-      <td>16.917141</td>
+      <td>23.93</td>
+      <td>17.030001</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>4FRW3F96+6MG</td>
@@ -1385,7 +1389,7 @@ ERROR 1: Non closed ring detected.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:02:35.461151
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:58.017503
 </pre></div>
 </div>
 </div>
@@ -1494,7 +1498,7 @@ ERROR 1: Non closed ring detected.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:02:58.076836
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:02:27.721386
 </pre></div>
 </div>
 </div>
