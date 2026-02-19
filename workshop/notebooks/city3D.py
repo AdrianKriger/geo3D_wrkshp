@@ -1204,7 +1204,7 @@ def _harvestSolar(input_pbf, jparams, minx, miny, maxx, maxy, crs):
 
     return gdf_solar_combined
 
-def process_osm_geoms(vsimem_path, input_pbf, layer_name, sql_where, aoi_geom):
+#def process_osm_geoms(vsimem_path, input_pbf, layer_name, sql_where, aoi_geom):
     """Generic helper to extract, parse tags, and clip OSM data"""
     
     #-extent
@@ -1265,6 +1265,77 @@ def process_osm_geoms(vsimem_path, input_pbf, layer_name, sql_where, aoi_geom):
     gdf = gdf[gdf.geometry.apply(lambda x: x.intersects(aoi_geom))]
     gdf.crs = "EPSG:4326"
     gdf = gdf.fillna("")
+    return gdf
+
+
+def process_osm_geoms(vsimem_path, input_pbf, layer_name, sql_where, aoi_geom):
+    """Generic helper to extract, parse tags, and clip OSM data"""
+    
+    # 1. Setup Buffering Logic
+    # 0.01 degrees is ~1.1km. We use this for both searching and clipping for these types.
+    if "highway IS NOT NULL" in sql_where or "leisure IS NOT NULL" in sql_where:
+        effective_geom = aoi_geom.buffer(0.01)
+    else:
+        effective_geom = aoi_geom
+
+    minx, miny, maxx, maxy = effective_geom.bounds
+    
+    gdal.UseExceptions()
+    gdal.SetConfigOption("OGR_GEOMETRY_ACCEPT_UNCLOSED_RING", "NO")
+    
+    # 2. Extract from PBF
+    gdal.VectorTranslate(
+        vsimem_path,
+        input_pbf,
+        format="GeoJSON",
+        layers=[layer_name],
+        options=[
+            "-where", sql_where,
+            "-spat", str(minx), str(miny), str(maxx), str(maxy)
+        ]
+    )
+    
+    gdf = read_vsimem_geojson(vsimem_path)
+    gdal.Unlink(vsimem_path)
+    
+    if gdf.empty:
+        return gdf
+
+    # 3. Safe Tag Parsing
+    def safe_convert(tag_string):
+        if isinstance(tag_string, str):
+            try:
+                formatted_string = "{" + tag_string.replace("=>", ":").replace("\n", " ") + "}"
+                return json.loads(formatted_string)
+            except:
+                return {}
+        return {}
+
+    gdf["tags"] = gdf["other_tags"].apply(safe_convert)
+    
+    # Use reset_index to ensure the concat joins on the correct rows
+    tags_df = pd.json_normalize(gdf['tags'])
+    gdf = pd.concat([gdf.reset_index(drop=True), tags_df.reset_index(drop=True)], axis=1)
+    
+    if 'other_tags' in gdf.columns: 
+        gdf = gdf.drop(columns=['other_tags'])
+    if 'tags' in gdf.columns: 
+        gdf = gdf.drop(columns=['tags'])
+
+    # 4. Standardize IDs
+    if 'osm_id' in gdf.columns:
+        if 'osm_way_id' in gdf.columns:
+            gdf['osm_id'] = [o if pd.notna(o) else w for o, w in zip(gdf['osm_id'], gdf['osm_way_id'])]
+            gdf = gdf.drop(columns=['osm_way_id'])
+    elif 'osm_way_id' in gdf.columns:
+        gdf = gdf.rename(columns={'osm_way_id': 'osm_id'})
+
+    # 5. Geometry Clip to the EFFECTIVE geometry (either AOI or 1km Buffer)
+    gdf = gdf[gdf.geometry.apply(lambda x: x.intersects(effective_geom))]
+    
+    gdf.crs = "EPSG:4326"
+    gdf = gdf.fillna("")
+    
     return gdf
 
 def show_interactive_html(html_path, width="100%", height=500):
