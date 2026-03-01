@@ -471,9 +471,6 @@ document.write(`
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="kn">import</span> <span class="n">Polygon</span> <span class="k">as</span> <span class="n">MplPolygon</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.collections</span><span class="w"> </span><span class="kn">import</span> <span class="n">PatchCollection</span>
-<span class="c1">#import pydeck as pdk</span>
-
-<span class="c1">#from IPython.display import IFrame, display</span>
 </pre></div>
 </div>
 </div>
@@ -657,7 +654,7 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># -- execute function. calculate building height</span>
-<span class="n">gdf</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">process_and_write_geojson</span><span class="p">(</span><span class="n">gdf</span><span class="p">)</span>
+<span class="n">gdf</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">bldHeights</span><span class="p">(</span><span class="n">gdf</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -713,10 +710,7 @@ document.write(`
       <th>amenity</th>
       <th>operator</th>
       <th>building_height</th>
-      <th>roof_height</th>
-      <th>ground_height</th>
-      <th>bottom_bridge_height</th>
-      <th>bottom_roof_height</th>
+      <th>min_height</th>
       <th>plus_code</th>
       <th>footprint</th>
       <th>geometry</th>
@@ -734,10 +728,7 @@ document.write(`
       <td>NaN</td>
       <td>NaN</td>
       <td>4.1</td>
-      <td>4.1</td>
       <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
       <td>4FRWFFVC+P79</td>
       <td>(((18.4706033, -33.5057876), (18.4706995, -33....</td>
       <td>POLYGON ((18.4706033 -33.5057876, 18.4706995 -...</td>
@@ -753,10 +744,7 @@ document.write(`
       <td>place_of_worship</td>
       <td>NaN</td>
       <td>6.9</td>
-      <td>6.9</td>
       <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
       <td>4FRWFFVC+H9Q</td>
       <td>(((18.4709153, -33.5059178), (18.4709287, -33....</td>
       <td>POLYGON ((18.4709153 -33.5059178, 18.4709287 -...</td>
@@ -906,10 +894,7 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
       <th>amenity</th>
       <th>operator</th>
       <th>building_height</th>
-      <th>roof_height</th>
-      <th>ground_height</th>
-      <th>bottom_bridge_height</th>
-      <th>bottom_roof_height</th>
+      <th>min_height</th>
       <th>plus_code</th>
       <th>footprint</th>
       <th>geometry</th>
@@ -928,10 +913,7 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
       <td>NaN</td>
       <td>NaN</td>
       <td>4.1</td>
-      <td>4.1</td>
       <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
       <td>4FRWFFVC+P79</td>
       <td>(((18.4706033, -33.5057876), (18.4706995, -33....</td>
       <td>POLYGON ((18.4706033 -33.5057876, 18.4706995 -...</td>
@@ -948,10 +930,7 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
       <td>place_of_worship</td>
       <td>NaN</td>
       <td>6.9</td>
-      <td>6.9</td>
       <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
       <td>4FRWFFVC+H9Q</td>
       <td>(((18.4709153, -33.5059178), (18.4709287, -33....</td>
       <td>POLYGON ((18.4709153 -33.5059178, 18.4709287 -...</td>
@@ -1043,11 +1022,113 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#green_spaces</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># have a look at a random bus route</span>
 <span class="n">Rgdf</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>colour</th>
+      <th>from</th>
+      <th>name</th>
+      <th>network</th>
+      <th>operator</th>
+      <th>public_transport:version</th>
+      <th>ref</th>
+      <th>route</th>
+      <th>to</th>
+      <th>type</th>
+      <th>...</th>
+      <th>fee</th>
+      <th>interval</th>
+      <th>opening_hours</th>
+      <th>direction</th>
+      <th>note</th>
+      <th>website</th>
+      <th>description</th>
+      <th>geometry</th>
+      <th>osm_id</th>
+      <th>osm_type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>#AACDD2</td>
+      <td>Civic Centre</td>
+      <td>Bus A01: Civic Centre – Airport [Suspended]</td>
+      <td>Cape Town IRT</td>
+      <td>MyCiTi</td>
+      <td>2</td>
+      <td>A01</td>
+      <td>bus</td>
+      <td>Airport</td>
+      <td>route</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>LINESTRING (18.4287357 -33.9197677, 18.4288394...</td>
+      <td>947075</td>
+      <td>relation</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>#AACDD2</td>
+      <td>Airport</td>
+      <td>Bus A01: Airport – Civic Centre [Suspended]</td>
+      <td>Cape Town IRT</td>
+      <td>MyCiTi</td>
+      <td>2</td>
+      <td>A01</td>
+      <td>bus</td>
+      <td>Civic Centre</td>
+      <td>route</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>LINESTRING (18.5958488 -33.9695727, 18.59574 -...</td>
+      <td>947076</td>
+      <td>relation</td>
+    </tr>
+  </tbody>
+</table>
+<p>2 rows × 23 columns</p>
+</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1065,6 +1146,101 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>colour</th>
+      <th>from</th>
+      <th>name</th>
+      <th>network</th>
+      <th>operator</th>
+      <th>public_transport:version</th>
+      <th>ref</th>
+      <th>route</th>
+      <th>to</th>
+      <th>type</th>
+      <th>...</th>
+      <th>fee</th>
+      <th>interval</th>
+      <th>opening_hours</th>
+      <th>direction</th>
+      <th>note</th>
+      <th>website</th>
+      <th>description</th>
+      <th>geometry</th>
+      <th>osm_id</th>
+      <th>osm_type</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>(170, 205, 210)</td>
+      <td>Civic Centre</td>
+      <td>Bus A01: Civic Centre – Airport [Suspended]</td>
+      <td>Cape Town IRT</td>
+      <td>MyCiTi</td>
+      <td>2</td>
+      <td>A01</td>
+      <td>bus</td>
+      <td>Airport</td>
+      <td>route</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>LINESTRING (18.4287357 -33.9197677, 18.4288394...</td>
+      <td>947075</td>
+      <td>relation</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>(170, 205, 210)</td>
+      <td>Airport</td>
+      <td>Bus A01: Airport – Civic Centre [Suspended]</td>
+      <td>Cape Town IRT</td>
+      <td>MyCiTi</td>
+      <td>2</td>
+      <td>A01</td>
+      <td>bus</td>
+      <td>Civic Centre</td>
+      <td>route</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>LINESTRING (18.5958488 -33.9695727, 18.59574 -...</td>
+      <td>947076</td>
+      <td>relation</td>
+    </tr>
+  </tbody>
+</table>
+<p>2 rows × 23 columns</p>
+</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1073,18 +1249,30 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
 <span class="n">file</span> <span class="o">=</span> <span class="s1">&#39;./result/interactiveOnly.html&#39;</span> <span class="c1"># will name and save html here</span>
 
 <span class="n">html</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">create_maplibre_3Dviz</span><span class="p">(</span>
-    <span class="n">result_dir</span> <span class="o">=</span> <span class="n">file</span><span class="p">,</span> 
+    <span class="n">result_dir</span> <span class="o">=</span> <span class="n">file</span><span class="p">,</span>
     <span class="n">buildings_gdf</span> <span class="o">=</span> <span class="n">df2</span><span class="p">,</span>
-    <span class="c1">#water_gdf = water_spaces,</span>
-    <span class="c1">#green_gdf = green_spaces,</span>
-    <span class="c1">#brt_gdf = Rgdf,</span>
+    <span class="n">water_gdf</span> <span class="o">=</span> <span class="n">water_spaces</span><span class="p">,</span>
+    <span class="n">green_gdf</span> <span class="o">=</span> <span class="n">green_spaces</span><span class="p">,</span>
+    <span class="n">brt_gdf</span> <span class="o">=</span> <span class="n">Rgdf</span><span class="p">,</span>
     <span class="n">center</span> <span class="o">=</span> <span class="n">xy</span>
 <span class="p">)</span>
 
+<span class="c1">#- uncomment to show</span>
 <span class="n">city3D</span><span class="o">.</span><span class="n">show_interactive_html</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+        <iframe
+            width="100%"
+            height="500"
+            src="./result/interactiveOnly.html"
+            frameborder="0"
+            allowfullscreen
+            allow-scripts allow-same-origin
+        ></iframe>
+        </div></div>
 </div>
 <iframe src="../_static/interactive.html" width="100%" height="600" frameborder="0"></iframe><p><strong>on a laptop without a mouse:</strong></p>
 <ul class="simple">
@@ -1140,10 +1328,7 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
       <th>amenity</th>
       <th>operator</th>
       <th>building_height</th>
-      <th>roof_height</th>
-      <th>ground_height</th>
-      <th>bottom_bridge_height</th>
-      <th>bottom_roof_height</th>
+      <th>min_height</th>
       <th>plus_code</th>
       <th>footprint</th>
       <th>geometry</th>
@@ -1162,10 +1347,7 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
       <td>NaN</td>
       <td>NaN</td>
       <td>4.1</td>
-      <td>4.1</td>
       <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
       <td>4FRWFFVC+P79</td>
       <td>(((18.4706033, -33.5057876), (18.4706995, -33....</td>
       <td>POLYGON ((18.4706033 -33.5057876, 18.4706995 -...</td>
@@ -1182,10 +1364,7 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
       <td>place_of_worship</td>
       <td>NaN</td>
       <td>6.9</td>
-      <td>6.9</td>
       <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
       <td>4FRWFFVC+H9Q</td>
       <td>(((18.4709153, -33.5059178), (18.4709287, -33....</td>
       <td>POLYGON ((18.4709153 -33.5059178, 18.4709287 -...</td>
@@ -1279,10 +1458,7 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
       <th>amenity</th>
       <th>operator</th>
       <th>building_height</th>
-      <th>roof_height</th>
-      <th>ground_height</th>
-      <th>bottom_bridge_height</th>
-      <th>bottom_roof_height</th>
+      <th>min_height</th>
       <th>plus_code</th>
       <th>footprint</th>
       <th>geometry</th>
@@ -1301,10 +1477,7 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
       <td>NaN</td>
       <td>NaN</td>
       <td>4.1</td>
-      <td>4.1</td>
       <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
       <td>4FRWFFVC+P79</td>
       <td>(((18.4706033, -33.5057876), (18.4706995, -33....</td>
       <td>POLYGON ((18.4706033 -33.5057876, 18.4706995 -...</td>
@@ -1321,10 +1494,7 @@ The <code class="docutils literal notranslate"><span class="pre">process_and_wri
       <td>place_of_worship</td>
       <td>NaN</td>
       <td>6.9</td>
-      <td>6.9</td>
       <td>0.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
       <td>4FRWFFVC+H9Q</td>
       <td>(((18.4709153, -33.5059178), (18.4709287, -33....</td>
       <td>POLYGON ((18.4709153 -33.5059178, 18.4709287 -...</td>
@@ -1611,15 +1781,14 @@ Datum: World Geodetic System 1984 ensemble
 <p><strong>We first need to check the quality</strong> <em>—topology—</em> <strong>of the dataset</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- highlight crossing features (buildings). more buildings = more time</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># prepare to plot (more buildings = more time) </span>
 <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
 <span class="n">gdf2</span> <span class="o">=</span> <span class="n">gdf2</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">epsg</span><span class="p">)</span>
-<span class="n">gdf_copy</span> <span class="o">=</span> <span class="n">gdf2</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">gdf2_copy</span> <span class="o">=</span> <span class="n">gdf2</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 
-<span class="n">geoms</span> <span class="o">=</span> <span class="n">gdf_copy</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">geoms</span> <span class="o">=</span> <span class="n">gdf2_copy</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 <span class="n">tree</span> <span class="o">=</span> <span class="n">STRtree</span><span class="p">(</span><span class="n">geoms</span><span class="p">)</span>
-
 <span class="c1"># Find overlapping pairs</span>
 <span class="c1">#pairs = []</span>
 <span class="c1">#for i, geom in enumerate(geoms):</span>
@@ -1631,7 +1800,7 @@ Datum: World Geodetic System 1984 ensemble
 <span class="c1">#            j = next(idx for idx, g in enumerate(geoms) if g is c)</span>
 <span class="c1">#        except StopIteration:</span>
 <span class="c1">#            continue  # skip if candidate is not found</span>
-<span class="c1">#        if i != j and geom.intersects(c):</span>
+<span class="c1">#        if i != j and geom.overlaps(c):</span>
 <span class="c1">#            pairs.append((i, j))</span>
 
 <span class="c1">#joined = pd.DataFrame(pairs, columns=[&quot;index_left&quot;, &quot;index_right&quot;])</span>
@@ -1651,7 +1820,7 @@ Datum: World Geodetic System 1984 ensemble
 <span class="n">mask</span> <span class="o">=</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span>
 <span class="n">overlap_idx</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="n">mask</span><span class="p">])</span>
 
-<span class="n">new_df1</span> <span class="o">=</span> <span class="n">gdf_copy</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">overlap_idx</span><span class="p">)]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">new_df1</span> <span class="o">=</span> <span class="n">gdf2_copy</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">overlap_idx</span><span class="p">)]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">))))</span>
@@ -1659,7 +1828,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.203433
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.183288
 </pre></div>
 </div>
 </div>
@@ -1699,7 +1868,7 @@ Datum: World Geodetic System 1984 ensemble
 
 <span class="c1"># Example usage:</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">))</span>
-<span class="n">plot_geometries</span><span class="p">(</span><span class="n">gdf_copy</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">plot_geometries</span><span class="p">(</span><span class="n">gdf2_copy</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
 <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_df1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
     <span class="n">plot_geometries</span><span class="p">(</span><span class="n">new_df1</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="c1">#-- save</span>
@@ -1709,7 +1878,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/2caebe428907f93229c35af823f4df7b5bba680f9307c6011f218a54b59f0923.png" src="../_images/2caebe428907f93229c35af823f4df7b5bba680f9307c6011f218a54b59f0923.png" />
+<img alt="../_images/703717504ce7336cdc51241588c2977a8b947819ef0b82b6675cc809bdb90369.png" src="../_images/703717504ce7336cdc51241588c2977a8b947819ef0b82b6675cc809bdb90369.png" />
 </div>
 </div>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -1792,10 +1961,7 @@ The goal is to be as representative as possible.</p>
       <th>amenity</th>
       <th>operator</th>
       <th>building_height</th>
-      <th>roof_height</th>
-      <th>...</th>
-      <th>bottom_bridge_height</th>
-      <th>bottom_roof_height</th>
+      <th>min_height</th>
       <th>plus_code</th>
       <th>footprint</th>
       <th>geometry</th>
@@ -1818,10 +1984,7 @@ The goal is to be as representative as possible.</p>
       <td>NaN</td>
       <td>NaN</td>
       <td>4.1</td>
-      <td>4.1</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>0.0</td>
       <td>4FRWFFMF+W7J</td>
       <td>(((18.4731456, -33.5150462), (18.4729719, -33....</td>
       <td>POLYGON ((265302.8715881496 6288753.930217357,...</td>
@@ -1842,10 +2005,7 @@ The goal is to be as representative as possible.</p>
       <td>NaN</td>
       <td>NaN</td>
       <td>4.1</td>
-      <td>4.1</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
+      <td>0.0</td>
       <td>4FRWFFPJ+P7W</td>
       <td>(((18.4805967, -33.5130179), (18.4807154, -33....</td>
       <td>POLYGON ((265989.6485932828 6288995.734908563,...</td>
@@ -1857,7 +2017,6 @@ The goal is to be as representative as possible.</p>
     </tr>
   </tbody>
 </table>
-<p>2 rows × 21 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -1868,8 +2027,8 @@ The goal is to be as representative as possible.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>count    2024.000000
-mean       74.951572
-std        49.881340
+mean       74.951700
+std        49.881522
 min         7.419412
 25%        32.710040
 50%        65.311987
@@ -1889,13 +2048,13 @@ Name: bvpc, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 89.641
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 89.541
 </pre></div>
 </div>
 </div>
 </div>
 <div class="alert alert-block alert-info"><b></b>
-<p><strong>This BVPC value is for all buildings with a <code class="docutils literal notranslate"><span class="pre">population</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>. Buildings people live in</strong> <em>(homes)</em>.</p>
+<p><strong>This BVPC value is for all the buildings; we only want buildings people live in</strong> <em>(homes)</em>.</p>
 <p>And we can seperate <code class="docutils literal notranslate"><span class="pre">building:house</span></code> from <code class="docutils literal notranslate"><span class="pre">building:cabin</span></code> and <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> to understand the differences between <em><strong>formal and informal</strong></em> housing in this area.</p>
 <p><strong>We want to understand the living space <em>(the cubic-meter BVPC value)</em> each person has in their home</strong></p>
 </div><div class="cell docutils container">
@@ -2050,7 +2209,7 @@ Here, because we are working with highly detailed, local data, we can explore wh
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>POLYGON ((266194.47713799647 6288764.539267579...</td>
+      <td>POLYGON ((266194.4771379964 6288764.539267579,...</td>
       <td>1095739760</td>
       <td>way</td>
     </tr>
@@ -2137,7 +2296,7 @@ Name: count, dtype: int64
       <th>amenity</th>
       <th>operator</th>
       <th>building_height</th>
-      <th>roof_height</th>
+      <th>min_height</th>
       <th>...</th>
       <th>footprint</th>
       <th>geometry</th>
@@ -2163,7 +2322,7 @@ Name: count, dtype: int64
       <td>NaN</td>
       <td>NaN</td>
       <td>4.1</td>
-      <td>4.1</td>
+      <td>0.0</td>
       <td>...</td>
       <td>(((18.4706033, -33.5057876), (18.4706995, -33....</td>
       <td>POLYGON ((265041.6351569728 6289775.0592048075...</td>
@@ -2187,7 +2346,7 @@ Name: count, dtype: int64
       <td>place_of_worship</td>
       <td>NaN</td>
       <td>6.9</td>
-      <td>6.9</td>
+      <td>0.0</td>
       <td>...</td>
       <td>(((18.4709153, -33.5059178), (18.4709287, -33....</td>
       <td>POLYGON ((265070.9766813367 6289761.325392997,...</td>
@@ -2202,7 +2361,7 @@ Name: count, dtype: int64
     </tr>
   </tbody>
 </table>
-<p>2 rows × 24 columns</p>
+<p>2 rows × 21 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -2349,8 +2508,8 @@ $$</p>
 <p>As a <strong>‘rule-of-thumb’</strong> a community with traditional gabled houses: <code class="docutils literal notranslate"><span class="pre">utilization_factor</span> <span class="pre">=</span> <span class="pre">0.4</span></code> (less than half), while a high-density suburb with flat-roofed apartments: <code class="docutils literal notranslate"><span class="pre">utilization_factor</span> <span class="pre">=</span> <span class="pre">0.6</span></code></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># on average, how much of the roof faces the sun? </span>
-<span class="n">utilization_factor</span> <span class="o">=</span> <span class="mf">0.4</span>  <span class="c1"># Adjust based on roof types</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># on average, how much of the roof faces the sun? adjust based on roof types</span>
+<span class="n">utilization_factor</span> <span class="o">=</span> <span class="mf">0.4</span>  
 </pre></div>
 </div>
 </div>
@@ -2390,7 +2549,7 @@ $$</p>
       <th>amenity</th>
       <th>operator</th>
       <th>building_height</th>
-      <th>roof_height</th>
+      <th>min_height</th>
       <th>...</th>
       <th>geometry</th>
       <th>fill_color</th>
@@ -2416,9 +2575,9 @@ $$</p>
       <td>NaN</td>
       <td>NaN</td>
       <td>4.1</td>
-      <td>4.1</td>
+      <td>0.0</td>
       <td>...</td>
-      <td>POLYGON ((264864.98193212313 6288741.008398377...</td>
+      <td>POLYGON ((264864.98193212313 6288741.008398378...</td>
       <td>[255, 255, 204]</td>
       <td>6.0</td>
       <td>38.658416</td>
@@ -2440,7 +2599,7 @@ $$</p>
       <td>NaN</td>
       <td>NaN</td>
       <td>4.1</td>
-      <td>4.1</td>
+      <td>0.0</td>
       <td>...</td>
       <td>POLYGON ((264865.3504529182 6288749.140981195,...</td>
       <td>[255, 255, 204]</td>
@@ -2455,7 +2614,7 @@ $$</p>
     </tr>
   </tbody>
 </table>
-<p>2 rows × 25 columns</p>
+<p>2 rows × 22 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -2552,7 +2711,7 @@ We are asking: <strong>How much energy (MWh/year) could these roofs harvest, giv
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:16:22.162408
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:18.415772
 </pre></div>
 </div>
 </div>
