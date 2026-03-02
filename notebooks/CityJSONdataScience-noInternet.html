@@ -472,8 +472,6 @@ b)  a measure of <strong>Building Volume per Capita</strong></p>
 <span class="kn">from</span><span class="w"> </span><span class="nn">osgeo</span><span class="w"> </span><span class="kn">import</span> <span class="n">gdal</span><span class="p">,</span> <span class="n">osr</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="c1">#import pydeck as pdk</span>
-<span class="c1">#from IPython.display import IFrame, display</span>
 </pre></div>
 </div>
 </div>
@@ -493,7 +491,7 @@ b)  a measure of <strong>Building Volume per Capita</strong></p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- change to harvest the appropriate CityJSON</span>
 
 <span class="n">jparams</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;wStock_param.json&#39;</span><span class="p">))</span>     
-<span class="c1">#jparams = json.load(open(&#39;sRiver_param25m.json&#39;))  </span>
+<span class="c1">#jparams = json.load(open(&#39;sRiver_param10m.json&#39;))  </span>
 <span class="c1">#jparams = json.load(open(&#39;saao_param.json&#39;)) </span>
 </pre></div>
 </div>
@@ -515,7 +513,7 @@ b)  a measure of <strong>Building Volume per Capita</strong></p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CityJSON version = 1.1
 EPSG = 32734
-bbox = [262913.5697028779, 6241099.216253888, 0.0, 265653.17255661683, 6244328.73221083, 180.8]
+bbox = [262913.5697028779, 6241099.216253888, -15.729999542236328, 265653.17255661683, 6244328.73221083, 319.67999267578125]
 === CityObjects ===
 |-- TINRelief (1)
 |-- Building (3715)
@@ -539,15 +537,21 @@ textures = False
 
 <span class="c1"># account for holes</span>
 <span class="k">def</span><span class="w"> </span><span class="nf">coords_to_polygon</span><span class="p">(</span><span class="n">rings</span><span class="p">):</span>
-    <span class="n">outer</span> <span class="o">=</span> <span class="n">rings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>                              <span class="c1"># first ring is the shell</span>
-    <span class="n">holes</span> <span class="o">=</span> <span class="n">rings</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rings</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">rings</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">rings</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">outer</span> <span class="o">=</span> <span class="n">rings</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># Only pass holes if they actually exist in the list</span>
+    <span class="n">holes</span> <span class="o">=</span> <span class="n">rings</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">rings</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="p">[]</span>
     <span class="k">return</span> <span class="n">Polygon</span><span class="p">(</span><span class="n">shell</span><span class="o">=</span><span class="n">outer</span><span class="p">,</span> <span class="n">holes</span><span class="o">=</span><span class="n">holes</span><span class="p">)</span>
 
 <span class="c1"># Convert JSON string to Python list</span>
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;footprint_coords_list&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;footprint&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">)</span>
+<span class="c1">#df[&#39;footprint_coords_list&#39;] = df[&#39;footprint&#39;].apply(json.loads)</span>
+<span class="c1"># Only apply json.loads if the entry is actually a string</span>
+<span class="n">df</span><span class="p">[</span><span class="s1">&#39;footprint_coords_list&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;footprint&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">x</span>
+<span class="p">)</span>
 
 <span class="c1"># create GeoDataFrameLite | home-baked gdf</span>
-<span class="c1">#gdf = gpd.GeoDataFrame(df, geometry=df[&#39;footprint_coords_list&#39;].apply(coords_to_polygon), crs=crs[7:])#jparams[&#39;crs&#39;])</span>
 <span class="n">gdf</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">GeoDataFrameLite</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
 <span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;footprint_coords_list&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">coords_to_polygon</span><span class="p">)</span>
 <span class="n">gdf</span><span class="o">.</span><span class="n">crs</span> <span class="o">=</span> <span class="n">crs</span><span class="p">[</span><span class="mi">7</span><span class="p">:]</span>
@@ -560,8 +564,6 @@ textures = False
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-<span class="c1">#len(gdf)</span>
-<span class="c1">#gdf.tail(2)</span>
 </pre></div>
 </div>
 </div>
@@ -584,22 +586,22 @@ textures = False
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>id</th>
       <th>osm_id</th>
       <th>address</th>
       <th>building</th>
       <th>building:levels</th>
       <th>amenity</th>
       <th>building_height</th>
-      <th>roof_height</th>
-      <th>ground_height</th>
       <th>plus_code</th>
+      <th>ground_height</th>
+      <th>roof_height</th>
       <th>building:flats</th>
       <th>building:use</th>
       <th>operator</th>
       <th>building:units</th>
       <th>social_facility</th>
       <th>beds</th>
+      <th>min_height</th>
       <th>bottom_roof_height</th>
       <th>rooms</th>
       <th>residential</th>
@@ -608,17 +610,17 @@ textures = False
   </thead>
   <tbody>
     <tr>
-      <th>12227309</th>
-      <td>0</td>
+      <th>osm_12227309</th>
       <td>12227309</td>
       <td>The Neighbourgoods Market Woodstock Cape Town</td>
       <td>retail</td>
       <td>1.0</td>
       <td>marketplace</td>
       <td>4.1</td>
-      <td>11.27</td>
-      <td>7.17</td>
       <td>4FRW3FF5+27C</td>
+      <td>7.01</td>
+      <td>11.11</td>
+      <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -631,18 +633,18 @@ textures = False
       <td>POLYGON ((265023.4813864499 6242993.344091462,...</td>
     </tr>
     <tr>
-      <th>12249345</th>
-      <td>1</td>
+      <th>osm_12249345</th>
       <td>12249345</td>
       <td>Church  Square 34 Dickson Street 7915 Woodstoc...</td>
       <td>apartments</td>
       <td>6.0</td>
       <td>NaN</td>
       <td>18.1</td>
-      <td>28.55</td>
-      <td>10.45</td>
       <td>4FRW3FC2+R5G</td>
+      <td>9.70</td>
+      <td>27.80</td>
       <td>105</td>
+      <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -781,22 +783,22 @@ textures = False
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>id</th>
       <th>osm_id</th>
       <th>address</th>
       <th>building</th>
       <th>building:levels</th>
       <th>amenity</th>
       <th>building_height</th>
-      <th>roof_height</th>
-      <th>ground_height</th>
       <th>plus_code</th>
+      <th>ground_height</th>
+      <th>roof_height</th>
       <th>building:flats</th>
       <th>building:use</th>
       <th>operator</th>
       <th>building:units</th>
       <th>social_facility</th>
       <th>beds</th>
+      <th>min_height</th>
       <th>bottom_roof_height</th>
       <th>rooms</th>
       <th>residential</th>
@@ -805,46 +807,46 @@ textures = False
   </thead>
   <tbody>
     <tr>
-      <th>12227309</th>
-      <td>0</td>
+      <th>osm_12227309</th>
       <td>12227309</td>
       <td>The Neighbourgoods Market Woodstock Cape Town</td>
       <td>retail</td>
       <td>1.0</td>
       <td>marketplace</td>
       <td>4.1</td>
-      <td>11.27</td>
-      <td>7.17</td>
       <td>4FRW3FF5+27C</td>
+      <td>7.01</td>
+      <td>11.11</td>
       <td>0</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>0</td>
       <td>NaN</td>
       <td>0</td>
+      <td>NaN</td>
       <td>NaN</td>
       <td>0</td>
       <td>NaN</td>
       <td>POLYGON ((265023.4813864499 6242993.344091462,...</td>
     </tr>
     <tr>
-      <th>12249345</th>
-      <td>1</td>
+      <th>osm_12249345</th>
       <td>12249345</td>
       <td>Church  Square 34 Dickson Street 7915 Woodstoc...</td>
       <td>apartments</td>
       <td>6.0</td>
       <td>NaN</td>
       <td>18.1</td>
-      <td>28.55</td>
-      <td>10.45</td>
       <td>4FRW3FC2+R5G</td>
+      <td>9.70</td>
+      <td>27.80</td>
       <td>105</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>0</td>
       <td>NaN</td>
       <td>0</td>
+      <td>NaN</td>
       <td>NaN</td>
       <td>0</td>
       <td>NaN</td>
@@ -856,25 +858,14 @@ textures = False
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#gdf2[&#39;building&#39;].value_counts()</span>
-<span class="c1">#gdf2.head</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_pop</span> <span class="o">=</span> <span class="n">gdf2</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#--we only want building=house or =apartment or =residential, etc.</span>
-<span class="c1">#gdf_pop = gdf2[gdf2[&quot;building&quot;].isin([&#39;house&#39;, &#39;semidetached_house&#39;, &#39;terrace&#39;, &#39;terraced&#39;, &#39;apartments&#39;, &#39;residential&#39;, &#39;dormitory&#39;, &#39;cabin&#39;, &#39;student&#39;, &#39;garage&#39;])].copy()</span>
-<span class="n">gdf_pop</span> <span class="o">=</span> <span class="n">gdf2</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#inf = gdf_pop[gdf_pop[&quot;building&quot;].isin([&#39;residential&#39;])].copy()</span>
-<span class="nb">len</span><span class="p">(</span><span class="n">gdf_pop</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">len</span><span class="p">(</span><span class="n">gdf_pop</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1118,15 +1109,7 @@ These numbers are based on disaggregated <a class="reference external" href="htt
 <div class="alert alert-block alert-success"><b>1. b) Building Volume Per Capita (BVPC):</b>  
 BVPC = total population of a community divided by sum of building volume</div><div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#gdf_pop.head(3)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#gdf_pop[&#39;area&#39;] = gdf_pop[&#39;geometry&#39;].area#\.map(lambda p: p.area)</span>
-<span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;area&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">geom</span><span class="p">:</span> <span class="n">geom</span><span class="o">.</span><span class="n">area</span> <span class="k">if</span> <span class="n">geom</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;area&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">geom</span><span class="p">:</span> <span class="n">geom</span><span class="o">.</span><span class="n">area</span> <span class="k">if</span> <span class="n">geom</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
 <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;volume&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;area&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;building_height&#39;</span><span class="p">]</span>
 
 <span class="c1">#- remove the volume of the ground floor (unoccupied) when building:levels &gt; 7 [this is an arbitrary number based on local knowledge]</span>
@@ -1140,7 +1123,6 @@ BVPC = total population of a community divided by sum of building volume</div><d
     <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">gdf_pop</span><span class="o">.</span><span class="n">iterrows</span><span class="p">()</span>
 <span class="p">]</span>
 
-<span class="c1">#gdf_pop[&#39;bvpc&#39;] =  gdf_pop[&#39;volume&#39;] / gdf_pop[&#39;pop&#39;]</span>
 <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;bvpc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span>
     <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;pop&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span>
     <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;volume&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">gdf_pop</span><span class="p">[</span><span class="s1">&#39;pop&#39;</span><span class="p">],</span>
@@ -1170,19 +1152,19 @@ BVPC = total population of a community divided by sum of building volume</div><d
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>id</th>
       <th>osm_id</th>
       <th>address</th>
       <th>building</th>
       <th>building:levels</th>
       <th>amenity</th>
       <th>building_height</th>
-      <th>roof_height</th>
-      <th>ground_height</th>
       <th>plus_code</th>
+      <th>ground_height</th>
+      <th>roof_height</th>
+      <th>building:flats</th>
       <th>...</th>
-      <th>social_facility</th>
       <th>beds</th>
+      <th>min_height</th>
       <th>bottom_roof_height</th>
       <th>rooms</th>
       <th>residential</th>
@@ -1195,20 +1177,20 @@ BVPC = total population of a community divided by sum of building volume</div><d
   </thead>
   <tbody>
     <tr>
-      <th>1340498943</th>
-      <td>3713</td>
+      <th>osm_1340498943</th>
       <td>1340498943</td>
       <td>Balfour Street Woodstock Cape Town</td>
       <td>semidetached_house</td>
       <td>1.0</td>
       <td>NaN</td>
       <td>4.1</td>
-      <td>60.00</td>
-      <td>55.900002</td>
       <td>4FRW3C8X+7VX</td>
-      <td>...</td>
-      <td>NaN</td>
+      <td>55.90</td>
+      <td>60.00</td>
       <td>0</td>
+      <td>...</td>
+      <td>0</td>
+      <td>NaN</td>
       <td>NaN</td>
       <td>0</td>
       <td>NaN</td>
@@ -1219,24 +1201,24 @@ BVPC = total population of a community divided by sum of building volume</div><d
       <td>93.560838</td>
     </tr>
     <tr>
-      <th>1423081172</th>
-      <td>3714</td>
+      <th>osm_1423081172</th>
       <td>1423081172</td>
       <td>NaN</td>
       <td>warehouse</td>
       <td>1.0</td>
       <td>NaN</td>
       <td>4.1</td>
-      <td>9.21</td>
-      <td>5.110000</td>
       <td>4FRW3CFX+M65</td>
+      <td>5.07</td>
+      <td>9.17</td>
+      <td>0</td>
       <td>...</td>
+      <td>0</td>
+      <td>NaN</td>
       <td>NaN</td>
       <td>0</td>
       <td>NaN</td>
-      <td>0</td>
-      <td>NaN</td>
-      <td>POLYGON ((264084.9472572067 6243146.255961517,...</td>
+      <td>POLYGON ((264084.9472572068 6243146.255961517,...</td>
       <td>NaN</td>
       <td>1068.332068</td>
       <td>4380.161477</td>
@@ -1276,24 +1258,22 @@ Name: bvpc, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 272.324
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 272.206
 </pre></div>
 </div>
 </div>
 </div>
 <div class="alert alert-block alert-info"><b></b>
-<p><strong>This BVPC value is for all buildings with a <code class="docutils literal notranslate"><span class="pre">population</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>. Buildings people live in</strong> <em>(homes)</em>.</p>
+<p><strong>This BVPC value is for all the buildings; we only want buildings people live in</strong> <em>(homes)</em>.</p>
 <p>And we can seperate <code class="docutils literal notranslate"><span class="pre">building:house</span></code> from <code class="docutils literal notranslate"><span class="pre">building:cabin</span></code> and <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> to undertand the differences between <em><strong>formal and informal</strong></em> housing in this area.</p>
 <p><strong>We want to understand the living space <em>(the cubic-meter BVPC value)</em> each person has in their home</strong></p>
 </div><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">formal</span> <span class="o">=</span> <span class="n">gdf_pop</span><span class="p">[</span><span class="n">gdf_pop</span><span class="p">[</span><span class="s2">&quot;building&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;house&#39;</span><span class="p">,</span> <span class="s1">&#39;semidetached_house&#39;</span><span class="p">,</span> <span class="s1">&#39;terrace&#39;</span><span class="p">,</span> <span class="s1">&#39;terraced&#39;</span><span class="p">,</span> <span class="s1">&#39;apartments&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">f_pop</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">formal</span><span class="p">[</span><span class="s1">&#39;pop&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
-<span class="c1">#f_area = formal[&#39;area&#39;].mean()</span>
 
 <span class="n">informal</span> <span class="o">=</span> <span class="n">gdf_pop</span><span class="p">[</span><span class="n">gdf_pop</span><span class="p">[</span><span class="s2">&quot;building&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;residential&#39;</span><span class="p">,</span> <span class="s1">&#39;cabin&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">inf_pop</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">informal</span><span class="p">[</span><span class="s1">&#39;pop&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
-<span class="c1">#inf_area = formal[&#39;area&#39;].mean()</span>
 
 <span class="c1">#- student</span>
 <span class="n">stu</span> <span class="o">=</span> <span class="n">gdf_pop</span><span class="p">[</span><span class="n">gdf_pop</span><span class="p">[</span><span class="s2">&quot;building&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;student&#39;</span><span class="p">,</span> <span class="s1">&#39;dormitory&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -1354,13 +1334,6 @@ Here, because we are working with highly detailed, local data, we can explore wh
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#crs[7:]</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- execute function from city3D and return GeoDataFrameLite | home-baked gdf</span>
 <span class="n">aoi</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">extract_boundaries_by_name</span><span class="p">(</span><span class="n">input_pbf</span><span class="p">,</span> <span class="n">jparams</span><span class="p">)</span>
 
@@ -1370,7 +1343,9 @@ Here, because we are working with highly detailed, local data, we can explore wh
 <span class="c1">#- compute bounding box</span>
 <span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span> <span class="o">=</span> <span class="n">combined_ageom</span><span class="o">.</span><span class="n">bounds</span>
 
-<span class="n">solar</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">_harvestSolar</span><span class="p">(</span><span class="n">input_pbf</span><span class="p">,</span> <span class="n">jparams</span><span class="p">,</span> <span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span><span class="p">,</span> <span class="n">crs</span><span class="p">[</span><span class="mi">7</span><span class="p">:])</span>
+<span class="c1">#solar = city3D._harvestSolar(input_pbf, jparams, minx, miny, maxx, maxy, crs[7:])</span>
+<span class="n">solar</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">_harvestSolar</span><span class="p">(</span><span class="n">input_pbf</span><span class="p">,</span> <span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span><span class="p">,</span> <span class="n">crs</span><span class="p">[</span><span class="mi">7</span><span class="p">:])</span>
+
 <span class="n">solar</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1403,14 +1378,14 @@ Here, because we are working with highly detailed, local data, we can explore wh
   <tbody>
     <tr>
       <th>0</th>
-      <td>POLYGON ((18.4605887 -33.9330449, 18.4606095 -...</td>
+      <td>POLYGON ((265277.85421120946 6242363.049765201...</td>
       <td>1045126952</td>
       <td>"generator:method"=&gt;"photovoltaic","generator:...</td>
       <td>0</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>POLYGON ((18.4605259 -33.9331371, 18.4605467 -...</td>
+      <td>POLYGON ((265272.3012488816 6242352.679363036,...</td>
       <td>1045126953</td>
       <td>"generator:method"=&gt;"photovoltaic","generator:...</td>
       <td>0</td>
@@ -1451,11 +1426,11 @@ Here, because we are working with highly detailed, local data, we can explore wh
 <span class="k">elif</span> <span class="s1">&#39;osm_way_id&#39;</span> <span class="ow">in</span> <span class="n">solar</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
     <span class="n">solar</span> <span class="o">=</span> <span class="n">solar</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;osm_way_id&#39;</span><span class="p">:</span> <span class="s1">&#39;osm_id&#39;</span><span class="p">})</span>
 
-<span class="c1">#aoi = aoi.to_crs(crs[7:])</span>
+<span class="n">aoi</span> <span class="o">=</span> <span class="n">aoi</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">crs</span><span class="p">[</span><span class="mi">7</span><span class="p">:])</span>
 <span class="c1">#gdf = gdf[gdf.geometry.apply(lambda x: x.within(aoi.unary_union))]</span>
 <span class="n">solar</span> <span class="o">=</span> <span class="n">solar</span><span class="p">[</span><span class="n">solar</span><span class="o">.</span><span class="n">geometry</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">within</span><span class="p">(</span><span class="n">shapely</span><span class="o">.</span><span class="n">unary_union</span><span class="p">(</span><span class="n">aoi</span><span class="o">.</span><span class="n">geometry</span><span class="p">)))]</span>
-<span class="n">solar</span><span class="o">.</span><span class="n">crs</span> <span class="o">=</span> <span class="s2">&quot;EPSG:4326&quot;</span>
-<span class="n">solar</span> <span class="o">=</span> <span class="n">solar</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">crs</span><span class="p">[</span><span class="mi">7</span><span class="p">:])</span>
+<span class="c1">#solar.crs = &quot;EPSG:4326&quot;</span>
+<span class="c1">#solar = solar.to_crs(crs[7:])</span>
 
 <span class="n">solar</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
@@ -1603,16 +1578,16 @@ Name: count, dtype: int64
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>id</th>
       <th>osm_id</th>
       <th>address</th>
       <th>building</th>
       <th>building:levels</th>
       <th>amenity</th>
       <th>building_height</th>
-      <th>roof_height</th>
-      <th>ground_height</th>
       <th>plus_code</th>
+      <th>ground_height</th>
+      <th>roof_height</th>
+      <th>building:flats</th>
       <th>...</th>
       <th>rooms</th>
       <th>residential</th>
@@ -1628,17 +1603,17 @@ Name: count, dtype: int64
   </thead>
   <tbody>
     <tr>
-      <th>12227309</th>
-      <td>0</td>
+      <th>osm_12227309</th>
       <td>12227309</td>
       <td>The Neighbourgoods Market Woodstock Cape Town</td>
       <td>retail</td>
       <td>1.0</td>
       <td>marketplace</td>
       <td>4.1</td>
-      <td>11.27</td>
-      <td>7.17</td>
       <td>4FRW3FF5+27C</td>
+      <td>7.01</td>
+      <td>11.11</td>
+      <td>0</td>
       <td>...</td>
       <td>0</td>
       <td>NaN</td>
@@ -1652,17 +1627,17 @@ Name: count, dtype: int64
       <td>False</td>
     </tr>
     <tr>
-      <th>12249345</th>
-      <td>1</td>
+      <th>osm_12249345</th>
       <td>12249345</td>
       <td>Church  Square 34 Dickson Street 7915 Woodstoc...</td>
       <td>apartments</td>
       <td>6.0</td>
       <td>NaN</td>
       <td>18.1</td>
-      <td>28.55</td>
-      <td>10.45</td>
       <td>4FRW3FC2+R5G</td>
+      <td>9.70</td>
+      <td>27.80</td>
+      <td>105</td>
       <td>...</td>
       <td>0</td>
       <td>NaN</td>
@@ -1691,14 +1666,6 @@ Name: count, dtype: int64
 <section id="a-household-rooftop-solar">
 <h2>2. a) Household rooftop solar<a class="headerlink" href="#a-household-rooftop-solar" title="Link to this heading">#</a></h2>
 <div class="alert alert-block alert-success"><b>Percentage of households served by rooftop renewable energy</b></div><p>$$ \text{% homes with renewable energy} = \frac{\text{Number of dwellings with mapped solar PV and SWH}}{\text{Total number of dwellings}} \times 100 $$</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#sol = gdf2[gdf2[&quot;method&quot;].isin([&#39;photovoltaic&#39;, &#39;thermal&#39;])].copy()</span>
-<span class="c1">#blds[&#39;has_solar&#39;].value_counts()</span>
-</pre></div>
-</div>
-</div>
-</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- harvest columns</span>
@@ -1745,12 +1712,7 @@ Name: count, dtype: int64
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- solar renewable on homes</span>
-<span class="c1">#blds[&quot;method&quot;] = blds[&quot;method&quot;].apply(</span>
-<span class="c1">#    lambda lst: np.nan if len(lst) == 0 else lst</span>
-<span class="c1">#)</span>
-
-<span class="c1"># number of solar renewable on HOMES</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># number of solar renewable on HOMES</span>
 <span class="n">blds</span><span class="p">[</span><span class="s1">&#39;generator:method&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">explode</span><span class="p">()</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -1896,16 +1858,16 @@ $$</p>
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>id</th>
       <th>osm_id</th>
       <th>address</th>
       <th>building</th>
       <th>building:levels</th>
       <th>amenity</th>
       <th>building_height</th>
-      <th>roof_height</th>
-      <th>ground_height</th>
       <th>plus_code</th>
+      <th>ground_height</th>
+      <th>roof_height</th>
+      <th>building:flats</th>
       <th>...</th>
       <th>geometry</th>
       <th>pop</th>
@@ -1921,17 +1883,17 @@ $$</p>
   </thead>
   <tbody>
     <tr>
-      <th>12249345</th>
-      <td>1</td>
+      <th>osm_12249345</th>
       <td>12249345</td>
       <td>Church  Square 34 Dickson Street 7915 Woodstoc...</td>
       <td>apartments</td>
       <td>6.0</td>
       <td>NaN</td>
       <td>18.1</td>
-      <td>28.55</td>
-      <td>10.450000</td>
       <td>4FRW3FC2+R5G</td>
+      <td>9.70</td>
+      <td>27.80</td>
+      <td>105</td>
       <td>...</td>
       <td>POLYGON ((18.450818 -33.92792409999999, 18.450...</td>
       <td>315.0</td>
@@ -1945,17 +1907,17 @@ $$</p>
       <td>214.736353</td>
     </tr>
     <tr>
-      <th>12286281</th>
-      <td>2</td>
+      <th>osm_12286281</th>
       <td>12286281</td>
       <td>Cissie Gool House Victoria Walk Woodstock 7925...</td>
       <td>residential</td>
       <td>4.0</td>
       <td>NaN</td>
       <td>12.5</td>
-      <td>46.45</td>
-      <td>33.950001</td>
       <td>4FRW3C9X+5F5</td>
+      <td>29.01</td>
+      <td>41.51</td>
+      <td>310</td>
       <td>...</td>
       <td>POLYGON ((18.4494179 -33.931729399999995, 18.4...</td>
       <td>930.0</td>
@@ -2180,22 +2142,22 @@ Datum: World Geodetic System 1984 ensemble
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>id</th>
       <th>osm_id</th>
       <th>address</th>
       <th>building</th>
       <th>building:levels</th>
       <th>amenity</th>
       <th>building_height</th>
-      <th>roof_height</th>
-      <th>ground_height</th>
       <th>plus_code</th>
+      <th>ground_height</th>
+      <th>roof_height</th>
+      <th>building:flats</th>
       <th>...</th>
-      <th>building:use</th>
       <th>operator</th>
       <th>building:units</th>
       <th>social_facility</th>
       <th>beds</th>
+      <th>min_height</th>
       <th>bottom_roof_height</th>
       <th>rooms</th>
       <th>residential</th>
@@ -2205,23 +2167,23 @@ Datum: World Geodetic System 1984 ensemble
   </thead>
   <tbody>
     <tr>
-      <th>12227309</th>
-      <td>0</td>
+      <th>osm_12227309</th>
       <td>12227309</td>
       <td>The Neighbourgoods Market Woodstock Cape Town</td>
       <td>retail</td>
       <td>1.0</td>
       <td>marketplace</td>
       <td>4.1</td>
-      <td>11.27</td>
-      <td>7.17</td>
       <td>4FRW3FF5+27C</td>
+      <td>7.01</td>
+      <td>11.11</td>
+      <td>0</td>
       <td>...</td>
       <td>NaN</td>
-      <td>NaN</td>
       <td>0</td>
       <td>NaN</td>
       <td>0</td>
+      <td>NaN</td>
       <td>NaN</td>
       <td>0</td>
       <td>NaN</td>
@@ -2229,23 +2191,23 @@ Datum: World Geodetic System 1984 ensemble
       <td>[253, 141, 60]</td>
     </tr>
     <tr>
-      <th>12249345</th>
-      <td>1</td>
+      <th>osm_12249345</th>
       <td>12249345</td>
       <td>Church  Square 34 Dickson Street 7915 Woodstoc...</td>
       <td>apartments</td>
       <td>6.0</td>
       <td>NaN</td>
       <td>18.1</td>
-      <td>28.55</td>
-      <td>10.45</td>
       <td>4FRW3FC2+R5G</td>
+      <td>9.70</td>
+      <td>27.80</td>
+      <td>105</td>
       <td>...</td>
       <td>NaN</td>
-      <td>NaN</td>
       <td>0</td>
       <td>NaN</td>
       <td>0</td>
+      <td>NaN</td>
       <td>NaN</td>
       <td>0</td>
       <td>NaN</td>
@@ -2259,7 +2221,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 <div class="alert alert-block alert-success"><b>Additional Features:</b> 
 <p>Because we do NOT harvest an online basemap for the pseudo-3D visualisation we need to create our own.<br />
-We add features to our home-baked visualization; <em>namely: roads and parks. We get this from the <a class="reference external" href="https://en.wikipedia.org/wiki/OpenStreetMap">OpenStreetMap</a> as well.</em>.</div></p>
+We add features to our home-baked visualization; <em>namely: roads and parks. We get this from <a class="reference external" href="https://en.wikipedia.org/wiki/OpenStreetMap">OpenStreetMap</a> as well.</em>.</div></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- harvest ROADS </span>
@@ -2382,9 +2344,9 @@ We add features to our home-baked visualization; <em>namely: roads and parks. We
     <span class="n">combined_ageom</span>
 <span class="p">)</span>
 
-<span class="n">green_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;park&#39;</span><span class="p">,</span> <span class="s1">&#39;garden&#39;</span><span class="p">,</span> <span class="s1">&#39;nature_reserve&#39;</span><span class="p">,</span> <span class="s1">&#39;common&#39;</span><span class="p">,</span> <span class="s1">&#39;grass&#39;</span><span class="p">,</span> <span class="s1">&#39;pitch&#39;</span><span class="p">]</span> <span class="c1">#, recreation_ground</span>
+<span class="n">green_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;park&#39;</span><span class="p">,</span> <span class="s1">&#39;garden&#39;</span><span class="p">,</span> <span class="s1">&#39;nature_reserve&#39;</span><span class="p">,</span> <span class="s1">&#39;common&#39;</span><span class="p">,</span> <span class="s1">&#39;grass&#39;</span><span class="p">,</span> <span class="s1">&#39;pitch&#39;</span><span class="p">]</span>
 
-<span class="c1"># This checks: &quot;Is one of the items in the green_types list in the leisure column of the gdf_green.gdf?&quot;</span>
+<span class="c1"># This checks: &quot;Is the value in the leisure column one of the items in my list?&quot;</span>
 <span class="n">gdf_green</span> <span class="o">=</span> <span class="n">gdf_green</span><span class="p">[</span><span class="n">gdf_green</span><span class="p">[</span><span class="s1">&#39;leisure&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">green_types</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
 <span class="n">gdf_green</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
@@ -2504,19 +2466,19 @@ ERROR 1: Non closed ring detected.
 <span class="n">city3D</span><span class="o">.</span><span class="n">create_maplibre_3Dviz</span><span class="p">(</span>
     <span class="n">file</span><span class="p">,</span>
     <span class="n">buildings_gdf</span><span class="o">=</span><span class="n">gdf</span><span class="p">,</span>
-    <span class="n">roads_gdf</span><span class="o">=</span><span class="n">gdf_roads</span><span class="p">,</span>    <span class="c1"># Add: home-baked roads</span>
+    <span class="n">roads_gdf</span><span class="o">=</span><span class="n">gdf_roads</span><span class="p">,</span>   
     <span class="n">green_gdf</span><span class="o">=</span><span class="n">gdf_green</span><span class="p">,</span>
     <span class="n">center</span><span class="o">=</span><span class="n">xy</span><span class="p">,</span>
     <span class="n">offline</span><span class="o">=</span><span class="kc">True</span>            <span class="c1"># toggle home-bakery   </span>
 <span class="p">)</span>
     
 <span class="c1">#- uncomment. will open in a new browser window. Jupyter sercurity restrictions prevent opening here. </span>
-<span class="c1">#webbrowser.open(&#39;file://&#39; + os.path.realpath(file))</span>
+<span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;file://&#39;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">file</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;./result/interactiveAlt.html&#39;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
 </pre></div>
 </div>
 </div>
