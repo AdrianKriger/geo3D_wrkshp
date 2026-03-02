@@ -442,6 +442,18 @@ def bldHeights(gdf):
         gdf (gpd.GeoDataFrameLite): The input GeoDataFrameLite with building data.
         output_file (str): The path to the output GeoJSON file.
     """
+    
+    def round_coords(coords, ndigits=3):
+    ##- recursively round coordinate tuples inside nested lists.
+    ##- works for Polygon (with holes).
+        if isinstance(coords, (list, tuple)):
+        # If this is a coordinate pair (x, y)
+            if len(coords) == 2 and all(isinstance(c, (int, float)) for c in coords):
+                return (round(coords[0], ndigits), round(coords[1], ndigits))
+        # Otherwise recurse deeper
+            return [round_coords(c, ndigits) for c in coords]
+        return coords
+    
     crs = gdf.crs
 
     # 1. Filter out rows with missing 'building:levels'
@@ -457,7 +469,8 @@ def bldHeights(gdf):
 
     # Process geometry to ensure all are polygons
     filtered_gdf['geometry'] = filtered_gdf['geometry'].apply(process_geometry)
-    filtered_gdf['footprint'] = filtered_gdf['geometry'].apply(lambda g: mapping(g)["coordinates"]) 
+    #filtered_gdf['footprint'] = filtered_gdf['geometry'].apply(lambda g: mapping(g)["coordinates"])
+    filtered_gdf['footprint'] = filtered_gdf['geometry'].apply(lambda g: round_coords(mapping(g)["coordinates"], 3))
     filtered_gdf = filtered_gdf[filtered_gdf['geometry'].notna()]
 
     # 2. Add new columns using vectorized operations (faster than iterrows)
