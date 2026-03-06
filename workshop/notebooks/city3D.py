@@ -1485,7 +1485,7 @@ def create_maplibre_3Dviz(
             'paint': {{
                 'fill-extrusion-color': ['case', ['has', 'fill_color'], ['get', 'fill_color'], '#4a4e5a'],
                 'fill-extrusion-height': ['coalesce', ['to-number', ['get', 'building_height']], 10],
-                'fill-extrusion-opacity': 0.6
+                'fill-extrusion-opacity': 0.7
             }}
         }});
 

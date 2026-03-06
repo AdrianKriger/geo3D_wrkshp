@@ -23,12 +23,12 @@ from typing import Optional, Any, Union
 
 import numpy as np
 import pandas as pd
-#import geopandas as gpd
 
 import shapely.wkt
 import shapely.geometry as sg
 from shapely.geometry import Point, LineString, Polygon, MultiPolygon, LinearRing, MultiPolygon, MultiLineString, MultiPoint, shape, mapping
 from shapely.ops import snap, transform
+from shapely.validation import make_valid
 
 import pyproj 
 from pyproj import CRS, Transformer 
@@ -36,6 +36,8 @@ from pyproj.aoi import AreaOfInterest
 from pyproj.database import query_utm_crs_info
 
 from osgeo import gdal
+
+from collections import Counter
 
 from openlocationcode import openlocationcode as olc
 
@@ -402,8 +404,6 @@ def overpass_to_gdf(query, url="https://overpass-api.de/api/interpreter", geojso
             "features": features
         }
 
-        #with open(output_path, "w", encoding="utf-8") as f:
-        #    json.dump(geojson, f, indent=2, ensure_ascii=False)
         return geojson
     else:
         return df
@@ -433,18 +433,27 @@ def safe_json_value(val):
         return float(val)
     return val
 
-def process_and_write_geojson(gdf, jparams=None): #, output_file='./data/fp_j.geojson'):
-
+def bldHeights(gdf): 
     """
-    Consolidates building height calculations and GeoJSON writing.
+    Consolidates building height calculations, plus code and column naming and selection.
     Accepts a single GeoDataFrame as input.
     
     Args:
         gdf (gpd.GeoDataFrameLite): The input GeoDataFrameLite with building data.
         output_file (str): The path to the output GeoJSON file.
     """
-    #df = gdf.set_crs(WGS84[5:])
-    #src_crs = getattr(gdf, "crs", None)
+    
+    def round_coords(coords, ndigits=3):
+    ##- recursively round coordinate tuples inside nested lists.
+    ##- works for Polygon (with holes).
+        if isinstance(coords, (list, tuple)):
+        # If this is a coordinate pair (x, y)
+            if len(coords) == 2 and all(isinstance(c, (int, float)) for c in coords):
+                return (round(coords[0], ndigits), round(coords[1], ndigits))
+        # Otherwise recurse deeper
+            return [round_coords(c, ndigits) for c in coords]
+        return coords
+    
     crs = gdf.crs
 
     # 1. Filter out rows with missing 'building:levels'
@@ -453,23 +462,23 @@ def process_and_write_geojson(gdf, jparams=None): #, output_file='./data/fp_j.ge
         return
         
     filtered_gdf = gdf[gdf['building:levels'].notna() & (gdf['building:levels'] != '')].copy()
-    
+    # Apply the mapping and then cull the precision
     if filtered_gdf.empty:
         print("No buildings with valid 'building:levels' found. No GeoJSON will be created.")
         return
 
     # Process geometry to ensure all are polygons
     filtered_gdf['geometry'] = filtered_gdf['geometry'].apply(process_geometry)
-    filtered_gdf['footprint'] = filtered_gdf['geometry'].apply(lambda g: mapping(g)["coordinates"]) 
+    #filtered_gdf['footprint'] = filtered_gdf['geometry'].apply(lambda g: mapping(g)["coordinates"])
+    filtered_gdf['footprint'] = filtered_gdf['geometry'].apply(lambda g: round_coords(mapping(g)["coordinates"], 3))
     filtered_gdf = filtered_gdf[filtered_gdf['geometry'].notna()]
 
     # 2. Add new columns using vectorized operations (faster than iterrows)
     #print("Calculating building heights and processing data...")
-    height_df = filtered_gdf.apply(calculate_heights, axis=1, result_type='expand')
+    height_df = filtered_gdf.apply(process_levels, axis=1, result_type='expand')
     height_cols_to_drop = [col for col in height_df.columns if col in filtered_gdf.columns]
     if height_cols_to_drop:
         filtered_gdf = filtered_gdf.drop(columns=height_cols_to_drop)
-    #filtered_gdf = pd.concat([filtered_gdf.reset_index(drop=True), height_df.reset_index(drop=True)], axis=1)
     filtered_gdf = filtered_gdf.assign(**height_df)
 
     # 3. Add address and plus_code columns
@@ -487,65 +496,21 @@ def process_and_write_geojson(gdf, jparams=None): #, output_file='./data/fp_j.ge
         #'id', 
         'osm_id', 'address', 'building', 'building:levels', 'building:use',
         'building:flats', 'building:units', 'beds', 'rooms', 'residential',
-        'amenity', 'social_facility', 'operator', 'building_height', 'roof_height',
-        'ground_height', 'bottom_bridge_height', 'bottom_roof_height',
-        'plus_code', 'footprint', 'geometry'
+        'amenity', 'social_facility', 'operator', 'building_height', #'roof_height',
+        #'ground_height', 'bottom_bridge_height', 'bottom_roof_height',
+        'min_height', 'plus_code', 'footprint', 'geometry'
     ]
     
     # Ensure the output columns are unique before reindexing
     final_output_cols = [c for c in output_cols if c in filtered_gdf.columns]
     
-    #final_gdf = filtered_gdf.filter(items=output_cols).copy()
-    #final_gdf = filtered_gdf.reindex(columns=final_output_cols, fill_value=None).copy()
-    #filtered_gdf = filtered_gdf.loc[:, ~filtered_gdf.columns.duplicated()]
     final_gdf = filtered_gdf[final_output_cols].copy()
-
-    # -- Only write GeoJSON if jparams provided
-    if jparams is not None:
-        features = []
-        for idx, row in final_gdf.iterrows():
-            geom = row["geometry"]
-            if geom is None or geom.is_empty:
-                continue
-            feature = {
-                "id": str(idx),
-                "type": "Feature",
-                "properties": {
-                    k: safe_json_value(v)
-                    for k, v in row.items()
-                    if k != "geometry"
-                },
-                "geometry": mapping(geom)
-            }
-            features.append(feature)
-    
-        geojson_dict = {
-            "type": "FeatureCollection",
-            "features": features
-        }
-    
-        # Include CRS if known
-        if crs:
-            try:
-                crs_name = crs.to_string()
-            except Exception:
-                crs_name = str(crs)
-            geojson_dict["crs"] = {
-                "type": "name",
-                "properties": {"name": crs_name}
-            }
-
-        # Write clean, valid JSON
-        if jparams is not None:
-            fout = jparams["osm_bldings"]
-            with open(fout, "w", encoding="utf-8") as f:
-                json.dump(geojson_dict, f, indent=2, ensure_ascii=False)
     
     if crs == None:
         final_gdf.crs = "EPSG:4326"
         
     return final_gdf
-        
+
 def process_geometry(geometry):
     """Ensure valid polygon geometry for buildings."""
     if geometry.geom_type == 'LineString':
@@ -564,7 +529,6 @@ def extract_address(row):
         'addr:suburb', 'addr:postcode', 'addr:city', 'addr:province'
     ]
     # Filter for valid, non-null values from the row
-    #address_parts = [row.get(key) for key in address_keys if row.get(key) not in [None, ""]]
     address_parts = [
         str(row.get(key)) for key in address_keys 
         if row.get(key) not in [None, ""] and pd.notna(row.get(key))
@@ -585,7 +549,7 @@ def parse_levels(row, default=1.0):
     except (ValueError, TypeError):
         return float(default)
 
-def calculate_heights(row, storeyheight=2.8):
+def process_levels(row, storeyheight=2.8):
     """
     Compute building and roof heights based on building type and levels.
     """
@@ -603,26 +567,20 @@ def calculate_heights(row, storeyheight=2.8):
     
     if building_type == 'cabin':
         building_height = round(levels * storeyheight, 2)
-        roof_height = round(building_height + ground_height, 2)
     
     elif building_type == 'bridge':
-        #min_height = row.get('min_height', 0)
-        bottom_bridge_height = round(min_height + ground_height, 2)
-        # Note: 'building_height' remains the default calculation
+        min_height = row.get('min_height', 0)
+        building_height = round(levels * 2.0, 2)
         
     elif building_type == 'roof':
-        bottom_roof_height = round(levels * storeyheight + ground_height, 2)
-        roof_height = round(bottom_roof_height + 1.3, 2)
-        # Note: No 'building_height' for roofs
+        building_height = round(1.3, 3)
+        min_height = round(levels * storeyheight, 2)
         
     return {
-        'ground_height': ground_height,
         'building_height': building_height,
-        'roof_height': roof_height,
-        'bottom_bridge_height': bottom_bridge_height,
-        'bottom_roof_height': bottom_roof_height
+        'min_height': min_height
     }
-
+    
 def gdf_to_pathlayer(df, color_col='colour'):
     paths = []
     for _, row in df.iterrows():
@@ -636,39 +594,6 @@ def gdf_to_pathlayer(df, color_col='colour'):
                 paths.append({'path': list(line.coords), 'colour': row[color_col]})
     return paths
 
-#def gdf_to_geojson(df):
-#    """
-#    Convert a DataFrame with a 'geometry' column to a GeoJSON dict.
-#    All columns except 'geometry' are included in 'properties'.
-#    """
-#    def coords_to_list(coords):
-#        """Recursively convert tuples to lists for JSON."""
-#        if isinstance(coords, (float, int)):
-#            return coords
-#        return [coords_to_list(c) for c in coords]
-#    
-#    features = []
-#    for idx, row in df.iterrows():
-#        geom = mapping(row['geometry'])
-#        geom["coordinates"] = coords_to_list(geom["coordinates"])
-#        
-#        # Include all columns except 'geometry' in properties
-#        props = row.drop(labels='geometry').to_dict()
-#        
-#        features.append({
-#            "type": "Feature",
-#            "geometry": geom,
-#            "properties": props
-#        })
-#    
-#    geojson_dict = {
-#        "type": "FeatureCollection",
-#        "crs": {"type": "name", "properties": {"name": "EPSG:4326"}},
-#        "features": features
-#    }
-#    
-#    return geojson_dict
-
 def rasterQuery2(mx, my, gt_forward, rb):
     
     px = int((mx - gt_forward[0]) / gt_forward[1])
@@ -678,388 +603,307 @@ def rasterQuery2(mx, my, gt_forward, rb):
 
     return intval[0][0]
 
-def getBldVertices(dis, gt_forward, rb):
+def prepareTri(gdf, blds, aoi):
     """
-    Retrieve vertices from building footprints without duplicates.
-    Vertices already have a z attribute.
-    Works without GeoPandas.
+    Triangle prep
     """
-    all_coords = []
-    min_zbld = []
-    dps = 3
-    segs = set()
+    # 1. Combine all line constraints into one set
+    # We include building exteriors and road boundaries
+    all_polys = list(blds.geometry) + list(aoi.geometry)
 
-    for geom in dis['geometry'].values:
-        # Exterior
-        oring = list(geom.exterior.coords)
-        if not geom.exterior.is_ccw:
-            oring.reverse()
+    # 2. Snap to a 1cm grid to prevent floating point "near-misses"
+    # This is the secret to stopping the kernel crashes.
+    # We iterate through the list and use Shapely's .simplify method directly.
+    # 0.01 (1cm) is great for UTM, but ensure you are in a metric CRS.
+    #clean_polys = [p.simplify(0.2, preserve_topology=True) for p in all_polys]
+    clean_polys = [p for p in all_polys]
 
-        coords_rounded = [
-            (round(x, dps), round(y, dps), round(float(rasterQuery2(x, y, gt_forward, rb)), 2))
-            for x, y in oring
-        ]
-        all_coords.extend(coords_rounded)
-        zbld = [z for x, y, z in coords_rounded]
-        min_zbld.append(min(zbld))
+    # 3. If you want to snap strictly to a grid (rounding coordinates):
+    #from shapely.wkt import loads, dumps
 
-        segs.update({
-            (x1, y1, x2, y2) if x1 < x2 else (x2, y2, x1, y1)
-            for (x1, y1, z1), (x2, y2, z2) in zip(coords_rounded[:-1], coords_rounded[1:])
-        })
+    #def snap_geom(geom, precision=0.01):
+    # This rounds the coordinates in the WKT to force a grid snap
+    #    return loads(dumps(geom, rounding_precision=2))
+    #snapped_polys = [snap_geom(p) for p in clean_polys]
 
-        # Interiors
-        for interior in geom.interiors:
-            iring = list(interior.coords)
-            if interior.is_ccw:
-                iring.reverse()
-            coords_rounded = [
-                (round(x, dps), round(y, dps), round(float(rasterQuery2(x, y, gt_forward, rb)), 2))
-                for x, y in iring
-            ]
-            all_coords.extend(coords_rounded)
-            segs.update({
-                (x1, y1, x2, y2) if x1 < x2 else (x2, y2, x1, y1)
-                for (x1, y1, z1), (x2, y2, z2) in zip(coords_rounded[:-1], coords_rounded[1:])
-            })
+    # 3. Use unary_union to resolve all overlaps and intersections 
+    # This ensures that where a road meets a building, they share a vertex.
+    merged_lines = shapely.unary_union([p.boundary for p in clean_polys])
 
-    c = pd.DataFrame({"coords": list(segs)}).groupby("coords").size().reset_index(name="count")
-    ac = pd.DataFrame(all_coords, columns=["x", "y", "z"]).sort_values(by="z", ascending=False)\
-        .drop_duplicates(subset=["x", "y"]).reset_index(drop=True)
+    coords = []
+    segments = []
+    point_map = {}
 
-    return ac, c, min_zbld
+    def get_pt_idx(pt):
+        #rounded = (round(pt[0], 3), round(pt[1], 3))
+        rounded = (pt[0], pt[1])
+        if rounded not in point_map:
+            point_map[rounded] = len(coords)
+            coords.append(rounded)
+        return point_map[rounded]
 
+    # Iterate through the cleaned, merged lines
+    for line in merged_lines.geoms:
+        line_coords = list(line.coords)
+        for i in range(len(line_coords) - 1):
+            p1 = get_pt_idx(line_coords[i])
+            p2 = get_pt_idx(line_coords[i+1])
+            if p1 != p2:
+                segments.append([p1, p2])
 
-def getAOIVertices(aoi, gt_forward, rb):
-    """
-    Retrieve vertices from AOI without duplicates.
-    Vertices are assigned a z attribute.
-    Works without GeoPandas.
-    """
-    aoi_coords = []
-    dps = 3
-    segs = set()
+    # 2. NOW: Add the high-fidelity DEM points (from your GDF)
+    # We add them to 'coords' so Triangle includes them in the mesh.
+    # Because these points have no segments attached, they are treated as 
+    # "loose points" that the triangulation must honor.
+    for pt in gdf.geometry:
+        # We use get_pt_idx to avoid adding a DEM point that 
+        # might already exist on a road or building edge.
+        get_pt_idx((pt.x, pt.y))
 
-    for geom in aoi['geometry'].values:
-        # Exterior
-        oring = list(geom.exterior.coords)
-        if not geom.exterior.is_ccw:
-            oring.reverse()
-        coords_rounded = [
-            (round(x, dps), round(y, dps), round(float(rasterQuery2(x, y, gt_forward, rb)), 2))
-            for x, y in oring
-        ]
-        aoi_coords.extend(coords_rounded)
-        segs.update({
-            (x1, y1, x2, y2) if x1 < x2 else (x2, y2, x1, y1)
-            for (x1, y1, z1), (x2, y2, z2) in zip(coords_rounded[:-1], coords_rounded[1:])
-        })
+    # Define Regions (0: Terrain and Building)
+    # We use representative points of your original 'one' (roads) and 'aoi' (terrain)
+    regions = []
 
-        # Interiors
-        for interior in geom.interiors:
-            iring = list(interior.coords)
-            if interior.is_ccw:
-                iring.reverse()
-            coords_rounded = [
-                (round(x, dps), round(y, dps), round(float(rasterQuery2(x, y, gt_forward, rb)), 2))
-                for x, y in iring
-            ]
-            aoi_coords.extend(coords_rounded)
-            segs.update({
-                (x1, y1, x2, y2) if x1 < x2 else (x2, y2, x1, y1)
-                for (x1, y1, z1), (x2, y2, z2) in zip(coords_rounded[:-1], coords_rounded[1:])
-            })
+    # 2. ADD buildings to 'regions' with high IDs
+    building_start_id = 100000
+    for idx, row in blds.iterrows():
+        rp = row.geometry.representative_point()
+        # Region ID = 100000 + idx
+        regions.append([rp.x, rp.y, building_start_id + idx, 0])
 
-    ca = pd.DataFrame({"coords": list(segs)}).groupby("coords").size().reset_index(name="count")
-    acoi = pd.DataFrame(aoi_coords, columns=["x", "y", "z"]).sort_values(by="z", ascending=False)\
-        .drop_duplicates(subset=["x", "y"]).reset_index(drop=True)
+    # Add a point for the general terrain (outside roads/buildings)
+    # Find a point in aoi that is NOT in any road or building
+    terrain_seed = aoi.iloc[0].geometry.representative_point()
+    regions.append([terrain_seed.x, terrain_seed.y, 0, 0]) # ID 0 for Terrain
 
-    return acoi, ca
-
-
-def concatCoords(gdf, ac):
-    df2 = pd.concat([gdf, ac])
-    
-    return df2
-
-def createSgmts(ac, c, gdf, idx):
-    """
-    create a segment list for Triangle
-    - indices of vertices [from, to]
-    """
-    
-    l = len(gdf) #- 1
-    lr = 0
-    idx01 = []
-    
-    for i, row in c.iterrows():
-        frx, fry = row.coords[0], row.coords[1]
-        tox, toy = row.coords[2], row.coords[3]
-
-        [index_f] = (ac[(ac['x'] == frx) & (ac['y'] == fry)].index.values)
-        [index_t] = (ac[(ac['x'] == tox) & (ac['y'] == toy)].index.values)
-        idx.append([l + index_f, l + index_t])
-        idx01.append([lr + index_f, lr + index_t])
-    
-    return idx, idx01
-
+    return coords, regions, segments
 
 # # -- create CityJSON
-#def doVcBndGeomRd(lsgeom, lsattributes, extent, minz, maxz, TerrainT, pts, acoi, jparams, min_zbld, result, crs): 
-def doVcBndGeomRd(lsgeom, lsattributes, extent, minz, maxz, TerrainT, pts, acoi, jparams, min_zbld, crs): 
-    
-    #-- create the JSON data structure for the City Model
-    cm = {}
-    cm["type"] = "CityJSON"
-    cm["version"] = "1.1"
-    #cm["transform"] = {
-        #"scale": [0.0, 0.0, 0.0],
-        #"translate": [1.0, 1.0, 1.0]
-    #},
-    cm["CityObjects"] = {}
-    cm["vertices"] = []
-    #-- Metadata is added manually
-    cm["metadata"] = {
-    "title": jparams['cjsn_title'],
-    "referenceDate": jparams['cjsn_referenceDate'],
-    #"dataSource": jparams['cjsn_source'],
-    #"geographicLocation": jparams['cjsn_Locatn'],
-    #"referenceSystem": jparams['cjsn_referenceSystem'],
-    "referenceSystem": f"https://www.opengis.net/def/crs/EPSG/0/{crs}",
-    "geographicalExtent": [
-        extent[0],
-        extent[1],
-        minz ,
-        extent[2],
-        extent[3],
-        maxz
-      ],
-    "datasetPointOfContact": {
-        "contactName": jparams['cjsn_contactName'],
-        "emailAddress": jparams['cjsn_emailAddress'],
-        "contactType": jparams['cjsn_contactType'],
-        "website": jparams['cjsn_website']
+def doVcBndGeomRd(tris, tri_attr, final_verts_3d, gdf_blds, extent, minz, maxz, jparams, gt_forward, rb, crs):
+    # 1. Establish Global Offset for Precision
+    x_off, y_off, z_off = float(extent[0]), float(extent[1]), float(minz)
+
+    cm = {
+    "type": "CityJSON",
+    "version": "1.1",
+    "transform": {
+        "scale": [0.001, 0.001, 0.001], 
+        "translate": [x_off, y_off, z_off]
+    },
+    "metadata": {
+        "title": jparams['cjsn_title'],
+        "referenceDate": jparams['cjsn_referenceDate'],
+        # Reference system should be the EPSG integer or a standard URN
+        "referenceSystem": f"urn:ogc:def:crs:EPSG::{crs}",
+        # Format: [minx, miny, minz, maxx, maxy, maxz]
+        "geographicalExtent": [
+            float(extent[0]), float(extent[1]), float(minz), 
+            float(extent[2]), float(extent[3]), float(maxz)
+        ],
+        "datasetPointOfContact": {
+            "contactName": jparams['cjsn_contactName'],
+            "emailAddress": jparams['cjsn_emailAddress'],
+            "contactType": jparams['cjsn_contactType'],
+            "website": jparams['cjsn_website']
         },
-    "+metadata-extended": {
-        "lineage":
-            [{"featureIDs": ["TINRelief"],
-              "source": [
-                  {
-                      "description": jparams['cjsn_+meta-description'],
-                      "sourceSpatialResolution": jparams['cjsn_+meta-sourceSpatialResolution'],
-                      "sourceReferenceSystem": jparams['cjsn_+meta-sourceReferenceSystem'],
-                      "sourceCitation":jparams['cjsn_+meta-sourceCitation'],
-                      }],
-              "processStep": {
-                  "description" : "Processing of raster DEM using osm_LoD1_3DCityModel workflow",
-                  "processor": {
-                      "contactName": jparams['cjsn_contactName'],
-                      "contactType": jparams['cjsn_contactType'],
-                      "website": jparams['cjsn_website']
-                      }
-                  }
-            },
-            {"featureIDs": ["Building"],
-              "source": [
-                  {
-                      "description": "OpenStreetMap contributors",
-                      "sourceReferenceSystem": "urn:ogc:def:crs:EPSG:4326",
-                      "sourceCitation": "https://www.openstreetmap.org",
-                  }],
-              "processStep": {
-                  "description" : "Processing of building vector contributions using osm_LoD1_3DCityModel workflow",
-                  "processor": {
-                      "contactName": jparams['cjsn_contactName'],
-                      "contactType": jparams['cjsn_contactType'],
-                      "website": "https://github.com/AdrianKriger/osm_LoD1_3DCityModel"
-                      }
-                  }
-            }]
+        "+metadata-extended": {
+            "lineage": [
+                {
+                    "featureIDs": ["TINRelief"],
+                    "source": [{
+                        "description": jparams['cjsn_+meta-description'],
+                        "sourceSpatialResolution": jparams['cjsn_+meta-sourceSpatialResolution'],
+                        "sourceReferenceSystem": jparams['cjsn_+meta-sourceReferenceSystem'],
+                        "sourceCitation": jparams['cjsn_+meta-sourceCitation'],
+                    }],
+                    "processStep": {
+                        "description": "Processing of raster DEM using osm_LoD1_3DCityModel workflow",
+                        "processor": {
+                            "contactName": jparams['cjsn_contactName'],
+                            "contactType": jparams['cjsn_contactType'],
+                            "website": jparams['cjsn_website']
+                        }
+                    }
+                },
+                {
+                    "featureIDs": ["Building"],
+                    "source": [{
+                        "description": "OpenStreetMap contributors",
+                        "sourceReferenceSystem": "urn:ogc:def:crs:EPSG::4326",
+                        "sourceCitation": "https://www.openstreetmap.org",
+                    }],
+                    "processStep": {
+                        "description": "Processing of building vector contributions using osm_LoD1_3DCityModel workflow",
+                        "processor": {
+                            "contactName": jparams['cjsn_contactName'],
+                            "contactType": jparams['cjsn_contactType'],
+                            "website": "https://github.com/AdrianKriger/osm_LoD1_3DCityModel"
+                        }
+                    }
+                }
+            ]
         }
-    #"metadataStandard": jparams['metaStan'],
-    #"metadataStandardVersion": jparams['metaStanV']
+    },
+    "CityObjects": {},
+    "vertices": []
     }
-      ##-- do terrain
-    add_terrain_v(pts, cm)
-    grd = {}
-    grd['type'] = 'TINRelief'
-    grd['geometry'] = [] #-- a cityobject can have >1 
-      #-- the geometry
-    g = {} 
-    g['type'] = 'CompositeSurface'
-    g['lod'] = 1
-    g['boundaries'] = []
-    allsurfaces = [] #-- list of surfaces
-    add_terrain_b(TerrainT, allsurfaces)
-    g['boundaries'] = allsurfaces
-      #-- add the geom 
-    grd['geometry'].append(g)
-      #-- insert the terrain as one new city object
-    cm['CityObjects']['terrain01'] = grd
+
+    vertex_lookup = {}
+    id_registry = set()
+
+    def get_v_idx(x, y, z):
+        pt = (round((float(x) - x_off) * 1000), 
+              round((float(y) - y_off) * 1000), 
+              round((float(z) - z_off) * 1000))
+        if pt not in vertex_lookup:
+            vertex_lookup[pt] = len(cm['vertices'])
+            cm['vertices'].append(list(pt))
+        return vertex_lookup[pt]
+
+    def extrude_roof_ground_v2(oring, irings, height, reverse, allsurfaces):
+        o_idx = [get_v_idx(p[0], p[1], height) for p in oring]
+        if reverse: o_idx.reverse()
+        face = [o_idx]
+        for iring in irings:
+            i_idx = [get_v_idx(p[0], p[1], height) for p in iring]
+            if reverse: i_idx.reverse()
+            face.append(i_idx)
+        allsurfaces.append(face)
+
+    def extrude_walls_v2(ring, height, ground, allsurfaces):
+        for i in range(len(ring)):
+            p1, p2 = ring[i], ring[(i + 1) % len(ring)]
+            v1, v2 = get_v_idx(p1[0], p1[1], ground), get_v_idx(p2[0], p2[1], ground)
+            v3, v4 = get_v_idx(p2[0], p2[1], height), get_v_idx(p1[0], p1[1], height)
+            allsurfaces.append([[v1, v2, v3, v4]])
+
+    def get_unique_id(base_name):
+        if base_name not in id_registry:
+            id_registry.add(base_name); return base_name
+        suffix = 1
+        while f"{base_name}_{suffix}" in id_registry: suffix += 1
+        new_id = f"{base_name}_{suffix}"
+        id_registry.add(new_id); return new_id
+
+    tri_attr_int = tri_attr.astype(int).flatten()
+
+    # --- 2. TERRAIN ---
+    terrain_tris = tris[tri_attr_int == 0]
+    t_boundaries = []
+    for t in terrain_tris:
+        v1, v2, v3 = final_verts_3d[t[0]], final_verts_3d[t[1]], final_verts_3d[t[2]]
+        t_boundaries.append([[get_v_idx(*v1), get_v_idx(*v2), get_v_idx(*v3)]])
     
-    count = 0
-      #-- then buildings
-    for (i, geom) in enumerate(lsgeom):
+    cm['CityObjects']['terrain01'] = {
+        'type': 'TINRelief',
+        'geometry': [{'type': 'CompositeSurface', 'lod': 1, 'boundaries': t_boundaries}]
+    }
 
-        #poly = list(result[lsattributes[i]['osm_id']].values())
-        footprint = geom
-        footprint = sg.polygon.orient(footprint, 1)
+    # --- 3. BUILDINGS ---
+    for i, row in gdf_blds.iterrows():
+        attrs = row.drop('geometry').dropna().to_dict()
+        building_type = row.get('building')
 
-        #-- one building
-        oneb = {}
-        oneb['type'] = 'Building'
-        oneb['attributes'] = {}
-        for (k, v) in list(lsattributes[i].items()):
-            if v is None:
-                del lsattributes[i][k]
-        for a in lsattributes[i]:
-            oneb['attributes'][a] = lsattributes[i][a]                   
-        oneb['geometry'] = [] #-- a cityobject can have > 1
+        # Determine Ground Height
+        if building_type in ['bridge', 'roof']:
+            # FALLBACK: Use Raster Query for non-grounded structures
+            centroid = row.geometry.centroid
+            ground_height = float(rasterQuery2(centroid.x, centroid.y, gt_forward, rb))
+        else:
+            # STANDARD: Use Mesh harvesting
+            # Use mesh-harvested height for standard buildings
+            tag = 100000 + i
+            indices = np.where(tri_attr_int == tag)[0]
+            ground_height = float(np.min(final_verts_3d[np.unique(tris[indices]), 2])) if len(indices) > 0 else float(minz)
+
+        # Pull raw inputs from GDF
+        bld_h_input = pd.to_numeric(row.get('building_height', 4.0), errors='coerce')
+        min_h_input = pd.to_numeric(row.get('min_height'), errors='coerce')
         
-        #-- the geometry
-        g = {} 
-        g['type'] = 'Solid'
-        g['lod'] = 1
-        allsurfaces = [] #-- list of surfaces forming the shell of the solid
-        #-- exterior ring of each footprint
-        oring = list(footprint.exterior.coords)
-        oring.pop() #-- remove last point since first==last
-        
-        if footprint.exterior.is_ccw == False:
-            #-- to get proper orientation of the normals
-            oring.reverse()
-        
-        if lsattributes[i]['building'] == 'bridge':
-            extrude_walls(oring, lsattributes[i]['roof_height'], lsattributes[i]['bottom_bridge_height'], allsurfaces, cm)
-            count = count + 1
+        # Logic for Attributes and Geometry Heights
+        b_z, t_z = ground_height, ground_height + bld_h_input # Defaults
+        bottom_bridge_height = None
+        bottom_roof_height = None
 
-        if lsattributes[i]['building'] == 'roof':
-            extrude_walls(oring, lsattributes[i]['roof_height'], lsattributes[i]['bottom_roof_height'], allsurfaces, cm)
-            count = count + 1
-
-        if lsattributes[i]['building'] != 'bridge' and lsattributes[i]['building'] != 'roof':
-            extrude_walls(oring, lsattributes[i]['roof_height'], min_zbld[i-count], allsurfaces, cm)
-       
-        #-- interior rings of each footprint
-        irings = []
-        interiors = list(footprint.interiors)
-        for each in interiors:
-            iring = list(each.coords)
-            iring.pop() #-- remove last point since first==last
+        if building_type == 'bridge':
+            bottom_bridge_height = round(ground_height + min_h_input, 2)
+            b_z = bottom_bridge_height
+            t_z = b_z + bld_h_input
             
-            if each.is_ccw == True:
-                #-- to get proper orientation of the normals
-                iring.reverse() 
-            
-            irings.append(iring)
-            extrude_walls(iring, lsattributes[i]['roof_height'], min_zbld[i-count], allsurfaces, cm)
+        elif building_type == 'roof':
+            bottom_roof_height = round(ground_height + min_h_input + 1.3, 2)
+            b_z = bottom_roof_height
+            t_z = b_z + bld_h_input # Thin surface for roofs
+        
+        # Prepare attributes for the City Model
+        attrs.update({
+            'ground_height': round(ground_height, 2),
+            'building_height': round(bld_h_input, 2),
+            'roof_height': round(t_z, 2),
+            'bottom_bridge_height': bottom_bridge_height,
+            'bottom_roof_height': bottom_roof_height
+        })
+        
+        # ID Generation
+        final_id = get_unique_id(f"osm_{attrs.get('osm_id', i)}")
 
-        #-- top-bottom surfaces
-        if lsattributes[i]['building'] == 'bridge':
-            extrude_roof_ground(oring, irings, lsattributes[i]['roof_height'], 
-                                False, allsurfaces, cm)
-            extrude_roof_ground(oring, irings, lsattributes[i]['bottom_bridge_height'], 
-                                True, allsurfaces, cm)
-        if lsattributes[i]['building'] == 'roof':
-            extrude_roof_ground(oring, irings, lsattributes[i]['roof_height'], 
-                                False, allsurfaces, cm)
-            extrude_roof_ground(oring, irings, lsattributes[i]['bottom_roof_height'], 
-                                True, allsurfaces, cm)
-        if lsattributes[i]['building'] != 'bridge' and lsattributes[i]['building'] != 'roof':
-            extrude_roof_ground(oring, irings, lsattributes[i]['roof_height'], 
-                            False, allsurfaces, cm)
-            extrude_roof_ground(oring, irings, min_zbld[i-count], True, allsurfaces, cm)
+        # Geometry Generation
+        footprint = sg.polygon.orient(row.geometry, 1) 
+        oring = list(footprint.exterior.coords)[:-1]
+        irings = [list(h.coords)[:-1] for h in footprint.interiors]
+        
+        surfaces = []
+        # Walls
+        extrude_walls_v2(oring, t_z, b_z, surfaces)
+        for iring in irings:
+            extrude_walls_v2(iring, t_z, b_z, surfaces)
 
-        #-- add the extruded geometry to the geometry
-        g['boundaries'] = []
-        g['boundaries'].append(allsurfaces)
+        # Top and Bottom
+        extrude_roof_ground_v2(oring, irings, t_z, False, surfaces) # Top
+        extrude_roof_ground_v2(oring, irings, b_z, True, surfaces)  # Bottom
 
-        #-- add the geom to the building 
-        oneb['geometry'].append(g)
-        #-- insert the building as one new city object
-        cm['CityObjects'][lsattributes[i]['osm_id']] = oneb
-
+        # Apply the "Strictly > 0" filter immediately
+        final_attrs = {k: v for k, v in attrs.items() 
+                       if (not isinstance(v, (int, float, np.number)) and v is not None and v != "") 
+                       or (isinstance(v, (int, float, np.number)) and not np.isnan(v) and v > 0)}
+        
+        cm['CityObjects'][final_id] = {
+            'type': 'Building', 
+            'attributes': final_attrs,
+            'geometry': [{'type': 'Solid', 'lod': 1, 'boundaries': [surfaces]}]
+        }
+  
     return cm
 
-def add_terrain_v(pts, cm):
-    for p in pts:
-        cm['vertices'].append([p[0], p[1], p[2]])
-    
-def add_terrain_b(Terr, allsurfaces):
-    for i in Terr:
-        allsurfaces.append([[i[0], i[1], i[2]]]) 
-        
-#- new
-def extrude_roof_ground(orng, irngs, height, reverse, allsurfaces, cm):
-    oring = copy.deepcopy(orng)
-    irings = copy.deepcopy(irngs)
-    if reverse == True:
-        oring.reverse()
-        for each in irings:
-            each.reverse()
-    for (i, pt) in enumerate(oring):
-        cm['vertices'].append([round(pt[0], dps), round(pt[1], dps), height])
-        oring[i] = (len(cm['vertices']) - 1)
-    for (i, iring) in enumerate(irings):
-        for (j, pt) in enumerate(iring):
-            cm['vertices'].append([round(pt[0], dps), round(pt[1], dps), height])
-            irings[i][j] = (len(cm['vertices']) - 1)
-    output = []
-    output.append(oring)
-    for each in irings:
-        output.append(each)
-    allsurfaces.append(output)
-
-def extrude_walls(ring, height, ground, allsurfaces, cm):
-    #-- each edge become a wall, ie a rectangle
-    for (j, v) in enumerate(ring[:-1]):
-        l = []
-        cm['vertices'].append([round(ring[j][0], dps),   round(ring[j][1], dps),   ground])
-        #values.append(0)
-        cm['vertices'].append([round(ring[j+1][0], dps), round(ring[j+1][1], dps), ground])
-        #values.append(0)
-        cm['vertices'].append([round(ring[j+1][0], dps), round(ring[j+1][1], dps), height])
-        cm['vertices'].append([round(ring[j][0], dps),   round(ring[j][1], dps),   height])
-        t = len(cm['vertices'])
-        allsurfaces.append([[t-4, t-3, t-2, t-1]])    
-        #allsurfaces.append([t-4, t-3, t-2, t-1])    
-
-    #-- last-first edge
-    l = []
-    cm['vertices'].append([round(ring[-1][0], dps), round(ring[-1][1], dps), ground])
-    #values.append(0)
-    cm['vertices'].append([round(ring[0][0], dps),  round(ring[0][1], dps),  ground])
-    cm['vertices'].append([round(ring[0][0], dps),  round(ring[0][1], dps),  height])
-    #values.append(0)
-    cm['vertices'].append([round(ring[-1][0], dps), round(ring[-1][1], dps), height])
-    t = len(cm['vertices'])
-    allsurfaces.append([[t-4, t-3, t-2, t-1]])
-    #allsurfaces.append([t-4, t-3, t-2, t-1])
-    
-def output_cityjson(extent, minz, maxz, TerrainT, pts, jparams, min_zbld, acoi, crs):
+def output_cityjson(extent, minz, maxz, tris, tri_attr, final_verts_3d, dis, jparams,  gt_forward, rb, crs):
 
     """
     basic function to produce LoD1 City Model
     - buildings and terrain
     """
-      ##- open buildings ---fiona object
-    c = fiona.open(jparams['osm_bldings'])
-    lsgeom = [] #-- list of the geometries
-    lsattributes = [] #-- list of the attributes
-    for each in c:
-        lsgeom.append(shape(each['geometry'])) #-- geom are casted to Fiona's 
-        lsattributes.append(each['properties'])
-               
-    #- 3D Model
-    cm = doVcBndGeomRd(lsgeom, lsattributes, extent, minz, maxz, TerrainT, pts, acoi, jparams, min_zbld, crs)    
-    json_str = json.dumps(cm)#, indent=2)
-    fout = open(jparams['cjsn_out'], "w")                 
-    fout.write(json_str)  
-    ##- close fiona object
-    c.close() 
-    #clean cityjson
-    cm = cityjson.load(jparams['cjsn_out'])               
-    cityjson.save(cm, jparams['cjsn_solid']) 
+    cm = doVcBndGeomRd(tris, tri_attr, final_verts_3d, dis, extent, minz, maxz, jparams,  gt_forward, rb, crs)
+
+    # The Robust Encoder for NumPy and Shapely types
+    class CityJSONEncoder(json.JSONEncoder):
+        def default(self, obj):
+            # 1. Handle NumPy types
+            if isinstance(obj, (np.integer, np.int64)): return int(obj)
+            if isinstance(obj, (np.floating, np.float64)): return float(obj)
+            if isinstance(obj, np.ndarray): return obj.tolist()
+            
+            # 2. Handle Shapely Geometry (The fix for your error)
+            # If a Point/Polygon accidentally leaked into attributes, convert to string
+            if hasattr(obj, 'wkt'): 
+                return str(obj.wkt)
+                
+            return super(CityJSONEncoder, self).default(obj)
+
+    # Write to the output path defined in jparams
+    with open(jparams['cjsn_out'], "w") as fout:
+        json.dump(cm, fout, cls=CityJSONEncoder)
+
+    cm_obj = cityjson.load(jparams['cjsn_out'])
+    cityjson.save(cm_obj, jparams['cjsn_solid'])
 
 def read_vsimem_geojson(vsimem_path):
     with fiona.open(vsimem_path, driver="GeoJSON") as src:
@@ -1104,7 +948,6 @@ def extract_boundaries_by_name(input_pbf, jparams):
         layers=["multipolygons"],
         options=["-where", where_filter, "-makevalid"]
     )
-    #gdf = gpd.read_file(geojson_vsimem)
     gdf = read_vsimem_geojson(geojson_vsimem)
     gdal.Unlink(geojson_vsimem)
 
@@ -1121,13 +964,12 @@ def extract_boundaries_by_name(input_pbf, jparams):
         layers=["multipolygons"],
         options=["-where", where_filter, "-makevalid"]
     )
-    #gdf = gpd.read_file(geojson_vsimem)
     gdf = read_vsimem_geojson(geojson_vsimem)
     gdal.Unlink(geojson_vsimem)
 
     return gdf
 
-def _harvestSolar(input_pbf, jparams, minx, miny, maxx, maxy, crs):
+def _harvestSolar(input_pbf, minx, miny, maxx, maxy, epsg):
     gdal.UseExceptions()
     gdal.SetConfigOption("OGR_GEOMETRY_ACCEPT_UNCLOSED_RING", "NO") 
     gdal.SetConfigOption("OGR_INTERLEAVED_READING", "YES")
@@ -1190,13 +1032,13 @@ def _harvestSolar(input_pbf, jparams, minx, miny, maxx, maxy, crs):
         gdf_solar_combined.crs = "EPSG:4326"
     
         # Project the combined GeoDataFrame (assuming .to_crs is a method on the returned structure)
-        #gdf_solar_combined = gdf_solar_combined.to_crs(crs[7:])
+        gdf_solar_combined = gdf_solar_combined.to_crs(epsg)
     
         #print(f"\n✅ Total solar generator polygons harvested: {len(gdf_solar_combined)}")
-    else:
+    #else:
         # Create an empty DataFrame if nothing was found
-        gdf_solar_combined = pd.DataFrame() 
-        print("\033[1m No solar generator features found.\033[0m No rooftop solar are mapped in", jparams['FocusArea'])
+        #gdf_solar_combined = pd.DataFrame() 
+        #print("\033[1m No solar generator features found.\033[0m No rooftop solar are mapped in", jparams['FocusArea'])
 
     # Cleanup VSI Memory
     gdal.Unlink(geojson_vsimem_poly)
@@ -1204,69 +1046,121 @@ def _harvestSolar(input_pbf, jparams, minx, miny, maxx, maxy, crs):
 
     return gdf_solar_combined
 
-#def process_osm_geoms(vsimem_path, input_pbf, layer_name, sql_where, aoi_geom):
-    """Generic helper to extract, parse tags, and clip OSM data"""
+def calculate_azimuth_from_geometry(polygon):
+    """
+    Calculates the azimuth (angle from North, clockwise, 0-180) 
+    of the minimum rotated bounding box for a given Shapely Polygon.
+    """
+    if not polygon or polygon.geom_type not in ['Polygon', 'MultiPolygon']:
+        return 0.0
+
+    min_rect = polygon.minimum_rotated_rectangle
     
-    #-extent
-    minx, miny, maxx, maxy = aoi_geom.bounds
+    if min_rect.geom_type != 'Polygon':
+        return 0.0
+        
+    coords = np.array(min_rect.exterior.coords)
     
-    gdal.UseExceptions()
-    gdal.SetConfigOption("OGR_GEOMETRY_ACCEPT_UNCLOSED_RING", "NO")
+    segment1 = coords[1] - coords[0]
+    segment2 = coords[2] - coords[1]
     
-    gdal.VectorTranslate(
-        vsimem_path,
-        input_pbf,
-        format="GeoJSON",
-        layers=[layer_name],
-        options=[
-            "-where", sql_where,
-            "-spat", str(minx), str(miny), str(maxx), str(maxy)
-        ]
-    )
+    len1 = np.linalg.norm(segment1)
+    len2 = np.linalg.norm(segment2)
+
+    long_segment = segment1 if len1 >= len2 else segment2
+        
+    if np.linalg.norm(long_segment) == 0:
+        return 0.0
+
+    angle_rad = np.arctan2(long_segment[1], long_segment[0])
+    angle_deg = np.degrees(angle_rad)
     
-    gdf = read_vsimem_geojson(vsimem_path)
-    gdal.Unlink(vsimem_path)
+    # Convert angle (from X-axis CCW) to Azimuth (from North CW)
+    azimuth = 90.0 - angle_deg
+    azimuth = azimuth % 360.0
+        
+    # Constrain to 0-180 range
+    if azimuth > 180.0:
+        azimuth -= 180.0
+
+    return azimuth
+
+def _with_solar(gdf_buildings, gdf_solar, epsg):
+    """
+    Efficient Dual Join: Performs both building-centric and solar-centric joins
+    in one loop.
+
+    Returns: (gdf_buildings_modified, gdf_solar_modified)
+    """
+
+    n_bld = len(gdf_buildings["geometry"])
+    n_sol = len(gdf_solar["geometry"])
     
-    if gdf.empty:
-        return gdf
+    # CRITICAL: IDs for both DataFrames
+    BLD_ID_COLUMN = "osm_id"  # Assuming 'osm_id' is the unique ID in the building layer
+    SOLAR_ID_COLUMN = "osm_id"
+    
+    # --- BUILDING-CENTRIC OUTPUT (for blds.df) ---
+    solar_id_lists = [[] for _ in range(n_bld)]  # List of solar IDs for each building
+    solar_m = [[] for _ in range(n_bld)]
+    has_solar = [False] * n_bld
 
-    # Convert valid strings, ignore None/NaN
-    def safe_convert(tag_string):
-        if isinstance(tag_string, str):
-            try:
-                # Replace "=>" with ":" and fix newlines
-                formatted_string = "{" + tag_string.replace("=>", ":").replace("\n", " ") + "}"
-                return json.loads(formatted_string)  # Parse safely
-            except json.JSONDecodeError:
-                return {}  # Return empty dict on failure
-        return {}  # Return empty dict if NaN or None
+    # --- SOLAR-CENTRIC OUTPUT (for gdf_solar.df) ---
+    bld_id_lists = [[] for _ in range(n_sol)]  # List of building IDs for each solar panel
+    #bld_id_lists =[None] * n_sol
+    
+    # Brute-force intersection
+    for i in range(n_bld):
+        b_geom = gdf_buildings["geometry"].iloc[i]
+        bld_id = gdf_buildings[BLD_ID_COLUMN].iloc[i] # Get the building ID
 
-    # Apply conversion function
-    gdf["tags"] = gdf["other_tags"].apply(safe_convert)
+        for j in range(n_sol):
+            s_geom = gdf_solar["geometry"].iloc[j]
+            sol_id = gdf_solar[SOLAR_ID_COLUMN].iloc[j] # Get the solar ID
+            s_m = gdf_solar['generator:method'].iloc[j] # Get the building ID
 
-    # Extract values safely - Normalize the 'tags' column to create a new DataFrame
-    tags_df = pd.json_normalize(gdf['tags'])
-    # Join the new columns back to the original GeoDataFrame
-    gdf = pd.concat([gdf, tags_df], axis=1)
-    # (Optional) Drop the original 'tags' column
-    #gdf = gdf.drop(columns=['other_tags'])
-    if 'other_tags' in gdf.columns: gdf = gdf.drop(columns=['other_tags'])
+            if b_geom.contains(s_geom):
+                # 1. Building-Centric Logic (Attaches solar ID to building)
+                has_solar[i] = True
+                solar_id_lists[i].append(sol_id)
+                solar_m[i].append(s_m)
 
-    # Ensure a single 'osm_id' column
-    if 'osm_id' in gdf.columns:
-        if 'osm_way_id' in gdf.columns:
-            gdf['osm_id'] = [o if pd.notna(o) else w 
-                             for o, w in zip(gdf['osm_id'], gdf['osm_way_id'])]
-            gdf = gdf.drop(columns=['osm_way_id'])
-    elif 'osm_way_id' in gdf.columns:
-        gdf = gdf.rename(columns={'osm_way_id': 'osm_id'})
+                # 2. Solar-Centric Logic (Attaches building ID to solar panel)
+                bld_id_lists[j].append(bld_id)
+                #if bld_id_lists[j] is None:
+                #    bld_id_lists[j] = bld_id
 
-    # Geometry Clip to AOI
-    gdf = gdf[gdf.geometry.apply(lambda x: x.intersects(aoi_geom))]
-    gdf.crs = "EPSG:4326"
-    gdf = gdf.fillna("")
-    return gdf
+    # --- Finalize Lists (Replace [] with None) ---
+    for i in range(n_bld):
+        if not solar_id_lists[i]:
+            solar_id_lists[i] = None
 
+    for j in range(n_sol):
+        if not bld_id_lists[j]:
+            bld_id_lists[j] = None
+
+    # --- CREATE OUTPUT DataFrames ---
+
+    # 1. Modified Building DataFrame (blds)
+    #gdf_blds_out = dict(gdf_buildings)
+    gdf_buildings["children"] = solar_id_lists 
+    gdf_buildings["has_solar"] = has_solar
+    gdf_buildings["method"] = solar_m
+    #blds_out = GeoDataFrameLite(gdf_blds_out)
+    #blds_out.crs = epsg
+
+    # 2. Modified Solar DataFrame (gdf_solar)
+    # We must use the solar DataFrame as the base to keep all geometry/attributes
+    #gdf_solar_out = dict(gdf_solar)
+    # The new column holds the list of intersecting building IDs
+    gdf_solar["parent"] = bld_id_lists 
+    #gdf_solar_out = GeoDataFrameLite(gdf_solar_out)
+    #gdf_solar_out.crs = epsg
+    gdf_solar = gdf_solar.rename(columns={'generator:method': 'method'})
+    gdf_solar['area'] = gdf_solar['geometry'].apply(lambda geom: geom.area)
+    gdf_solar['azimuth'] = gdf_solar['geometry'].apply(calculate_azimuth_from_geometry)
+
+    return gdf_buildings, gdf_solar
 
 def process_osm_geoms(vsimem_path, input_pbf, layer_name, sql_where, aoi_geom):
     """Generic helper to extract, parse tags, and clip OSM data"""
@@ -1416,8 +1310,8 @@ def create_maplibre_3Dviz(
     center=None,
     zoom=16,
     offline=False,
-    local_js_path="./data/maplibre-gl.js",
-    local_css_path="./data/maplibre-gl.css",
+    local_js_path="../data/maplibre-gl.js",
+    local_css_path="../data/maplibre-gl.css",
     remote_style="https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json"
 ):
     # 1. Determine map center safely
@@ -1591,7 +1485,7 @@ def create_maplibre_3Dviz(
             'paint': {{
                 'fill-extrusion-color': ['case', ['has', 'fill_color'], ['get', 'fill_color'], '#4a4e5a'],
                 'fill-extrusion-height': ['coalesce', ['to-number', ['get', 'building_height']], 10],
-                'fill-extrusion-opacity': 0.6
+                'fill-extrusion-opacity': 0.7
             }}
         }});
 
