@@ -508,7 +508,7 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Input OSM PBF file</span>
-<span class="n">input_pbf</span> <span class="o">=</span> <span class="s2">&quot;./data/CapeTownNew.osm.pbf&quot;</span>
+<span class="n">input_pbf</span> <span class="o">=</span> <span class="s2">&quot;./data/CapeTown.osm.pbf&quot;</span>
 
 <span class="c1">#input_pbf = &quot;./data/south-africa-latest.osm.pbf&quot;</span>
 </pre></div>
@@ -532,7 +532,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.242917
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.282906
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -632,7 +632,7 @@ document.write(`
 ERROR 1: Non closed ring detected.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.310721
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.320831
 </pre></div>
 </div>
 </div>
@@ -869,7 +869,7 @@ ERROR 1: Non closed ring detected.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 3797 buildings have been harvested from ./data/CapeTownNew.osm.pbf
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 3797 buildings have been harvested from ./data/CapeTown.osm.pbf
 </pre></div>
 </div>
 </div>
@@ -981,11 +981,8 @@ ERROR 1: Non closed ring detected.
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># basic cleaning to harvest building=* (no building:part=*) and building=levels tags only</span>
 
 <span class="c1">#- we only want buildings with =levels data</span>
-<span class="n">ts</span> <span class="o">=</span> <span class="p">(</span>
-    <span class="n">ts</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;building:levels&#39;</span><span class="p">])</span>
-      <span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="o">**</span><span class="p">{</span><span class="s1">&#39;building:levels&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">ts</span><span class="p">[</span><span class="s1">&#39;building:levels&#39;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)})</span>
-      <span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="s2">&quot;`building:levels` != 0&quot;</span><span class="p">)</span>
-<span class="p">)</span>
+<span class="n">ts</span><span class="p">[</span><span class="s1">&#39;building:levels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_numeric</span><span class="p">(</span><span class="n">ts</span><span class="p">[</span><span class="s1">&#39;building:levels&#39;</span><span class="p">],</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;coerce&#39;</span><span class="p">)</span>
+<span class="n">ts</span> <span class="o">=</span> <span class="n">ts</span><span class="p">[</span><span class="n">ts</span><span class="p">[</span><span class="s1">&#39;building:levels&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
 
 <span class="c1">#- without building:part</span>
 <span class="n">ts</span> <span class="o">=</span> <span class="n">ts</span><span class="p">[</span><span class="n">ts</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;building:part&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span> <span class="k">if</span> <span class="s2">&quot;building:part&quot;</span> <span class="ow">in</span> <span class="n">ts</span> <span class="k">else</span> <span class="n">ts</span>
@@ -1304,7 +1301,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.338699
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.344642
 </pre></div>
 </div>
 </div>
@@ -1426,7 +1423,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.003485
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.002970
 </pre></div>
 </div>
 </div>
@@ -1495,7 +1492,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <td>4.1</td>
       <td>0.0</td>
       <td>4FRW3FF5+27C</td>
-      <td>(((265023.4813864499, 6242993.344091462), (265...</td>
+      <td>[[(265023.481, 6242993.344), (265021.289, 6242...</td>
       <td>POLYGON ((265023.4813864499 6242993.344091462,...</td>
     </tr>
     <tr>
@@ -1516,7 +1513,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <td>18.1</td>
       <td>0.0</td>
       <td>4FRW3FC2+R5G</td>
-      <td>(((264360.39058643614, 6242908.633245183), (26...</td>
+      <td>[[(264360.391, 6242908.633), (264361.062, 6242...</td>
       <td>POLYGON ((264360.39058643614 6242908.633245183...</td>
     </tr>
   </tbody>
@@ -1567,7 +1564,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.114856
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.112468
 </pre></div>
 </div>
 </div>
@@ -1609,7 +1606,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- the vertices </span>
 <span class="n">final_verts_2d</span> <span class="o">=</span> <span class="n">Tr</span><span class="p">[</span><span class="s1">&#39;vertices&#39;</span><span class="p">]</span>
 
-<span class="c1">#- round to 3 decimals to match your get_pt_idx rounding</span>
+<span class="c1">#- </span>
 <span class="n">z_cache</span> <span class="o">=</span> <span class="p">{(</span><span class="n">row</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">y</span><span class="p">):</span> <span class="n">row</span><span class="o">.</span><span class="n">z</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">gdf</span><span class="o">.</span><span class="n">itertuples</span><span class="p">()}</span>
 
 <span class="c1">## -- we triangulate in 2D and project into 3D space. the vertices of the building outlines need a &#39;z&#39;-value</span>
@@ -1715,7 +1712,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:16.078532
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:16.124278
 </pre></div>
 </div>
 </div>
