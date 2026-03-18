@@ -9,10 +9,10 @@
     "nodata": -99999999.99999,
     "projClip_raster": "./raster/GLM_10m_DEM_SALTRIVER_OBS_clip_utm34s.tif",
     
-    "cjsn_out": "./result/citjsn_sr3D10.json",
+    "cjsn_out": "./result/citjsn_sr10m3D.json",
     
     "cjsn_title": "LoD1 City Model of Salt River, Cape Town",
-    "cjsn_referenceDate": "2024-07-20",
+    "cjsn_referenceDate": "2026-03-18",
     "cjsn_contactName": "arkriger", 
     "cjsn_emailAddress": "adrian8kriger@gmail.com", 
     "cjsn_website": "www.linkedin.com/in/adrian-kriger", 
@@ -20,7 +20,5 @@
     "cjsn_+meta-description": "City of Cape Town",
     "cjsn_+meta-sourceSpatialResolution": "10 meter resampled bare-earth DEM",
     "cjsn_+meta-sourceReferenceSystem": "urn:ogc:def:crs:EPSG:20482",
-    "cjsn_+meta-sourceCitation":"https://odp-cctegis.opendata.arcgis.com/documents/dfed46fcf1784aafacb146b14f01cd49/explore",
-    
-    "cjsn_solid": "./result/citjsnClean_sRiver3D10m.json"
+    "cjsn_+meta-sourceCitation":"https://odp-cctegis.opendata.arcgis.com/documents/dfed46fcf1784aafacb146b14f01cd49/explore"
 }

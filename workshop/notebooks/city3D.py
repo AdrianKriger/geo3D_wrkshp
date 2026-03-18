@@ -598,6 +598,8 @@ def rasterQuery2(mx, my, gt_forward, rb):
     
     px = int((mx - gt_forward[0]) / gt_forward[1])
     py = int((my - gt_forward[3]) / gt_forward[5])
+    
+    #print(f"Raster Size: {rb.XSize}x{rb.YSize}, Requesting: {px},{py}")
 
     intval = rb.ReadAsArray(px, py, 1, 1)
 
@@ -684,29 +686,28 @@ def doVcBndGeomRd(tris, tri_attr, final_verts_3d, gdf_blds, extent, minz, maxz, 
     x_off, y_off, z_off = float(extent[0]), float(extent[1]), float(minz)
 
     cm = {
-    "type": "CityJSON",
-    "version": "1.1",
-    "transform": {
-        "scale": [0.001, 0.001, 0.001], 
-        "translate": [x_off, y_off, z_off]
-    },
-    "metadata": {
-        "title": jparams['cjsn_title'],
-        "referenceDate": jparams['cjsn_referenceDate'],
-        # Reference system should be the EPSG integer or a standard URN
-        "referenceSystem": f"urn:ogc:def:crs:EPSG::{crs}",
-        # Format: [minx, miny, minz, maxx, maxy, maxz]
-        "geographicalExtent": [
-            float(extent[0]), float(extent[1]), float(minz), 
-            float(extent[2]), float(extent[3]), float(maxz)
-        ],
-        "datasetPointOfContact": {
-            "contactName": jparams['cjsn_contactName'],
-            "emailAddress": jparams['cjsn_emailAddress'],
-            "contactType": jparams['cjsn_contactType'],
-            "website": jparams['cjsn_website']
+        "type": "CityJSON",
+        "version": "2.0", # Upgraded to 2.0
+        "transform": {
+            "scale": [0.001, 0.001, 0.001], 
+            "translate": [x_off, y_off, z_off]
         },
-        "+metadata-extended": {
+        "metadata": {
+            "title": jparams['cjsn_title'],
+            "referenceDate": jparams['cjsn_referenceDate'],
+            # In 2.0, you can use the integer directly or an identifier object
+            "referenceSystem": f"https://www.opengis.net/def/crs/EPSG/0/{crs}", #int(crs), 
+            "geographicalExtent": [
+                float(extent[0]), float(extent[1]), float(minz), 
+                float(extent[2]), float(extent[3]), float(maxz)
+            ],
+            "datasetPointOfContact": {
+                "contactName": jparams['cjsn_contactName'],
+                "emailAddress": jparams['cjsn_emailAddress'],
+                "contactType": jparams['cjsn_contactType'],
+                "website": jparams['cjsn_website']
+            },
+            # '+metadata-extended' is GONE. Lineage moves to the top level of metadata.
             "lineage": [
                 {
                     "featureIDs": ["TINRelief"],
@@ -717,7 +718,7 @@ def doVcBndGeomRd(tris, tri_attr, final_verts_3d, gdf_blds, extent, minz, maxz, 
                         "sourceCitation": jparams['cjsn_+meta-sourceCitation'],
                     }],
                     "processStep": {
-                        "description": "Processing of raster DEM using osm_LoD1_3DCityModel workflow",
+                        "description": "Processing of raster DEM using geo3D workflow",
                         "processor": {
                             "contactName": jparams['cjsn_contactName'],
                             "contactType": jparams['cjsn_contactType'],
@@ -733,19 +734,18 @@ def doVcBndGeomRd(tris, tri_attr, final_verts_3d, gdf_blds, extent, minz, maxz, 
                         "sourceCitation": "https://www.openstreetmap.org",
                     }],
                     "processStep": {
-                        "description": "Processing of building vector contributions using osm_LoD1_3DCityModel workflow",
+                        "description": "Processing of building vector contributions using geo3D workflow",
                         "processor": {
                             "contactName": jparams['cjsn_contactName'],
                             "contactType": jparams['cjsn_contactType'],
-                            "website": "https://github.com/AdrianKriger/osm_LoD1_3DCityModel"
+                            "website": "https://github.com/AdrianKriger/geo3D"
                         }
                     }
                 }
             ]
-        }
-    },
-    "CityObjects": {},
-    "vertices": []
+        },
+        "CityObjects": {},
+        "vertices": []
     }
 
     vertex_lookup = {}
@@ -814,8 +814,16 @@ def doVcBndGeomRd(tris, tri_attr, final_verts_3d, gdf_blds, extent, minz, maxz, 
             # Use mesh-harvested height for standard buildings
             tag = 100000 + i
             indices = np.where(tri_attr_int == tag)[0]
-            ground_height = float(np.min(final_verts_3d[np.unique(tris[indices]), 2])) if len(indices) > 0 else float(minz)
-
+            #ground_height = float(np.min(final_verts_3d[np.unique(tris[indices]), 2])) if len(indices) > 0 else float(minz)
+            if len(indices) > 0:
+                # Primary: Use the lowest vertex where the building touches the mesh
+                ground_height = float(np.min(final_verts_3d[np.unique(tris[indices]), 2]))
+            else:
+                # Fallback: Query the raster at the building centroid 
+                # instead of using the global minz
+                centroid = row.geometry.centroid
+                ground_height = float(rasterQuery2(centroid.x, centroid.y, gt_forward, rb))
+        
         # Pull raw inputs from GDF
         bld_h_input = pd.to_numeric(row.get('building_height', 4.0), errors='coerce')
         min_h_input = pd.to_numeric(row.get('min_height'), errors='coerce')
@@ -902,8 +910,15 @@ def output_cityjson(extent, minz, maxz, tris, tri_attr, final_verts_3d, dis, jpa
     with open(jparams['cjsn_out'], "w") as fout:
         json.dump(cm, fout, cls=CityJSONEncoder)
 
-    cm_obj = cityjson.load(jparams['cjsn_out'])
-    cityjson.save(cm_obj, jparams['cjsn_solid'])
+    #cm_obj = cityjson.load(jparams['cjsn_out'])
+    
+    # With the new 0.10.x syntax:
+    with open(jparams['cjsn_out'], 'r') as f:
+        cm_obj = cityjson.reader(f)
+
+    #- no longer necessary
+    #cityjson.save(cm_obj, jparams['cjsn_solid'])
+
 
 def read_vsimem_geojson(vsimem_path):
     with fiona.open(vsimem_path, driver="GeoJSON") as src:
@@ -1485,7 +1500,7 @@ def create_maplibre_3Dviz(
             'paint': {{
                 'fill-extrusion-color': ['case', ['has', 'fill_color'], ['get', 'fill_color'], '#4a4e5a'],
                 'fill-extrusion-height': ['coalesce', ['to-number', ['get', 'building_height']], 10],
-                'fill-extrusion-opacity': 0.7
+                'fill-extrusion-opacity': 0.6
             }}
         }});
 

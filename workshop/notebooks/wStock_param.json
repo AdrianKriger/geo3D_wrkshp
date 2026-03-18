@@ -12,7 +12,7 @@
     "cjsn_out": "./result/citjsn_ws3d.json",
     
     "cjsn_title": "LoD1 City Model of Woodstock, Cape Town",
-    "cjsn_referenceDate": "2025-04-22",
+    "cjsn_referenceDate": "2026-03-18",
     "cjsn_contactName": "arkriger", 
     "cjsn_emailAddress": "adrian8kriger@gmail.com", 
     "cjsn_website": "www.linkedin.com/in/adrian-kriger", 
@@ -20,7 +20,5 @@
     "cjsn_+meta-description": "Chief Directorate: National Geo-Spatial Information",
     "cjsn_+meta-sourceSpatialResolution": "25 meter bare-earth DEM",
     "cjsn_+meta-sourceReferenceSystem": "urn:ogc:def:crs:EPSG:20481",
-    "cjsn_+meta-sourceCitation":"http://www.ngi.gov.za/",
-    
-    "cjsn_solid": "./result/citjsnClean_wStock3D.json"
+    "cjsn_+meta-sourceCitation":"http://www.ngi.gov.za/"
 }
