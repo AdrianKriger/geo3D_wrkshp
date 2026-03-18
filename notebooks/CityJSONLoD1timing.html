@@ -396,7 +396,6 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#timing">1. Timing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quality">1. Quality</a></li>
 </ul>
             </nav>
@@ -502,7 +501,7 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- get the area [suburb]</span>
-<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;[out:json][timeout:30];</span>
+<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;[out:json][timeout:180];</span>
 <span class="s2">        area[boundary=administrative][name=&#39;</span><span class="si">{0}</span><span class="s2">&#39;] -&gt; .a;</span>
 <span class="s2">        (</span>
 <span class="s2">        way[amenity~&#39;university|research_institute&#39;][name=&#39;</span><span class="si">{1}</span><span class="s2">&#39;](area.a);</span>
@@ -610,7 +609,7 @@ document.write(`
 ERROR 1: Non closed ring detected.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.311523
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.919221
 </pre></div>
 </div>
 </div>
@@ -1037,7 +1036,7 @@ ERROR 1: Non closed ring detected.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.875182
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.540794
 </pre></div>
 </div>
 </div>
@@ -1115,7 +1114,7 @@ ERROR 1: Non closed ring detected.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.001520
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.002271
 </pre></div>
 </div>
 </div>
@@ -1185,8 +1184,8 @@ ERROR 1: Non closed ring detected.
       <td>4.1</td>
       <td>0.0</td>
       <td>4FRW3FCF+946</td>
-      <td>(((266353.2773689979, 6242850.212725159), (266...</td>
-      <td>POLYGON ((266353.2773689979 6242850.212725159,...</td>
+      <td>[[(266353.277, 6242850.213), (266357.266, 6242...</td>
+      <td>POLYGON ((266353.277369 6242850.212725, 266357...</td>
     </tr>
     <tr>
       <th>1</th>
@@ -1206,15 +1205,13 @@ ERROR 1: Non closed ring detected.
       <td>6.9</td>
       <td>0.0</td>
       <td>4FRW3F96+6MG</td>
-      <td>(((265366.0837814461, 6242509.526659243), (265...</td>
-      <td>POLYGON ((265366.0837814461 6242509.526659243,...</td>
+      <td>[[(265366.084, 6242509.527), (265364.518, 6242...</td>
+      <td>POLYGON ((265366.083781 6242509.526659, 265364...</td>
     </tr>
   </tbody>
 </table>
 </div></div></div>
 </div>
-<section id="timing">
-<h2>1. Timing<a class="headerlink" href="#timing" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- </span>
@@ -1257,7 +1254,7 @@ ERROR 1: Non closed ring detected.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.883638
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.528624
 </pre></div>
 </div>
 </div>
@@ -1334,9 +1331,7 @@ ERROR 1: Non closed ring detected.
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># -- execute function. create CityJSON</span>
 <span class="n">crs</span> <span class="o">=</span> <span class="n">epsg</span><span class="p">[</span><span class="mi">5</span><span class="p">:]</span>
-
-<span class="c1">#city3D.output_cityjson(extent, minz, maxz, terrTin, pv_pts, jparams, min_zbld, acoi, result, crs) </span>
-<span class="c1">#city3D.output_cityjson(extent, minz, maxz, terrTin, pv_pts, jparams, min_zbld, acoi, crs) </span>
+ 
 <span class="n">city3D</span><span class="o">.</span><span class="n">output_cityjson</span><span class="p">(</span><span class="n">extent</span><span class="p">,</span> <span class="n">minz</span><span class="p">,</span> <span class="n">maxz</span><span class="p">,</span> <span class="n">tris</span><span class="p">,</span> <span class="n">tri_attr</span><span class="p">,</span> <span class="n">final_verts_3d</span><span class="p">,</span> <span class="n">dis</span><span class="p">,</span> <span class="n">jparams</span><span class="p">,</span> <span class="n">gt_forward</span><span class="p">,</span> <span class="n">rb</span><span class="p">,</span> <span class="n">crs</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1359,12 +1354,11 @@ ERROR 1: Non closed ring detected.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:13.387323
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:14.397089
 </pre></div>
 </div>
 </div>
 </div>
-</section>
 <section id="quality">
 <h2>1. Quality<a class="headerlink" href="#quality" title="Link to this heading">#</a></h2>
 <div class="alert alert-block alert-danger"><b>WARNING:</b>  
@@ -1509,7 +1503,6 @@ ERROR 1: Non closed ring detected.
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#timing">1. Timing</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quality">1. Quality</a></li>
 </ul>
   </nav></div>

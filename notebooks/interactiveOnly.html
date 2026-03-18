@@ -517,7 +517,7 @@ document.write(`
 <span class="s2">    out geom 2500;</span>
 <span class="s2">    &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">large</span><span class="p">,</span> <span class="n">focus</span><span class="p">)</span>
 
-<span class="c1">#- execute function from city3D, harvest buildings and return GeoDataFrameLite | hoem-baked gdf</span>
+<span class="c1">#- execute function from city3D, harvest buildings and return GeoDataFrameLite | home-baked gdf</span>
 <span class="n">gdf</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">overpass_to_gdf</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
 <span class="n">gdf</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
@@ -730,7 +730,7 @@ document.write(`
       <td>4.1</td>
       <td>0.0</td>
       <td>4FRWFFVC+P79</td>
-      <td>(((18.4706033, -33.5057876), (18.4706995, -33....</td>
+      <td>[[(18.471, -33.506), (18.471, -33.506), (18.47...</td>
       <td>POLYGON ((18.4706033 -33.5057876, 18.4706995 -...</td>
     </tr>
     <tr>
@@ -746,7 +746,7 @@ document.write(`
       <td>6.9</td>
       <td>0.0</td>
       <td>4FRWFFVC+H9Q</td>
-      <td>(((18.4709153, -33.5059178), (18.4709287, -33....</td>
+      <td>[[(18.471, -33.506), (18.471, -33.506), (18.47...</td>
       <td>POLYGON ((18.4709153 -33.5059178, 18.4709287 -...</td>
     </tr>
   </tbody>
@@ -910,7 +910,7 @@ The <code class="docutils literal notranslate"><span class="pre">bldHeights(gdf)
       <td>4.1</td>
       <td>0.0</td>
       <td>4FRWFFVC+P79</td>
-      <td>(((18.4706033, -33.5057876), (18.4706995, -33....</td>
+      <td>[[(18.471, -33.506), (18.471, -33.506), (18.47...</td>
       <td>POLYGON ((18.4706033 -33.5057876, 18.4706995 -...</td>
       <td>[255, 255, 204]</td>
     </tr>
@@ -927,7 +927,7 @@ The <code class="docutils literal notranslate"><span class="pre">bldHeights(gdf)
       <td>6.9</td>
       <td>0.0</td>
       <td>4FRWFFVC+H9Q</td>
-      <td>(((18.4709153, -33.5059178), (18.4709287, -33....</td>
+      <td>[[(18.471, -33.506), (18.471, -33.506), (18.47...</td>
       <td>POLYGON ((18.4709153 -33.5059178, 18.4709287 -...</td>
       <td>[225, 225, 51]</td>
     </tr>
@@ -1333,7 +1333,7 @@ The <code class="docutils literal notranslate"><span class="pre">bldHeights(gdf)
       <td>4.1</td>
       <td>0.0</td>
       <td>4FRWFFVC+P79</td>
-      <td>(((18.4706033, -33.5057876), (18.4706995, -33....</td>
+      <td>[[(18.471, -33.506), (18.471, -33.506), (18.47...</td>
       <td>POLYGON ((18.4706033 -33.5057876, 18.4706995 -...</td>
       <td>[255, 255, 204]</td>
     </tr>
@@ -1350,7 +1350,7 @@ The <code class="docutils literal notranslate"><span class="pre">bldHeights(gdf)
       <td>6.9</td>
       <td>0.0</td>
       <td>4FRWFFVC+H9Q</td>
-      <td>(((18.4709153, -33.5059178), (18.4709287, -33....</td>
+      <td>[[(18.471, -33.506), (18.471, -33.506), (18.47...</td>
       <td>POLYGON ((18.4709153 -33.5059178, 18.4709287 -...</td>
       <td>[225, 225, 51]</td>
     </tr>
@@ -1463,7 +1463,7 @@ The <code class="docutils literal notranslate"><span class="pre">bldHeights(gdf)
       <td>4.1</td>
       <td>0.0</td>
       <td>4FRWFFVC+P79</td>
-      <td>(((18.4706033, -33.5057876), (18.4706995, -33....</td>
+      <td>[[(18.471, -33.506), (18.471, -33.506), (18.47...</td>
       <td>POLYGON ((18.4706033 -33.5057876, 18.4706995 -...</td>
       <td>[255, 255, 204]</td>
     </tr>
@@ -1480,7 +1480,7 @@ The <code class="docutils literal notranslate"><span class="pre">bldHeights(gdf)
       <td>6.9</td>
       <td>0.0</td>
       <td>4FRWFFVC+H9Q</td>
-      <td>(((18.4709153, -33.5059178), (18.4709287, -33....</td>
+      <td>[[(18.471, -33.506), (18.471, -33.506), (18.47...</td>
       <td>POLYGON ((18.4709153 -33.5059178, 18.4709287 -...</td>
       <td>[225, 225, 51]</td>
     </tr>
@@ -1791,7 +1791,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.183288
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.210123
 </pre></div>
 </div>
 </div>
@@ -1841,7 +1841,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/703717504ce7336cdc51241588c2977a8b947819ef0b82b6675cc809bdb90369.png" src="../_images/703717504ce7336cdc51241588c2977a8b947819ef0b82b6675cc809bdb90369.png" />
+<img alt="../_images/683aa98bd05c061d20757f622248b8e6e7ca88048f85b771e2effe3a807d6f28.png" src="../_images/683aa98bd05c061d20757f622248b8e6e7ca88048f85b771e2effe3a807d6f28.png" />
 </div>
 </div>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -1948,7 +1948,7 @@ The goal is to be as representative as possible.</p>
       <td>4.1</td>
       <td>0.0</td>
       <td>4FRWFFMF+W7J</td>
-      <td>(((18.4731456, -33.5150462), (18.4729719, -33....</td>
+      <td>[[(18.473, -33.515), (18.473, -33.515), (18.47...</td>
       <td>POLYGON ((265302.8715881496 6288753.930217357,...</td>
       <td>[255, 255, 204]</td>
       <td>6.0</td>
@@ -1969,7 +1969,7 @@ The goal is to be as representative as possible.</p>
       <td>4.1</td>
       <td>0.0</td>
       <td>4FRWFFPJ+P7W</td>
-      <td>(((18.4805967, -33.5130179), (18.4807154, -33....</td>
+      <td>[[(18.481, -33.513), (18.481, -33.513), (18.48...</td>
       <td>POLYGON ((265989.6485932828 6288995.734908563,...</td>
       <td>[255, 255, 204]</td>
       <td>6.0</td>
@@ -2171,7 +2171,7 @@ Here, because we are working with highly detailed, local data, we can explore wh
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>POLYGON ((266194.4771379964 6288764.539267579,...</td>
+      <td>POLYGON ((266194.47713799647 6288764.539267579...</td>
       <td>1095739760</td>
       <td>way</td>
     </tr>
@@ -2286,7 +2286,7 @@ Name: count, dtype: int64
       <td>4.1</td>
       <td>0.0</td>
       <td>...</td>
-      <td>(((18.4706033, -33.5057876), (18.4706995, -33....</td>
+      <td>[[(18.471, -33.506), (18.471, -33.506), (18.47...</td>
       <td>POLYGON ((265041.6351569728 6289775.0592048075...</td>
       <td>[255, 255, 204]</td>
       <td>NaN</td>
@@ -2310,7 +2310,7 @@ Name: count, dtype: int64
       <td>6.9</td>
       <td>0.0</td>
       <td>...</td>
-      <td>(((18.4709153, -33.5059178), (18.4709287, -33....</td>
+      <td>[[(18.471, -33.506), (18.471, -33.506), (18.47...</td>
       <td>POLYGON ((265070.9766813367 6289761.325392997,...</td>
       <td>[225, 225, 51]</td>
       <td>NaN</td>
@@ -2346,7 +2346,7 @@ Name: count, dtype: int64
 <span class="n">pop</span> <span class="o">=</span> <span class="n">est_pop</span> <span class="c1">#gdf[&quot;pop&quot;]</span>
 <span class="n">total_homes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">blds</span><span class="p">)</span>
 
-<span class="n">solHms</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">with_solar</span> <span class="o">/</span> <span class="n">total_homes</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">solHms</span> <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">with_solar</span> <span class="o">/</span> <span class="n">total_homes</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\033</span><span class="s1">[1mPercentage homes</span><span class="se">\033</span><span class="s1">[0m, in&#39;</span><span class="p">,</span> <span class="n">focus</span><span class="p">,</span><span class="s1">&#39;, with rooftop photovoltaic panels (PV) and solar water heaters (SWH):&#39;</span><span class="p">,</span> <span class="n">solHms</span><span class="p">)</span>
 </pre></div>
@@ -2372,7 +2372,7 @@ Name: count, dtype: int64
 <span class="n">pop_total</span> <span class="o">=</span> <span class="n">blds</span><span class="p">[</span><span class="s2">&quot;pop&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 <span class="n">pop_solar</span> <span class="o">=</span> <span class="n">blds</span><span class="p">[</span><span class="s2">&quot;pop&quot;</span><span class="p">][</span><span class="n">blds</span><span class="p">[</span><span class="s2">&quot;has_solar&quot;</span><span class="p">]]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 
-<span class="n">solPop</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">pop_solar</span> <span class="o">/</span> <span class="n">pop_total</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">solPop</span> <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">pop_solar</span> <span class="o">/</span> <span class="n">pop_total</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\033</span><span class="s1">[1mPercentage population</span><span class="se">\033</span><span class="s1">[0m , in&#39;</span><span class="p">,</span> <span class="n">focus</span><span class="p">,</span><span class="s1">&#39;, with rooftop photovoltaic panels (PV) and solar water heaters (SWH):&#39;</span><span class="p">,</span> <span class="n">solPop</span><span class="p">)</span>
 </pre></div>
@@ -2539,7 +2539,7 @@ $$</p>
       <td>4.1</td>
       <td>0.0</td>
       <td>...</td>
-      <td>POLYGON ((264864.98193212313 6288741.008398378...</td>
+      <td>POLYGON ((264864.98193212313 6288741.008398377...</td>
       <td>[255, 255, 204]</td>
       <td>6.0</td>
       <td>38.658416</td>
@@ -2673,7 +2673,7 @@ We are asking: <strong>How much energy (MWh/year) could these roofs harvest, giv
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:18.415772
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:01:23.959369
 </pre></div>
 </div>
 </div>
