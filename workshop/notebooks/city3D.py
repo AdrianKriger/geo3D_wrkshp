@@ -20,6 +20,7 @@ import fiona
 import copy
 import requests
 from typing import Optional, Any, Union
+import re
 
 import numpy as np
 import pandas as pd
@@ -27,8 +28,9 @@ import pandas as pd
 import shapely.wkt
 import shapely.geometry as sg
 from shapely.geometry import Point, LineString, Polygon, MultiPolygon, LinearRing, MultiPolygon, MultiLineString, MultiPoint, shape, mapping
-from shapely.ops import snap, transform
+from shapely.ops import snap, transform, unary_union
 from shapely.validation import make_valid
+from shapely.affinity import translate, scale
 
 import pyproj 
 from pyproj import CRS, Transformer 
@@ -44,7 +46,15 @@ from openlocationcode import openlocationcode as olc
 import warnings
 warnings.filterwarnings("ignore", message="pkg_resources is deprecated as an API")
 from cjio import cityjson, geom_help
+from cjio.cityjson import CityJSON
 
+import cadquery as cq
+#from OCP.Interface import Interface_Static
+import OCP
+
+import matplotlib.pyplot as plt
+from matplotlib.patches import Polygon as MplPolygon
+from matplotlib.collections import PatchCollection
 from IPython.display import IFrame, display
 
 dps = 3
@@ -408,6 +418,34 @@ def overpass_to_gdf(query, url="https://overpass-api.de/api/interpreter", geojso
     else:
         return df
 
+def plot_geometries(df, ax=None, facecolor='none', edgecolor='purple', alpha=0.5):
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(10,10))
+
+    patches = []
+
+    for geom in df['geometry']:
+        if geom is None:
+            continue
+
+        if isinstance(geom, Polygon):
+            # Exterior ring
+            patches.append(MplPolygon(list(geom.exterior.coords), closed=True))
+            # Interiors (holes)
+            for interior in geom.interiors:
+                patches.append(MplPolygon(list(interior.coords), closed=True))
+        elif isinstance(geom, MultiPolygon):
+            for poly in geom.geoms:
+                patches.append(MplPolygon(list(poly.exterior.coords), closed=True))
+                for interior in poly.interiors:
+                    patches.append(MplPolygon(list(interior.coords), closed=True))
+
+    pc = PatchCollection(patches, facecolor=facecolor, edgecolor=edgecolor, alpha=alpha)
+    ax.add_collection(pc)
+    ax.autoscale()
+    ax.set_aspect('equal')
+    return ax
+        
 def to_wgs84_point(point, src_crs=None):
     """
     Convert a Shapely point to WGS84 coordinates.
@@ -609,16 +647,22 @@ def prepareTri(gdf, blds, aoi):
     """
     Triangle prep
     """
+    # Ensure we are getting the geometry values, not the Pandas Series objects
+    #blds = blds.geometry.tolist() if hasattr(blds, 'geometry') else list(blds)
+    #aoi = aoi.geometry.tolist() if hasattr(aoi, 'geometry') else list(aoi)
+    
     # 1. Combine all line constraints into one set
     # We include building exteriors and road boundaries
     all_polys = list(blds.geometry) + list(aoi.geometry)
+    #all_polys = blds + aoi
 
     # 2. Snap to a 1cm grid to prevent floating point "near-misses"
     # This is the secret to stopping the kernel crashes.
     # We iterate through the list and use Shapely's .simplify method directly.
     # 0.01 (1cm) is great for UTM, but ensure you are in a metric CRS.
     #clean_polys = [p.simplify(0.2, preserve_topology=True) for p in all_polys]
-    clean_polys = [p for p in all_polys]
+    #clean_polys = [p for p in all_polys]
+    clean_polys = [p for p in all_polys if p is not None]
 
     # 3. If you want to snap strictly to a grid (rounding coordinates):
     #from shapely.wkt import loads, dumps
@@ -631,6 +675,8 @@ def prepareTri(gdf, blds, aoi):
     # 3. Use unary_union to resolve all overlaps and intersections 
     # This ensures that where a road meets a building, they share a vertex.
     merged_lines = shapely.unary_union([p.boundary for p in clean_polys])
+
+    #merged_lines = all_polys
 
     coords = []
     segments = []
@@ -683,7 +729,10 @@ def prepareTri(gdf, blds, aoi):
 # # -- create CityJSON
 def doVcBndGeomRd(tris, tri_attr, final_verts_3d, gdf_blds, extent, minz, maxz, jparams, gt_forward, rb, crs):
     # 1. Establish Global Offset for Precision
-    x_off, y_off, z_off = float(extent[0]), float(extent[1]), float(minz)
+    #x_off, y_off, z_off = float(extent[0]), float(extent[1]), float(minz)
+    x_off = (extent[0] + extent[2]) / 2
+    y_off = (extent[1] + extent[3]) / 2
+    z_off = float(minz)
 
     cm = {
         "type": "CityJSON",
@@ -751,15 +800,24 @@ def doVcBndGeomRd(tris, tri_attr, final_verts_3d, gdf_blds, extent, minz, maxz, 
     vertex_lookup = {}
     id_registry = set()
 
+    #def get_v_idx(x, y, z):
+    #    pt = (round((float(x) - x_off) * 1000), 
+    #          round((float(y) - y_off) * 1000), 
+    #          round((float(z) - z_off) * 1000))
+    #    if pt not in vertex_lookup:
+    #        vertex_lookup[pt] = len(cm['vertices'])
+    #        cm['vertices'].append(list(pt))
+    #    return vertex_lookup[pt]
     def get_v_idx(x, y, z):
-        pt = (round((float(x) - x_off) * 1000), 
-              round((float(y) - y_off) * 1000), 
-              round((float(z) - z_off) * 1000))
+        # Store raw UTM integers. This keeps the CityJSON georeferenced.
+        pt = (round(float(x) * 1000), 
+              round(float(y) * 1000), 
+              round(float(z) * 1000))
         if pt not in vertex_lookup:
             vertex_lookup[pt] = len(cm['vertices'])
             cm['vertices'].append(list(pt))
         return vertex_lookup[pt]
-
+    
     def extrude_roof_ground_v2(oring, irings, height, reverse, allsurfaces):
         o_idx = [get_v_idx(p[0], p[1], height) for p in oring]
         if reverse: o_idx.reverse()
@@ -910,15 +968,341 @@ def output_cityjson(extent, minz, maxz, tris, tri_attr, final_verts_3d, dis, jpa
     with open(jparams['cjsn_out'], "w") as fout:
         json.dump(cm, fout, cls=CityJSONEncoder)
 
-    #cm_obj = cityjson.load(jparams['cjsn_out'])
-    
-    # With the new 0.10.x syntax:
-    with open(jparams['cjsn_out'], 'r') as f:
-        cm_obj = cityjson.reader(f)
-
     #- no longer necessary
+    #cm_obj = cityjson.load(jparams['cjsn_out'])
     #cityjson.save(cm_obj, jparams['cjsn_solid'])
 
+def exportStep(dis_c, extent, out_path):
+    # 1. Force the OpenCASCADE STEP processor to use Meters
+    # "M" = Meters, "MM" = Millimeters
+    w = OCP.STEPControl.STEPControl_Writer()
+    OCP.Interface.Interface_Static.SetCVal_s("write.step.unit","M")
+    
+    # Center the coordinate system at (0,0)
+    x_off = (extent[0] + extent[2]) / 2.0
+    y_off = (extent[1] + extent[3]) / 2.0
+    
+    showcase = cq.Assembly()
+
+    for i, row in dis_c.iterrows():
+        bld_h = pd.to_numeric(row.get('building_height'), errors='coerce')
+        min_h = pd.to_numeric(row.get('min_height'), errors='coerce')
+        b_type = row.get('building_type', 'building')
+        osm_id = row.get('osm_id', i)
+
+        if pd.isna(bld_h) or bld_h <= 0:
+            continue
+
+        # Position logic
+        b_z = 0.0
+        if b_type == 'bridge' and not pd.isna(min_h):
+            b_z = min_h
+        elif b_type == 'roof' and not pd.isna(min_h):
+            b_z = min_h + 1.3
+
+        # Create Geometry
+        ext_pts = [(p[0] - x_off, p[1] - y_off) for p in row.geometry.exterior.coords]
+        wp = cq.Workplane("XY").polyline(ext_pts).close()
+        
+        for interior in row.geometry.interiors:
+            int_pts = [(p[0] - x_off, p[1] - y_off) for p in interior.coords]
+            wp = wp.polyline(int_pts).close()
+
+        try:
+            solid = wp.extrude(float(bld_h))
+            positioned = solid.translate((0, 0, float(b_z)))
+            showcase.add(positioned, name=f"osm_{osm_id}")
+        except:
+            continue
+
+    # 2. Save the Assembly
+    # With the Static variable set above, the header will now say .METRE.
+    showcase.save(out_path)
+
+def reconstruct_simscale_results(case_path, center_lat=-33.93379, center_lon=18.45964, radius=400.0):
+    """
+    Reconstructs OpenFOAM polyMesh into a GIS-aligned DataFrame.
+    """
+    
+    def parse_vector(path):
+        if not os.path.exists(path): raise FileNotFoundError(f"Missing: {path}")
+        with open(path, 'r', encoding='utf-8', errors='ignore') as f:
+            content = f.read()
+        match = re.search(r'\n(\d+)\s*\n\s*\(', content)
+        n = int(match.group(1))
+        limit = content.find('boundaryField', match.end())
+        if limit == -1: limit = len(content)
+        end_pos = content.rfind(')', match.end(), limit)
+        data_str = content[match.end():end_pos]
+        return np.fromstring(data_str.replace('(', ' ').replace(')', ' '), 
+                             dtype=float, sep=' ').reshape(n, 3)
+
+    def parse_labels(path):
+        with open(path, 'r', encoding='utf-8', errors='ignore') as f:
+            content = f.read()
+        match = re.search(r'\n(\d+)\s*\n\s*\(', content)
+        n = int(match.group(1))
+        data_str = content[match.end() : content.rfind(')', match.end())]
+        return np.fromstring(data_str, dtype=int, sep=' ')
+
+    def parse_faces(path):
+        with open(path, 'r', encoding='utf-8', errors='ignore') as f:
+            content = f.read()
+        raw = re.findall(r'\d+\(([^)]+)\)', content)
+        return [np.fromstring(f, dtype=int, sep=' ') for f in raw]
+
+    # --- 1. Load Data ---
+    #print(f"--> Loading mesh and results from {case_path}...")
+    pts = parse_vector(os.path.join(case_path, 'points'))
+    faces = parse_faces(os.path.join(case_path, 'faces'))
+    owner = parse_labels(os.path.join(case_path, 'owner'))
+    neighbour = parse_labels(os.path.join(case_path, 'neighbour'))
+    u_field = parse_vector(os.path.join(case_path, 'U'))
+    
+    n_cells = u_field.shape[0]
+
+    # --- 2. Calculate Cell Centers (Topological Reconstruction) ---
+    #print("--> Reconstructing cell centers...")
+    face_centers = np.array([np.mean(pts[f], axis=0) for f in faces])
+    cell_centers = np.zeros((n_cells, 3))
+    face_counts = np.zeros(n_cells)
+
+    # Vectorized accumulation isn't easy with indices, so we use np.add.at
+    np.add.at(cell_centers, owner, face_centers[np.arange(len(owner))])
+    np.add.at(face_counts, owner, 1)
+    np.add.at(cell_centers, neighbour, face_centers[np.arange(len(neighbour))])
+    np.add.at(face_counts, neighbour, 1)
+
+    cell_coords = cell_centers / face_counts[:, np.newaxis]
+
+    # --- 3. GIS Alignment (UTM 34S) ---
+    transformer = Transformer.from_crs("EPSG:4326", "EPSG:32734", always_xy=True)
+    center_x_utm, center_y_utm = transformer.transform(center_lon, center_lat)
+    
+    # SimScale center is usually 0,0 locally. We shift to Cape Town UTM
+    # If you used an offset during export, apply it here
+    final_x = cell_coords[:, 0] + center_x_utm
+    final_y = cell_coords[:, 1] + center_y_utm
+    final_z = cell_coords[:, 2]
+
+    # --- 4. Spatial Culling (Radius Filter) ---
+    dist_sq = (final_x - center_x_utm)**2 + (final_y - center_y_utm)**2
+    mask = dist_sq <= radius**2
+
+    # --- 5. Pedestrian Slicing & DF Construction ---
+    # Slice between 1.2m and 1.9m height
+    #z_mask = (final_z >= 1.2) & (final_z <= 1.9)
+    total_mask = mask #& z_mask
+
+    #print(f"--> Extracted {np.sum(total_mask)} pedestrian-level points.")
+
+    df = pd.DataFrame({
+        'X': final_x[total_mask],
+        'Y': final_y[total_mask],
+        'Z': final_z[total_mask],
+        'U': u_field[total_mask, 0],
+        'V': u_field[total_mask, 1],
+        'u_mag': np.linalg.norm(u_field[total_mask], axis=1)
+    })
+
+    return df, center_x_utm, center_y_utm
+
+def plot_wind_analysis(ped_df, buildings_df, center_x_utm, center_y_utm, radius=400, title_suffix="xxxx"):
+    """
+    Generates a side-by-side Velocity Magnitude and Vector Flow plot.
+    center_coords: tuple (center_x_utm, center_y_utm)
+    """
+    #cx, cy = center_coords
+    
+    # 1. Setup the figure
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(20, 9), sharey=True)
+
+    # --- MAP A: Magnitude (Tricontour) ---
+    cntr = ax1.tricontourf(ped_df['X'], ped_df['Y'], ped_df['u_mag'], 
+                           levels=20, cmap='jet', alpha=0.7)
+    
+    # Use your existing plot_geometries function
+    plot_geometries(buildings_df, ax=ax1, facecolor='lightgrey', edgecolor='black', alpha=0.8)
+    ax1.set_title('A: Wind Velocity Magnitude (m/s)', loc='left', pad=15, weight='bold')
+
+    # --- MAP B: Flow (Quiver) ---
+    # Sampling for visual clarity (skip 3 points)
+    skip = 2
+    x, y = ped_df['X'].values[::skip], ped_df['Y'].values[::skip]
+    u, v = ped_df['U'].values[::skip].astype(float), ped_df['V'].values[::skip].astype(float)
+    mags = ped_df['u_mag'].values[::skip].astype(float)
+
+    qv = ax2.quiver(x, y, u, v, mags, cmap='jet', scale=120, alpha=0.9, width=0.003)
+    
+    plot_geometries(buildings_df, ax=ax2, facecolor='lightgrey', edgecolor='black', alpha=0.8)
+    ax2.set_title('B: Vector Flow Field', loc='left', pad=15, weight='bold')
+
+    # --- AXIS & SPATIAL STYLING ---
+    for ax in [ax1, ax2]:
+        ax.set_aspect('equal', adjustable='box')
+        ax.set_xlabel('Easting (m)')
+        # Force strict 400m AOI
+        ax.set_xlim(center_x_utm - radius, center_x_utm + radius)
+        ax.set_ylim(center_y_utm - radius, center_y_utm + radius)
+
+    ax1.set_ylabel('Northing (m)')
+
+    # --- SHARED COLORBAR (The "No Squish" Fix) ---
+    fig.subplots_adjust(right=0.9) 
+    cbar_ax = fig.add_axes([0.92, 0.15, 0.015, 0.7]) 
+    fig.colorbar(cntr, cax=cbar_ax, label='Wind Speed (m/s)')
+
+    plt.suptitle(f'Pedestrian Wind at 1.2m to 1.9m - {title_suffix}', fontsize=16, y=0.98)
+    
+    return fig, (ax1, ax2)
+
+def get_sun_position(lat, lon, dt):
+    """
+    lat/lon: Decimal degrees (Salt River: -33.93, 18.46)
+    dt: datetime object (must be UTC or handled offset)
+    Returns: (azimuth, altitude) in degrees
+    """
+    # 1. Day of year and hour
+    day_of_year = dt.timetuple().tm_yday
+    hour = dt.hour + dt.minute / 60.0 + dt.second / 3600.0
+    
+    # 2. Solar Declination (Angle of sun relative to earth's equator)
+    declination = 23.45 * math.sin(math.radians(360 / 365 * (day_of_year - 81)))
+    
+    # 3. Equation of Time (Correction for earth's elliptical orbit)
+    # Simplified version for urban studies
+    b = math.radians(360 / 364 * (day_of_year - 81))
+    eot = 9.87 * math.sin(2 * b) - 7.53 * math.cos(b) - 1.5 * math.sin(b)
+    
+    # 4. Local Solar Time
+    # Salt River is UTC+2
+    lstm = 15 * 2 
+    tc = 4 * (lon - lstm) + eot
+    lst = hour + tc / 60
+    
+    # 5. Hour Angle
+    hra = 15 * (lst - 12)
+    
+    # 6. Altitude (Angle above horizon)
+    lat_rad = math.radians(lat)
+    dec_rad = math.radians(declination)
+    hra_rad = math.radians(hra)
+    
+    elevation = math.asin(math.sin(lat_rad) * math.sin(dec_rad) + 
+                          math.cos(lat_rad) * math.cos(dec_rad) * math.cos(hra_rad))
+    
+    # 7. Azimuth (Angle from North)
+    azimuth = math.acos((math.sin(dec_rad) * math.cos(lat_rad) - 
+                         math.cos(dec_rad) * math.sin(lat_rad) * math.cos(hra_rad)) / 
+                         math.cos(elevation))
+    
+    # Adjust azimuth based on time of day
+    if hra > 0:
+        azimuth = 360 - math.degrees(azimuth)
+    else:
+        azimuth = math.degrees(azimuth)
+        
+    return azimuth, math.degrees(elevation)
+
+def calculate_shadows(dis_c, sun_azimuth, sun_altitude):
+    """
+    Creates shadow polygons for buildings.
+    sun_azimuth: degrees from North (Clockwise)
+    sun_altitude: degrees from Horizon
+    """
+    shadows = []
+    # Calculate shadow length factor: height / tan(altitude)
+    # Use a small epsilon to avoid division by zero at noon
+    s_factor = 1.0 / np.tan(np.radians(max(sun_altitude, 0.5)))
+    
+    # Calculate offset direction (opposite to sun azimuth)
+    # +180 to point the shadow AWAY from the sun
+    angle_rad = np.radians(sun_azimuth + 180)
+    dx = np.sin(angle_rad) * s_factor
+    dy = np.cos(angle_rad) * s_factor
+
+    for _, bld in dis_c.iterrows():
+        height = bld.get('building_height', 4.0)
+        footprint = bld.geometry
+        
+        # Shift the footprint by the shadow length based on height
+        # This creates a simplified projected shadow 'extrusion'
+        shadow_ext = translate(footprint, xoff=dx*height, yoff=dy*height)
+        
+        # Combine footprint and shifted footprint to make the full shadow area
+        full_shadow = footprint.union(shadow_ext).convex_hull
+        shadows.append(full_shadow)
+        
+    return shadows
+
+def apply_solar_to_df(df, shadows):
+    """
+    df: your seasonal_df with x, y coordinates
+    shadows: list of shadow Polygons
+    """
+    # Create a union of all shadows for faster point-in-polygon check
+    #from shapely.ops import unary_union
+    all_shadows_geom = unary_union(shadows)
+    
+    # Check each point in the dataframe
+    def is_in_shade(row):
+        p = Point(row['X'], row['Y'])
+        return all_shadows_geom.contains(p)
+
+    df['is_shaded'] = df.apply(is_in_shade, axis=1)
+    return df
+
+def plot_utci(summer, winter, buildings_df, center_x_utm, center_y_utm, radius=400,  title_suffix=" "):
+    """
+    Generates a side-by-side Velocity Magnitude and Vector Flow plot.
+    center_coords: tuple (center_x_utm, center_y_utm)
+    """
+     # 1. Determine the global min and max across BOTH seasons
+    vmin = min(summer['utci'].min(), winter['utci'].min())
+    vmax = max(summer['utci'].max(), winter['utci'].max())
+    # 2. Create a shared set of 20 levels
+    shared_levels = np.linspace(vmin, vmax, 20)
+    
+    # --- MAP A: ---
+    # 1. Setup the summer figure
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(20, 9), sharey=True)
+
+    # --- MAP A: Magnitude (Tricontour) ---
+    cntr = ax1.tricontourf(summer['X'], summer['Y'], summer['utci'], 
+                           levels=shared_levels, cmap='RdYlBu_r', alpha=0.7)
+    
+    # Use your existing plot_geometries function
+    plot_geometries(buildings_df, ax=ax1, facecolor='lightgrey', edgecolor='black', alpha=0.8)
+    ax1.set_title('A: Summer', loc='left', pad=15, weight='bold')
+
+    # --- MAP B: ---
+    # 1. Setup the summer figure
+    # --- MAP A: Magnitude (Tricontour) ---
+    cntr = ax2.tricontourf(winter['X'], winter['Y'], winter['utci'], 
+                           levels=shared_levels, cmap='RdYlBu_r', alpha=0.7)
+    
+    # Use your existing plot_geometries function
+    plot_geometries(buildings_df, ax=ax2, facecolor='lightgrey', edgecolor='black', alpha=0.8)
+    ax2.set_title('A: Winter', loc='left', pad=15, weight='bold')
+
+    # --- AXIS & SPATIAL STYLING ---
+    for ax in [ax1, ax2]:
+        ax.set_aspect('equal', adjustable='box')
+        ax.set_xlabel('Easting (m)')
+        # Force strict 400m AOI
+        ax.set_xlim(center_x_utm - radius, center_x_utm + radius)
+        ax.set_ylim(center_y_utm - radius, center_y_utm + radius)
+
+    ax1.set_ylabel('Northing (m)')
+
+    # --- SHARED COLORBAR (The "No Squish" Fix) ---
+    fig.subplots_adjust(right=0.9) 
+    cbar_ax = fig.add_axes([0.92, 0.15, 0.015, 0.7]) 
+    fig.colorbar(cntr, cax=cbar_ax, label='UTCI (°C) Thermal Stress')
+
+    plt.suptitle(f'{title_suffix}', fontsize=17, y=0.98)
+    
+    return fig, (ax1, ax2)
 
 def read_vsimem_geojson(vsimem_path):
     with fiona.open(vsimem_path, driver="GeoJSON") as src:
@@ -961,7 +1345,7 @@ def extract_boundaries_by_name(input_pbf, jparams):
         input_pbf,
         format="GeoJSON",
         layers=["multipolygons"],
-        options=["-where", where_filter, "-makevalid"]
+        options=["-where", where_filter, "-makevalid"]#, "-explodecollections"]
     )
     gdf = read_vsimem_geojson(geojson_vsimem)
     gdal.Unlink(geojson_vsimem)
@@ -977,7 +1361,7 @@ def extract_boundaries_by_name(input_pbf, jparams):
         input_pbf,
         format="GeoJSON",
         layers=["multipolygons"],
-        options=["-where", where_filter, "-makevalid"]
+        options=["-where", where_filter, "-makevalid"]#, "-explodecollections"]
     )
     gdf = read_vsimem_geojson(geojson_vsimem)
     gdal.Unlink(geojson_vsimem)
@@ -1008,7 +1392,7 @@ def _harvestSolar(input_pbf, minx, miny, maxx, maxy, epsg):
         layers=[layer_name_poly],
         options=[
             "-where", sql_where_solar_generator,
-            "-makevalid",
+            "-makevalid", 
             "-spat", str(minx), str(miny), str(maxx), str(maxy),
         #"-nlt", "POLYGON"
         ]
@@ -1030,7 +1414,7 @@ def _harvestSolar(input_pbf, minx, miny, maxx, maxy, epsg):
         layers=[layer_name_lines], # This processes closed Ways as Polygons
         options=[
             "-where", sql_where_solar_generator,
-            "-makevalid",
+            "-makevalid", 
             "-spat", str(minx), str(miny), str(maxx), str(maxy),
             "-nlt", "POLYGON"
         ]
@@ -1049,7 +1433,7 @@ def _harvestSolar(input_pbf, minx, miny, maxx, maxy, epsg):
         # Project the combined GeoDataFrame (assuming .to_crs is a method on the returned structure)
         gdf_solar_combined = gdf_solar_combined.to_crs(epsg)
     
-        #print(f"\n✅ Total solar generator polygons harvested: {len(gdf_solar_combined)}")
+        #print(f"\n Total solar generator polygons harvested: {len(gdf_solar_combined)}")
     #else:
         # Create an empty DataFrame if nothing was found
         #gdf_solar_combined = pd.DataFrame() 

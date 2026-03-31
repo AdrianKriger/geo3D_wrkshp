@@ -61,7 +61,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="References" href="ref.html" />
-    <link rel="prev" title="LoD1 Timing and Quality Considerations" href="../notebooks/CityJSONLoD1timing.html" />
+    <link rel="prev" title="UrbanFlow" href="../notebooks/UrbanFlow.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -191,10 +191,15 @@
 
 
 
+
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LoD1 caveats</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../notebooks/CityJSONLoD1timing.html">LoD1 Timing and Quality Considerations</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">CFD simulation</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../notebooks/UrbanFlow.html">UrbanFlow</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">After the workshop</span></p>
 <ul class="current nav bd-sidenav">
@@ -401,13 +406,13 @@ document.write(`
 <h1>Libraries and Packages<a class="headerlink" href="#libraries-and-packages" title="Link to this heading">#</a></h1>
 <p>While <em>geo3D</em> uses the essential python libraries and packages typically used in all Spatial Data Analysis; such as <code class="docutils literal notranslate"><span class="pre">numpy</span></code>, <code class="docutils literal notranslate"><span class="pre">matplotlib</span></code>, <code class="docutils literal notranslate"><span class="pre">scipy</span></code>, <code class="docutils literal notranslate"><span class="pre">shapely</span></code>, <code class="docutils literal notranslate"><span class="pre">geopandas</span></code> and <code class="docutils literal notranslate"><span class="pre">gdal</span></code>; the following are not:</p>
 <p>i. <code class="docutils literal notranslate"><span class="pre">Triangle</span> </code></p>
-<p>A LoD1 3D Model is based on a triangulated irregular network (TIN) data-structure. A TIN is a collection of connected 3D triangles that form a continuous closed surface <span id="id1">[<a class="reference internal" href="ref.html#id15" title="Hugo Ledoux, Ken Arroyo Ohori, Ravi Peters, and Maarten Pronk. Computational modelling of terrains. Self-published, 2024. doi:10.5281/zenodo.3992107.">Ledoux <em>et al.</em>, 2024</a>]</span>. osm_LoD1_3DCityModel creates a TIN with Rufat Dzhelil’s python implementation of Jonathan Richard Shewchuk’s Triangle and uses a special algorithm called a Constrained Delaunay triangulation <span id="id2">[<a class="reference internal" href="ref.html#id9" title="Dzhelil Rufat. Triangle. 2020. URL: https://rufat.be/triangle/installing.html.">Rufat, 2020</a>, <a class="reference internal" href="ref.html#id10" title="Jonathan Richard Shewchuk. Triangle: Engineering a 2D Quality Mesh Generator and Delaunay Triangulator. In Ming C. Lin and Dinesh Manocha, editors, Applied Computational Geometry: Towards Geometric Engineering, volume 1148 of Lecture Notes in Computer Science, pages 203–222. Springer-Verlag, May 1996.">Shewchuk, 1996</a>]</span>.</p>
-<p>ii. <code class="docutils literal notranslate"><span class="pre">pydeck</span></code></p>
-<p>The interactive pseudo-3D visualisation is via pydeck. Pydeck is a set of Python bindings for making spatial visualisations with deck.gl, a WebGL-powered framework developed by Uber for visual exploratory data analysis of large datasets, optimised for a Jupyter environment <span id="id3">[<a class="reference internal" href="ref.html#id12" title="vis.gl. High-scale spatial rendering in Python, powered by deck.gl. https://deckgl.readthedocs.io/en/latest/, 2020.">vis.gl, 2020</a>]</span>.</p>
-<p>iii. <code class="docutils literal notranslate"><span class="pre">Plus</span> <span class="pre">Codes</span></code></p>
-<p>A Plus Code is a geocode based on a system of regular grids for identifying an area anywhere on the Earth. Plus Codes are designed to be used like street addresses and may be especially useful in places where there is no formal system to identify buildings, such as street names, house numbers, and post codes. Plus Codes are therefore an alternative to traditional addresses and are extremely helpful to under severed communities who cannot access basic services such as receive postal, emergency, and social services <span id="id4">[<a class="reference internal" href="ref.html#id11" title="Google. Plus Codes. Addresses for everyone. https://maps.google.com/pluscodes/, 2015.">Google, 2015</a>]</span>.</p>
-<p>iv. <code class="docutils literal notranslate"><span class="pre">cjio</span></code></p>
-<p>A python command line interface (CLI) to process and manipulate CityJSON files <span id="id5">[<a class="reference internal" href="ref.html#id13" title="CityJSON. Python CLI to process and manipulate CityJSON files. https://github.com/cityjson/cjio?tab=readme-ov-file, 2022.">CityJSON, 2022</a>]</span>.</p>
+<p>A LoD1 3D Model is based on a triangulated irregular network (TIN) data-structure. A TIN is a collection of connected 3D triangles that form a continuous closed surface <span id="id1">[<a class="reference internal" href="ref.html#id16" title="Hugo Ledoux, Ken Arroyo Ohori, Ravi Peters, and Maarten Pronk. Computational modelling of terrains. Self-published, 2024. doi:10.5281/zenodo.3992107.">Ledoux <em>et al.</em>, 2024</a>]</span>. osm_LoD1_3DCityModel creates a TIN with Rufat Dzhelil’s python implementation of Jonathan Richard Shewchuk’s Triangle and uses a special algorithm called a Constrained Delaunay triangulation <span id="id2">[<a class="reference internal" href="ref.html#id9" title="Dzhelil Rufat. Triangle. 2020. URL: https://rufat.be/triangle/installing.html.">Rufat, 2020</a>, <a class="reference internal" href="ref.html#id10" title="Jonathan Richard Shewchuk. Triangle: Engineering a 2D Quality Mesh Generator and Delaunay Triangulator. In Ming C. Lin and Dinesh Manocha, editors, Applied Computational Geometry: Towards Geometric Engineering, volume 1148 of Lecture Notes in Computer Science, pages 203–222. Springer-Verlag, May 1996.">Shewchuk, 1996</a>]</span>.</p>
+<p>ii. <code class="docutils literal notranslate"><span class="pre">Plus</span> <span class="pre">Codes</span></code></p>
+<p>A Plus Code is a geocode based on a system of regular grids for identifying an area anywhere on the Earth. Plus Codes are designed to be used like street addresses and may be especially useful in places where there is no formal system to identify buildings, such as street names, house numbers, and post codes. Plus Codes are therefore an alternative to traditional addresses and are extremely helpful to under severed communities who cannot access basic services such as receive postal, emergency, and social services <span id="id3">[<a class="reference internal" href="ref.html#id11" title="Google. Plus Codes. Addresses for everyone. https://maps.google.com/pluscodes/, 2015.">Google, 2015</a>]</span>.</p>
+<p>iii. <code class="docutils literal notranslate"><span class="pre">cjio</span></code></p>
+<p>A Python command line interface (CLI) to process and manipulate CityJSON files <span id="id4">[<a class="reference internal" href="ref.html#id13" title="CityJSON. Python CLI to process and manipulate CityJSON files. https://github.com/cityjson/cjio?tab=readme-ov-file, 2022.">CityJSON, 2022</a>]</span>.</p>
+<p>iv. <code class="docutils literal notranslate"><span class="pre">cadquery</span></code></p>
+<p>A Python library for building parametric 3D CAD models <span id="id5">[<a class="reference internal" href="ref.html#id14" title="CadQuery contributors. CadQuery: A Python Parametric CAD Scripting Framework. https://github.com/CadQuery/cadquery, 2024. doi:10.5281/zenodo.10513848.">contributors, 2024</a>]</span>.</p>
 </section>
 
     <script type="text/x-thebe-config">
@@ -441,12 +446,12 @@ document.write(`
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../notebooks/CityJSONLoD1timing.html"
+       href="../notebooks/UrbanFlow.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">LoD1 Timing and Quality Considerations</p>
+        <p class="prev-next-title">UrbanFlow</p>
       </div>
     </a>
     <a class="right-next"
