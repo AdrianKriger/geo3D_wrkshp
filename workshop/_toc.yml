@@ -24,6 +24,10 @@ parts:
   chapters:
   - file: notebooks/CityJSONLoD1timing
 
+- caption: CFD simulation
+  chapters:
+  - file: notebooks/UrbanFlow
+
 - caption: After the workshop
   chapters:
   - file: after/libsPacs
