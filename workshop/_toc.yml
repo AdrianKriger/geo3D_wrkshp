@@ -24,9 +24,9 @@ parts:
   chapters:
   - file: notebooks/CityJSONLoD1timing
 
-- caption: CFD simulation
+- caption: CFD simulation (No Internet)
   chapters:
-  - file: notebooks/UrbanFlow
+  - file: notebooks/urbanFlow-noInternet
 
 - caption: After the workshop
   chapters:

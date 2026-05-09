@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# env/geo3D_gthbRepo02
+# env/geo3D_sim04
 #########################
 # helper functions to create LoD1 3D City Model from volunteered public data (OpenStreetMap) with elevation via a raster DEM.
 
@@ -21,6 +21,10 @@ import copy
 import requests
 from typing import Optional, Any, Union
 import re
+import itertools
+import datetime
+from datetime import timezone
+from zoneinfo import ZoneInfo 
 
 import numpy as np
 import pandas as pd
@@ -48,9 +52,7 @@ warnings.filterwarnings("ignore", message="pkg_resources is deprecated as an API
 from cjio import cityjson, geom_help
 from cjio.cityjson import CityJSON
 
-import cadquery as cq
-#from OCP.Interface import Interface_Static
-import OCP
+import trimesh
 
 import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon as MplPolygon
@@ -972,60 +974,103 @@ def output_cityjson(extent, minz, maxz, tris, tri_attr, final_verts_3d, dis, jpa
     #cm_obj = cityjson.load(jparams['cjsn_out'])
     #cityjson.save(cm_obj, jparams['cjsn_solid'])
 
-def exportStep(dis_c, extent, out_path):
-    # 1. Force the OpenCASCADE STEP processor to use Meters
-    # "M" = Meters, "MM" = Millimeters
-    w = OCP.STEPControl.STEPControl_Writer()
-    OCP.Interface.Interface_Static.SetCVal_s("write.step.unit","M")
-    
-    # Center the coordinate system at (0,0)
+def exportOBJ(dis_c, extent, out_path):
+    # 1. Calculate the center for LOCAL origin
     x_off = (extent[0] + extent[2]) / 2.0
     y_off = (extent[1] + extent[3]) / 2.0
     
-    showcase = cq.Assembly()
+    meshes_list = []
+    max_bld_h = 0.0
+    max_z_abs = 0.0
+
+    if dis_c.empty:
+        print("Error: Input GeoDataFrame (dis_c) is empty.")
+        return 0, 0, 0, 0, None
 
     for i, row in dis_c.iterrows():
+        # Use .get() with a default to avoid NaNs crashing the math
         bld_h = pd.to_numeric(row.get('building_height'), errors='coerce')
-        min_h = pd.to_numeric(row.get('min_height'), errors='coerce')
         b_type = row.get('building_type', 'building')
-        osm_id = row.get('osm_id', i)
-
+        min_h = pd.to_numeric(row.get('min_height'), errors='coerce')
+        min_h = 0.0 if pd.isna(min_h) else min_h
+        
         if pd.isna(bld_h) or bld_h <= 0:
             continue
+        
+        # Track maximum extrusion height for turbulence calculations
+        if bld_h > max_bld_h:
+            max_bld_h = bld_h
 
-        # Position logic
+        # Determine Z-base (elevation)
         b_z = 0.0
         if b_type == 'bridge' and not pd.isna(min_h):
             b_z = min_h
         elif b_type == 'roof' and not pd.isna(min_h):
             b_z = min_h + 1.3
-
-        # Create Geometry
-        ext_pts = [(p[0] - x_off, p[1] - y_off) for p in row.geometry.exterior.coords]
-        wp = cq.Workplane("XY").polyline(ext_pts).close()
+        elif not pd.isna(min_h):
+            b_z = min_h
         
-        for interior in row.geometry.interiors:
-            int_pts = [(p[0] - x_off, p[1] - y_off) for p in interior.coords]
-            wp = wp.polyline(int_pts).close()
+        # Track absolute highest point for blockMesh 'sky' height
+        current_top = b_z + bld_h
+        if current_top > max_z_abs:
+            max_z_abs = current_top
 
+        # 2. Geometry Prep
+        geom = row.geometry
+        if not geom.is_valid:
+            geom = geom.buffer(0)
+
+        # Trimesh creation.extrude is very picky about the input Polygon.
+        # We transform the coordinates to local BEFORE passing to Polygon.
         try:
-            solid = wp.extrude(float(bld_h))
-            positioned = solid.translate((0, 0, float(b_z)))
-            showcase.add(positioned, name=f"osm_{osm_id}")
-        except:
+            # Extract exterior and simplify slightly to remove micro-segments
+            ext_coords = np.array(geom.exterior.coords)
+            local_ext = ext_coords[:, :2] - [x_off, y_off]
+            
+            # Handle holes (interiors)
+            local_ints = []
+            for inter in geom.interiors:
+                int_coords = np.array(inter.coords)
+                local_ints.append(int_coords[:, :2] - [x_off, y_off])
+            
+            # Create a clean local Shapely polygon for Trimesh
+            local_poly = Polygon(local_ext, local_ints)
+
+            # 3. Extrusion
+            # We use 'height' as the keyword argument
+            bld_mesh = trimesh.creation.extrude_polygon(local_poly, height=float(bld_h))
+            
+            # Translate to elevation
+            bld_mesh.apply_translation([0, 0, float(min_h)])
+            meshes_list.append(bld_mesh)
+            
+        except Exception as e:
+            # If a specific building fails, print why but keep going
+            print(f"Skipping building {i}: {e}")
             continue
 
-    # 2. Save the Assembly
-    # With the Static variable set above, the header will now say .METRE.
-    showcase.save(out_path)
+    if not meshes_list:
+        print("No valid meshes generated. Check if heights are > 0 and geometry is valid.")
+        # Return zeros and None to prevent the Unpacking TypeError
+        return x_off, y_off, 0.0, 0.0, None
 
-def reconstruct_simscale_results(case_path, center_lat=-33.93379, center_lon=18.45964, radius=400.0):
-    """
-    Reconstructs OpenFOAM polyMesh into a GIS-aligned DataFrame.
-    """
+    # 4. Final Processing
+    try:
+        final_model = trimesh.boolean.union(meshes_list, engine='manifold')
+        final_model.export(out_path)
+    except:
+        print("Boolean failed, falling back to merge_vertices...")
+        final_model = trimesh.util.concatenate(meshes_list)
+        final_model.merge_vertices(digits_vertex=3)
+        final_model.export(out_path)
+
+    #print(f"Successfully exported {len(meshes_list)} buildings to {out_path}")
     
+    return x_off, y_off, max_bld_h, max_z_abs, final_model
+
+def reconstruct_openfoam_results(case_path, wind_deg, center_lat=-33.93379, center_lon=18.45964, radius=400.0):
+
     def parse_vector(path):
-        if not os.path.exists(path): raise FileNotFoundError(f"Missing: {path}")
         with open(path, 'r', encoding='utf-8', errors='ignore') as f:
             content = f.read()
         match = re.search(r'\n(\d+)\s*\n\s*\(', content)
@@ -1034,7 +1079,7 @@ def reconstruct_simscale_results(case_path, center_lat=-33.93379, center_lon=18.
         if limit == -1: limit = len(content)
         end_pos = content.rfind(')', match.end(), limit)
         data_str = content[match.end():end_pos]
-        return np.fromstring(data_str.replace('(', ' ').replace(')', ' '), 
+        return np.fromstring(data_str.replace('(', ' ').replace(')', ' '),
                              dtype=float, sep=' ').reshape(n, 3)
 
     def parse_labels(path):
@@ -1045,67 +1090,92 @@ def reconstruct_simscale_results(case_path, center_lat=-33.93379, center_lon=18.
         data_str = content[match.end() : content.rfind(')', match.end())]
         return np.fromstring(data_str, dtype=int, sep=' ')
 
-    def parse_faces(path):
+    def parse_faces_vectorized(path):
+        """Returns (face_point_indices, face_sizes) if mixed polyhedral,
+           or a single (N_faces, K) array if uniform."""
         with open(path, 'r', encoding='utf-8', errors='ignore') as f:
             content = f.read()
+        # Extract all face definitions
         raw = re.findall(r'\d+\(([^)]+)\)', content)
-        return [np.fromstring(f, dtype=int, sep=' ') for f in raw]
+        sizes = []
+        indices = []
+        for face_str in raw:
+            pts_idx = np.fromstring(face_str, dtype=np.int32, sep=' ')
+            sizes.append(len(pts_idx))
+            indices.append(pts_idx)
+        return indices, np.array(sizes)
 
-    # --- 1. Load Data ---
-    #print(f"--> Loading mesh and results from {case_path}...")
-    pts = parse_vector(os.path.join(case_path, 'points'))
-    faces = parse_faces(os.path.join(case_path, 'faces'))
-    owner = parse_labels(os.path.join(case_path, 'owner'))
+    # Load
+    pts     = parse_vector(os.path.join(case_path, 'points'))
+    owner   = parse_labels(os.path.join(case_path, 'owner'))
     neighbour = parse_labels(os.path.join(case_path, 'neighbour'))
     u_field = parse_vector(os.path.join(case_path, 'U'))
-    
+    faces, face_sizes = parse_faces_vectorized(os.path.join(case_path, 'faces'))
+
     n_cells = u_field.shape[0]
 
-    # --- 2. Calculate Cell Centers (Topological Reconstruction) ---
-    #print("--> Reconstructing cell centers...")
-    face_centers = np.array([np.mean(pts[f], axis=0) for f in faces])
-    cell_centers = np.zeros((n_cells, 3))
-    face_counts = np.zeros(n_cells)
+    # --- Vectorized face centers ---
+    # If all faces have the same number of vertices (common in hex meshes), use a single array op
+    if np.all(face_sizes == face_sizes[0]):
+        k = face_sizes[0]
+        flat_idx = np.concatenate(faces).reshape(-1, k)
+        face_centers = pts[flat_idx].mean(axis=1)        # (N_faces, 3) — fully vectorized
+    else:
+        # Mixed polyhedral: still faster than per-face np.mean with Python loop
+        flat_idx = np.concatenate(faces)
+        offsets   = np.concatenate([[0], np.cumsum(face_sizes)])
+        # Use reduceat for a single-pass summation
+        sums = np.add.reduceat(pts[flat_idx], offsets[:-1], axis=0)
+        face_centers = sums / face_sizes[:, None]
 
-    # Vectorized accumulation isn't easy with indices, so we use np.add.at
-    np.add.at(cell_centers, owner, face_centers[np.arange(len(owner))])
-    np.add.at(face_counts, owner, 1)
-    np.add.at(cell_centers, neighbour, face_centers[np.arange(len(neighbour))])
-    np.add.at(face_counts, neighbour, 1)
+    # --- Fast cell center accumulation with np.bincount ---
+    all_cells  = np.concatenate([owner, neighbour])
+    all_fcenters = np.vstack([face_centers[np.arange(len(owner))],
+                               face_centers[np.arange(len(neighbour))]])
 
-    cell_coords = cell_centers / face_counts[:, np.newaxis]
+    cell_cx = np.bincount(all_cells, weights=all_fcenters[:, 0], minlength=n_cells)
+    cell_cy = np.bincount(all_cells, weights=all_fcenters[:, 1], minlength=n_cells)
+    cell_cz = np.bincount(all_cells, weights=all_fcenters[:, 2], minlength=n_cells)
+    face_counts = np.bincount(all_cells, minlength=n_cells)
 
-    # --- 3. GIS Alignment (UTM 34S) ---
+    cell_coords = np.stack([cell_cx, cell_cy, cell_cz], axis=1) / face_counts[:, None]
+
+    # Apply inverse rotation to simulation coordinates
+    wind_deg_corrected = 270 - wind_deg
+    theta = math.radians(wind_deg_corrected)
+    cos_a = np.cos(theta)
+    sin_a = np.sin(theta)
+    # Local rotation around simulation origin
+    x_rot = cell_coords[:, 0] * cos_a - cell_coords[:, 1] * sin_a
+    y_rot = cell_coords[:, 0] * sin_a + cell_coords[:, 1] * cos_a
+
+    # GIS alignment
     transformer = Transformer.from_crs("EPSG:4326", "EPSG:32734", always_xy=True)
-    center_x_utm, center_y_utm = transformer.transform(center_lon, center_lat)
-    
-    # SimScale center is usually 0,0 locally. We shift to Cape Town UTM
-    # If you used an offset during export, apply it here
-    final_x = cell_coords[:, 0] + center_x_utm
-    final_y = cell_coords[:, 1] + center_y_utm
+    cx_utm, cy_utm = transformer.transform(center_lon, center_lat)
+
+    # Now translate to UTM
+    final_x = x_rot + cx_utm
+    final_y = y_rot + cy_utm
     final_z = cell_coords[:, 2]
 
-    # --- 4. Spatial Culling (Radius Filter) ---
-    dist_sq = (final_x - center_x_utm)**2 + (final_y - center_y_utm)**2
+    # Spatial filter
+    dist_sq = (final_x - cx_utm)**2 + (final_y - cy_utm)**2
     mask = dist_sq <= radius**2
-
-    # --- 5. Pedestrian Slicing & DF Construction ---
-    # Slice between 1.2m and 1.9m height
-    #z_mask = (final_z >= 1.2) & (final_z <= 1.9)
-    total_mask = mask #& z_mask
-
-    #print(f"--> Extracted {np.sum(total_mask)} pedestrian-level points.")
-
+    # Rotate the U and V components of the wind field
+    u_final = u_field[:, 0] * cos_a - u_field[:, 1] * sin_a
+    v_final = u_field[:, 0] * sin_a + u_field[:, 1] * cos_a
+    
     df = pd.DataFrame({
-        'X': final_x[total_mask],
-        'Y': final_y[total_mask],
-        'Z': final_z[total_mask],
-        'U': u_field[total_mask, 0],
-        'V': u_field[total_mask, 1],
-        'u_mag': np.linalg.norm(u_field[total_mask], axis=1)
+        'X': final_x[mask], 'Y': final_y[mask], 'Z': final_z[mask],
+        #'U': u_field[mask, 0], 
+        #'V': u_field[mask, 1],
+        'U': u_final[mask], 
+        'V': v_final[mask],
+        #'u_mag': np.linalg.norm(u_field[mask], axis=1)
+        'u_mag': np.sqrt(u_final[mask]**2 + v_final[mask]**2)
     })
 
-    return df, center_x_utm, center_y_utm
+    return df, cx_utm, cy_utm
 
 def plot_wind_analysis(ped_df, buildings_df, center_x_utm, center_y_utm, radius=400, title_suffix="xxxx"):
     """
@@ -1127,12 +1197,30 @@ def plot_wind_analysis(ped_df, buildings_df, center_x_utm, center_y_utm, radius=
 
     # --- MAP B: Flow (Quiver) ---
     # Sampling for visual clarity (skip 3 points)
-    skip = 2
-    x, y = ped_df['X'].values[::skip], ped_df['Y'].values[::skip]
-    u, v = ped_df['U'].values[::skip].astype(float), ped_df['V'].values[::skip].astype(float)
-    mags = ped_df['u_mag'].values[::skip].astype(float)
+    #skip = 7
+    #x, y = ped_df['X'].values[::skip], ped_df['Y'].values[::skip]
+    #u, v = ped_df['U'].values[::skip].astype(float), ped_df['V'].values[::skip].astype(float)
+    #mags = ped_df['u_mag'].values[::skip].astype(float)
 
-    qv = ax2.quiver(x, y, u, v, mags, cmap='jet', scale=120, alpha=0.9, width=0.003)
+    if len(ped_df) > 7000:
+        bins = 20
+    if len(ped_df) < 7000:
+        bins = 10
+    
+    # Create bins
+    ped_df['x_bin'] = (ped_df['X'] // bins) * bins
+    ped_df['y_bin'] = (ped_df['Y'] // bins) * bins
+
+    # Aggregate: Mean velocity per bin
+    binned_df = ped_df.groupby(['x_bin', 'y_bin']).agg({
+        'U': 'mean', 
+        'V': 'mean', 
+        'u_mag': 'mean'
+    }).reset_index()
+
+    # Plot binned_df instead of the raw xx rows
+    qv = ax2.quiver(binned_df['x_bin'], binned_df['y_bin'], binned_df['U'], binned_df['V'], binned_df['u_mag'], cmap='jet', scale=120, alpha=0.9, width=0.003)
+    #qv = ax2.quiver(x, y, u, v, mags, cmap='jet', scale=120, alpha=0.9, width=0.003)
     
     plot_geometries(buildings_df, ax=ax2, facecolor='lightgrey', edgecolor='black', alpha=0.8)
     ax2.set_title('B: Vector Flow Field', loc='left', pad=15, weight='bold')
@@ -1156,101 +1244,189 @@ def plot_wind_analysis(ped_df, buildings_df, center_x_utm, center_y_utm, radius=
     
     return fig, (ax1, ax2)
 
-def get_sun_position(lat, lon, dt):
+def get_sun_position(lat: float, lon: float, dt: datetime) -> tuple[float, float]:
     """
-    lat/lon: Decimal degrees (Salt River: -33.93, 18.46)
-    dt: datetime object (must be UTC or handled offset)
-    Returns: (azimuth, altitude) in degrees
+    Returns (azimuth_deg, altitude_deg).
+
+    dt must be timezone-aware. UTC offset is derived from dt.utcoffset(),
+    so passing Africa/Johannesburg-aware datetimes handles SAST (UTC+2)
+    automatically — no hardcoding needed.
+
+    Accuracy: ~0.5° — suitable for urban shadow studies.
     """
-    # 1. Day of year and hour
+    if dt.tzinfo is None:
+        raise ValueError("dt must be timezone-aware. "
+                         "Use e.g. datetime(..., tzinfo=ZoneInfo('Africa/Johannesburg'))")
+
+    # UTC offset in decimal hours (handles DST automatically)
+    utc_offset_h = dt.utcoffset().total_seconds() / 3600.0
+
     day_of_year = dt.timetuple().tm_yday
-    hour = dt.hour + dt.minute / 60.0 + dt.second / 3600.0
-    
-    # 2. Solar Declination (Angle of sun relative to earth's equator)
+    hour_utc    = dt.hour + dt.minute / 60.0 + dt.second / 3600.0
+    hour_local  = hour_utc + utc_offset_h          # local clock time
+
+    # Solar declination
     declination = 23.45 * math.sin(math.radians(360 / 365 * (day_of_year - 81)))
-    
-    # 3. Equation of Time (Correction for earth's elliptical orbit)
-    # Simplified version for urban studies
-    b = math.radians(360 / 364 * (day_of_year - 81))
+
+    # Equation of Time (minutes)
+    b   = math.radians(360 / 364 * (day_of_year - 81))
     eot = 9.87 * math.sin(2 * b) - 7.53 * math.cos(b) - 1.5 * math.sin(b)
-    
-    # 4. Local Solar Time
-    # Salt River is UTC+2
-    lstm = 15 * 2 
-    tc = 4 * (lon - lstm) + eot
-    lst = hour + tc / 60
-    
-    # 5. Hour Angle
-    hra = 15 * (lst - 12)
-    
-    # 6. Altitude (Angle above horizon)
+
+    # Local Solar Time
+    lstm = 15.0 * utc_offset_h                     # standard meridian for this offset
+    tc   = 4.0 * (lon - lstm) + eot                # time correction (minutes)
+    lst  = hour_local + tc / 60.0                  # local solar time (hours)
+
+    # Hour Angle
+    hra = 15.0 * (lst - 12.0)
+
     lat_rad = math.radians(lat)
     dec_rad = math.radians(declination)
     hra_rad = math.radians(hra)
-    
-    elevation = math.asin(math.sin(lat_rad) * math.sin(dec_rad) + 
-                          math.cos(lat_rad) * math.cos(dec_rad) * math.cos(hra_rad))
-    
-    # 7. Azimuth (Angle from North)
-    azimuth = math.acos((math.sin(dec_rad) * math.cos(lat_rad) - 
-                         math.cos(dec_rad) * math.sin(lat_rad) * math.cos(hra_rad)) / 
-                         math.cos(elevation))
-    
-    # Adjust azimuth based on time of day
-    if hra > 0:
-        azimuth = 360 - math.degrees(azimuth)
-    else:
-        azimuth = math.degrees(azimuth)
-        
-    return azimuth, math.degrees(elevation)
 
-def calculate_shadows(dis_c, sun_azimuth, sun_altitude):
+    # Altitude
+    sin_elev = (math.sin(lat_rad) * math.sin(dec_rad) +
+                math.cos(lat_rad) * math.cos(dec_rad) * math.cos(hra_rad))
+    sin_elev = max(-1.0, min(1.0, sin_elev))       # clamp for floating-point safety
+    elevation = math.asin(sin_elev)
+    elevation_deg = math.degrees(elevation)
+
+    # Azimuth — use atan2 to avoid acos domain errors at zenith / horizon
+    cos_elev = math.cos(elevation)
+    if cos_elev < 1e-10:                           # sun essentially at zenith
+        return 0.0, elevation_deg
+
+    cos_az = ((math.sin(dec_rad) * math.cos(lat_rad) -
+               math.cos(dec_rad) * math.sin(lat_rad) * math.cos(hra_rad)) / cos_elev)
+    cos_az = max(-1.0, min(1.0, cos_az))
+    azimuth_deg = math.degrees(math.acos(cos_az))
+
+    if hra > 0:                                    # afternoon — sun west of south
+        azimuth_deg = 360.0 - azimuth_deg
+
+    return azimuth_deg, elevation_deg
+
+
+def calculate_shadows(dis_c, sun_azimuth, sun_altitude, min_altitude=2.0):
     """
-    Creates shadow polygons for buildings.
-    sun_azimuth: degrees from North (Clockwise)
-    sun_altitude: degrees from Horizon
+    Returns shadows as a list of (polygon, casting_building_height) tuples
+    so downstream code can skip shade for points taller than the caster.
     """
+    if sun_altitude <= 0:
+        return []
+
+    alt = max(sun_altitude, min_altitude)
+    s_factor = 1.0 / math.tan(math.radians(alt))
+    angle_rad = math.radians(sun_azimuth + 180)
+    dx_unit = math.sin(angle_rad)
+    dy_unit = math.cos(angle_rad)
+
     shadows = []
-    # Calculate shadow length factor: height / tan(altitude)
-    # Use a small epsilon to avoid division by zero at noon
-    s_factor = 1.0 / np.tan(np.radians(max(sun_altitude, 0.5)))
-    
-    # Calculate offset direction (opposite to sun azimuth)
-    # +180 to point the shadow AWAY from the sun
-    angle_rad = np.radians(sun_azimuth + 180)
-    dx = np.sin(angle_rad) * s_factor
-    dy = np.cos(angle_rad) * s_factor
-
     for _, bld in dis_c.iterrows():
         height = bld.get('building_height', 4.0)
         footprint = bld.geometry
-        
-        # Shift the footprint by the shadow length based on height
-        # This creates a simplified projected shadow 'extrusion'
-        shadow_ext = translate(footprint, xoff=dx*height, yoff=dy*height)
-        
-        # Combine footprint and shifted footprint to make the full shadow area
-        full_shadow = footprint.union(shadow_ext).convex_hull
-        shadows.append(full_shadow)
-        
+        if footprint is None or footprint.is_empty:
+            continue
+        dx = dx_unit * s_factor * height
+        dy = dy_unit * s_factor * height
+        shadow_ext = translate(footprint, xoff=dx, yoff=dy)
+        full_shadow = unary_union([footprint, shadow_ext])
+        shadows.append((full_shadow, height))   # carry the caster height
+
     return shadows
 
-def apply_solar_to_df(df, shadows):
-    """
-    df: your seasonal_df with x, y coordinates
-    shadows: list of shadow Polygons
-    """
-    # Create a union of all shadows for faster point-in-polygon check
-    #from shapely.ops import unary_union
-    all_shadows_geom = unary_union(shadows)
-    
-    # Check each point in the dataframe
-    def is_in_shade(row):
-        p = Point(row['X'], row['Y'])
-        return all_shadows_geom.contains(p)
 
-    df['is_shaded'] = df.apply(is_in_shade, axis=1)
+def apply_solar_to_df(df: pd.DataFrame, shadows: list) -> pd.DataFrame:
+    """
+    Height-aware shade classification.
+    A point at height Z is only shaded if the casting building is taller than Z.
+
+    shadows: list of (polygon, caster_height) tuples from calculate_shadows_3d.
+    """
+    df = df.copy()
+    df['is_shaded'] = False
+
+    if not shadows:
+        return df
+
+    coords = df[['X', 'Y']].to_numpy()
+    pts_arr = shapely.points(coords[:, 0], coords[:, 1])
+    z_arr = df['Z'].to_numpy()
+
+    # Accumulate shade mask across all buildings
+    shade_mask = np.zeros(len(df), dtype=bool)
+
+    for shadow_poly, caster_height in shadows:
+        # Only consider points below the caster height
+        height_eligible = z_arr < caster_height
+        if not height_eligible.any():
+            continue
+        in_shadow = shapely.contains_properly(shadow_poly, pts_arr)
+        shade_mask |= (in_shadow & height_eligible)
+
+    df['is_shaded'] = shade_mask
     return df
+
+def build_utci_layer(
+    ped_df_full: pd.DataFrame,
+    shadows: list,
+    ta: float,
+    rh: float,
+    mrt_offset: float,
+    z_ground_min: float = 1.2,    # pedestrian head height band for shade
+    z_ground_max: float = 1.9,
+    z_wind_min: float = 9.9,      # 10m band for wind sampling
+    z_wind_max: float = 10.9,
+) -> pd.DataFrame:
+    """
+    Physics-correct pipeline:
+      - Shade is a ground-level question: is the pedestrian standing in shadow?
+        → classify shade on the 1.2–1.9m slice (actual pedestrian level)
+      - Wind at 10m is a CFD sampling artefact, not a physical height.
+        → extract u_mag from the 10m slice and join it down to ground points
+      - UTCI is then computed at ground level with 10m wind + ground shade
+    """
+    # 1. Ground-level shade — this is where the person actually stands
+    ground = ped_df_full[
+        (ped_df_full['Z'] >= z_ground_min) &
+        (ped_df_full['Z'] <= z_ground_max)
+    ].copy()
+    ground = apply_solar_to_df(ground, shadows)   # shade check at Z~1.5m, no height filter needed
+
+    # 2. 10m wind — spatial proxy for pedestrian-level wind exposure
+    wind10m = ped_df_full[
+        (ped_df_full['Z'] >= z_wind_min) &
+        (ped_df_full['Z'] <= z_wind_max)
+    ][['X', 'Y', 'u_mag']].copy()
+
+    # 3. Spatially join wind to ground points (nearest 10m cell → ground point)
+    #    Round XY to nearest metre so the merge is tolerant of small offsets
+    #    between the two CFD slices
+    def _round_xy(df, decimals=0):
+        df = df.copy()
+        df['_gx'] = np.round(df['X'], decimals)
+        df['_gy'] = np.round(df['Y'], decimals)
+        return df
+
+    ground  = _round_xy(ground)
+    wind10m = _round_xy(wind10m).rename(columns={'u_mag': 'u_mag_10m'})
+
+    merged = ground.merge(
+        wind10m[['_gx', '_gy', 'u_mag_10m']],
+        on=['_gx', '_gy'],
+        how='left',
+    ).drop(columns=['_gx', '_gy'])
+
+    # Fall back to ground-level u_mag for any points with no 10m match
+    merged['u_mag_10m'] = merged['u_mag_10m'].fillna(merged['u_mag'])
+
+    # 4. UTCI at ground level, using 10m wind
+    #def _utci_row(row):
+    #    mrt = ta + mrt_offset if not row['is_shaded'] else ta
+    #    return calculate_utci_robust(ta, mrt, row['u_mag_10m'], rh)
+
+    #merged['utci'] = merged.apply(_utci_row, axis=1)
+    return merged
 
 def plot_utci(summer, winter, buildings_df, center_x_utm, center_y_utm, radius=400,  title_suffix=" "):
     """

@@ -45,7 +45,6 @@ html:
 # html iframe images
 parse:
   myst_enable_extensions:
-    - html
     - html_admonition
     - html_image
     - amsmath
