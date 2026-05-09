@@ -1,16 +1,12 @@
-# macOS junk
+# macOS system files
 .DS_Store
 ._*
 .AppleDouble
-.LSOverride
 
-# Jupyter Book build files
-.jupyter_cache/
-/tutorial/.jupyter_cache/
-
-.DS_Store
-.ipynb_checkpoints/
-*/.ipynb_checkpoints/*
+# Jupyter Book build outputs
 _build/
-workshop/_build/
-.binder/
+.jupyter_cache/
+
+# Python artifacts
+__pycache__/
+*.pyc
