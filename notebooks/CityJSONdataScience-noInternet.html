@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -57,6 +57,8 @@
     <script async="async" src="../_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/CityJSONdataScience-noInternet';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -1081,7 +1083,8 @@ Name: count, dtype: int64
 These numbers are based on disaggregated <a class="reference external" href="https://www.statssa.gov.za">Statistics South Africa (STATSA)</a> <a class="reference external" href="https://www.statssa.gov.za/?page_id=3839">Census 2011</a>.</strong></p>
 <p><strong>Woodstock 12 656</strong> (6 577: salt river and 9 207: observatory).</p>
 <p>We can calculate the annual population growth rate using the formula for <strong><a class="reference external" href="https://databank.worldbank.org/metadataglossary/health-nutrition-and-population-statistics/series/SP.POP.GROW">Annual population growth</a>:</strong></p>
-<p>$$r = \frac{\ln{[\frac{End Population}{Start Population}}]}{n} * 100 = \frac{\ln{[\frac{17 062}{9345}}]}{12} * 100   = 2.49%$$</p>
+<div class="math notranslate nohighlight">
+\[r = \frac{\ln{[\frac{End Population}{Start Population}}]}{n} * 100 = \frac{\ln{[\frac{17 062}{9345}}]}{12} * 100   = 2.49\%\]</div>
 <div class="alert alert-block alert-danger"><b>Your Participation! </b>
 <p>It is possible to execute the calculation programmatically. <strong>Fill in the relevant variables in the <em><code class="docutils literal notranslate"><span class="pre">cell</span></code></em> below</strong> </div></p>
 <div class="cell docutils container">
@@ -1110,7 +1113,8 @@ These numbers are based on disaggregated <a class="reference external" href="htt
 </div>
 </div>
 <p>To conclude; we can project into the future with a very basic formula to estimate the population <em>x</em>-years from now:</p>
-<p>$$p  = P_o * (1 + r)^{t} = p = 17062 * (1 + 0.0248)^{10}  = 21 818$$</p>
+<div class="math notranslate nohighlight">
+\[p  = P_o * (1 + r)^{t} = p = 17062 * (1 + 0.0248)^{10}  = 21 818\]</div>
 <div class="alert alert-block alert-danger"><b>Your Participation! </b>
 <p>It is possible to execute the calculation programmatically. <strong>Fill in the variables in the <em><code class="docutils literal notranslate"><span class="pre">cell</span></code></em> below</strong> </div></p>
 <div class="cell docutils container">
@@ -1707,7 +1711,8 @@ Name: count, dtype: int64
 </div>
 <section id="a-household-rooftop-solar">
 <h2>2. a) Household rooftop solar<a class="headerlink" href="#a-household-rooftop-solar" title="Link to this heading">#</a></h2>
-<div class="alert alert-block alert-success"><b>Percentage of households served by rooftop renewable energy</b></div><p>$$ \text{% homes with renewable energy} = \frac{\text{Number of dwellings with mapped solar PV and SWH}}{\text{Total number of dwellings}} \times 100 $$</p>
+<div class="alert alert-block alert-success"><b>Percentage of households served by rooftop renewable energy</b></div><div class="math notranslate nohighlight">
+\[ \text{\% homes with renewable energy} = \frac{\text{Number of dwellings with mapped solar PV and SWH}}{\text{Total number of dwellings}} \times 100 \]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- harvest columns</span>
@@ -1734,7 +1739,8 @@ Name: count, dtype: int64
 <section id="b-rooftop-solar-population">
 <h2>2. b) Rooftop solar population<a class="headerlink" href="#b-rooftop-solar-population" title="Link to this heading">#</a></h2>
 <div class="alert alert-block alert-success"><b>Percentage of population served by rooftop renewable energy</b></div>
-<p>$$ \text{% population with renewable energy} = \frac{\text{Number of residents with mapped solar PV and SWH}}{\text{Estimated population}} \times 100 $$</p>
+<div class="math notranslate nohighlight">
+\[ \text{\% population with renewable energy} = \frac{\text{Number of residents with mapped solar PV and SWH}}{\text{Estimated population}} \times 100 \]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pop_total</span> <span class="o">=</span> <span class="n">blds</span><span class="p">[</span><span class="s2">&quot;pop&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
@@ -1775,75 +1781,51 @@ Name: count, dtype: int64
 <p>In this section, we attempt to understand how much <em><strong>‘fuel’</strong></em> a rooftop can get from the sun.</p>
 </div>
 <div class="alert alert-block alert-info"><b></b> 
-<p><strong>PLEASE SUPPLY YOUR OWN <code class="docutils literal notranslate"><span class="pre">ghi.tif</span></code>. The <code class="docutils literal notranslate"><span class="pre">ghi.tif</span></code> raster comes with the <code class="docutils literal notranslate"><span class="pre">LTAy_YearlySum.GeoTiff</span></code> dataset.<br />
-These can be harvested from the <a class="reference external" href="https://data360.worldbank.org/en/dataset/WB_SOLAR_ATLAS">Global Solar Atlas</a></strong> <em>–a World Bank Group and ESMAP project–</em> <strong><a class="reference external" href="https://globalsolaratlas.info/download">download section</a> and are available for each country on Earth.</strong></p>
+<p>To do your own community <strong>PLEASE SUPPLY YOUR OWN</strong> <code class="docutils literal notranslate"><span class="pre">POWER_Regional_Monthly_1984_2025.csv</span></code>; an extract of the <code class="docutils literal notranslate"><span class="pre">ALLSKY_SFC_SW_DWN</span></code> (All Sky Surface Shortwave Downward Irradiance) dataset.</p>
+<p>These can be harvested from the <a class="reference external" href="https://power.larc.nasa.gov/data-access-viewer/"><strong>NASA data access viewer</strong></a> –settings: Regional, User Community: Renewable, Temporal Level: Monthly and Annually, Select Location: draw a rectangle (~state / province. NOT country), Time Extent: 1984-2025, Parameter: All Sky Surface Shortwave Downward Irradiance), Format: csv.**</p>
 </div>
-<p>We will query the <strong>Global Horizontal Irradiation (GHI</strong>) dataset. This high-resolution raster uses a combination of satellite observations and advanced meteorological models to tell us the <em>‘solar weight’</em> hitting our neighborhood.</p>
+<p>Here we interogate the <a class="reference external" href="https://nasa.maps.arcgis.com/home/item.html?id=f8b59c55f66c47bba486354a122a5489">POWER Monthly Radiation</a> dataset. This is a global dataset that uses <a class="reference external" href="https://power.larc.nasa.gov">NASA satellite observations and weather models</a> to tell us exactly how much solar radiation hits a specific location on Earth.</p>
+<p>What we are harvesting:</p>
 <blockquote>
-<div><p><strong>Source:</strong> The <strong>Global Solar Atlas GHI Raster</strong> provides a ~20-year historical average of solar radiation. This ensures our communities solar potential is based on <strong>long-term climate trends</strong> rather than a single year of weather.</p>
+<div><p><strong>Parameter:</strong> <code class="docutils literal notranslate"><span class="pre">ALLSKY_SFC_SW_DWN</span></code> (Global Horizontal Irradiance): a 30-year historical average of solar radiation. This ensures our communities solar potential is based on <em><strong>long-term climate trends</strong></em> rather than a single year of weather.</p>
+<p><strong>Source:</strong> <a class="reference external" href="https://nasa.maps.arcgis.com/home/item.html?id=f8b59c55f66c47bba486354a122a5489">POWER Monthly Radiation</a> via the <a class="reference external" href="https://power.larc.nasa.gov/data-access-viewer/"><strong>NASA data access viewer</strong></a></p>
 <p><strong>Goal:</strong>
 To calculate the Annual Total GHI (kWh/m2/year). This value tells us the cumulative <strong>‘solar pressure’</strong> hitting our rooftops over an entire year, which we then use to calculate <strong>how many Megawatt-hours (MWh) of clean electricity our neighborhood can generate</strong>.</p>
 </div></blockquote>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- where is the GHI.tif</span>
-<span class="n">raster_file</span> <span class="o">=</span> <span class="s2">&quot;./raster/GHI.tif&quot;</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- where is the NASA POWER dataset</span>
+<span class="c1">#raster_file = &quot;./raster/GHI.tif&quot;</span>
+<span class="n">file_path</span> <span class="o">=</span> <span class="s1">&#39;../data/POWER_Regional_Monthly_1984_2025.csv&#39;</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- harvest GHI value from raster</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- harvest GHI value from NASA POWER</span>
 
-<span class="c1"># 1. Setup Raster Access once (Outside the loop)</span>
-<span class="n">ds</span> <span class="o">=</span> <span class="n">gdal</span><span class="o">.</span><span class="n">Open</span><span class="p">(</span><span class="n">raster_file</span><span class="p">)</span>
-<span class="n">gt</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">GetGeoTransform</span><span class="p">()</span>
-<span class="n">rb</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">GetRasterBand</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># Load the NASA POWER dataset</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+<span class="n">df</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="p">[</span><span class="n">c</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">]</span>
 
-<span class="c1"># Setup Transformation (OSM/GDF 4326 -&gt; Raster CRS)</span>
-<span class="n">target</span> <span class="o">=</span> <span class="n">osr</span><span class="o">.</span><span class="n">SpatialReference</span><span class="p">()</span>
-<span class="n">target</span><span class="o">.</span><span class="n">ImportFromWkt</span><span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">GetProjection</span><span class="p">())</span>
-<span class="n">source</span> <span class="o">=</span> <span class="n">osr</span><span class="o">.</span><span class="n">SpatialReference</span><span class="p">()</span>
-<span class="n">source</span><span class="o">.</span><span class="n">ImportFromEPSG</span><span class="p">(</span><span class="mi">4326</span><span class="p">)</span>
-<span class="n">transform</span> <span class="o">=</span> <span class="n">osr</span><span class="o">.</span><span class="n">CoordinateTransformation</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+<span class="c1"># Target coordinates</span>
+<span class="c1">#target_lat, target_lon = -33.934, 18.460</span>
+<span class="n">centroid_point</span> <span class="o">=</span> <span class="n">shapely</span><span class="o">.</span><span class="n">centroid</span><span class="p">(</span><span class="n">combined_ageom</span><span class="p">)</span>
+<span class="n">target_lon</span><span class="p">,</span> <span class="n">target_lat</span> <span class="o">=</span> <span class="n">centroid_point</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">centroid_point</span><span class="o">.</span><span class="n">y</span>
 
-<span class="k">def</span><span class="w"> </span><span class="nf">get_ghi_per_building</span><span class="p">(</span><span class="n">geom</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Queries the raster at the specific centroid of the provided geometry.</span>
-<span class="sd">    Uses the pre-loaded transform and raster band for speed.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="ow">not</span> <span class="n">geom</span><span class="p">:</span>
-        <span class="k">return</span> <span class="mf">0.0</span>
-    
-    <span class="c1"># Get the specific centroid for this building</span>
-    <span class="n">centroid</span> <span class="o">=</span> <span class="n">geom</span><span class="o">.</span><span class="n">centroid</span>
-    
-    <span class="c1"># Transform point to Raster&#39;s CRS</span>
-    <span class="c1"># Note: TransformPoint expects (x, y) which is (lon, lat) in 4326</span>
-    <span class="n">point</span> <span class="o">=</span> <span class="n">transform</span><span class="o">.</span><span class="n">TransformPoint</span><span class="p">(</span><span class="n">centroid</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">centroid</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
-    
-    <span class="c1"># Map Map Coordinates to Pixel Coordinates</span>
-    <span class="c1"># px = (X_geo - X_origin) / PixelWidth</span>
-    <span class="c1"># py = (Y_geo - Y_origin) / PixelHeight</span>
-    <span class="n">px</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">gt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="n">gt</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-    <span class="n">py</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">point</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">gt</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span> <span class="o">/</span> <span class="n">gt</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
-    
-    <span class="k">try</span><span class="p">:</span>
-        <span class="c1"># Read a 1x1 window at the calculated pixel coordinates</span>
-        <span class="n">structval</span> <span class="o">=</span> <span class="n">rb</span><span class="o">.</span><span class="n">ReadAsArray</span><span class="p">(</span><span class="n">px</span><span class="p">,</span> <span class="n">py</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">structval</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
-    <span class="k">except</span><span class="p">:</span>
-        <span class="k">return</span> <span class="mf">0.0</span>
+<span class="c1"># Identify the nearest grid point</span>
+<span class="n">closest_lat</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;LAT&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">target_lat</span><span class="p">))</span>
+<span class="n">closest_lon</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;LON&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">target_lon</span><span class="p">))</span>
 
-<span class="c1"># 2. Execution</span>
-<span class="c1"># Ensure your GDF is in 4326 to match the transformer logic</span>
-<span class="n">blds</span> <span class="o">=</span> <span class="n">blds</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="s1">&#39;EPSG:4326&#39;</span><span class="p">)</span>
+<span class="c1"># Filter for the site and exclude missing data (-999)</span>
+<span class="n">site_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;LAT&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">closest_lat</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;LON&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">closest_lon</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">site_df</span> <span class="o">=</span> <span class="n">site_df</span><span class="p">[</span><span class="n">site_df</span><span class="p">[</span><span class="s1">&#39;ANN&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">999</span><span class="p">]</span>
 
-<span class="c1"># Apply the function to each row&#39;s unique geometry</span>
-<span class="n">blds</span><span class="p">[</span><span class="s1">&#39;ghi_yearly&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">blds</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">get_ghi_per_building</span><span class="p">)</span>
+<span class="c1"># Harvest the Long-term Annual Average</span>
+<span class="n">annual_avg</span> <span class="o">=</span> <span class="n">site_df</span><span class="p">[</span><span class="s1">&#39;ANN&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mf">365.25</span> <span class="c1"># to accountfor leap years in a long-term dataset</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Annual Average GHI:&quot;</span><span class="p">,</span> <span class="nb">round</span><span class="p">(</span><span class="n">blds</span><span class="p">[</span><span class="s1">&#39;ghi_yearly&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(),</span><span class="mi">2</span><span class="p">)</span> <span class="p">,</span><span class="s2">&quot;kWh/m²/year&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Annual Average GHI (Long-term): </span><span class="si">{</span><span class="n">annual_avg</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2"> kWh/m²/day&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1855,9 +1837,10 @@ To calculate the Annual Total GHI (kWh/m2/year). This value tells us the cumulat
 </div>
 <div class="alert alert-block alert-success"><b>Annual Solar Potential (MWh)</b></div>
 <p>We use a simplified formula to provide a clear baseline.</p>
-<p>$$
+<div class="math notranslate nohighlight">
+\[
 \text{Potential (MWh)} = \frac{(\text{Surface Area} \times \text{utilization factor}) \times \text{GHI}_{\text{annual}} \times 0.2}{1000}
-$$</p>
+\]</div>
 <div class="alert alert-block alert-warning"><b></b>
 <p><sub><em><strong>Theoretical Framework:</strong> The annual energy output of a photovoltaic system (E) is determined by the product of the total solar resource (GHI), the active area of the array (A), and the system’s overall efficiency (η), adjusted by a Performance Ratio (PR) to account for real-world losses. — based on <a class="reference external" href="https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis_en">NREL (2022)</a> &amp; <a class="reference external" href="https://webstore.iec.ch/en/publication/65561">IEC 61724-1</a>. We then adapt this formula and represents a combined value of 25% nominal panel efficiency and a 0.80 Performance Ratio with a <strong>single 0.20 system efficiency value and account for usable area</strong>, a heuristic for gabled roofs.</em></sub></p>
 </div>
