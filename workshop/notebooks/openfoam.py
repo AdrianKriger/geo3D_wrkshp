@@ -44,16 +44,17 @@ def write_openfoam_case(case_path, extent, x_off, y_off, max_h, buildings, nu, z
         os.makedirs(os.path.join(case_path, folder), exist_ok=True)
 
     # STL Rotation & Export (Shared logic)
+    local_buildings = buildings.copy()
     rot = wind_deg - 270
     rot_rad = np.radians(rot)
     rotation_matrix = trimesh.transformations.rotation_matrix(rot_rad, [0, 0, 1])
     # 3. Apply the rotation to your final_model
-    buildings.apply_transform(rotation_matrix)
+    local_buildings.apply_transform(rotation_matrix)
     
-    buildings.update_faces(buildings.unique_faces())
-    buildings.fix_normals(multibody=True)
+    local_buildings.update_faces(buildings.unique_faces())
+    local_buildings.fix_normals(multibody=True)
 
-    buildings.export(os.path.join(case_path, "constant/geometry/buildings.obj"))
+    local_buildings.export(os.path.join(case_path, "constant/geometry/buildings.obj"))
     
     # 2. 0/ Directory (Physics)
     write_u_file(case_path, wind_speed, z0_val)
