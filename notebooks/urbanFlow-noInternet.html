@@ -432,7 +432,7 @@ document.write(`
 <br>
 <br>
 <p>While an internet connection is <strong>NOT</strong> necessary you will <strong>NEED</strong> to have sourced an <strong><a class="reference external" href="https://wiki.openstreetmap.org/wiki/PBF_Format">osm.pbf</a>.</strong></p>
-<p>To execute an Incompressible Fluid Flow simulation you will need to download and install <a class="reference internal" href="#"><span class="xref myst"><strong>OpenFoam</strong></span></a> –<em>instructions just after <strong>2. create a .STL file .</strong> below</em>.</p>
+<p>To execute an Incompressible Fluid Flow simulation you will need to download and install <a class="reference internal" href="#"><span class="xref myst"><strong>OpenFoam</strong></span></a> –<em>instructions just after <strong>2. create a .OBJ file .</strong> below</em>.</p>
 <p>And to calculate a Universal Thermal Comfort Indicator (UTCI) for your own community you will <strong>NEED</strong> to have sourced a <code class="docutils literal notranslate"><span class="pre">POWER_Regional_Monthly_1984_2025.csv</span></code>; an extract of the <code class="docutils literal notranslate"><span class="pre">ALLSKY_SFC_SW_DWN</span></code> (All Sky Surface Shortwave Downward Irradiance) dataset.</p>
 <p>These can be harvested from the <strong><a class="reference external" href="https://power.larc.nasa.gov">NASA Prediction Of Worldwide Energy Resources (POWER) Project</a> data <a class="reference external" href="https://power.larc.nasa.gov/data-access-viewer/">access viewer</a>.</strong></div></p>
 <p><strong>The purpose of this NoteBook is to walk a user through the advanced usage of <em>geo3D</em> products.</strong></p>
@@ -493,7 +493,16 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- import</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- get current working directory (notebook location)</span>
+<span class="c1">#current_dir = os.getcwd()</span>
+
+<span class="c1">#- go one level up</span>
+<span class="c1">#parent_dir = os.path.dirname(current_dir)</span>
+<span class="c1"># Add parent directory to sys.path if needed</span>
+<span class="c1">#if parent_dir not in sys.path:</span>
+<span class="c1">#    sys.path.append(parent_dir)</span>
+
+<span class="c1">#- import</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">city3D</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">openfoam</span>
 </pre></div>
@@ -513,9 +522,9 @@ document.write(`
 <p><strong>A <code class="docutils literal notranslate"><span class="pre">parameter.json</span></code> defines the path and files</strong>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">jparams</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;wStock_param.json&#39;</span><span class="p">))</span>       
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#jparams = json.load(open(&#39;wStock_param.json&#39;))       </span>
 <span class="c1">#jparams = json.load(open(&#39;mamre_param.json&#39;))   </span>
-<span class="c1">#jparams = json.load(open(&#39;sRiver_param.json&#39;))   </span>
+<span class="n">jparams</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;sRiver_param25m.json&#39;</span><span class="p">))</span>   
 <span class="c1">#jparams = json.load(open(&#39;saao_param5m.json&#39;))         </span>
 </pre></div>
 </div>
@@ -540,8 +549,8 @@ document.write(`
 <p><strong>Please enter a location</strong> <em>–center this on your area of interest</em> </div></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">center_lat</span><span class="p">,</span> <span class="n">center_lon</span> <span class="o">=</span>  <span class="o">-</span><span class="mf">33.92819</span><span class="p">,</span> <span class="mf">18.44359</span> <span class="c1"># wStock | wQuarter</span>
-<span class="c1">#center_lat, center_lon = -33.93379, 18.45964 # sRiver | durham </span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#center_lat, center_lon =  -33.92819, 18.44359 # wStock | wQuarter</span>
+<span class="n">center_lat</span><span class="p">,</span> <span class="n">center_lon</span> <span class="o">=</span> <span class="o">-</span><span class="mf">33.93379</span><span class="p">,</span> <span class="mf">18.45964</span> <span class="c1"># sRiver | durham </span>
 <span class="c1">#center_lat, center_lon = -33.934516, 18.477391 # saao</span>
 </pre></div>
 </div>
@@ -559,16 +568,33 @@ document.write(`
 <span class="c1"># Example usage</span>
 <span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span> <span class="o">=</span> <span class="n">get_bbox</span><span class="p">(</span><span class="n">center_lat</span><span class="p">,</span> <span class="n">center_lon</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
 
-<span class="n">aoi_geom</span> <span class="o">=</span> <span class="n">box</span><span class="p">(</span><span class="n">minx</span><span class="p">,</span> <span class="n">miny</span><span class="p">,</span> <span class="n">maxx</span><span class="p">,</span> <span class="n">maxy</span><span class="p">)</span>
+<span class="c1"># 1. Initialize your custom GeoDataFrameLite with the center point</span>
+<span class="n">center_point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">center_lon</span><span class="p">,</span> <span class="n">center_lat</span><span class="p">)</span>
+<span class="n">center_gdf</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">GeoDataFrameLite</span><span class="p">({</span>
+    <span class="s1">&#39;geometry&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">center_point</span><span class="p">]</span>
+<span class="p">})</span>
+<span class="n">center_gdf</span><span class="o">.</span><span class="n">crs</span> <span class="o">=</span> <span class="s2">&quot;EPSG:4326&quot;</span>
 
-<span class="c1"># 2. Wrap it in your home-baked GeoDataFrameLite</span>
+<span class="c1"># 2. Leverage your class&#39;s built-in pyproj database query to estimate the UTM CRS</span>
+<span class="n">utm_crs</span> <span class="o">=</span> <span class="n">center_gdf</span><span class="o">.</span><span class="n">estimate_utm_crs</span><span class="p">()</span>
+
+<span class="c1"># 3. Transform to meters, buffer by 300m, and transform back to WGS84</span>
+<span class="c1"># Note: Since .buffer() returns a standard Pandas Series, we extract the first element [.iloc[0]]</span>
+<span class="n">utm_gdf</span> <span class="o">=</span> <span class="n">center_gdf</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">utm_crs</span><span class="p">)</span>
+<span class="n">buffered_geom_meters</span> <span class="o">=</span> <span class="n">utm_gdf</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">buffer</span><span class="p">(</span><span class="mi">400</span><span class="p">)</span>
+
+<span class="c1"># Temporarily wrap it to use your .to_crs() method to get back to WGS84</span>
+<span class="n">temp_utm_gdf</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">GeoDataFrameLite</span><span class="p">({</span><span class="s1">&#39;geometry&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">buffered_geom_meters</span><span class="p">]})</span>
+<span class="n">temp_utm_gdf</span><span class="o">.</span><span class="n">crs</span> <span class="o">=</span> <span class="n">utm_crs</span>
+<span class="n">circular_geom</span> <span class="o">=</span> <span class="n">temp_utm_gdf</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="s2">&quot;EPSG:4326&quot;</span><span class="p">)[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># 4. Wrap everything cleanly into your homebred GeoDataFrameLite configuration</span>
 <span class="n">aoi</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">GeoDataFrameLite</span><span class="p">({</span>
     <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;area_of_interest&quot;</span><span class="p">],</span>
     <span class="s1">&#39;lat&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">center_lat</span><span class="p">],</span>
     <span class="s1">&#39;lon&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">center_lon</span><span class="p">],</span>
-    <span class="s1">&#39;geometry&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">aoi_geom</span><span class="p">]</span>
+    <span class="s1">&#39;geometry&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">circular_geom</span><span class="p">]</span>
 <span class="p">})</span>
-
 <span class="n">aoi</span><span class="o">.</span><span class="n">crs</span> <span class="o">=</span> <span class="s2">&quot;EPSG:4326&quot;</span>
 </pre></div>
 </div>
@@ -615,7 +641,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:02.030620
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.904742
 </pre></div>
 </div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ERROR 1: Non closed ring detected.
@@ -653,13 +679,14 @@ ERROR 1: Non closed ring detected.
       <th>amenity</th>
       <th>building</th>
       <th>geometry</th>
+      <th>man_made</th>
       <th>name</th>
       <th>office</th>
       <th>osm_id</th>
       <th>osm_way_id</th>
       <th>other_tags</th>
       <th>shop</th>
-      <th>tourism</th>
+      <th>sport</th>
       <th>type</th>
     </tr>
   </thead>
@@ -667,13 +694,14 @@ ERROR 1: Non closed ring detected.
     <tr>
       <th>0</th>
       <td>None</td>
-      <td>commercial</td>
-      <td>MULTIPOLYGON (((18.4461933 -33.9265241, 18.446...</td>
+      <td>school</td>
+      <td>MULTIPOLYGON (((18.4629053 -33.9357947, 18.462...</td>
       <td>None</td>
       <td>None</td>
-      <td>13501234</td>
       <td>None</td>
-      <td>"addr:city"=&gt;"Cape Town","addr:housename"=&gt;"Th...</td>
+      <td>10310903</td>
+      <td>None</td>
+      <td>"building:levels"=&gt;"2","ref:ZA:emis"=&gt;"1033134...</td>
       <td>None</td>
       <td>None</td>
       <td>multipolygon</td>
@@ -681,16 +709,17 @@ ERROR 1: Non closed ring detected.
     <tr>
       <th>1</th>
       <td>None</td>
-      <td>train_station</td>
-      <td>MULTIPOLYGON (((18.4459821 -33.9256137, 18.446...</td>
-      <td>Woodstock Station</td>
+      <td>school</td>
+      <td>MULTIPOLYGON (((18.4615816 -33.9317448, 18.461...</td>
       <td>None</td>
       <td>None</td>
-      <td>65768975</td>
-      <td>"addr:city"=&gt;"Cape Town","addr:suburb"=&gt;"Woods...</td>
-      <td>ticket</td>
+      <td>None</td>
+      <td>13328172</td>
+      <td>None</td>
+      <td>"building:levels"=&gt;"2","ref:ZA:emis"=&gt;"1033101...</td>
       <td>None</td>
       <td>None</td>
+      <td>multipolygon</td>
     </tr>
   </tbody>
 </table>
@@ -757,39 +786,39 @@ ERROR 1: Non closed ring detected.
       <th>amenity</th>
       <th>building</th>
       <th>geometry</th>
+      <th>man_made</th>
       <th>name</th>
       <th>office</th>
       <th>osm_id</th>
       <th>shop</th>
-      <th>tourism</th>
+      <th>sport</th>
       <th>type</th>
-      <th>tags</th>
       <th>...</th>
-      <th>service:bicycle:repair</th>
-      <th>service:bicycle:second_hand</th>
-      <th>service:bicycle:tools</th>
+      <th>access</th>
+      <th>drink:coffee</th>
+      <th>surface</th>
+      <th>building:units</th>
+      <th>tower:construction</th>
+      <th>tower:type</th>
       <th>layer</th>
-      <th>research</th>
-      <th>parking</th>
-      <th>animal</th>
-      <th>animal_boarding</th>
-      <th>unisex</th>
-      <th>residential</th>
+      <th>opening_date</th>
+      <th>brand:wikidata</th>
+      <th>opening_hours</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
       <td>None</td>
-      <td>commercial</td>
-      <td>MULTIPOLYGON (((18.4461933 -33.9265241, 18.446...</td>
+      <td>school</td>
+      <td>MULTIPOLYGON (((18.4629053 -33.9357947, 18.462...</td>
       <td>None</td>
       <td>None</td>
-      <td>13501234</td>
+      <td>None</td>
+      <td>10310903</td>
       <td>None</td>
       <td>None</td>
       <td>multipolygon</td>
-      <td>{'addr:city': 'Cape Town', 'addr:housename': '...</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -805,15 +834,15 @@ ERROR 1: Non closed ring detected.
     <tr>
       <th>1</th>
       <td>None</td>
-      <td>train_station</td>
-      <td>MULTIPOLYGON (((18.4459821 -33.9256137, 18.446...</td>
-      <td>Woodstock Station</td>
-      <td>None</td>
-      <td>65768975</td>
-      <td>ticket</td>
+      <td>school</td>
+      <td>MULTIPOLYGON (((18.4615816 -33.9317448, 18.461...</td>
       <td>None</td>
       <td>None</td>
-      <td>{'addr:city': 'Cape Town', 'addr:suburb': 'Woo...</td>
+      <td>None</td>
+      <td>13328172</td>
+      <td>None</td>
+      <td>None</td>
+      <td>multipolygon</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -828,7 +857,7 @@ ERROR 1: Non closed ring detected.
     </tr>
   </tbody>
 </table>
-<p>2 rows × 76 columns</p>
+<p>2 rows × 63 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -840,7 +869,7 @@ ERROR 1: Non closed ring detected.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 282 buildings have been harvested from ./data/CapeTown.osm.pbf
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 363 buildings have been harvested from ./data/CapeTown.osm.pbf
 </pre></div>
 </div>
 </div>
@@ -873,39 +902,39 @@ ERROR 1: Non closed ring detected.
       <th>amenity</th>
       <th>building</th>
       <th>geometry</th>
+      <th>man_made</th>
       <th>name</th>
       <th>office</th>
       <th>osm_id</th>
       <th>shop</th>
-      <th>tourism</th>
+      <th>sport</th>
       <th>type</th>
-      <th>tags</th>
       <th>...</th>
-      <th>service:bicycle:repair</th>
-      <th>service:bicycle:second_hand</th>
-      <th>service:bicycle:tools</th>
+      <th>access</th>
+      <th>drink:coffee</th>
+      <th>surface</th>
+      <th>building:units</th>
+      <th>tower:construction</th>
+      <th>tower:type</th>
       <th>layer</th>
-      <th>research</th>
-      <th>parking</th>
-      <th>animal</th>
-      <th>animal_boarding</th>
-      <th>unisex</th>
-      <th>residential</th>
+      <th>opening_date</th>
+      <th>brand:wikidata</th>
+      <th>opening_hours</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
       <td>None</td>
-      <td>commercial</td>
-      <td>MULTIPOLYGON (((18.4461933 -33.9265241, 18.446...</td>
+      <td>school</td>
+      <td>MULTIPOLYGON (((18.4629053 -33.9357947, 18.462...</td>
       <td>None</td>
       <td>None</td>
-      <td>13501234</td>
+      <td>None</td>
+      <td>10310903</td>
       <td>None</td>
       <td>None</td>
       <td>multipolygon</td>
-      <td>{'addr:city': 'Cape Town', 'addr:housename': '...</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -921,15 +950,15 @@ ERROR 1: Non closed ring detected.
     <tr>
       <th>1</th>
       <td>None</td>
-      <td>train_station</td>
-      <td>MULTIPOLYGON (((18.4459821 -33.9256137, 18.446...</td>
-      <td>Woodstock Station</td>
-      <td>None</td>
-      <td>65768975</td>
-      <td>ticket</td>
+      <td>school</td>
+      <td>MULTIPOLYGON (((18.4615816 -33.9317448, 18.461...</td>
       <td>None</td>
       <td>None</td>
-      <td>{'addr:city': 'Cape Town', 'addr:suburb': 'Woo...</td>
+      <td>None</td>
+      <td>13328172</td>
+      <td>None</td>
+      <td>None</td>
+      <td>multipolygon</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -944,7 +973,7 @@ ERROR 1: Non closed ring detected.
     </tr>
   </tbody>
 </table>
-<p>2 rows × 76 columns</p>
+<p>2 rows × 63 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -966,7 +995,7 @@ ERROR 1: Non closed ring detected.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold"> Woodstock has </span> 274 buildings
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold"> Salt River has </span> 352 buildings
 </pre></div>
 </div>
 </div>
@@ -1000,39 +1029,39 @@ ERROR 1: Non closed ring detected.
       <th>amenity</th>
       <th>building</th>
       <th>geometry</th>
+      <th>man_made</th>
       <th>name</th>
       <th>office</th>
       <th>osm_id</th>
       <th>shop</th>
-      <th>tourism</th>
+      <th>sport</th>
       <th>type</th>
-      <th>tags</th>
       <th>...</th>
-      <th>service:bicycle:repair</th>
-      <th>service:bicycle:second_hand</th>
-      <th>service:bicycle:tools</th>
+      <th>access</th>
+      <th>drink:coffee</th>
+      <th>surface</th>
+      <th>building:units</th>
+      <th>tower:construction</th>
+      <th>tower:type</th>
       <th>layer</th>
-      <th>research</th>
-      <th>parking</th>
-      <th>animal</th>
-      <th>animal_boarding</th>
-      <th>unisex</th>
-      <th>residential</th>
+      <th>opening_date</th>
+      <th>brand:wikidata</th>
+      <th>opening_hours</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>318</th>
-      <td>toilets</td>
-      <td>toilets</td>
-      <td>MULTIPOLYGON (((18.440959 -33.9279434, 18.4410...</td>
+      <th>375</th>
       <td>None</td>
-      <td>None</td>
-      <td>1304482079</td>
+      <td>roof</td>
+      <td>MULTIPOLYGON (((18.4615044 -33.9350482, 18.461...</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>{'building:levels': '1', 'unisex': 'yes'}</td>
+      <td>1070083442</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1040,23 +1069,23 @@ ERROR 1: Non closed ring detected.
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
+      <td>1</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>yes</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>319</th>
+      <th>378</th>
       <td>None</td>
-      <td>residential</td>
-      <td>MULTIPOLYGON (((18.4456281 -33.9273695, 18.445...</td>
-      <td>None</td>
-      <td>None</td>
-      <td>1304501184</td>
+      <td>apartments</td>
+      <td>MULTIPOLYGON (((18.4578079 -33.9311148, 18.457...</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>{'addr:city': 'Cape Town', 'addr:housename': '...</td>
+      <td>1240705416</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1065,13 +1094,13 @@ ERROR 1: Non closed ring detected.
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
+      <td>2025-03</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>student</td>
     </tr>
   </tbody>
 </table>
-<p>2 rows × 76 columns</p>
+<p>2 rows × 63 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -1277,7 +1306,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.012832
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.017626
 </pre></div>
 </div>
 </div>
@@ -1329,7 +1358,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/886c40ac7beeace953cf3cd88f0b2f6ca76a4a21e30d89451f7d3c6c17ca71ba.png" src="../_images/886c40ac7beeace953cf3cd88f0b2f6ca76a4a21e30d89451f7d3c6c17ca71ba.png" />
+<img alt="../_images/7c1b7f0a1426c90b13ef33ef3d689e380378367b6c8ade9fe4922eaad8d2467c.png" src="../_images/7c1b7f0a1426c90b13ef33ef3d689e380378367b6c8ade9fe4922eaad8d2467c.png" />
 </div>
 </div>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -1383,7 +1412,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.002491
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.003638
 </pre></div>
 </div>
 </div>
@@ -1395,7 +1424,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>274 buildings have been harvested from the osm.pbf for the Woodstock area
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>352 buildings have been harvested from the osm.pbf for the Salt River area
 </pre></div>
 </div>
 </div>
@@ -1429,8 +1458,8 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <th>address</th>
       <th>building</th>
       <th>building:levels</th>
-      <th>building:use</th>
       <th>building:flats</th>
+      <th>building:units</th>
       <th>beds</th>
       <th>residential</th>
       <th>amenity</th>
@@ -1446,29 +1475,29 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
   <tbody>
     <tr>
       <th>0</th>
-      <td>13501234</td>
-      <td>The Woodstock Exchange 66-68 Albert Road Woods...</td>
-      <td>commercial</td>
-      <td>6.0</td>
+      <td>10310903</td>
+      <td>None</td>
+      <td>school</td>
+      <td>2.0</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>None</td>
       <td>NaN</td>
-      <td>Signatura</td>
-      <td>18.1</td>
+      <td>NaN</td>
+      <td>6.9</td>
       <td>0.0</td>
-      <td>4FRW3CFW+69W</td>
-      <td>[[(263928.922, 6243053.284), (263890.36, 62430...</td>
-      <td>POLYGON ((263928.92246 6243053.28384, 263890.3...</td>
+      <td>4FRW3F77+Q38</td>
+      <td>[[(265499.579, 6242063.347), (265502.743, 6242...</td>
+      <td>POLYGON ((265499.57914 6242063.347296, 265502....</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>65768975</td>
-      <td>Woodstock Station Woodstock Cape Town</td>
-      <td>train_station</td>
-      <td>3.0</td>
+      <td>13328172</td>
+      <td>None</td>
+      <td>school</td>
+      <td>2.0</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1476,11 +1505,11 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <td>None</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>9.7</td>
+      <td>6.9</td>
       <td>0.0</td>
-      <td>4FRW3CFW+PFM</td>
-      <td>[[(263906.88, 6243153.778), (263907.77, 624314...</td>
-      <td>POLYGON ((263906.880496 6243153.777931, 263907...</td>
+      <td>4FRW3F96+6MG</td>
+      <td>[[(265366.084, 6242509.527), (265364.518, 6242...</td>
+      <td>POLYGON ((265366.083781 6242509.526659, 265364...</td>
     </tr>
   </tbody>
 </table>
@@ -1528,8 +1557,8 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3249
-runtime: 0:00:00.042877
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4096
+runtime: 0:00:00.073679
 </pre></div>
 </div>
 </div>
@@ -1648,7 +1677,7 @@ runtime: 0:00:00.042877
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:06.268627
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:58.279958
 </pre></div>
 </div>
 </div>
@@ -1661,7 +1690,7 @@ runtime: 0:00:00.042877
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- .obj</span>
 <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
-<span class="n">x_off</span><span class="p">,</span> <span class="n">y_off</span><span class="p">,</span> <span class="n">max_bld_h</span><span class="p">,</span> <span class="n">max_z_abs</span><span class="p">,</span> <span class="n">buildingsOBJ</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">exportOBJ</span><span class="p">(</span><span class="n">dis</span><span class="p">,</span> <span class="n">extent</span><span class="p">,</span> <span class="s2">&quot;./result/wStockNoInternet.obj&quot;</span><span class="p">)</span>
+<span class="n">x_off</span><span class="p">,</span> <span class="n">y_off</span><span class="p">,</span> <span class="n">max_bld_h</span><span class="p">,</span> <span class="n">max_z_abs</span><span class="p">,</span> <span class="n">buildingsOBJ</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">exportOBJ</span><span class="p">(</span><span class="n">dis</span><span class="p">,</span> <span class="n">extent</span><span class="p">,</span> <span class="s2">&quot;./result/sRiverNoInternet.obj&quot;</span><span class="p">)</span>
 
 <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">))))</span>
@@ -1669,7 +1698,7 @@ runtime: 0:00:00.042877
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.283914
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.478708
 </pre></div>
 </div>
 </div>
@@ -1714,12 +1743,12 @@ runtime: 0:00:00.042877
 <span class="c1">#- direction ~ durham: summer 135, winter 315  | wQuarter: summer 210, winter 340  | mamre: summer 190, winter 0</span>
 
 <span class="c1">#- summer</span>
-<span class="n">Su_inlet</span> <span class="o">=</span> <span class="mf">7.2</span>
-<span class="n">Su_deg</span> <span class="o">=</span> <span class="mi">210</span> 
+<span class="n">Su_inlet</span> <span class="o">=</span> <span class="mf">11.1</span>
+<span class="n">Su_deg</span> <span class="o">=</span> <span class="mi">135</span> 
 
 <span class="c1">#- winter</span>
-<span class="n">Wu_inlet</span> <span class="o">=</span> <span class="mf">6.9</span>
-<span class="n">Wu_deg</span> <span class="o">=</span> <span class="mi">340</span>
+<span class="n">Wu_inlet</span> <span class="o">=</span> <span class="mf">9.8</span>
+<span class="n">Wu_deg</span> <span class="o">=</span> <span class="mi">315</span>
 </pre></div>
 </div>
 </div>
@@ -1773,7 +1802,7 @@ The <strong>urbanFlow.ipynb</strong> component of <em><strong>geo3D</strong></em
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- openfoam configuration files.</span>
 
-<span class="n">openfoam</span><span class="o">.</span><span class="n">write_openfoam_case</span><span class="p">(</span><span class="s1">&#39;./openfoam/wStock/rans/summer/&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="p">,</span> <span class="n">x_off</span><span class="p">,</span> <span class="n">y_off</span><span class="p">,</span> <span class="n">max_bld_h</span><span class="p">,</span> 
+<span class="n">openfoam</span><span class="o">.</span><span class="n">write_openfoam_case</span><span class="p">(</span><span class="s1">&#39;./openfoam/sRiver/rans/summer/&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="p">,</span> <span class="n">x_off</span><span class="p">,</span> <span class="n">y_off</span><span class="p">,</span> <span class="n">max_bld_h</span><span class="p">,</span> 
                               <span class="n">buildingsOBJ</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">z0</span><span class="p">,</span> 
                               <span class="n">Su_inlet</span><span class="p">,</span> <span class="n">Su_deg</span><span class="p">,</span> 
                               <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RANS&#39;</span><span class="p">)</span>
@@ -1786,7 +1815,7 @@ The <strong>urbanFlow.ipynb</strong> component of <em><strong>geo3D</strong></em
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- openfoam configuration files.</span>
 
-<span class="n">openfoam</span><span class="o">.</span><span class="n">write_openfoam_case</span><span class="p">(</span><span class="s1">&#39;./openfoam/wStock/rans/winter/&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="p">,</span> <span class="n">x_off</span><span class="p">,</span> <span class="n">y_off</span><span class="p">,</span> <span class="n">max_bld_h</span><span class="p">,</span> 
+<span class="n">openfoam</span><span class="o">.</span><span class="n">write_openfoam_case</span><span class="p">(</span><span class="s1">&#39;./openfoam/sRiver/rans/winter/&#39;</span><span class="p">,</span> <span class="n">extent</span><span class="p">,</span> <span class="n">x_off</span><span class="p">,</span> <span class="n">y_off</span><span class="p">,</span> <span class="n">max_bld_h</span><span class="p">,</span> 
                               <span class="n">buildingsOBJ</span><span class="p">,</span> <span class="n">nu</span><span class="p">,</span> <span class="n">z0</span><span class="p">,</span> 
                               <span class="n">Wu_inlet</span><span class="p">,</span> <span class="n">Wu_deg</span><span class="p">,</span>
                               <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;RANS&#39;</span><span class="p">)</span>
@@ -1863,7 +1892,7 @@ The <strong>urbanFlow.ipynb</strong> component of <em><strong>geo3D</strong></em
 </tr>
 <tr class="row-odd"><td class="text-left"><p><strong>12 — Execute (mesh + simulation)</strong></p></td>
 <td class="text-center"><p>Same as macOS</p></td>
-<td class="text-center"><p>i. <code class="docutils literal notranslate"><span class="pre">blockMesh</span></code>, <br /> ii. <code class="docutils literal notranslate"><span class="pre">surfaceFeatures</span></code>, <br /> iii. <code class="docutils literal notranslate"><span class="pre">surfaceCheck</span> <span class="pre">constant/geometry/buildings.obj</span> <span class="pre">|</span> <span class="pre">tee</span> <span class="pre">surfaceCheck_$(date</span> <span class="pre">+%Y%m%d_%H%M).log</span></code>, <br /> iv. <code class="docutils literal notranslate"><span class="pre">snappyHexMesh</span></code>,<br />  v. <code class="docutils literal notranslate"><span class="pre">checkMesh</span> <span class="pre">|</span> <span class="pre">tee</span> <span class="pre">checkMesh_$(date</span> <span class="pre">+%Y%m%d_%H%M).log</span></code>, and finally<br /> vi. <code class="docutils literal notranslate"><span class="pre">foamRun</span> <span class="pre">-solver</span> <span class="pre">incompressibleFluid</span> <span class="pre">|</span> <span class="pre">tee</span> <span class="pre">foamRun_$(date</span> <span class="pre">+%Y%m%d_%H%M).log</span></code></p></td>
+<td class="text-center"><p>i. <code class="docutils literal notranslate"><span class="pre">blockMesh</span></code>, <br /> ii. <code class="docutils literal notranslate"><span class="pre">surfaceFeatures</span></code>, <br /> iii. <code class="docutils literal notranslate"><span class="pre">surfaceCheck</span> <span class="pre">constant/geometry/buildings.obj</span> <span class="pre">|</span> <span class="pre">tee</span> <span class="pre">surfaceCheck_$(date</span> <span class="pre">+%Y%m%d_%H%M).log</span></code>, <br /> iv. <code class="docutils literal notranslate"><span class="pre">snappyHexMesh</span></code>,<br />  v. <code class="docutils literal notranslate"><span class="pre">checkMesh</span> <span class="pre">|</span> <span class="pre">tee</span> <span class="pre">checkMesh_$(date</span> <span class="pre">+%Y%m%d_%H%M).log</span></code>, and finally<br /> vi. <code class="docutils literal notranslate"><span class="pre">foamRun</span> <span class="pre">-solver</span> <span class="pre">incompressibleFluid</span> <span class="pre">|</span> <span class="pre">tee</span> <span class="pre">foamRun_$(date</span> <span class="pre">+%Y%m%d_%H%M).log</span></code>, <br />  v. <code class="docutils literal notranslate"><span class="pre">foamPostProcess</span> <span class="pre">-time</span> <span class="pre">1000:</span></code></p></td>
 </tr>
 <tr class="row-even"><td class="text-left"><p><strong>13 — Shut it Down</strong></p></td>
 <td class="text-center"><p><code class="docutils literal notranslate"><span class="pre">exit</span></code></p></td>
@@ -1873,7 +1902,8 @@ The <strong>urbanFlow.ipynb</strong> component of <em><strong>geo3D</strong></em
 </table>
 </div>
 <div class="alert alert-block alert-warning"><b>Post processing results</b><br><br>
-<p>extract the <code class="docutils literal notranslate"><span class="pre">/polyMesh/points,</span> <span class="pre">owner,</span> <span class="pre">faces,</span> <span class="pre">neighbour</span> <span class="pre">and</span> <span class="pre">/{some</span> <span class="pre">number}/U</span></code> datafiles of the  <a class="reference external" href="https://www.simscale.com/docs/analysis-types/incompressible-fluid-flow-analysis/"><strong>Incompressible Fluid Flow Analysis</strong></a> result to the respective location: <code class="docutils literal notranslate"><span class="pre">../result/openfoam/season</span></code> </div></p>
+<p>The last command (<strong>12 — Execute (mesh + simulation)</strong> | <code class="docutils literal notranslate"><span class="pre">foamPostProcess</span> <span class="pre">-time</span> <span class="pre">1000:</span></code>) of the <a class="reference external" href="https://www.openfoam.com">OpenFOAM</a> process; harvests a cuttingPlane at x-meters above the ground.</p>
+<p>Extract the <code class="docutils literal notranslate"><span class="pre">/postProcessing/.../xxx.vtk</span></code> surfaces – to the respective location: <code class="docutils literal notranslate"><span class="pre">../result/openfoam/season</span></code>.</div></p>
 <section id="a-pedestrian-wind-comfort-pwc">
 <h3>a. Pedestrian Wind Comfort (PWC)<a class="headerlink" href="#a-pedestrian-wind-comfort-pwc" title="Link to this heading">#</a></h3>
 <p>In this section we extract wind speeds, from the openFOAM result, at typical pedestrian height (1.2 – 1.9 m) and categorize comfort levels. We evaluate <strong>Pedestrian Wind Comfort (PWC)</strong> to identify <em><strong>how vertical architectural forms interact with local wind regimes</strong></em>.</p>
@@ -1890,10 +1920,12 @@ The <strong>urbanFlow.ipynb</strong> component of <em><strong>geo3D</strong></em
 <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
 <span class="c1">#- harvest the data</span>
-<span class="n">summer_path</span> <span class="o">=</span> <span class="s1">&#39;./result/openfoam/wStock/rans/summer&#39;</span>
+<span class="n">summer_path</span> <span class="o">=</span> <span class="s1">&#39;./result/openfoam/sRiver/rans/summer&#39;</span>
 
-<span class="n">summerPed_dfFull</span><span class="p">,</span> <span class="n">center_x_utm</span><span class="p">,</span> <span class="n">center_y_utm</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">reconstruct_openfoam_results</span><span class="p">(</span><span class="n">summer_path</span><span class="p">,</span> <span class="n">Su_deg</span><span class="p">,</span> <span class="n">center_lat</span><span class="p">,</span> <span class="n">center_lon</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
-<span class="n">summerPed_df</span> <span class="o">=</span> <span class="n">summerPed_dfFull</span><span class="p">[(</span><span class="n">summerPed_dfFull</span><span class="p">[</span><span class="s1">&#39;Z&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">1.2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">summerPed_dfFull</span><span class="p">[</span><span class="s1">&#39;Z&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mf">1.9</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="c1">#summerPed_dfFull, center_x_utm, center_y_utm = city3D.reconstruct_openfoam_results(summer_path, Su_deg, center_lat, center_lon, radius=400)</span>
+<span class="c1">#summerPed_df = summerPed_dfFull[(summerPed_dfFull[&#39;Z&#39;] &gt;= 1.2) &amp; (summerPed_dfFull[&#39;Z&#39;] &lt;= 1.9)].copy()</span>
+
+<span class="n">summerPed_df</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">load_openfoam_vtk</span><span class="p">(</span><span class="n">summer_path</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;pedestrianZone.vtk&#39;</span><span class="p">,</span> <span class="n">wind_deg</span><span class="o">=</span><span class="n">Su_deg</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">400.0</span><span class="p">)</span>
 
 <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">))))</span>
@@ -1903,7 +1935,7 @@ The <strong>urbanFlow.ipynb</strong> component of <em><strong>geo3D</strong></em
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:03.088073
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.463800
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -1930,26 +1962,29 @@ The <strong>urbanFlow.ipynb</strong> component of <em><strong>geo3D</strong></em
       <th>U</th>
       <th>V</th>
       <th>u_mag</th>
+      <th>k</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>5223</th>
-      <td>263934.010356</td>
-      <td>6.242597e+06</td>
-      <td>1.428325</td>
-      <td>0.778432</td>
-      <td>2.606741</td>
-      <td>2.720488</td>
+      <th>0</th>
+      <td>265349.523057</td>
+      <td>6.242521e+06</td>
+      <td>1.5</td>
+      <td>-0.049990</td>
+      <td>0.044558</td>
+      <td>0.215161</td>
+      <td>0.286938</td>
     </tr>
     <tr>
-      <th>5226</th>
-      <td>263935.084122</td>
-      <td>6.242581e+06</td>
-      <td>1.362813</td>
-      <td>1.024544</td>
-      <td>2.402710</td>
-      <td>2.612031</td>
+      <th>1</th>
+      <td>265340.141730</td>
+      <td>6.242578e+06</td>
+      <td>1.5</td>
+      <td>-1.098021</td>
+      <td>0.227032</td>
+      <td>1.121333</td>
+      <td>2.287810</td>
     </tr>
   </tbody>
 </table>
@@ -2018,7 +2053,7 @@ The <strong>urbanFlow.ipynb</strong> component of <em><strong>geo3D</strong></em
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3097
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3503
 </pre></div>
 </div>
 </div>
@@ -2054,42 +2089,46 @@ The <strong>urbanFlow.ipynb</strong> component of <em><strong>geo3D</strong></em
       <th>U</th>
       <th>V</th>
       <th>u_mag</th>
+      <th>k</th>
       <th>R</th>
       <th>lawson_class</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>5223</th>
-      <td>263934.010356</td>
-      <td>6.242597e+06</td>
-      <td>1.428325</td>
-      <td>0.778432</td>
-      <td>2.606741</td>
-      <td>2.720488</td>
-      <td>0.377846</td>
+      <th>0</th>
+      <td>265349.523057</td>
+      <td>6.242521e+06</td>
+      <td>1.5</td>
+      <td>-0.049990</td>
+      <td>0.044558</td>
+      <td>0.215161</td>
+      <td>0.286938</td>
+      <td>0.019384</td>
       <td>Sitting/Long-term (Outdoor Dining)</td>
     </tr>
     <tr>
-      <th>5226</th>
-      <td>263935.084122</td>
-      <td>6.242581e+06</td>
-      <td>1.362813</td>
-      <td>1.024544</td>
-      <td>2.402710</td>
-      <td>2.612031</td>
-      <td>0.362782</td>
+      <th>1</th>
+      <td>265340.141730</td>
+      <td>6.242578e+06</td>
+      <td>1.5</td>
+      <td>-1.098021</td>
+      <td>0.227032</td>
+      <td>1.121333</td>
+      <td>2.287810</td>
+      <td>0.101021</td>
       <td>Sitting/Long-term (Outdoor Dining)</td>
     </tr>
     <tr>
-      <th>5227</th>
-      <td>263943.264877</td>
-      <td>6.242592e+06</td>
-      <td>1.529181</td>
-      <td>0.825730</td>
-      <td>2.388943</td>
-      <td>2.527623</td>
-      <td>0.351059</td>
+      <th>2</th>
+      <td>265341.079896</td>
+      <td>6.242318e+06</td>
+      <td>1.5</td>
+      <td>-0.171180</td>
+      <td>0.550643</td>
+      <td>0.582157</td>
+      <td>0.608937</td>
+      <td>0.052447</td>
       <td>Sitting/Long-term (Outdoor Dining)</td>
     </tr>
   </tbody>
@@ -2126,8 +2165,8 @@ The <strong>urbanFlow.ipynb</strong> component of <em><strong>geo3D</strong></em
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lawson_class
-Sitting/Long-term (Outdoor Dining)    99.967711
-Standing/Short-term (Bus Stop)         0.032289
+Sitting/Long-term (Outdoor Dining)    99.571796
+Standing/Short-term (Bus Stop)         0.428204
 Name: proportion, dtype: float64
 </pre></div>
 </div>
@@ -2136,14 +2175,14 @@ Name: proportion, dtype: float64
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- plot</span>
-<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">plot_wind_analysis</span><span class="p">(</span><span class="n">summerPed_df</span><span class="p">,</span> <span class="n">ts_copy</span><span class="p">,</span> <span class="n">center_x_utm</span><span class="p">,</span> <span class="n">center_y_utm</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> 
-                          <span class="n">title_suffix</span><span class="o">=</span><span class="s2">&quot;Woodstock Quarter, Woodstock - Summer: 40km/h (11.1m/s) SE&quot;</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">plot_wind_analysis</span><span class="p">(</span><span class="n">summerPed_df</span><span class="p">,</span> <span class="n">ts_copy</span><span class="p">,</span> <span class="n">utm_gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">utm_gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> 
+                          <span class="n">title_suffix</span><span class="o">=</span><span class="s2">&quot;Cnr. Durham Ave. / Main Rd., Salt River. Cape Town - Summer: 40km/h (11.1m/s) SE&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/cdabc70c81bc395a39cb6b09720b9190a04d1b801ab007abd47611a895595609.png" src="../_images/cdabc70c81bc395a39cb6b09720b9190a04d1b801ab007abd47611a895595609.png" />
+<img alt="../_images/8690611a135ad664bceb09516a64f3edbd0f58c167c1d0d18c3417d171797d56.png" src="../_images/8690611a135ad664bceb09516a64f3edbd0f58c167c1d0d18c3417d171797d56.png" />
 </div>
 </div>
 <p>The <strong>Winter North-Wester</strong></p>
@@ -2153,10 +2192,11 @@ Name: proportion, dtype: float64
 <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 
 <span class="c1">#- harvest the data</span>
-<span class="n">winter_path</span> <span class="o">=</span> <span class="s1">&#39;./result/openfoam/wStock/rans/winter&#39;</span>
+<span class="n">winter_path</span> <span class="o">=</span> <span class="s1">&#39;./result/openfoam/sRiver/rans/winter&#39;</span>
 
-<span class="n">winterPed_dfFull</span><span class="p">,</span> <span class="n">center_x_utm</span><span class="p">,</span> <span class="n">center_y_utm</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">reconstruct_openfoam_results</span><span class="p">(</span><span class="n">winter_path</span><span class="p">,</span> <span class="n">Wu_deg</span><span class="p">,</span> <span class="n">center_lat</span><span class="p">,</span> <span class="n">center_lon</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">400</span><span class="p">)</span>
-<span class="n">winterPed_df</span> <span class="o">=</span> <span class="n">winterPed_dfFull</span><span class="p">[(</span><span class="n">winterPed_dfFull</span><span class="p">[</span><span class="s1">&#39;Z&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">1.2</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">winterPed_dfFull</span><span class="p">[</span><span class="s1">&#39;Z&#39;</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mf">1.9</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="c1">#winterPed_dfFull, center_x_utm, center_y_utm = city3D.reconstruct_openfoam_results(winter_path, Wu_deg, center_lat, center_lon, radius=400)</span>
+<span class="c1">#winterPed_df = winterPed_dfFull[(winterPed_dfFull[&#39;Z&#39;] &gt;= 1.2) &amp; (winterPed_dfFull[&#39;Z&#39;] &lt;= 1.9)].copy()</span>
+<span class="n">winterPed_df</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">load_openfoam_vtk</span><span class="p">(</span><span class="n">winter_path</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;pedestrianZone.vtk&#39;</span><span class="p">,</span> <span class="n">wind_deg</span><span class="o">=</span><span class="n">Wu_deg</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="n">extent</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">400.0</span><span class="p">)</span>
 
 <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">))))</span>
@@ -2166,7 +2206,7 @@ Name: proportion, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:03.402358
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.486155
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -2193,26 +2233,29 @@ Name: proportion, dtype: float64
       <th>U</th>
       <th>V</th>
       <th>u_mag</th>
+      <th>k</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>4570</th>
-      <td>263503.677809</td>
-      <td>6.242592e+06</td>
-      <td>1.412170</td>
-      <td>0.453573</td>
-      <td>-1.168934</td>
-      <td>1.253848</td>
+      <th>0</th>
+      <td>264933.238735</td>
+      <td>6.242043e+06</td>
+      <td>1.5</td>
+      <td>1.037993</td>
+      <td>-1.027890</td>
+      <td>1.460830</td>
+      <td>2.03330</td>
     </tr>
     <tr>
-      <th>4572</th>
-      <td>263490.755859</td>
-      <td>6.242599e+06</td>
-      <td>1.520494</td>
-      <td>0.844124</td>
-      <td>-1.641944</td>
-      <td>1.846219</td>
+      <th>1</th>
+      <td>264929.548298</td>
+      <td>6.242037e+06</td>
+      <td>1.5</td>
+      <td>0.943626</td>
+      <td>-0.962762</td>
+      <td>1.348186</td>
+      <td>2.52402</td>
     </tr>
   </tbody>
 </table>
@@ -2236,7 +2279,7 @@ Name: proportion, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3048
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3491
 </pre></div>
 </div>
 </div>
@@ -2263,8 +2306,8 @@ Name: proportion, dtype: float64
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>lawson_class
-Sitting/Long-term (Outdoor Dining)    99.80315
-Standing/Short-term (Bus Stop)         0.19685
+Sitting/Long-term (Outdoor Dining)    99.570324
+Standing/Short-term (Bus Stop)         0.429676
 Name: proportion, dtype: float64
 </pre></div>
 </div>
@@ -2272,14 +2315,14 @@ Name: proportion, dtype: float64
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">plot_wind_analysis</span><span class="p">(</span><span class="n">winterPed_df</span><span class="p">,</span> <span class="n">ts_copy</span><span class="p">,</span> <span class="n">center_x_utm</span><span class="p">,</span> <span class="n">center_y_utm</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">plot_wind_analysis</span><span class="p">(</span><span class="n">winterPed_df</span><span class="p">,</span> <span class="n">ts_copy</span><span class="p">,</span> <span class="n">utm_gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">utm_gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> 
                           <span class="n">title_suffix</span><span class="o">=</span><span class="s2">&quot;Woodstock Quarter, Woodstock - Winter: 35km/h (9.8m/s) NW&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/3ac10b9647f36222b08669ec5053bd66d730882b5a29872e8b444e09fead25e5.png" src="../_images/3ac10b9647f36222b08669ec5053bd66d730882b5a29872e8b444e09fead25e5.png" />
+<img alt="../_images/352cdb6723de093afdb3319d870e439bd546b840485dbaa6ae7513f1409695a9.png" src="../_images/352cdb6723de093afdb3319d870e439bd546b840485dbaa6ae7513f1409695a9.png" />
 </div>
 </div>
 </section>
@@ -2330,12 +2373,43 @@ Name: proportion, dtype: float64
 <p>We already have the wind from <a class="reference external" href="https://www.openfoam.com">openFOAM</a>; all we have to do is harvest it at the appropriate height</div></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- we have the wind</span>
-<span class="n">summerPed_dfFull</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- we have the wind | from the openFOAM post-process and we scale the pedestrian wind profile (1.5m) to 10m based on the roughness of the community</span>
+<span class="c1">#summerPed_dfFull.head(2)</span>
+
+<span class="c1">#- these are the values from the openFOAM simulation</span>
+<span class="n">Z0_MAP</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;water&quot;</span><span class="p">:</span> <span class="mf">0.0002</span><span class="p">,</span>
+    <span class="s2">&quot;airport_runway&quot;</span><span class="p">:</span> <span class="mf">0.0024</span><span class="p">,</span>
+    <span class="s2">&quot;open&quot;</span><span class="p">:</span> <span class="mf">0.03</span><span class="p">,</span>
+    <span class="s2">&quot;agri_sheltered&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="s2">&quot;rural&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+    <span class="s2">&quot;village, town and suburb&quot;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span>
+    <span class="s2">&quot;urban suburb and city&quot;</span><span class="p">:</span> <span class="mf">0.8</span><span class="p">,</span>
+    <span class="s2">&quot;metro&quot;</span><span class="p">:</span> <span class="mf">1.2</span>
+<span class="p">}</span>
+
+<span class="n">z0_urban</span> <span class="o">=</span> <span class="n">Z0_MAP</span><span class="p">[</span><span class="n">z0</span><span class="p">]</span>
+
+<span class="c1"># 2. Dynamically calculate the reduction ratio based on your exact inlet law</span>
+<span class="c1"># Sampling z at 1.5m (pedestrian zone) and 10m (reference height)</span>
+<span class="n">z_pedestrian</span> <span class="o">=</span> <span class="mf">1.5</span>
+<span class="n">z_reference</span> <span class="o">=</span> <span class="mf">10.0</span>
+
+<span class="n">r_dynamic</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="n">z_pedestrian</span> <span class="o">+</span> <span class="n">z0_urban</span><span class="p">)</span> <span class="o">/</span> <span class="n">z0_urban</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">((</span><span class="n">z_reference</span> <span class="o">+</span> <span class="n">z0_urban</span><span class="p">)</span> <span class="o">/</span> <span class="n">z0_urban</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Dynamically calculated ratio (r) for z0=</span><span class="si">{</span><span class="n">z0_urban</span><span class="si">}</span><span class="s2">m: </span><span class="si">{</span><span class="n">r_dynamic</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1"># For z0 = 0.8m, r is roughly 0.404 rather than the standard open-country 0.68!</span>
+
+<span class="c1">#- calculate the equivalent open-field U10 for the UTCI empirical script</span>
+<span class="n">summerPed_df</span><span class="p">[</span><span class="s1">&#39;U10_equivalent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">summerPed_df</span><span class="p">[</span><span class="s1">&#39;u_mag&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">r_dynamic</span>
+<span class="n">summerPed_df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Dynamically calculated ratio (r) for z0=0.8m: 0.4058
+</pre></div>
+</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -2360,26 +2434,38 @@ Name: proportion, dtype: float64
       <th>U</th>
       <th>V</th>
       <th>u_mag</th>
+      <th>k</th>
+      <th>R</th>
+      <th>lawson_class</th>
+      <th>U10_equivalent</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>263934.932219</td>
-      <td>6.242581e+06</td>
-      <td>0.432742</td>
-      <td>0.171846</td>
-      <td>0.733318</td>
-      <td>0.753184</td>
+      <td>265349.523057</td>
+      <td>6.242521e+06</td>
+      <td>1.5</td>
+      <td>-0.049990</td>
+      <td>0.044558</td>
+      <td>0.215161</td>
+      <td>0.286938</td>
+      <td>0.019384</td>
+      <td>Sitting/Long-term (Outdoor Dining)</td>
+      <td>0.530273</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>264035.417570</td>
-      <td>6.242754e+06</td>
-      <td>0.457813</td>
-      <td>0.321730</td>
-      <td>0.684202</td>
-      <td>0.756070</td>
+      <td>265340.141730</td>
+      <td>6.242578e+06</td>
+      <td>1.5</td>
+      <td>-1.098021</td>
+      <td>0.227032</td>
+      <td>1.121333</td>
+      <td>2.287810</td>
+      <td>0.101021</td>
+      <td>Sitting/Long-term (Outdoor Dining)</td>
+      <td>2.763576</td>
     </tr>
   </tbody>
 </table>
@@ -2399,8 +2485,8 @@ Name: proportion, dtype: float64
 <span class="c1">#- temp.     ~ durham: summer 27, winter 14 | wQuarter: summer 28, winter 16 | mamre: summer 26, winter 17</span>
 <span class="c1">#- rel. hum. ~ durham: summer 50, winter 80 | wQuarter: summer 40, winter 83 | mamre: summer 70, winter 77</span>
 
-<span class="n">Sta</span> <span class="o">=</span> <span class="mf">28.0</span>
-<span class="n">Srh</span> <span class="o">=</span> <span class="mf">40.0</span>
+<span class="n">Sta</span> <span class="o">=</span> <span class="mf">27.0</span>
+<span class="n">Srh</span> <span class="o">=</span> <span class="mf">50.0</span>
 </pre></div>
 </div>
 </div>
@@ -2440,8 +2526,8 @@ It represents the <strong>sum</strong> of all radiation hitting a person. In our
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Azimuth: 279.54385872974785
-Altitude: 46.949421046388224
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Azimuth: 279.5384476595665
+Altitude: 46.93536017425045
 </pre></div>
 </div>
 </div>
@@ -2535,7 +2621,7 @@ July Average GHI:    2.878 kWh/m²/day
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build the utci layer correctly — shade first, then slice, then UTCI</span>
 <span class="n">summer10m_df</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">build_utci_layer</span><span class="p">(</span>
-    <span class="n">summerPed_dfFull</span><span class="p">,</span> <span class="n">shadows</span><span class="p">,</span>
+    <span class="n">summerPed_df</span><span class="p">,</span> <span class="n">shadows</span><span class="p">,</span>
     <span class="n">ta</span><span class="o">=</span><span class="n">Sta</span><span class="p">,</span> <span class="n">rh</span><span class="o">=</span><span class="n">Srh</span><span class="p">,</span> <span class="n">mrt_offset</span><span class="o">=</span><span class="n">mrt_offset</span><span class="c1">#,</span>
 <span class="p">)</span>
 
@@ -2575,6 +2661,10 @@ July Average GHI:    2.878 kWh/m²/day
       <th>U</th>
       <th>V</th>
       <th>u_mag</th>
+      <th>k</th>
+      <th>R</th>
+      <th>lawson_class</th>
+      <th>U10_equivalent</th>
       <th>is_shaded</th>
       <th>u_mag_10m</th>
       <th>utci</th>
@@ -2583,27 +2673,35 @@ July Average GHI:    2.878 kWh/m²/day
   <tbody>
     <tr>
       <th>0</th>
-      <td>263934.010356</td>
-      <td>6.242597e+06</td>
-      <td>1.428325</td>
-      <td>0.778432</td>
-      <td>2.606741</td>
-      <td>2.720488</td>
+      <td>265349.523057</td>
+      <td>6.242521e+06</td>
+      <td>1.5</td>
+      <td>-0.049990</td>
+      <td>0.044558</td>
+      <td>0.215161</td>
+      <td>0.286938</td>
+      <td>0.019384</td>
+      <td>Sitting/Long-term (Outdoor Dining)</td>
+      <td>0.530273</td>
       <td>False</td>
-      <td>2.720488</td>
-      <td>34.79</td>
+      <td>0.530273</td>
+      <td>34.48</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>263935.084122</td>
-      <td>6.242581e+06</td>
-      <td>1.362813</td>
-      <td>1.024544</td>
-      <td>2.402710</td>
-      <td>2.612031</td>
-      <td>False</td>
-      <td>2.612031</td>
-      <td>34.82</td>
+      <td>265340.141730</td>
+      <td>6.242578e+06</td>
+      <td>1.5</td>
+      <td>-1.098021</td>
+      <td>0.227032</td>
+      <td>1.121333</td>
+      <td>2.287810</td>
+      <td>0.101021</td>
+      <td>Sitting/Long-term (Outdoor Dining)</td>
+      <td>2.763576</td>
+      <td>True</td>
+      <td>2.763576</td>
+      <td>27.01</td>
     </tr>
   </tbody>
 </table>
@@ -2612,6 +2710,81 @@ July Average GHI:    2.878 kWh/m²/day
 </section>
 <section id="utci-winter">
 <h4>UTCI Winter<a class="headerlink" href="#utci-winter" title="Link to this heading">#</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- we have the wind | from the openFOAM post-process and we scale the pedestrian wind profile (1.5m) to 10m based on the roughness of the community</span>
+
+<span class="c1">#winter10m_df = city3D.load_openfoam_vtk(winter_path, file_name=&#39;utciZone.vtk&#39;, wind_deg=Wu_deg, extent=extent, radius=400.0)</span>
+
+<span class="c1"># Back-calculate the equivalent open-field U10 for the UTCI empirical script</span>
+<span class="n">winterPed_df</span><span class="p">[</span><span class="s1">&#39;U10_equivalent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">winterPed_df</span><span class="p">[</span><span class="s1">&#39;u_mag&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">r_dynamic</span>
+<span class="n">winterPed_df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">winterPed_df</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>X</th>
+      <th>Y</th>
+      <th>Z</th>
+      <th>U</th>
+      <th>V</th>
+      <th>u_mag</th>
+      <th>k</th>
+      <th>R</th>
+      <th>lawson_class</th>
+      <th>U10_equivalent</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>264933.238735</td>
+      <td>6.242043e+06</td>
+      <td>1.5</td>
+      <td>1.037993</td>
+      <td>-1.027890</td>
+      <td>1.460830</td>
+      <td>2.03330</td>
+      <td>0.149064</td>
+      <td>Sitting/Long-term (Outdoor Dining)</td>
+      <td>3.600281</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>264929.548298</td>
+      <td>6.242037e+06</td>
+      <td>1.5</td>
+      <td>0.943626</td>
+      <td>-0.962762</td>
+      <td>1.348186</td>
+      <td>2.52402</td>
+      <td>0.137570</td>
+      <td>Sitting/Long-term (Outdoor Dining)</td>
+      <td>3.322665</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
 <div class="alert alert-block alert-danger"><b>Your Participation! </b>
 <p>Fill in the proper <strong>WINTER</strong> Temperature: <code class="docutils literal notranslate"><span class="pre">ta</span></code> and Relative Humidity: <code class="docutils literal notranslate"><span class="pre">rh</span></code> below </div></p>
 <div class="cell docutils container">
@@ -2620,8 +2793,8 @@ July Average GHI:    2.878 kWh/m²/day
 <span class="c1">#- temp.     ~ durham: summer 27, winter 14 | wQuarter: summer 28, winter 16 | mamre: summer 26, winter 17</span>
 <span class="c1">#- rel. hum. ~ durham: summer 50, winter 80 | wQuarter: summer 40, winter 83 | mamre: summer 70, winter 77</span>
 
-<span class="n">Wta</span> <span class="o">=</span> <span class="mi">16</span>
-<span class="n">Wrh</span> <span class="o">=</span> <span class="mi">83</span>
+<span class="n">Wta</span> <span class="o">=</span> <span class="mi">14</span>
+<span class="n">Wrh</span> <span class="o">=</span> <span class="mi">80</span>
 </pre></div>
 </div>
 </div>
@@ -2648,8 +2821,8 @@ July Average GHI:    2.878 kWh/m²/day
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Azimuth: 314.6907772954765
-Altitude: 17.371211954961552
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Azimuth: 314.68013497467547
+Altitude: 17.357805965388163
 </pre></div>
 </div>
 </div>
@@ -2682,7 +2855,7 @@ Altitude: 17.371211954961552
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Build the utci layer correctly — shade first, then slice, then UTCI</span>
 <span class="n">winter10m_df</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">build_utci_layer</span><span class="p">(</span>
-    <span class="n">winterPed_dfFull</span><span class="p">,</span> <span class="n">shadows</span><span class="p">,</span>
+    <span class="n">winterPed_df</span><span class="p">,</span> <span class="n">shadows</span><span class="p">,</span>
     <span class="n">ta</span><span class="o">=</span><span class="n">Wta</span><span class="p">,</span> <span class="n">rh</span><span class="o">=</span><span class="n">Wrh</span><span class="p">,</span> <span class="n">mrt_offset</span><span class="o">=</span><span class="n">mrt_offset</span>
 <span class="p">)</span>
 
@@ -2723,6 +2896,10 @@ Altitude: 17.371211954961552
       <th>U</th>
       <th>V</th>
       <th>u_mag</th>
+      <th>k</th>
+      <th>R</th>
+      <th>lawson_class</th>
+      <th>U10_equivalent</th>
       <th>is_shaded</th>
       <th>u_mag_10m</th>
       <th>utci</th>
@@ -2731,27 +2908,35 @@ Altitude: 17.371211954961552
   <tbody>
     <tr>
       <th>0</th>
-      <td>263503.677809</td>
-      <td>6.242592e+06</td>
-      <td>1.412170</td>
-      <td>0.453573</td>
-      <td>-1.168934</td>
-      <td>1.253848</td>
+      <td>264933.238735</td>
+      <td>6.242043e+06</td>
+      <td>1.5</td>
+      <td>1.037993</td>
+      <td>-1.027890</td>
+      <td>1.460830</td>
+      <td>2.03330</td>
+      <td>0.149064</td>
+      <td>Sitting/Long-term (Outdoor Dining)</td>
+      <td>3.600281</td>
       <td>False</td>
-      <td>1.253848</td>
-      <td>18.93</td>
+      <td>3.600281</td>
+      <td>16.67</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>263490.755859</td>
-      <td>6.242599e+06</td>
-      <td>1.520494</td>
-      <td>0.844124</td>
-      <td>-1.641944</td>
-      <td>1.846219</td>
+      <td>264929.548298</td>
+      <td>6.242037e+06</td>
+      <td>1.5</td>
+      <td>0.943626</td>
+      <td>-0.962762</td>
+      <td>1.348186</td>
+      <td>2.52402</td>
+      <td>0.137570</td>
+      <td>Sitting/Long-term (Outdoor Dining)</td>
+      <td>3.322665</td>
       <td>False</td>
-      <td>1.846219</td>
-      <td>18.86</td>
+      <td>3.322665</td>
+      <td>16.71</td>
     </tr>
   </tbody>
 </table>
@@ -2772,10 +2957,10 @@ Altitude: 17.371211954961552
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;Mean UTCI&#39;: 34.782686470778174,
- &#39;Max Heat Stress&#39;: 35.6,
- &quot;Percent &#39;Strong Stress&#39; (&gt;32)&quot;: 96.73877946399742,
- &#39;Shade Benefit&#39;: -7.0022328451136175}
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;Mean UTCI&#39;: 31.432367900536875,
+ &#39;Max Heat Stress&#39;: 34.52,
+ &quot;Percent &#39;Strong Stress&#39; (&gt;32)&quot;: 60.55382876518791,
+ &#39;Shade Benefit&#39;: -5.713635404163739}
 </pre></div>
 </div>
 </div>
@@ -2795,24 +2980,24 @@ Altitude: 17.371211954961552
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;Mean UTCI&#39;: 18.655072178477692,
- &#39;Max Heat Stress&#39;: 19.06,
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>{&#39;Mean UTCI&#39;: 15.709380153539948,
+ &#39;Max Heat Stress&#39;: 17.06,
  &quot;Percent &#39;Strong Stress&#39; (&gt;32)&quot;: 0.0,
- &#39;Shade Benefit&#39;: -2.4115063330950655}
+ &#39;Shade Benefit&#39;: -1.8942328466400369}
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">plot_utci</span><span class="p">(</span><span class="n">summer10m_df</span><span class="p">,</span> <span class="n">winter10m_df</span><span class="p">,</span> <span class="n">ts_copy</span><span class="p">,</span> <span class="n">center_x_utm</span><span class="p">,</span> <span class="n">center_y_utm</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> 
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">plot_utci</span><span class="p">(</span><span class="n">summer10m_df</span><span class="p">,</span> <span class="n">winter10m_df</span><span class="p">,</span> <span class="n">ts_copy</span><span class="p">,</span> <span class="n">utm_gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">utm_gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> 
                           <span class="n">title_suffix</span><span class="o">=</span><span class="s2">&quot;UTCI (°C) Thermal Stress: Summer (29 Jan) and Winter (1 July)&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/ec6212f4a14d112314d3138e1034f2c3c1e8a9e7b9cc900f650deefa5e149ed5.png" src="../_images/ec6212f4a14d112314d3138e1034f2c3c1e8a9e7b9cc900f650deefa5e149ed5.png" />
+<img alt="../_images/28d881ece06e31f2f067875b279acb8a1c37b09170b03752258d745e4f044c64.png" src="../_images/28d881ece06e31f2f067875b279acb8a1c37b09170b03752258d745e4f044c64.png" />
 </div>
 </div>
 <div class="alert alert-block alert-success"><b>QUESTION</b>
@@ -2885,7 +3070,7 @@ Several standard wind chill formula exist, we execute the one adopted by <a clas
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- calculate wind chill</span>
 
 <span class="c1"># m/s to kh/m</span>
-<span class="n">v_kmh</span> <span class="o">=</span> <span class="n">winter10m_df</span><span class="p">[</span><span class="s1">&#39;u_mag&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">3.6</span>
+<span class="n">v_kmh</span> <span class="o">=</span> <span class="n">winter10m_df</span><span class="p">[</span><span class="s1">&#39;U10_equivalent&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="mf">3.6</span>
 <span class="c1"># raise to the power 0.16</span>
 <span class="n">v16</span> <span class="o">=</span> <span class="n">v_kmh</span><span class="o">**</span><span class="mf">0.16</span>
 
@@ -2922,6 +3107,10 @@ Several standard wind chill formula exist, we execute the one adopted by <a clas
       <th>U</th>
       <th>V</th>
       <th>u_mag</th>
+      <th>k</th>
+      <th>R</th>
+      <th>lawson_class</th>
+      <th>U10_equivalent</th>
       <th>is_shaded</th>
       <th>u_mag_10m</th>
       <th>utci</th>
@@ -2931,29 +3120,37 @@ Several standard wind chill formula exist, we execute the one adopted by <a clas
   <tbody>
     <tr>
       <th>0</th>
-      <td>263503.677809</td>
-      <td>6.242592e+06</td>
-      <td>1.412170</td>
-      <td>0.453573</td>
-      <td>-1.168934</td>
-      <td>1.253848</td>
+      <td>264933.238735</td>
+      <td>6.242043e+06</td>
+      <td>1.5</td>
+      <td>1.037993</td>
+      <td>-1.027890</td>
+      <td>1.460830</td>
+      <td>2.03330</td>
+      <td>0.149064</td>
+      <td>Sitting/Long-term (Outdoor Dining)</td>
+      <td>3.600281</td>
       <td>False</td>
-      <td>1.253848</td>
-      <td>18.93</td>
-      <td>16.667387</td>
+      <td>3.600281</td>
+      <td>16.67</td>
+      <td>13.053605</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>263490.755859</td>
-      <td>6.242599e+06</td>
-      <td>1.520494</td>
-      <td>0.844124</td>
-      <td>-1.641944</td>
-      <td>1.846219</td>
+      <td>264929.548298</td>
+      <td>6.242037e+06</td>
+      <td>1.5</td>
+      <td>0.943626</td>
+      <td>-0.962762</td>
+      <td>1.348186</td>
+      <td>2.52402</td>
+      <td>0.137570</td>
+      <td>Sitting/Long-term (Outdoor Dining)</td>
+      <td>3.322665</td>
       <td>False</td>
-      <td>1.846219</td>
-      <td>18.86</td>
-      <td>16.258873</td>
+      <td>3.322665</td>
+      <td>16.71</td>
+      <td>13.165451</td>
     </tr>
   </tbody>
 </table>
@@ -2973,37 +3170,30 @@ Several standard wind chill formula exist, we execute the one adopted by <a clas
 
     <span class="c1"># --- MAP A: Magnitude (Tricontour) ---</span>
     <span class="n">cntr</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">tricontourf</span><span class="p">(</span><span class="n">ped_df</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">],</span> <span class="n">ped_df</span><span class="p">[</span><span class="s1">&#39;Y&#39;</span><span class="p">],</span> <span class="n">ped_df</span><span class="p">[</span><span class="s1">&#39;wind_chill&#39;</span><span class="p">],</span> 
-                           <span class="n">levels</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;jet_r&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+                           <span class="n">levels</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
     
     <span class="c1"># Use your existing plot_geometries function</span>
     <span class="n">city3D</span><span class="o">.</span><span class="n">plot_geometries</span><span class="p">(</span><span class="n">buildings_df</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax1</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;lightgrey&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
-    <span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;A: Wind Chill Magnitude (m/s)&#39;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;A: Wind Chill Magnitude (°C)&#39;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
 
     <span class="c1"># --- MAP B: Flow (Quiver) ---</span>
-    <span class="c1"># Sampling for visual clarity (skip 3 points)</span>
-    <span class="c1">#skip = 1</span>
-    <span class="c1">#x, y = ped_df[&#39;X&#39;].values[::skip], ped_df[&#39;Y&#39;].values[::skip]</span>
-    <span class="c1">#u, v = ped_df[&#39;U&#39;].values[::skip].astype(float), ped_df[&#39;V&#39;].values[::skip].astype(float)</span>
-    <span class="c1">#mags = ped_df[&#39;wind_chill&#39;].values[::skip].astype(float)</span>
-
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ped_df</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">7000</span><span class="p">:</span>
-        <span class="n">bins</span> <span class="o">=</span> <span class="mi">20</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ped_df</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">7000</span><span class="p">:</span>
-        <span class="n">bins</span> <span class="o">=</span> <span class="mi">10</span>
-        
-    <span class="c1"># Create bins</span>
-    <span class="n">ped_df</span><span class="p">[</span><span class="s1">&#39;x_bin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ped_df</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">]</span> <span class="o">//</span> <span class="n">bins</span><span class="p">)</span> <span class="o">*</span> <span class="n">bins</span>
-    <span class="n">ped_df</span><span class="p">[</span><span class="s1">&#39;y_bin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">ped_df</span><span class="p">[</span><span class="s1">&#39;Y&#39;</span><span class="p">]</span> <span class="o">//</span> <span class="n">bins</span><span class="p">)</span> <span class="o">*</span> <span class="n">bins</span>
-
-    <span class="c1"># Aggregate: Mean velocity per bin</span>
-    <span class="n">binned_df</span> <span class="o">=</span> <span class="n">ped_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;x_bin&#39;</span><span class="p">,</span> <span class="s1">&#39;y_bin&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">agg</span><span class="p">({</span>
-        <span class="s1">&#39;U&#39;</span><span class="p">:</span> <span class="s1">&#39;mean&#39;</span><span class="p">,</span> 
-        <span class="s1">&#39;V&#39;</span><span class="p">:</span> <span class="s1">&#39;mean&#39;</span><span class="p">,</span> 
-        <span class="s1">&#39;u_mag&#39;</span><span class="p">:</span> <span class="s1">&#39;mean&#39;</span>
-    <span class="p">})</span><span class="o">.</span><span class="n">reset_index</span><span class="p">()</span>
-
+    <span class="n">QUIVsampled_df</span> <span class="o">=</span> <span class="n">ped_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[::</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="c1"># Check column names after build_utci_layer merge step</span>
+    <span class="c1"># (Remaps &#39;U10_equivalent&#39; to &#39;u_mag_10m&#39;)</span>
+    <span class="n">mag_col</span> <span class="o">=</span> <span class="s1">&#39;u_mag_10m&#39;</span> <span class="k">if</span> <span class="s1">&#39;u_mag_10m&#39;</span> <span class="ow">in</span> <span class="n">QUIVsampled_df</span><span class="o">.</span><span class="n">columns</span> <span class="k">else</span> <span class="s1">&#39;U10_equivalent&#39;</span>
+    
+    <span class="c1"># 1. Back-calculate the reduction multiplier for this specific layer</span>
+    <span class="c1"># Since: u_mag_10m = u_mag / r_dynamic</span>
+    <span class="c1"># We can scale the directional velocity vectors proportionally:</span>
+    <span class="n">scale_factor</span> <span class="o">=</span> <span class="n">QUIVsampled_df</span><span class="p">[</span><span class="n">mag_col</span><span class="p">]</span> <span class="o">/</span> <span class="n">QUIVsampled_df</span><span class="p">[</span><span class="s1">&#39;u_mag&#39;</span><span class="p">]</span>
+    
+    <span class="c1"># Handle any potential division by zero in zero-wind locations safely</span>
+    <span class="n">scale_factor</span> <span class="o">=</span> <span class="n">scale_factor</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="mf">1.0</span><span class="p">)</span>
+    
+    <span class="n">u_10m</span> <span class="o">=</span> <span class="n">QUIVsampled_df</span><span class="p">[</span><span class="s1">&#39;U&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale_factor</span>
+    <span class="n">v_10m</span> <span class="o">=</span> <span class="n">QUIVsampled_df</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale_factor</span>
     <span class="c1"># Plot binned_df instead of the raw 10M rows</span>
-    <span class="n">qv</span> <span class="o">=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">binned_df</span><span class="p">[</span><span class="s1">&#39;x_bin&#39;</span><span class="p">],</span> <span class="n">binned_df</span><span class="p">[</span><span class="s1">&#39;y_bin&#39;</span><span class="p">],</span> <span class="n">binned_df</span><span class="p">[</span><span class="s1">&#39;U&#39;</span><span class="p">],</span> <span class="n">binned_df</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">],</span> <span class="n">binned_df</span><span class="p">[</span><span class="s1">&#39;u_mag&#39;</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;jet_r&#39;</span><span class="p">,</span>
+    <span class="n">qv</span> <span class="o">=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">QUIVsampled_df</span><span class="p">[</span><span class="s1">&#39;X&#39;</span><span class="p">],</span> <span class="n">QUIVsampled_df</span><span class="p">[</span><span class="s1">&#39;Y&#39;</span><span class="p">],</span> <span class="n">QUIVsampled_df</span><span class="p">[</span><span class="s1">&#39;U&#39;</span><span class="p">],</span> <span class="n">QUIVsampled_df</span><span class="p">[</span><span class="s1">&#39;V&#39;</span><span class="p">],</span> <span class="n">QUIVsampled_df</span><span class="p">[</span><span class="s1">&#39;wind_chill&#39;</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;jet&#39;</span><span class="p">,</span>
                     <span class="n">scale</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mf">0.003</span><span class="p">)</span>
     <span class="c1">#qv = ax2.quiver(x, y, u, v, mags, cmap=&#39;jet&#39;, scale=120, alpha=0.9, width=0.003)</span>
     
@@ -3029,13 +3219,13 @@ Several standard wind chill formula exist, we execute the one adopted by <a clas
     
     <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span>
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plot_windChill</span><span class="p">(</span><span class="n">winter10m_df</span><span class="p">,</span> <span class="n">ts_copy</span><span class="p">,</span> <span class="n">center_x_utm</span><span class="p">,</span> <span class="n">center_y_utm</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plot_windChill</span><span class="p">(</span><span class="n">winter10m_df</span><span class="p">,</span> <span class="n">ts_copy</span><span class="p">,</span> <span class="n">utm_gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">utm_gdf</span><span class="o">.</span><span class="n">geometry</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">y</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/78bf18e8970d01b3675b43ab3abbda5755f719c788d22fcb75ad2af1bc28a5cd.png" src="../_images/78bf18e8970d01b3675b43ab3abbda5755f719c788d22fcb75ad2af1bc28a5cd.png" />
+<img alt="../_images/c77b8ddc35b6d840bdabdeb48e286e40d9abe0ce6838222a006b69638f54207e.png" src="../_images/c77b8ddc35b6d840bdabdeb48e286e40d9abe0ce6838222a006b69638f54207e.png" />
 </div>
 </div>
 <div class="alert alert-block alert-danger"><b>Disclaimer</b>
