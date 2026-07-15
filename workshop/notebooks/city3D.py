@@ -369,9 +369,31 @@ def osm2gdf(data):
     return results
 
 def overpass_to_gdf(query, url="https://overpass-api.de/api/interpreter", geojson=False):
-    """Run an Overpass query and return GeoDataFrame or PyDeck-ready GeoJSON."""
-    r = requests.get(url, params={"data": query})
-    data = r.json()["elements"]
+    """Run an Overpass query and return GeoDataFrame or GeoJSON."""
+    
+    #- define custom, descriptive headers to satisfy the API's security filter
+    headers = {
+        'User-Agent': 'geo3D (https://github.com/AdrianKriger/geo3D)',
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded'
+    }
+    
+    # 2. Use a POST request which is far safer and more reliable for large queries
+    r = requests.post(url, data={"data": query}, headers=headers)
+    
+    # 3. Raise an exception if the status code indicates failure
+    if r.status_code != 200:
+        print(f"Server Error Status Code: {r.status_code}")
+        print(f"Server Response Text:\n{r.text}")
+        r.raise_for_status()
+
+    # 4. Parse the JSON elements safely
+    try:
+        data = r.json()["elements"]
+    except (ValueError, KeyError) as e:
+        print("Failed to parse JSON response.")
+        print(f"Response snippet: {r.text[:500]}")
+        raise e
 
     shapes = osm2gdf(data)
 
@@ -380,7 +402,6 @@ def overpass_to_gdf(query, url="https://overpass-api.de/api/interpreter", geojso
     osm_ids = [s["id"] for s in shapes]
     osm_types = [r["osm_type"] for r in shapes]
 
-    #df = pd.DataFrame(props)
     df = GeoDataFrameLite(props)
     df['geometry'] = geoms
     df['osm_id'] = osm_ids
@@ -411,12 +432,12 @@ def overpass_to_gdf(query, url="https://overpass-api.de/api/interpreter", geojso
             }
             features.append(feature)
     
-        geojson = {
+        geojson_data = {
             "type": "FeatureCollection",
             "features": features
         }
 
-        return geojson
+        return geojson_data
     else:
         return df
 
