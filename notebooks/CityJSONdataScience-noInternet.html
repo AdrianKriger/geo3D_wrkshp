@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -198,6 +198,10 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LoD1 caveats</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="CityJSONLoD1timing.html">LoD1 Timing and Quality Considerations</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">CFD simulation (No Internet)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="urbanFlow-noInternet.html">UrbanFlow (No Internet)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">After the workshop</span></p>
 <ul class="nav bd-sidenav">
@@ -1796,7 +1800,7 @@ To calculate the Annual Total GHI (kWh/m2/year). This value tells us the cumulat
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- where is the NASA POWER dataset</span>
 <span class="c1">#raster_file = &quot;./raster/GHI.tif&quot;</span>
-<span class="n">file_path</span> <span class="o">=</span> <span class="s1">&#39;../data/POWER_Regional_Monthly_1984_2025.csv&#39;</span>
+<span class="n">file_path</span> <span class="o">=</span> <span class="s1">&#39;./data/POWER_Regional_Monthly_1984_2025.csv&#39;</span>
 </pre></div>
 </div>
 </div>
@@ -1830,7 +1834,7 @@ To calculate the Annual Total GHI (kWh/m2/year). This value tells us the cumulat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Annual Average GHI: 1891.36 kWh/m²/year
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Annual Average GHI (Long-term): 2018.339 kWh/m²/day
 </pre></div>
 </div>
 </div>
@@ -1859,7 +1863,9 @@ To calculate the Annual Total GHI (kWh/m2/year). This value tells us the cumulat
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Potential (MWh) = (Area * GHI_Yearly * 0.20) / 1000</span>
-<span class="n">blds</span><span class="p">[</span><span class="s1">&#39;solar_mwh&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">blds</span><span class="p">[</span><span class="s1">&#39;area&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">utilization_factor</span><span class="p">)</span> <span class="o">*</span> <span class="n">blds</span><span class="p">[</span><span class="s1">&#39;ghi_yearly&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.20</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span>
+<span class="c1">#blds[&#39;solar_mwh&#39;] = ((blds[&#39;area&#39;] * utilization_factor) * blds[&#39;ghi_yearly&#39;].mean() * 0.20) / 1000</span>
+<span class="n">blds</span><span class="p">[</span><span class="s1">&#39;solar_mwh&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">blds</span><span class="p">[</span><span class="s1">&#39;area&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">utilization_factor</span><span class="p">)</span> <span class="o">*</span> <span class="n">annual_avg</span> <span class="o">*</span> <span class="mf">0.20</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span>
+
 <span class="n">blds</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1894,6 +1900,7 @@ To calculate the Annual Total GHI (kWh/m2/year). This value tells us the cumulat
       <th>ground_height</th>
       <th>roof_height</th>
       <th>...</th>
+      <th>residential</th>
       <th>geometry</th>
       <th>pop</th>
       <th>area</th>
@@ -1902,7 +1909,6 @@ To calculate the Annual Total GHI (kWh/m2/year). This value tells us the cumulat
       <th>solar_ids</th>
       <th>generator:method</th>
       <th>has_solar</th>
-      <th>ghi_yearly</th>
       <th>solar_mwh</th>
     </tr>
   </thead>
@@ -1920,7 +1926,8 @@ To calculate the Annual Total GHI (kWh/m2/year). This value tells us the cumulat
       <td>9.70</td>
       <td>27.80</td>
       <td>...</td>
-      <td>POLYGON ((18.450818004404262 -33.9279241023017...</td>
+      <td>NaN</td>
+      <td>POLYGON ((264360.391 6242908.633, 264361.062 6...</td>
       <td>315.0</td>
       <td>1419.195321</td>
       <td>25687.435310</td>
@@ -1928,8 +1935,7 @@ To calculate the Annual Total GHI (kWh/m2/year). This value tells us the cumulat
       <td>[]</td>
       <td>[]</td>
       <td>False</td>
-      <td>1899.0</td>
-      <td>214.737093</td>
+      <td>229.153430</td>
     </tr>
     <tr>
       <th>2</th>
@@ -1944,7 +1950,8 @@ To calculate the Annual Total GHI (kWh/m2/year). This value tells us the cumulat
       <td>29.01</td>
       <td>41.51</td>
       <td>...</td>
-      <td>POLYGON ((18.449417896294207 -33.9317294035119...</td>
+      <td>NaN</td>
+      <td>POLYGON ((264241.431 6242483.337, 264180.824 6...</td>
       <td>930.0</td>
       <td>5308.040820</td>
       <td>66350.510249</td>
@@ -1952,12 +1959,11 @@ To calculate the Annual Total GHI (kWh/m2/year). This value tells us the cumulat
       <td>[]</td>
       <td>[]</td>
       <td>False</td>
-      <td>1895.0</td>
-      <td>803.154604</td>
+      <td>857.074246</td>
     </tr>
   </tbody>
 </table>
-<p>2 rows × 30 columns</p>
+<p>2 rows × 29 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -1968,7 +1974,7 @@ To calculate the Annual Total GHI (kWh/m2/year). This value tells us the cumulat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">The average solar potential, per home</span>, for Woodstock is: 19.89 MWh/year
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold">The average solar potential, per home</span>, for Woodstock is: 21.23 MWh/year
 </pre></div>
 </div>
 </div>
@@ -2498,12 +2504,12 @@ ERROR 1: Non closed ring detected.
 <span class="p">)</span>
     
 <span class="c1">#- uncomment. will open in a new browser window. Jupyter security restrictions prevent opening here. </span>
-<span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;file://&#39;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">file</span><span class="p">))</span>
+<span class="c1">#webbrowser.open(&#39;file://&#39; + os.path.realpath(file))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;./result/interactiveAlt.html&#39;
 </pre></div>
 </div>
 </div>

@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -198,6 +198,10 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LoD1 caveats</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="CityJSONLoD1timing.html">LoD1 Timing and Quality Considerations</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">CFD simulation (No Internet)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="urbanFlow-noInternet.html">UrbanFlow (No Internet)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">After the workshop</span></p>
 <ul class="nav bd-sidenav">
@@ -504,7 +508,7 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">     [out:json][timeout:180];</span>
+<span class="s2">     [out:json][timeout:360];</span>
 <span class="s2">    // --when areas have duplicate names given the world has a limited amount of uniquely named places</span>
 <span class="s2">    area[name=&#39;</span><span class="si">{0}</span><span class="s2">&#39;] -&gt;.b;</span>
 <span class="s2">    // -- target area ~ can be way or relation</span>
@@ -638,7 +642,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mamre has 2368 buildings
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mamre has 2372 buildings
 
 <span class=" -Color -Color-Bold">All the buildings</span>  in Mamre have been harvested
 </pre></div>
@@ -779,7 +783,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2340
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2344
 </pre></div>
 </div>
 </div>
@@ -941,7 +945,7 @@ The <code class="docutils literal notranslate"><span class="pre">bldHeights(gdf)
 <p>To show the potential and power of <strong>3D City Models</strong> we can add additional features to the visualization; <em>namely: bus rapid transit, parks, agricultural land and waterways (streams). We get this from <a class="reference external" href="https://en.wikipedia.org/wiki/OpenStreetMap">OpenStreetMap</a> as well.</em>.</div></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;[out:json][timeout:180];</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;[out:json][timeout:360];</span>
 <span class="s2">            // --main area</span>
 <span class="s2">            area[name=&#39;</span><span class="si">{0}</span><span class="s2">&#39;]-&gt;.b;</span>
 <span class="s2">            // -- target area ~ can be way or relation</span>
@@ -959,8 +963,13 @@ The <code class="docutils literal notranslate"><span class="pre">bldHeights(gdf)
 <span class="s2">           &quot;&quot;&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">large</span><span class="p">,</span> <span class="n">focus</span><span class="p">)</span>
 
 <span class="n">green_spaces</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">overpass_to_gdf</span><span class="p">(</span><span class="n">query</span><span class="p">)</span><span class="c1">#, geojson=True)</span>
-
-<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;[out:json][timeout:180];</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;[out:json][timeout:360];</span>
 <span class="s2">            // --main area</span>
 <span class="s2">            area[name=&#39;</span><span class="si">{0}</span><span class="s2">&#39;]-&gt;.b;</span>
 <span class="s2">            // -- target area ~ can be way or relation</span>
@@ -1000,7 +1009,7 @@ The <code class="docutils literal notranslate"><span class="pre">bldHeights(gdf)
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the bus route ~~ note we only choose routes with a &#39;colour&#39; tag</span>
 <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">[out:json][timeout:180];</span>
+<span class="s2">[out:json][timeout:360];</span>
 <span class="s2">area[name=&#39;</span><span class="si">{0}</span><span class="s2">&#39;];</span>
 <span class="s2">// -- target area ~ can be way or relation</span>
 <span class="s2">    // gather results</span>
@@ -1405,7 +1414,7 @@ The <code class="docutils literal notranslate"><span class="pre">bldHeights(gdf)
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2340
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2344
 </pre></div>
 </div>
 </div>
@@ -1501,7 +1510,7 @@ The <code class="docutils literal notranslate"><span class="pre">bldHeights(gdf)
 house           1642
 cabin            382
 yes              157
-garage           112
+garage           116
 retail            11
 civic              7
 roof               7
@@ -1794,7 +1803,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.210123
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.238659
 </pre></div>
 </div>
 </div>
@@ -1844,7 +1853,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/683aa98bd05c061d20757f622248b8e6e7ca88048f85b771e2effe3a807d6f28.png" src="../_images/683aa98bd05c061d20757f622248b8e6e7ca88048f85b771e2effe3a807d6f28.png" />
+<img alt="../_images/bd87095cf883b95d8426d6adef340a1d07a5328dad7ba0448f7f138e06bf7051.png" src="../_images/bd87095cf883b95d8426d6adef340a1d07a5328dad7ba0448f7f138e06bf7051.png" />
 </div>
 </div>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -1939,7 +1948,7 @@ The goal is to be as representative as possible.</p>
   </thead>
   <tbody>
     <tr>
-      <th>2365</th>
+      <th>2369</th>
       <td>12289266</td>
       <td>22 Clarkeson Street Mamre 7347 Cape Town</td>
       <td>house</td>
@@ -1960,7 +1969,7 @@ The goal is to be as representative as possible.</p>
       <td>235.531169</td>
     </tr>
     <tr>
-      <th>2366</th>
+      <th>2370</th>
       <td>12357148</td>
       <td>2 Tol Street Mamre 7347 Cape Town</td>
       <td>house</td>
@@ -1992,12 +2001,12 @@ The goal is to be as representative as possible.</p>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>count    2024.000000
-mean       74.951700
-std        49.881522
+mean       74.937556
+std        49.834958
 min         7.419412
-25%        32.710040
-50%        65.311987
-75%       101.575646
+25%        32.781743
+50%        65.428197
+75%       101.510961
 max       399.892663
 Name: bvpc, dtype: float64
 </pre></div>
@@ -2013,7 +2022,7 @@ Name: bvpc, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 89.541
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 89.588
 </pre></div>
 </div>
 </div>
@@ -2049,11 +2058,11 @@ Name: bvpc, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FORMAL: Population:  9852.0  with Building Volume Per Capita (BVPC): 83.852
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FORMAL: Population:  9852.0  with Building Volume Per Capita (BVPC): 83.837
 
 STUDENT RESIDENCE: Population:  0.0  with Building Volume Per Capita (BVPC): 0
 
-INFORMAL: Population:  1528.0  with Building Volume Per Capita (BVPC) 36.694
+INFORMAL: Population:  1528.0  with Building Volume Per Capita (BVPC) 36.682
 </pre></div>
 </div>
 </div>
@@ -2084,7 +2093,7 @@ Here, because we are working with highly detailed, local data, we can explore wh
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- harvest rooftop solar</span>
 
 <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">     [out:json][timeout:180];</span>
+<span class="s2">     [out:json][timeout:360];</span>
 <span class="s2">    // --when areas have duplicate names given the world has a limited amount of uniquely named places</span>
 <span class="s2">    area[name=&#39;</span><span class="si">{0}</span><span class="s2">&#39;] -&gt;.b;</span>
 <span class="s2">    // -- target area ~ can be way or relation</span>
@@ -2595,7 +2604,7 @@ To calculate the Annual Total GHI (kWh/m2/year). This value tells us the cumulat
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> <span class=" -Color -Color-Bold">The average solar potential, per home</span> , for Mamre is: 17.04 MWh/year
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> <span class=" -Color -Color-Bold">The average solar potential, per home</span> , for Mamre is: 17.01 MWh/year
 </pre></div>
 </div>
 </div>
@@ -2675,11 +2684,6 @@ We are asking: <strong>How much energy (MWh/year) could these roofs harvest, giv
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Tend</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">Tend</span> <span class="o">-</span> <span class="n">Tstart</span><span class="p">))))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:01:23.959369
 </pre></div>
 </div>
 </div>

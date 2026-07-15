@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -60,7 +60,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'notebooks/CityJSONLoD1timing';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Libraries and Packages" href="../after/libsPacs.html" />
+    <link rel="next" title="UrbanFlow (No Internet)" href="urbanFlow-noInternet.html" />
     <link rel="prev" title="Spatial Data Science with CityJSON (No Internet)" href="CityJSONdataScience-noInternet.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -196,6 +196,10 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LoD1 caveats</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">LoD1 Timing and Quality Considerations</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">CFD simulation (No Internet)</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="urbanFlow-noInternet.html">UrbanFlow (No Internet)</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">After the workshop</span></p>
 <ul class="nav bd-sidenav">
@@ -501,7 +505,7 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- get the area [suburb]</span>
-<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;[out:json][timeout:180];</span>
+<span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;[out:json][timeout:360];</span>
 <span class="s2">        area[boundary=administrative][name=&#39;</span><span class="si">{0}</span><span class="s2">&#39;] -&gt; .a;</span>
 <span class="s2">        (</span>
 <span class="s2">        way[amenity~&#39;university|research_institute&#39;][name=&#39;</span><span class="si">{1}</span><span class="s2">&#39;](area.a);</span>
@@ -609,7 +613,7 @@ document.write(`
 ERROR 1: Non closed ring detected.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.919221
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:02.442396
 </pre></div>
 </div>
 </div>
@@ -1036,7 +1040,7 @@ ERROR 1: Non closed ring detected.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.540794
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.561605
 </pre></div>
 </div>
 </div>
@@ -1114,7 +1118,7 @@ ERROR 1: Non closed ring detected.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.002271
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.001919
 </pre></div>
 </div>
 </div>
@@ -1254,7 +1258,7 @@ ERROR 1: Non closed ring detected.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.528624
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.507016
 </pre></div>
 </div>
 </div>
@@ -1354,7 +1358,7 @@ ERROR 1: Non closed ring detected.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:14.397089
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:32.853490
 </pre></div>
 </div>
 </div>
@@ -1479,11 +1483,11 @@ ERROR 1: Non closed ring detected.
       </div>
     </a>
     <a class="right-next"
-       href="../after/libsPacs.html"
+       href="urbanFlow-noInternet.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Libraries and Packages</p>
+        <p class="prev-next-title">UrbanFlow (No Internet)</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
