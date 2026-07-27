@@ -9,7 +9,7 @@
     "nodata": -99999999.99999,
     "projClip_raster": "./raster/GLM_10m_DEM_SALTRIVER_OBS_clip_utm34s.tif",
     
-    "cjsn_out": "./result/citjsn_sr10m3D.json",
+    "cjsn_out": "./result/citjsn_sRiver10m3D.json",
     
     "cjsn_title": "LoD1 City Model of Salt River, Cape Town",
     "cjsn_referenceDate": "2026-03-18",

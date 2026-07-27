@@ -9,7 +9,7 @@
     "nodata": 3.402823466385289e+38,
     "projClip_raster": "./raster/3318CDclip_utm34s.tif",
     
-    "cjsn_out": "./result/citjsn_ws3d.json",
+    "cjsn_out": "./result/citjsn_wStock3D.json",
     
     "cjsn_title": "LoD1 City Model of Woodstock, Cape Town",
     "cjsn_referenceDate": "2026-03-18",
