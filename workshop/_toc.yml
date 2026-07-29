@@ -10,6 +10,7 @@ parts:
   - file: before/what
   - file: before/procStrat
   - file: before/setup
+  - file: before/teachOsm
 
 - caption: village
   chapters:
