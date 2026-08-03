@@ -1,11 +1,11 @@
 This repository is dual-licensed:
 
 - **Code (Python, scripts, utilities)**  
-  Licensed under the MIT License (see `LICENSE-MIT`).
+  Licensed under the MIT License (see `License-MIT`).
 
 - **Educational content (Jupyter notebooks, text, figures, and explanations)**  
   Licensed under Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0) 
-  (see `LICENSE-CC-BY-SA`).
+  (see `License-CC-BY-SA`).
 
 This means:
 - You can freely reuse, adapt, and redistribute the code with minimal restrictions.
