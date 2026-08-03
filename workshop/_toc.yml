@@ -6,7 +6,7 @@ root: intro
 parts:
 - caption: Before the workshop
   chapters:
-  - file: video
+  - file: before/video
   - file: before/what
   - file: before/procStrat
   - file: before/setup
