@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -405,7 +405,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-visualization">1. Interactive Visualization</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-data-science-demography-and-housing">2. Spatial Data Science <em>(demography and housing)</em></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-estimate-population">2. a) Estimate Population:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-calculate-a-population-estimate">2. a) Calculate a Population Estimate:</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-building-volume-per-capita-bvpc">2. b) Building Volume Per Capita (BVPC)</a></li>
 </ul>
 </li>
@@ -439,13 +439,13 @@ document.write(`
 </div></blockquote>
 <p><strong>2. allow the user to execute an application of Spatial Data Science</strong></p>
 <blockquote>
-<div><p><strong>i)  population estimation</strong> <em>–with a previous census metric population growth rate and projected (future) population are also possible</em>  <strong>and</strong><br />
-<strong>ii)  a measure of Building Volume per Capita.</strong></p>
+<div><p><strong>i)  use estimated average occupancy / household size to calculate a population estimate</strong> <em>–with a previous census metric population growth rate and projected (future) population are also possible</em>  <strong>and</strong><br />
+<strong>ii)  quantify Building Volume per Capita.</strong></p>
 </div></blockquote>
 <p><strong>3. further applications of Spatial Data Science</strong></p>
 <blockquote>
 <div><p><strong>-</strong>  calculate percentage <strong>homes and population with direct access to on-site renewable energy infrastructure</strong> <em>–rooftop photovoltaic panels (PV) and solar water heaters (SWH).</em><br />
-<strong>-</strong> estimate the <a class="reference external" href="https://www.worldbank.org/en/topic/energy/publication/solar-photovoltaic-power-potential-by-country"><strong>Annual Average Solar</strong> <em>(photovoltaic)</em> <strong>Potential</strong></a>, <strong>per home.</strong></p>
+<strong>-</strong> calculate the <a class="reference external" href="https://www.worldbank.org/en/topic/energy/publication/solar-photovoltaic-power-potential-by-country"><strong>Annual Average Solar</strong> <em>(photovoltaic)</em> <strong>Potential</strong></a>, <strong>per home.</strong></p>
 </div></blockquote>
 <p><strong>4. propose several Geography and Sustainable Development Education <em>conversation starters</em> for Secondary and Tertiary level students</strong></p>
 </div></blockquote>
@@ -1283,10 +1283,10 @@ The <code class="docutils literal notranslate"><span class="pre">bldHeights(gdf)
 <h2>2. Spatial Data Science <em>(demography and housing)</em><a class="headerlink" href="#spatial-data-science-demography-and-housing" title="Link to this heading">#</a></h2>
 <div class="alert alert-block alert-warning"><b>Now that we have a visualization of building stock (buildings colorized by `use`); lets do some basic spatial analysis:</b>  
 <ul class="simple">
-<li><p>We’ll estimate the population, within our area of interest, and then</p></li>
+<li><p>We’ll calculate a population estimate, within our area of interest, and then</p></li>
 <li><p>calculate the Building Volume Per Capita (BVPC).</p></li>
 </ul>
-</div><p>While estimating population is well documented; recent investigations to <strong>understand overcrowding</strong> have led to newer measurements.</p>
+</div><p>While calculating a population estimate is well documented; recent investigations to <strong>understand overcrowding</strong> have led to newer measurements.</p>
 <p>The most noteable of these is <strong>Building Volume Per Capita (BVPC)</strong> <a class="reference external" href="https://www.researchgate.net/publication/343185735_Building_Volume_Per_Capita_BVPC_A_Spatially_Explicit_Measure_of_Inequality_Relevant_to_the_SDGs">(Ghosh, T; et al. 2020)</a>. BVPC is the cubic meters of building per person. <strong>BVPC tells us how much space one person has per residential living unit</strong> (a house / apartment / etc.). It is <em><strong>a proxy measure of economic inequality and a direct measure of housing inequality</strong></em>.</p>
 <p>BVPC builds on the work of <a class="reference external" href="https://www.tandfonline.com/doi/abs/10.1080/02723638.2015.1060696?journalCode=rurb20">(Reddy, A and Leslie, T.F., 2013)</a> and attempts to integrate with several <strong><a class="reference external" href="https://sdgs.un.org/goals">Sustainable Development Goals</a></strong> (most noteably: <strong><a class="reference external" href="https://sdgs.un.org/goals/goal11">SDG 11: Developing sustainable cities and communities</a></strong>) and captures the average <em><strong>‘living space’</strong></em> each person has in their home.</p>
 <div class="alert alert-block alert-info"><b>These analysis expect the user to have some basic knowledge about the environment under inquiry / investigation</b> </div><div class="cell docutils container">
@@ -1379,8 +1379,8 @@ The <code class="docutils literal notranslate"><span class="pre">bldHeights(gdf)
 </div>
 </div>
 </div>
-<section id="a-estimate-population">
-<h3>2. a) Estimate Population:<a class="headerlink" href="#a-estimate-population" title="Link to this heading">#</a></h3>
+<section id="a-calculate-a-population-estimate">
+<h3>2. a) Calculate a Population Estimate:<a class="headerlink" href="#a-calculate-a-population-estimate" title="Link to this heading">#</a></h3>
 <div class="alert alert-block alert-success"><b></b> 
 <p><em>(with population growth rate and population projection possible too)</em> </div></p>
 <div class="cell docutils container">
@@ -1533,7 +1533,7 @@ Name: count, dtype: int64
 </div>
 </div>
 </div>
-<p><strong>This area is urban with single level housing units. To estimate population is thus pretty straight forward.</strong></p>
+<p><strong>This area is urban with single level housing units. To calculate a population estimate is thus pretty straight forward.</strong></p>
 <div class="alert alert-block alert-info"><b>We start with local knowledge.</b></div>
 <p><strong>On average there are roughly <code class="docutils literal notranslate"><span class="pre">6</span></code> people per <code class="docutils literal notranslate"><span class="pre">building:house</span></code> in this area.</strong></p>
 <p>An <em><strong>informal</strong></em> structure (<a class="reference external" href="https://en.wikipedia.org/wiki/Shack">shack</a>) is tagged <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Tag:building%3Dcabin">building:cabin</a> and houses <code class="docutils literal notranslate"><span class="pre">4</span></code> people.</p>
@@ -1619,7 +1619,7 @@ Name: count, dtype: int64
 <span class="n">gdf2</span><span class="p">[</span><span class="s1">&#39;pop&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf2</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">pop</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
 <span class="n">est_pop</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">gdf2</span><span class="p">[</span><span class="s1">&#39;pop&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
-<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The estimated population is:&#39;</span><span class="p">,</span> <span class="n">est_pop</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;The calculated population estimate is:&#39;</span><span class="p">,</span> <span class="n">est_pop</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1634,7 +1634,7 @@ Name: count, dtype: int64
 <div class="math notranslate nohighlight">
 \[r = \frac{\ln{[\frac{End Population}{Start Population}}]}{n} * 100 = \frac{\ln{[\frac{11 120^{*}}{9048}}]}{12} * 100   = 1.47\%\]</div>
 <br>
-<sup>* <sub>***Notice!*** The estimated population (11176) is **NOT** the number in the formula (11 120). This community is frequently updated on OpenStreetMap and variations are common.</sub> <div class="alert alert-block alert-danger"><b>Your Participation! </b>
+<sup>* <sub>***Notice!*** The calculated population estimate (11176) is **NOT** the number in the formula (11 120). This community is frequently updated on OpenStreetMap and variations are common.</sub> <div class="alert alert-block alert-danger"><b>Your Participation! </b>
 <p>It is possible to execute the calculation programmatically. <strong>Fill in the relevant variables in the <em><code class="docutils literal notranslate"><span class="pre">cell</span></code></em> below</strong> </div></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1661,7 +1661,7 @@ Name: count, dtype: int64
 </div>
 </div>
 </div>
-<p>To conclude; we can project into the future with a very basic formula to estimate the population <em>x</em>-years from now:</p>
+<p>To conclude; we can project into the future with a very basic formula to calculate a population estimate <em>x</em>-years from now:</p>
 <div class="math notranslate nohighlight">
 \[p  = P_o * (1 + r)^{t} = p = 11120 * (1 + 0.0147)^{10}  = 12870\]</div>
 <div class="alert alert-block alert-danger"><b>Your Participation! </b>
@@ -1691,7 +1691,7 @@ Name: count, dtype: int64
 
 <span class="c1">#- shows error and moves on</span>
 <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;estimated population </span><span class="si">{</span><span class="n">years</span><span class="si">}</span><span class="s2"> years from now: </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;calculated population estimate </span><span class="si">{</span><span class="n">years</span><span class="si">}</span><span class="s2"> years from now: </span><span class="si">{</span><span class="n">p</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -2085,11 +2085,11 @@ LoD2 would offer a more representative BVPC <a class="reference external" href="
 <p><a class="reference external" href="https://sdgs.un.org/goals"><strong>SDG</strong></a> indicators are typically calculated at <strong>region and national scales</strong>.<br />
 Here, because we are working with highly detailed, local data, we can explore what a <a class="reference external" href="https://unstats.un.org/sdgs/metadata/"><strong>Tier 3 local indicator</strong></a> might look like at a <em><strong>neighbourhood level</strong></em>.
 <br></p>
-<p>In this section 3. we evaluate <a class="reference external" href="https://sdgs.un.org/goals/goal7"><strong>SDG 7: Ensure access to affordable, reliable, sustainable and modern energy for all</strong></a> at a community level and estimate the <strong>proportion of residential units and population</strong> that have <strong>direct access to on-site renewable energy infrastructure</strong> <em>–rooftop photovoltaic panels (PV) and solar water heaters (SWH)</em>.</p>
+<p>In this section 3. we evaluate <a class="reference external" href="https://sdgs.un.org/goals/goal7"><strong>SDG 7: Ensure access to affordable, reliable, sustainable and modern energy for all</strong></a> at a community level and calculate the <strong>proportion of residential units and population</strong> that have <strong>direct access to on-site renewable energy infrastructure</strong> <em>–rooftop photovoltaic panels (PV) and solar water heaters (SWH)</em>.</p>
 <blockquote>
 <div><p><strong>a</strong>. Percentage of <strong>households</strong> served by rooftop renewable energy<br />
 <strong>b</strong>. Percentage of the <strong>population</strong> served by rooftop renewable energy<br />
-<strong>c</strong>. And then we go even further to estimate the <strong>Annual Solar Potential in MWh</strong> <em>(theoretical maximum electricity)</em> that homes can harvest from the sun over the course of one year.</p>
+<strong>c</strong>. And then we go even further to calculate the <strong>Annual Solar Potential in MWh</strong> <em>(theoretical maximum electricity)</em> that homes can harvest from the sun over the course of one year.</p>
 </div></blockquote>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2381,7 +2381,7 @@ Name: count, dtype: int64
 <h3>3. b) Rooftop solar population<a class="headerlink" href="#b-rooftop-solar-population" title="Link to this heading">#</a></h3>
 <div class="alert alert-block alert-success"><b>Percentage of population served by rooftop renewable energy</b></div>
 <div class="math notranslate nohighlight">
-\[ \text{\% population with renewable energy} = \frac{\text{Number of residents with mapped solar PV or SWH}}{\text{Estimated population}} \times 100 \]</div>
+\[ \text{\% population with renewable energy} = \frac{\text{Number of residents with mapped solar PV or SWH}}{\text{Calculated population estimate}} \times 100 \]</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#solPop = round(len(sol) / len(gdf2) * 100, 2)</span>
@@ -2763,7 +2763,7 @@ We are asking: <strong>How much energy (MWh/year) could these roofs harvest, giv
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-visualization">1. Interactive Visualization</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#spatial-data-science-demography-and-housing">2. Spatial Data Science <em>(demography and housing)</em></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-estimate-population">2. a) Estimate Population:</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-calculate-a-population-estimate">2. a) Calculate a Population Estimate:</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-building-volume-per-capita-bvpc">2. b) Building Volume Per Capita (BVPC)</a></li>
 </ul>
 </li>
