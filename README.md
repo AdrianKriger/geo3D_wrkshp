@@ -14,5 +14,7 @@
  
  
  **License**: Code is [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT); content is [![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-sa/4.0/). See [`NOTICE`](https://github.com/AdrianKriger/geo3D_wrkshp/blob/main/NOTICE) for details.
-
+___
+This repository is available on Zenodo to provide a **permanent, citable record** of the code and data associated with this research. The Digital Object Identifier (DOI) for the specific version **v1.0.1** is:  
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17598023.svg)](https://doi.org/10.5281/zenodo.17598023)
 
