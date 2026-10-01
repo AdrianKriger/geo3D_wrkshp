@@ -371,7 +371,7 @@ def osm2gdf(data):
 def overpass_to_gdf(query, url="https://overpass-api.de/api/interpreter", geojson=False):
     """Run an Overpass query and return GeoDataFrame or GeoJSON."""
     
-    #- define custom, descriptive headers to satisfy the API's security filter
+    # 1. Define custom, descriptive headers to satisfy the API's security filter
     headers = {
         'User-Agent': 'geo3D (https://github.com/AdrianKriger/geo3D)',
         'Accept': 'application/json',
@@ -440,7 +440,7 @@ def overpass_to_gdf(query, url="https://overpass-api.de/api/interpreter", geojso
         return geojson_data
     else:
         return df
-
+        
 def plot_geometries(df, ax=None, facecolor='none', edgecolor='purple', alpha=0.5):
     if ax is None:
         fig, ax = plt.subplots(figsize=(10,10))
@@ -557,7 +557,7 @@ def bldHeights(gdf):
         #'id', 
         'osm_id', 'address', 'building', 'building:levels', 'building:use',
         'building:flats', 'building:units', 'beds', 'rooms', 'residential',
-        'amenity', 'social_facility', 'operator', 'building_height', #'roof_height',
+        'amenity', 'social_facility', 'operator', 'operator:type', 'building_height', #'roof_height',
         #'ground_height', 'bottom_bridge_height', 'bottom_roof_height',
         'min_height', 'plus_code', 'footprint', 'geometry'
     ]
@@ -1081,13 +1081,14 @@ def exportOBJ(dis_c, extent, out_path):
         final_model.export(out_path)
     except:
         print("Boolean failed, falling back to merge_vertices...")
-        final_model = trimesh.util.concatenate(meshes_list)
+        final_model = trimesh.util.concatenate(solids_list)
         final_model.merge_vertices(digits_vertex=3)
         final_model.export(out_path)
 
     #print(f"Successfully exported {len(meshes_list)} buildings to {out_path}")
     
     return x_off, y_off, max_bld_h, max_z_abs, final_model
+
 
 def load_openfoam_vtk(case_path, file_name='hubHeight.vtk', wind_deg=0, extent=None, radius=400.0):
     """
@@ -1440,7 +1441,7 @@ def build_utci_layer(
     """
     Physics-correct pipeline:
       - Shade is a ground-level question: is the pedestrian standing in shadow?
-        → classify shade on the 1.2–1.9m slice (actual pedestrian level)
+        → classify shade on the 1.5m slice (actual pedestrian level)
       - Wind at 10m is a CFD sampling artefact, not a physical height.
         → extract u_mag from the 10m slice and join it down to ground points
       - UTCI is then computed at ground level with 10m wind + ground shade
