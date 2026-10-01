@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css?v=be8a1c11" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -497,7 +497,8 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- input OSM PBF file</span>
-<span class="n">input_pbf</span> <span class="o">=</span> <span class="s2">&quot;./data/CapeTown.osm.pbf&quot;</span>
+<span class="c1">#input_pbf = &quot;./data/CapeTown.osm.pbf&quot;</span>
+<span class="n">input_pbf</span> <span class="o">=</span> <span class="s2">&quot;./data/WoodstockSaltRiverObs.osm.pbf&quot;</span> 
 </pre></div>
 </div>
 </div>
@@ -529,50 +530,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>boundary</th>
-      <th>name</th>
-      <th>place</th>
-      <th>type</th>
-      <th>wikidata</th>
-      <th>geometry</th>
-      <th>osm_id</th>
-      <th>osm_type</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>place</td>
-      <td>Salt River</td>
-      <td>suburb</td>
-      <td>boundary</td>
-      <td>Q2383969</td>
-      <td>POLYGON ((18.4575251 -33.9411991, 18.4591488 -...</td>
-      <td>2034284</td>
-      <td>relation</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <p><strong>Only harvest what we need from the osm.pbf.</strong></p>
 <div class="cell docutils container">
@@ -609,15 +566,6 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ERROR 1: Non closed ring detected.
-ERROR 1: Non closed ring detected.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:02.442396
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -625,85 +573,6 @@ ERROR 1: Non closed ring detected.
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>amenity</th>
-      <th>building</th>
-      <th>craft</th>
-      <th>geometry</th>
-      <th>historic</th>
-      <th>leisure</th>
-      <th>man_made</th>
-      <th>name</th>
-      <th>office</th>
-      <th>osm_id</th>
-      <th>osm_way_id</th>
-      <th>other_tags</th>
-      <th>shop</th>
-      <th>sport</th>
-      <th>tourism</th>
-      <th>type</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>None</td>
-      <td>office</td>
-      <td>None</td>
-      <td>MULTIPOLYGON (((18.4723433 -33.9288948, 18.472...</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>Western Cape Metrorail - Infrastructure Building</td>
-      <td>None</td>
-      <td>6383946</td>
-      <td>None</td>
-      <td>"addr:city"=&gt;"Cape Town","addr:postcode"=&gt;"729...</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>multipolygon</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>None</td>
-      <td>hall</td>
-      <td>None</td>
-      <td>MULTIPOLYGON (((18.4686004 -33.9360187, 18.468...</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>6691666</td>
-      <td>None</td>
-      <td>"addr:housename"=&gt;"Parish Hall"</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>multipolygon</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -745,112 +614,12 @@ ERROR 1: Non closed ring detected.
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>amenity</th>
-      <th>building</th>
-      <th>craft</th>
-      <th>geometry</th>
-      <th>historic</th>
-      <th>leisure</th>
-      <th>man_made</th>
-      <th>name</th>
-      <th>office</th>
-      <th>osm_id</th>
-      <th>...</th>
-      <th>diet:vegan</th>
-      <th>content</th>
-      <th>industrial</th>
-      <th>addr:unit</th>
-      <th>disused</th>
-      <th>sahra:criterea</th>
-      <th>opening_date</th>
-      <th>bus</th>
-      <th>network</th>
-      <th>construction</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>None</td>
-      <td>office</td>
-      <td>None</td>
-      <td>MULTIPOLYGON (((18.4723433 -33.9288948, 18.472...</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>Western Cape Metrorail - Infrastructure Building</td>
-      <td>None</td>
-      <td>6383946</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>None</td>
-      <td>school</td>
-      <td>None</td>
-      <td>MULTIPOLYGON (((18.4615816 -33.9317448, 18.461...</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>None</td>
-      <td>13328172</td>
-      <td>...</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-    </tr>
-  </tbody>
-</table>
-<p>2 rows × 133 columns</p>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">ts</span> <span class="o">=</span> <span class="n">gdf</span><span class="p">[</span><span class="n">gdf</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()]</span>
 <span class="c1">#len(ts)</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">),</span> <span class="s2">&quot;buildings have been harvested from&quot;</span><span class="p">,</span> <span class="n">input_pbf</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 1449 buildings have been harvested from ./data/CapeTown.osm.pbf
 </pre></div>
 </div>
 </div>
@@ -878,11 +647,6 @@ ERROR 1: Non closed ring detected.
 <span class="n">ts</span> <span class="o">=</span> <span class="n">ts</span><span class="p">[</span><span class="n">ts</span><span class="p">[</span><span class="s1">&#39;building:part&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()]</span> <span class="k">if</span> <span class="s1">&#39;building:part&#39;</span> <span class="ow">in</span> <span class="n">ts</span><span class="o">.</span><span class="n">columns</span> <span class="k">else</span> <span class="n">ts</span>
 <span class="c1">#ts = ts.explode()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\033</span><span class="s1">[1m&#39;</span><span class="p">,</span> <span class="n">jparams</span><span class="p">[</span><span class="s1">&#39;FocusArea&#39;</span><span class="p">],</span> <span class="s1">&#39;has </span><span class="se">\033</span><span class="s1">[0m&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">ts</span><span class="p">),</span> <span class="s1">&#39;buildings&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold"> Salt River has </span> 1377 buildings
 </pre></div>
 </div>
 </div>
@@ -965,11 +729,6 @@ ERROR 1: Non closed ring detected.
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0
-</pre></div>
-</div>
-</div>
 </div>
 <p><strong>prepare to harvest elevation</strong></p>
 <div class="cell docutils container">
@@ -1037,11 +796,6 @@ ERROR 1: Non closed ring detected.
 
 <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">))))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.561605
 </pre></div>
 </div>
 </div>
@@ -1118,11 +872,6 @@ ERROR 1: Non closed ring detected.
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.001919
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1131,91 +880,6 @@ ERROR 1: Non closed ring detected.
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>osm_id</th>
-      <th>address</th>
-      <th>building</th>
-      <th>building:levels</th>
-      <th>building:use</th>
-      <th>building:flats</th>
-      <th>building:units</th>
-      <th>beds</th>
-      <th>rooms</th>
-      <th>residential</th>
-      <th>amenity</th>
-      <th>social_facility</th>
-      <th>operator</th>
-      <th>building_height</th>
-      <th>min_height</th>
-      <th>plus_code</th>
-      <th>footprint</th>
-      <th>geometry</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>6383946</td>
-      <td>Western Cape Metrorail - Infrastructure Buildi...</td>
-      <td>office</td>
-      <td>1.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>None</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>4.1</td>
-      <td>0.0</td>
-      <td>4FRW3FCF+946</td>
-      <td>[[(266353.277, 6242850.213), (266357.266, 6242...</td>
-      <td>POLYGON ((266353.277369 6242850.212725, 266357...</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>13328172</td>
-      <td>None</td>
-      <td>school</td>
-      <td>2.0</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>None</td>
-      <td>NaN</td>
-      <td>NaN</td>
-      <td>6.9</td>
-      <td>0.0</td>
-      <td>4FRW3F96+6MG</td>
-      <td>[[(265366.084, 6242509.527), (265364.518, 6242...</td>
-      <td>POLYGON ((265366.083781 6242509.526659, 265364...</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1255,11 +919,6 @@ ERROR 1: Non closed ring detected.
 
 <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">))))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.507016
 </pre></div>
 </div>
 </div>
@@ -1355,11 +1014,6 @@ ERROR 1: Non closed ring detected.
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">Tend</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;runtime:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">timedelta</span><span class="p">(</span><span class="n">seconds</span><span class="o">=</span><span class="p">(</span><span class="n">Tend</span> <span class="o">-</span> <span class="n">Tstart</span><span class="p">))))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:32.853490
 </pre></div>
 </div>
 </div>

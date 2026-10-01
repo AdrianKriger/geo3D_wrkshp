@@ -1562,7 +1562,9 @@ Name: count, dtype: int64
 </ul>
 </div></blockquote>
 <p><strong>The tagging scheme and numbers is based on <em>how your community is mapped</em> <em>(please follow the <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Beginners%27_guide">Guide</a>)</em> and local knowledge</strong></p>
-</div><div class="cell docutils container">
+</div>
+<p><small> <b>NB:</b> the <em><strong>geo3D</strong></em> example areas further defines social housing with the <code class="docutils literal notranslate"><span class="pre">operator</span></code> + <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Key:operator:type"><code class="docutils literal notranslate"><span class="pre">operator:type</span></code></a> tags. <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Key:operator:type"><code class="docutils literal notranslate"><span class="pre">operator:type</span></code></a> highlights the type of agency responsible; <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Key:operator:type"><code class="docutils literal notranslate"><span class="pre">community</span></code>, <code class="docutils literal notranslate"><span class="pre">ngo</span></code>, <code class="docutils literal notranslate"><span class="pre">government</span></code></a></small></p>
+<div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">c</span> <span class="o">=</span> <span class="n">gdf2</span><span class="o">.</span><span class="n">columns</span>
 
@@ -1581,7 +1583,8 @@ Name: count, dtype: int64
         <span class="k">return</span> <span class="n">inf_structure</span>
         
     <span class="c1">#- in this case social housing</span>
-    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;residential&#39;</span> <span class="ow">and</span> <span class="s1">&#39;social_facility&#39;</span> <span class="ow">in</span> <span class="n">c</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;social_facility&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">:</span>
+    <span class="c1">#if row[&#39;building&#39;] == &#39;residential&#39; and &#39;social_facility&#39; in c and row[&#39;social_facility&#39;] is np.nan:</span>
+    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;residential&#39;</span> <span class="ow">and</span> <span class="s1">&#39;operator:type&#39;</span> <span class="ow">in</span> <span class="n">c</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;operator:type&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;community&#39;</span><span class="p">,</span> <span class="s1">&#39;government&#39;</span><span class="p">,</span> <span class="s1">&#39;ngo&#39;</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:levels&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">if</span> <span class="s1">&#39;rooms&#39;</span> <span class="ow">in</span> <span class="n">c</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rooms&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rooms&#39;</span><span class="p">]</span>

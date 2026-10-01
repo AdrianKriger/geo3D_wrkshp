@@ -513,9 +513,9 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Input OSM PBF file</span>
-<span class="n">input_pbf</span> <span class="o">=</span> <span class="s2">&quot;./data/CapeTown.osm.pbf&quot;</span>
-
+<span class="c1">#input_pbf = &quot;./data/CapeTown.osm.pbf&quot;</span>
 <span class="c1">#input_pbf = &quot;./data/south-africa-latest.osm.pbf&quot;</span>
+<span class="n">input_pbf</span> <span class="o">=</span> <span class="s2">&quot;./data/WoodstockSaltRiverObs.osm.pbf&quot;</span> 
 </pre></div>
 </div>
 </div>
@@ -537,7 +537,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:02.450105
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.196418
 </pre></div>
 </div>
 <div class="output text_html"><div>
@@ -571,10 +571,10 @@ document.write(`
     <tr>
       <th>0</th>
       <td>place</td>
-      <td>MULTIPOLYGON (((18.4407807 -33.9286635, 18.440...</td>
-      <td>Woodstock</td>
-      <td>2034285</td>
-      <td>"wikidata"=&gt;"Q3644460"</td>
+      <td>MULTIPOLYGON (((18.4771301 -33.9269071, 18.476...</td>
+      <td>Salt River</td>
+      <td>2034284</td>
+      <td>"wikidata"=&gt;"Q2383969"</td>
       <td>suburb</td>
       <td>boundary</td>
     </tr>
@@ -633,11 +633,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ERROR 1: Non closed ring detected.
-ERROR 1: Non closed ring detected.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:01.764839
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.702861
 </pre></div>
 </div>
 </div>
@@ -673,6 +669,7 @@ ERROR 1: Non closed ring detected.
       <th>craft</th>
       <th>geometry</th>
       <th>historic</th>
+      <th>landuse</th>
       <th>leisure</th>
       <th>man_made</th>
       <th>name</th>
@@ -690,17 +687,18 @@ ERROR 1: Non closed ring detected.
     <tr>
       <th>0</th>
       <td>None</td>
-      <td>school</td>
+      <td>office</td>
       <td>None</td>
-      <td>MULTIPOLYGON (((18.4390374 -33.9341504, 18.439...</td>
-      <td>None</td>
-      <td>None</td>
+      <td>MULTIPOLYGON (((18.4723433 -33.9288948, 18.472...</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>11029147</td>
       <td>None</td>
-      <td>"building:levels"=&gt;"2","ref:ZA:emis"=&gt;"1033103...</td>
+      <td>Western Cape Metrorail - Infrastructure Building</td>
+      <td>None</td>
+      <td>6383946</td>
+      <td>None</td>
+      <td>"addr:city"=&gt;"Cape Town","addr:postcode"=&gt;"729...</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
@@ -708,18 +706,19 @@ ERROR 1: Non closed ring detected.
     </tr>
     <tr>
       <th>1</th>
-      <td>marketplace</td>
-      <td>retail</td>
       <td>None</td>
-      <td>MULTIPOLYGON (((18.4580079 -33.9273091, 18.458...</td>
+      <td>hall</td>
+      <td>None</td>
+      <td>MULTIPOLYGON (((18.4686004 -33.9360187, 18.468...</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>The Neighbourgoods Market</td>
       <td>None</td>
-      <td>12227309</td>
       <td>None</td>
-      <td>"addr:city"=&gt;"Cape Town","addr:suburb"=&gt;"Woods...</td>
+      <td>None</td>
+      <td>6691666</td>
+      <td>None</td>
+      <td>"addr:housename"=&gt;"Parish Hall"</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
@@ -793,37 +792,37 @@ ERROR 1: Non closed ring detected.
       <th>craft</th>
       <th>geometry</th>
       <th>historic</th>
+      <th>landuse</th>
       <th>leisure</th>
       <th>man_made</th>
       <th>name</th>
       <th>office</th>
-      <th>osm_id</th>
       <th>...</th>
-      <th>studio</th>
-      <th>guest_house</th>
-      <th>abandoned:building</th>
-      <th>motorcycle:rental</th>
-      <th>second_hand</th>
-      <th>drink:coffee</th>
+      <th>construction</th>
+      <th>addr:unit</th>
+      <th>capacity</th>
+      <th>house</th>
+      <th>disused</th>
+      <th>sahra:criterea</th>
+      <th>opening_date</th>
       <th>bus</th>
       <th>network</th>
-      <th>opening_date</th>
-      <th>unisex</th>
+      <th>pumping_station</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>1</th>
-      <td>marketplace</td>
-      <td>retail</td>
+      <th>0</th>
       <td>None</td>
-      <td>MULTIPOLYGON (((18.4580079 -33.9273091, 18.458...</td>
+      <td>office</td>
+      <td>None</td>
+      <td>MULTIPOLYGON (((18.4723433 -33.9288948, 18.472...</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>The Neighbourgoods Market</td>
       <td>None</td>
-      <td>12227309</td>
+      <td>Western Cape Metrorail - Infrastructure Building</td>
+      <td>None</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -837,17 +836,17 @@ ERROR 1: Non closed ring detected.
       <td>NaN</td>
     </tr>
     <tr>
-      <th>2</th>
+      <th>7</th>
       <td>None</td>
-      <td>apartments</td>
+      <td>school</td>
       <td>None</td>
-      <td>MULTIPOLYGON (((18.450818 -33.9279241, 18.4508...</td>
+      <td>MULTIPOLYGON (((18.4615816 -33.9317448, 18.461...</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>Church  Square</td>
       <td>None</td>
-      <td>12249345</td>
+      <td>None</td>
+      <td>None</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -862,7 +861,7 @@ ERROR 1: Non closed ring detected.
     </tr>
   </tbody>
 </table>
-<p>2 rows × 149 columns</p>
+<p>2 rows × 142 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -874,7 +873,7 @@ ERROR 1: Non closed ring detected.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 3797 buildings have been harvested from ./data/CapeTown.osm.pbf
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> 1480 buildings have been harvested from ./data/WoodstockSaltRiverObs.osm.pbf
 </pre></div>
 </div>
 </div>
@@ -909,37 +908,37 @@ ERROR 1: Non closed ring detected.
       <th>craft</th>
       <th>geometry</th>
       <th>historic</th>
+      <th>landuse</th>
       <th>leisure</th>
       <th>man_made</th>
       <th>name</th>
       <th>office</th>
-      <th>osm_id</th>
       <th>...</th>
-      <th>studio</th>
-      <th>guest_house</th>
-      <th>abandoned:building</th>
-      <th>motorcycle:rental</th>
-      <th>second_hand</th>
-      <th>drink:coffee</th>
+      <th>construction</th>
+      <th>addr:unit</th>
+      <th>capacity</th>
+      <th>house</th>
+      <th>disused</th>
+      <th>sahra:criterea</th>
+      <th>opening_date</th>
       <th>bus</th>
       <th>network</th>
-      <th>opening_date</th>
-      <th>unisex</th>
+      <th>pumping_station</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>1</th>
-      <td>marketplace</td>
-      <td>retail</td>
+      <th>0</th>
       <td>None</td>
-      <td>MULTIPOLYGON (((18.4580079 -33.9273091, 18.458...</td>
+      <td>office</td>
+      <td>None</td>
+      <td>MULTIPOLYGON (((18.4723433 -33.9288948, 18.472...</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>The Neighbourgoods Market</td>
       <td>None</td>
-      <td>12227309</td>
+      <td>Western Cape Metrorail - Infrastructure Building</td>
+      <td>None</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -953,17 +952,17 @@ ERROR 1: Non closed ring detected.
       <td>NaN</td>
     </tr>
     <tr>
-      <th>2</th>
+      <th>7</th>
       <td>None</td>
-      <td>apartments</td>
+      <td>school</td>
       <td>None</td>
-      <td>MULTIPOLYGON (((18.450818 -33.9279241, 18.4508...</td>
+      <td>MULTIPOLYGON (((18.4615816 -33.9317448, 18.461...</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>Church  Square</td>
       <td>None</td>
-      <td>12249345</td>
+      <td>None</td>
+      <td>None</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -978,7 +977,7 @@ ERROR 1: Non closed ring detected.
     </tr>
   </tbody>
 </table>
-<p>2 rows × 149 columns</p>
+<p>2 rows × 142 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -996,7 +995,7 @@ ERROR 1: Non closed ring detected.
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold"> Woodstock has </span> 3715 buildings
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold"> Salt River has </span> 1381 buildings
 </pre></div>
 </div>
 </div>
@@ -1032,37 +1031,37 @@ ERROR 1: Non closed ring detected.
       <th>craft</th>
       <th>geometry</th>
       <th>historic</th>
+      <th>landuse</th>
       <th>leisure</th>
       <th>man_made</th>
       <th>name</th>
       <th>office</th>
-      <th>osm_id</th>
       <th>...</th>
-      <th>studio</th>
-      <th>guest_house</th>
-      <th>abandoned:building</th>
-      <th>motorcycle:rental</th>
-      <th>second_hand</th>
-      <th>drink:coffee</th>
+      <th>construction</th>
+      <th>addr:unit</th>
+      <th>capacity</th>
+      <th>house</th>
+      <th>disused</th>
+      <th>sahra:criterea</th>
+      <th>opening_date</th>
       <th>bus</th>
       <th>network</th>
-      <th>opening_date</th>
-      <th>unisex</th>
+      <th>pumping_station</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th>4388</th>
+      <th>4582</th>
       <td>None</td>
-      <td>semidetached_house</td>
+      <td>yes</td>
       <td>None</td>
-      <td>MULTIPOLYGON (((18.4497301 -33.9341967, 18.449...</td>
-      <td>None</td>
-      <td>None</td>
+      <td>MULTIPOLYGON (((18.4637102 -33.9308692, 18.463...</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>1340498943</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1076,17 +1075,17 @@ ERROR 1: Non closed ring detected.
       <td>NaN</td>
     </tr>
     <tr>
-      <th>4389</th>
+      <th>4584</th>
       <td>None</td>
-      <td>warehouse</td>
+      <td>house</td>
       <td>None</td>
-      <td>MULTIPOLYGON (((18.4479047 -33.9257214, 18.447...</td>
-      <td>None</td>
-      <td>None</td>
+      <td>MULTIPOLYGON (((18.4648883 -33.9308099, 18.464...</td>
       <td>None</td>
       <td>None</td>
       <td>None</td>
-      <td>1423081172</td>
+      <td>None</td>
+      <td>None</td>
+      <td>None</td>
       <td>...</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1101,7 +1100,7 @@ ERROR 1: Non closed ring detected.
     </tr>
   </tbody>
 </table>
-<p>2 rows × 149 columns</p>
+<p>2 rows × 142 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -1306,7 +1305,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.513966
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.205007
 </pre></div>
 </div>
 </div>
@@ -1357,7 +1356,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../_images/58afdc4714187215ad7be0e640b3de87a42fbacc42a39fc4c8994a6bc1dddabf.png" src="../_images/58afdc4714187215ad7be0e640b3de87a42fbacc42a39fc4c8994a6bc1dddabf.png" />
+<img alt="../_images/da94487a799e311ff53abfe35bbf86b7f01d5b644b9c4854ccb09693aa93d540.png" src="../_images/da94487a799e311ff53abfe35bbf86b7f01d5b644b9c4854ccb09693aa93d540.png" />
 </div>
 </div>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -1428,7 +1427,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.007202
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.001914
 </pre></div>
 </div>
 </div>
@@ -1471,6 +1470,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <th>amenity</th>
       <th>social_facility</th>
       <th>operator</th>
+      <th>operator:type</th>
       <th>building_height</th>
       <th>min_height</th>
       <th>plus_code</th>
@@ -1481,9 +1481,9 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
   <tbody>
     <tr>
       <th>0</th>
-      <td>12227309</td>
-      <td>The Neighbourgoods Market Woodstock Cape Town</td>
-      <td>retail</td>
+      <td>6383946</td>
+      <td>Western Cape Metrorail - Infrastructure Buildi...</td>
+      <td>office</td>
       <td>1.0</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1491,23 +1491,24 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>marketplace</td>
+      <td>None</td>
+      <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>4.1</td>
       <td>0.0</td>
-      <td>4FRW3FF5+27C</td>
-      <td>[[(265023.481, 6242993.344), (265021.289, 6242...</td>
-      <td>POLYGON ((265023.481386 6242993.344091, 265021...</td>
+      <td>4FRW3FCF+946</td>
+      <td>[[(266353.277, 6242850.213), (266357.266, 6242...</td>
+      <td>POLYGON ((266353.277369 6242850.212725, 266357...</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>12249345</td>
-      <td>Church  Square 34 Dickson Street 7915 Woodstoc...</td>
-      <td>apartments</td>
-      <td>6.0</td>
+      <td>13328172</td>
+      <td>Cecil Road Primary School</td>
+      <td>school</td>
+      <td>2.0</td>
       <td>NaN</td>
-      <td>105</td>
+      <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1515,11 +1516,12 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
       <td>None</td>
       <td>NaN</td>
       <td>NaN</td>
-      <td>18.1</td>
+      <td>NaN</td>
+      <td>6.9</td>
       <td>0.0</td>
-      <td>4FRW3FC2+R5G</td>
-      <td>[[(264360.391, 6242908.633), (264361.062, 6242...</td>
-      <td>POLYGON ((264360.390586 6242908.633245, 264361...</td>
+      <td>4FRW3F96+6MG</td>
+      <td>[[(265366.084, 6242509.527), (265364.518, 6242...</td>
+      <td>POLYGON ((265366.083781 6242509.526659, 265364...</td>
     </tr>
   </tbody>
 </table>
@@ -1569,7 +1571,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.152461
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:00.560187
 </pre></div>
 </div>
 </div>
@@ -1717,7 +1719,7 @@ Give the OpenStreetMap server <em><strong>at least a day</strong></em> before at
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:22.644852
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>runtime: 0:00:09.755977
 </pre></div>
 </div>
 </div>

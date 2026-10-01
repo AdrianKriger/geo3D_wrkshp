@@ -524,10 +524,10 @@ b)  quantify <strong>Building Volume per Capita</strong></p>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CityJSON version = 2.0
 EPSG = 32734
-bbox = [ 262913.570 6241099.216 -15.730 265653.173 6244328.732 319.680 ]
+bbox = [ 262912.886 6241099.216 -15.730 265653.173 6244328.732 319.680 ]
 === CityObjects ===
 |-- TINRelief (1)
-|-- Building (3715)
+|-- Building (3719)
 ===================
 materials = False
 textures = False
@@ -638,8 +638,8 @@ textures = False
       <th>ground_height</th>
       <th>roof_height</th>
       <th>...</th>
-      <th>building:use</th>
       <th>operator</th>
+      <th>operator:type</th>
       <th>building:units</th>
       <th>social_facility</th>
       <th>beds</th>
@@ -701,7 +701,7 @@ textures = False
     </tr>
   </tbody>
 </table>
-<p>2 rows × 21 columns</p>
+<p>2 rows × 22 columns</p>
 </div></div></div>
 </div>
 <div class="alert alert-block alert-info"><b>Craveat</b> 
@@ -763,7 +763,7 @@ textures = False
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3715
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3719
 </pre></div>
 </div>
 </div>
@@ -839,8 +839,8 @@ textures = False
       <th>ground_height</th>
       <th>roof_height</th>
       <th>...</th>
-      <th>building:use</th>
       <th>operator</th>
+      <th>operator:type</th>
       <th>building:units</th>
       <th>social_facility</th>
       <th>beds</th>
@@ -902,7 +902,7 @@ textures = False
     </tr>
   </tbody>
 </table>
-<p>2 rows × 21 columns</p>
+<p>2 rows × 22 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -919,7 +919,7 @@ textures = False
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3715
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>3719
 </pre></div>
 </div>
 </div>
@@ -933,18 +933,18 @@ textures = False
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>building
-house                 2876
-yes                    234
+house                 2877
+yes                    235
 retail                 140
 industrial             121
-semidetached_house      70
-garage                  59
+semidetached_house      69
+garage                  61
 commercial              39
 apartments              31
 office                  19
 school                  17
 residential             15
-church                  12
+church                  13
 manufacture              8
 roof                     7
 service                  7
@@ -987,6 +987,7 @@ Name: count, dtype: int64
 <div class="alert alert-block alert-info"><b>We start with local knowledge.</b></div>
 <p><strong>On average there are roughly <code class="docutils literal notranslate"><span class="pre">4</span></code> people per <code class="docutils literal notranslate"><span class="pre">building:house</span></code> in this area.</strong></p>
 <p><strong><a class="reference external" href="https://en.wikipedia.org/wiki/Public_housing">social housing</a></strong> is tagged <code class="docutils literal notranslate"><span class="pre">building:residential</span></code> with the <code class="docutils literal notranslate"><span class="pre">3</span></code> people per building or <code class="docutils literal notranslate"><span class="pre">building:flats</span> <span class="pre">*</span> <span class="pre">3</span></code> if the building is an <em>apartment-type</em> complex</p>
+<p><small> <b>NB:</b> the <em><strong>geo3D</strong></em> example areas further defines social housing with the <code class="docutils literal notranslate"><span class="pre">operator</span></code> + <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Key:operator:type"><code class="docutils literal notranslate"><span class="pre">operator:type</span></code></a> tags. <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Key:operator:type"><code class="docutils literal notranslate"><span class="pre">operator:type</span></code></a> highlights the type of agency responsible; <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Key:operator:type"><code class="docutils literal notranslate"><span class="pre">community</span></code>, <code class="docutils literal notranslate"><span class="pre">ngo</span></code>, <code class="docutils literal notranslate"><span class="pre">government</span></code></a></small></p>
 <div class="alert alert-block alert-danger"><b>Your Participation! </b>
 <p>We will execute the calculation programmatically. <strong>Fill in the relevant variables in the <em><code class="docutils literal notranslate"><span class="pre">cell</span></code></em> below</strong> </div></p>
 <div class="cell docutils container">
@@ -1036,7 +1037,8 @@ Name: count, dtype: int64
         <span class="k">return</span> <span class="n">inf_structure</span>
         
     <span class="c1">#- in this case social housing</span>
-    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;residential&#39;</span> <span class="ow">and</span> <span class="s1">&#39;social_facility&#39;</span> <span class="ow">in</span> <span class="n">c</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;social_facility&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">:</span>
+    <span class="c1">#if row[&#39;building&#39;] == &#39;residential&#39; and &#39;social_facility&#39; in c and row[&#39;social_facility&#39;] is np.nan:</span>
+    <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;residential&#39;</span> <span class="ow">and</span> <span class="s1">&#39;operator:type&#39;</span> <span class="ow">in</span> <span class="n">c</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;operator:type&#39;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;community&#39;</span><span class="p">,</span> <span class="s1">&#39;government&#39;</span><span class="p">,</span> <span class="s1">&#39;ngo&#39;</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:levels&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">if</span> <span class="s1">&#39;rooms&#39;</span> <span class="ow">in</span> <span class="n">c</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rooms&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;rooms&#39;</span><span class="p">]</span>
@@ -1044,6 +1046,7 @@ Name: count, dtype: int64
                 <span class="k">return</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:flats&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="n">inf_structure</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">inf_structure</span>
+            
     <span class="c1">#-- social facility [shelter / carehome]</span>
     <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;residential&#39;</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;social_facility&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">:</span>
         <span class="k">if</span> <span class="s1">&#39;building:units&#39;</span> <span class="ow">in</span> <span class="n">c</span> <span class="ow">and</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;building:units&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
@@ -1079,7 +1082,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The estimated population is: 17062
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The calculated population estimate is: 17049
 </pre></div>
 </div>
 </div>
@@ -1112,7 +1115,7 @@ These numbers are based on disaggregated <a class="reference external" href="htt
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>population growth rate of approximately: 2.49 %
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>population growth rate of approximately: 2.48 %
 </pre></div>
 </div>
 </div>
@@ -1152,7 +1155,7 @@ These numbers are based on disaggregated <a class="reference external" href="htt
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>estimated population 10 years from now: 21818
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>calculated population estimate 10 years from now: 21787
 </pre></div>
 </div>
 </div>
@@ -1228,56 +1231,56 @@ BVPC = total population of a community divided by sum of building volume</div><d
   </thead>
   <tbody>
     <tr>
-      <th>3713</th>
-      <td>osm_1340498943</td>
-      <td>1340498943</td>
-      <td>Balfour Street Woodstock Cape Town</td>
-      <td>semidetached_house</td>
+      <th>3717</th>
+      <td>osm_1469705776</td>
+      <td>1469705776</td>
+      <td>Barton Street Woodstock 7915 Cape Town</td>
+      <td>house</td>
       <td>1.0</td>
       <td>NaN</td>
       <td>4.1</td>
-      <td>4FRW3C8X+7VX</td>
-      <td>55.90</td>
-      <td>60.00</td>
+      <td>4FRW3C9W+VJM</td>
+      <td>20.45</td>
+      <td>24.55</td>
       <td>...</td>
       <td>0</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>0</td>
       <td>NaN</td>
-      <td>POLYGON ((264277.101 6242210.386, 264272.196 6...</td>
+      <td>POLYGON ((263978.475 6242643.709, 263973.11 62...</td>
       <td>4.0</td>
-      <td>91.279151</td>
-      <td>374.244519</td>
-      <td>93.56113</td>
+      <td>167.989395</td>
+      <td>688.756522</td>
+      <td>172.18913</td>
     </tr>
     <tr>
-      <th>3714</th>
-      <td>osm_1423081172</td>
-      <td>1423081172</td>
+      <th>3718</th>
+      <td>osm_1484822065</td>
+      <td>1484822065</td>
       <td>NaN</td>
-      <td>warehouse</td>
+      <td>garage</td>
       <td>1.0</td>
       <td>NaN</td>
       <td>4.1</td>
-      <td>4FRW3CFX+M65</td>
-      <td>5.07</td>
-      <td>9.17</td>
+      <td>4FRW3C9X+HQM</td>
+      <td>23.78</td>
+      <td>27.88</td>
       <td>...</td>
       <td>0</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>0</td>
       <td>NaN</td>
-      <td>POLYGON ((264084.947 6243146.256, 264079.339 6...</td>
+      <td>POLYGON ((264243.706 6242562.639, 264236.289 6...</td>
       <td>NaN</td>
-      <td>1068.337435</td>
-      <td>4380.183484</td>
+      <td>50.338896</td>
+      <td>206.389474</td>
       <td>NaN</td>
     </tr>
   </tbody>
 </table>
-<p>2 rows × 25 columns</p>
+<p>2 rows × 26 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -1287,13 +1290,13 @@ BVPC = total population of a community divided by sum of building volume</div><d
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>count    2981.000000
-mean      145.565013
-std       100.922068
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>count    2983.000000
+mean      145.975317
+std       101.242405
 min        30.091331
-25%        89.678595
-50%       116.854422
-75%       165.813949
+25%        89.742343
+50%       117.127923
+75%       166.328088
 max      2315.100321
 Name: bvpc, dtype: float64
 </pre></div>
@@ -1309,7 +1312,7 @@ Name: bvpc, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 272.206
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 272.474
 </pre></div>
 </div>
 </div>
@@ -1343,11 +1346,11 @@ Name: bvpc, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FORMAL: Population:  15738  with Building Volume Per Capita (BVPC): 142.163
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FORMAL: Population:  15750  with Building Volume Per Capita (BVPC): 142.01
 
 STUDENT RESIDENCE: Population:  45  with Building Volume Per Capita (BVPC): 109.496
 
-INFORMAL: Population:  1279  with Building Volume Per Capita (BVPC) 77.777
+INFORMAL: Population:  1254  with Building Volume Per Capita (BVPC) 79.327
 </pre></div>
 </div>
 </div>
@@ -1380,7 +1383,8 @@ Here, because we are working with highly detailed, local data, we can explore wh
 </div><div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Input OSM PBF file</span>
-<span class="n">input_pbf</span> <span class="o">=</span> <span class="s2">&quot;./data/CapeTown.osm.pbf&quot;</span>
+<span class="c1">#input_pbf = &quot;./data/CapeTown.osm.pbf&quot;</span>
+<span class="n">input_pbf</span> <span class="o">=</span> <span class="s2">&quot;./data/WoodstockSaltRiverObs.osm.pbf&quot;</span> 
 </pre></div>
 </div>
 </div>
@@ -1423,25 +1427,28 @@ Here, because we are working with highly detailed, local data, we can explore wh
     <tr style="text-align: right;">
       <th></th>
       <th>geometry</th>
-      <th>osm_id</th>
+      <th>osm_way_id</th>
       <th>other_tags</th>
+      <th>osm_id</th>
       <th>z_order</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <th>0</th>
-      <td>POLYGON ((265277.85421120946 6242363.049765201...</td>
-      <td>1045126952</td>
+      <td>MULTIPOLYGON (((264153.09255049995 6241788.979...</td>
+      <td>1464566812</td>
       <td>"generator:method"=&gt;"photovoltaic","generator:...</td>
-      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
     <tr>
       <th>1</th>
-      <td>POLYGON ((265272.3012488816 6242352.679363036,...</td>
-      <td>1045126953</td>
+      <td>MULTIPOLYGON (((264139.7266556207 6241796.3606...</td>
+      <td>1464566813</td>
       <td>"generator:method"=&gt;"photovoltaic","generator:...</td>
-      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
     </tr>
   </tbody>
 </table>
@@ -1516,8 +1523,8 @@ Here, because we are working with highly detailed, local data, we can explore wh
       <th>generator:output:electricity</th>
       <th>generator:source</th>
       <th>generator:type</th>
-      <th>location</th>
       <th>power</th>
+      <th>location</th>
       <th>generator:output:hot_water</th>
       <th>operator</th>
       <th>operator:type</th>
@@ -1526,35 +1533,35 @@ Here, because we are working with highly detailed, local data, we can explore wh
   </thead>
   <tbody>
     <tr>
-      <th>68</th>
-      <td>POLYGON ((263921.6015001162 6242122.983059727,...</td>
-      <td>1097018218</td>
-      <td>0</td>
-      <td>{'generator:method': 'thermal', 'generator:out...</td>
-      <td>thermal</td>
+      <th>0</th>
+      <td>MULTIPOLYGON (((264153.09255049995 6241788.979...</td>
+      <td>1464566812</td>
       <td>NaN</td>
-      <td>solar</td>
-      <td>solar_thermal_collector</td>
-      <td>rooftop</td>
-      <td>generator</td>
+      <td>{'generator:method': 'photovoltaic', 'generato...</td>
+      <td>photovoltaic</td>
       <td>yes</td>
+      <td>solar</td>
+      <td>solar_photovoltaic_panel</td>
+      <td>generator</td>
+      <td>NaN</td>
+      <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
     </tr>
     <tr>
-      <th>69</th>
-      <td>POLYGON ((263923.64292556536 6242122.734229784...</td>
-      <td>1097018219</td>
-      <td>0</td>
-      <td>{'generator:method': 'thermal', 'generator:out...</td>
-      <td>thermal</td>
+      <th>1</th>
+      <td>MULTIPOLYGON (((264139.7266556207 6241796.3606...</td>
+      <td>1464566813</td>
       <td>NaN</td>
-      <td>solar</td>
-      <td>solar_thermal_collector</td>
-      <td>rooftop</td>
-      <td>generator</td>
+      <td>{'generator:method': 'photovoltaic', 'generato...</td>
+      <td>photovoltaic</td>
       <td>yes</td>
+      <td>solar</td>
+      <td>solar_photovoltaic_panel</td>
+      <td>generator</td>
+      <td>NaN</td>
+      <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
       <td>NaN</td>
@@ -1572,8 +1579,8 @@ Here, because we are working with highly detailed, local data, we can explore wh
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>generator:method
-thermal         25
-photovoltaic    23
+photovoltaic    426
+thermal         103
 Name: count, dtype: int64
 </pre></div>
 </div>
@@ -1705,7 +1712,7 @@ Name: count, dtype: int64
     </tr>
   </tbody>
 </table>
-<p>2 rows × 28 columns</p>
+<p>2 rows × 29 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -1734,7 +1741,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold"> Percentage homes, </span> in Woodstock , with rooftop photovoltaic panels (PV) and solar water heaters (SWH): 0.79
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold"> Percentage homes, </span> in Woodstock , with rooftop photovoltaic panels (PV) and solar water heaters (SWH): 4.77
 </pre></div>
 </div>
 </div>
@@ -1760,7 +1767,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold"> Percentage population, </span> in Woodstock , with rooftop photovoltaic panels (PV) and solar water heaters (SWH): 0.54
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold"> Percentage population, </span> in Woodstock , with rooftop photovoltaic panels (PV) and solar water heaters (SWH): 5.17
 </pre></div>
 </div>
 </div>
@@ -1774,8 +1781,8 @@ Name: count, dtype: int64
 </div>
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>generator:method
-thermal         22
-photovoltaic    13
+photovoltaic    378
+thermal          89
 Name: count, dtype: int64
 </pre></div>
 </div>
@@ -1966,7 +1973,7 @@ To calculate the Annual Total GHI (kWh/m2/year). This value tells us the cumulat
     </tr>
   </tbody>
 </table>
-<p>2 rows × 29 columns</p>
+<p>2 rows × 30 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -2190,7 +2197,7 @@ Datum: World Geodetic System 1984 ensemble
       <th>ground_height</th>
       <th>roof_height</th>
       <th>...</th>
-      <th>operator</th>
+      <th>operator:type</th>
       <th>building:units</th>
       <th>social_facility</th>
       <th>beds</th>
@@ -2253,7 +2260,7 @@ Datum: World Geodetic System 1984 ensemble
     </tr>
   </tbody>
 </table>
-<p>2 rows × 22 columns</p>
+<p>2 rows × 23 columns</p>
 </div></div></div>
 </div>
 <div class="alert alert-block alert-success"><b>Additional Features:</b> 
@@ -2303,14 +2310,14 @@ We add features to our home-baked visualization; <em>namely: roads and parks. We
       <th>maxspeed</th>
       <th>name:etymology:wikidata</th>
       <th>...</th>
-      <th>crossing</th>
-      <th>tactile_paving</th>
-      <th>placement:backward</th>
       <th>placement:forward</th>
       <th>cycleway:right</th>
-      <th>crossing:island</th>
       <th>parking:left</th>
       <th>parking:left:orientation</th>
+      <th>crossing:island</th>
+      <th>tactile_paving</th>
+      <th>handrail</th>
+      <th>ramp</th>
       <th>indoor</th>
       <th>level</th>
     </tr>
@@ -2366,7 +2373,7 @@ We add features to our home-baked visualization; <em>namely: roads and parks. We
     </tr>
   </tbody>
 </table>
-<p>2 rows × 120 columns</p>
+<p>2 rows × 118 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -2390,17 +2397,6 @@ We add features to our home-baked visualization; <em>namely: roads and parks. We
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ERROR 1: Non closed ring detected.
-ERROR 1: Non closed ring detected.
-ERROR 1: Non closed ring detected.
-ERROR 1: Non closed ring detected.
-ERROR 1: Non closed ring detected.
-ERROR 1: Non closed ring detected.
-ERROR 1: Non closed ring detected.
-ERROR 1: Non closed ring detected.
-ERROR 1: Non closed ring detected.
-</pre></div>
-</div>
 <div class="output text_html"><div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -2426,9 +2422,9 @@ ERROR 1: Non closed ring detected.
       <th>name</th>
       <th>osm_id</th>
       <th>sport</th>
+      <th>lit</th>
       <th>surface</th>
       <th>wikidata</th>
-      <th>wikimedia_commons</th>
       <th>...</th>
       <th>charge:adult</th>
       <th>charge:child</th>
