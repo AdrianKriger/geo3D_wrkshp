@@ -195,6 +195,7 @@
 
 
 
+
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">LoD1 caveats</span></p>
 <ul class="nav bd-sidenav">
@@ -412,7 +413,11 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-visualization">3. Interactive Visualization</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#possible-secondary-and-tertiary-level-conversations-starters">4. Possible Secondary and Tertiary level <em>‘conversations starters’</em></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#even-further-examples-of-spatial-data-science-access-to-green-space">4. Even further examples of Spatial Data Science <em>(access to green space)</em>:</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#road-network-graph">Road Network Graph</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#possible-secondary-and-tertiary-level-conversations-starters">5. Possible Secondary and Tertiary level <em>‘conversations starters’</em></a></li>
 </ul>
 
             </nav>
@@ -452,6 +457,11 @@ b)  quantify <strong>Building Volume per Capita</strong></p>
 <p><strong>3. produce an interactive visualization</strong> <em>- which a user can navigate, query and share</em> <strong>that</strong>;</p>
 <blockquote>
 <div><p><strong>a) colour buildings by type</strong> <em>(to easily visualize building stock)</em></p>
+</div></blockquote>
+<p><strong>4. even further applications of Spatial Data Science</strong></p>
+<blockquote>
+<div><p><strong>i.</strong>  calculate <strong>Green-space accessibility score</strong></p>
+<p><strong>ii.</strong> map the accessibility index to each home, to illustrate accessibility with an interactive visualization.</p>
 </div></blockquote>
 <p><strong>4.</strong> propose several <strong>Geography and Sustainable Development Education <em>conversation starters</em></strong> for Secondary and Tertiary level students.</p>
 </div></blockquote>
@@ -941,9 +951,9 @@ semidetached_house      69
 garage                  61
 commercial              39
 apartments              31
-office                  19
+office                  20
 school                  17
-residential             15
+residential             14
 church                  13
 manufacture              8
 roof                     7
@@ -1082,7 +1092,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The calculated population estimate is: 17049
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The calculated population estimate is: 17160
 </pre></div>
 </div>
 </div>
@@ -1115,7 +1125,7 @@ These numbers are based on disaggregated <a class="reference external" href="htt
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>population growth rate of approximately: 2.48 %
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>population growth rate of approximately: 2.54 %
 </pre></div>
 </div>
 </div>
@@ -1155,7 +1165,7 @@ These numbers are based on disaggregated <a class="reference external" href="htt
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>calculated population estimate 10 years from now: 21787
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>calculated population estimate 10 years from now: 22045
 </pre></div>
 </div>
 </div>
@@ -1290,13 +1300,13 @@ BVPC = total population of a community divided by sum of building volume</div><d
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>count    2983.000000
-mean      145.975317
-std       101.242405
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>count    2986.000000
+mean      145.949286
+std       101.195772
 min        30.091331
-25%        89.742343
-50%       117.127923
-75%       166.328088
+25%        89.761684
+50%       117.105990
+75%       166.161447
 max      2315.100321
 Name: bvpc, dtype: float64
 </pre></div>
@@ -1312,7 +1322,7 @@ Name: bvpc, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 272.474
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Building Volume Per Capita (BVPC): 270.711
 </pre></div>
 </div>
 </div>
@@ -1346,11 +1356,11 @@ Name: bvpc, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FORMAL: Population:  15750  with Building Volume Per Capita (BVPC): 142.01
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FORMAL: Population:  15861  with Building Volume Per Capita (BVPC): 141.016
 
 STUDENT RESIDENCE: Population:  45  with Building Volume Per Capita (BVPC): 109.496
 
-INFORMAL: Population:  1254  with Building Volume Per Capita (BVPC) 79.327
+INFORMAL: Population:  1254  with Building Volume Per Capita (BVPC) 77.999
 </pre></div>
 </div>
 </div>
@@ -1741,7 +1751,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold"> Percentage homes, </span> in Woodstock , with rooftop photovoltaic panels (PV) and solar water heaters (SWH): 4.77
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold"> Percentage homes, </span> in Woodstock , with rooftop photovoltaic panels (PV) and solar water heaters (SWH): 4.74
 </pre></div>
 </div>
 </div>
@@ -1767,7 +1777,7 @@ Name: count, dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold"> Percentage population, </span> in Woodstock , with rooftop photovoltaic panels (PV) and solar water heaters (SWH): 5.17
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Bold"> Percentage population, </span> in Woodstock , with rooftop photovoltaic panels (PV) and solar water heaters (SWH): 5.13
 </pre></div>
 </div>
 </div>
@@ -1782,7 +1792,7 @@ Name: count, dtype: int64
 <div class="cell_output docutils container">
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>generator:method
 photovoltaic    378
-thermal          89
+thermal          86
 Name: count, dtype: int64
 </pre></div>
 </div>
@@ -2075,7 +2085,7 @@ Datum: World Geodetic System 1984 ensemble
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># -- get the location for pydeck</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># -- get the location</span>
 
 <span class="c1">#- re-project to geographic</span>
 <span class="n">gdf</span> <span class="o">=</span> <span class="n">gdf2</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">epsg</span><span class="p">)</span>
@@ -2310,12 +2320,12 @@ We add features to our home-baked visualization; <em>namely: roads and parks. We
       <th>maxspeed</th>
       <th>name:etymology:wikidata</th>
       <th>...</th>
-      <th>placement:forward</th>
       <th>cycleway:right</th>
       <th>parking:left</th>
       <th>parking:left:orientation</th>
       <th>crossing:island</th>
       <th>tactile_paving</th>
+      <th>informal</th>
       <th>handrail</th>
       <th>ramp</th>
       <th>indoor</th>
@@ -2373,7 +2383,7 @@ We add features to our home-baked visualization; <em>namely: roads and parks. We
     </tr>
   </tbody>
 </table>
-<p>2 rows × 118 columns</p>
+<p>2 rows × 116 columns</p>
 </div></div></div>
 </div>
 <div class="cell docutils container">
@@ -2383,12 +2393,11 @@ We add features to our home-baked visualization; <em>namely: roads and parks. We
     <span class="s2">&quot;/vsimem/green.geojson&quot;</span><span class="p">,</span> 
     <span class="n">input_pbf</span><span class="p">,</span>
     <span class="s2">&quot;multipolygons&quot;</span><span class="p">,</span> 
-    <span class="c1">#&quot;leisure IN (&#39;park&#39;, garden&#39;, &#39;nature_reserve&#39;, &#39;common&#39;, &#39;grass&#39;, &#39;pitch&#39;)&quot;, </span>
     <span class="s2">&quot;leisure IS NOT NULL&quot;</span><span class="p">,</span> 
     <span class="n">combined_ageom</span>
 <span class="p">)</span>
 
-<span class="n">green_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;park&#39;</span><span class="p">,</span> <span class="s1">&#39;garden&#39;</span><span class="p">,</span> <span class="s1">&#39;nature_reserve&#39;</span><span class="p">,</span> <span class="s1">&#39;common&#39;</span><span class="p">,</span> <span class="s1">&#39;grass&#39;</span><span class="p">,</span> <span class="s1">&#39;pitch&#39;</span><span class="p">]</span>
+<span class="n">green_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;park&#39;</span><span class="p">,</span> <span class="s1">&#39;playground&#39;</span><span class="p">,</span> <span class="s1">&#39;garden&#39;</span><span class="p">,</span> <span class="s1">&#39;nature_reserve&#39;</span><span class="p">,</span> <span class="s1">&#39;common&#39;</span><span class="p">,</span> <span class="s1">&#39;grass&#39;</span><span class="p">,</span> <span class="s1">&#39;pitch&#39;</span><span class="p">,</span> <span class="s1">&#39;dog_park&#39;</span><span class="p">,</span> <span class="s1">&#39;sports_centre&#39;</span><span class="p">]</span>
 
 <span class="c1"># This checks: &quot;Is the value in the leisure column one of the items in my list?&quot;</span>
 <span class="n">gdf_green</span> <span class="o">=</span> <span class="n">gdf_green</span><span class="p">[</span><span class="n">gdf_green</span><span class="p">[</span><span class="s1">&#39;leisure&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">green_types</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
@@ -2415,16 +2424,16 @@ We add features to our home-baked visualization; <em>namely: roads and parks. We
   <thead>
     <tr style="text-align: right;">
       <th></th>
-      <th>barrier</th>
       <th>building</th>
       <th>geometry</th>
       <th>leisure</th>
       <th>name</th>
       <th>osm_id</th>
       <th>sport</th>
-      <th>lit</th>
       <th>surface</th>
-      <th>wikidata</th>
+      <th>access</th>
+      <th>wheelchair</th>
+      <th>operator</th>
       <th>...</th>
       <th>charge:adult</th>
       <th>charge:child</th>
@@ -2440,14 +2449,130 @@ We add features to our home-baked visualization; <em>namely: roads and parks. We
   </thead>
   <tbody>
     <tr>
-      <th>3</th>
-      <td></td>
+      <th>1</th>
       <td></td>
       <td>MULTIPOLYGON (((18.4392484 -33.9360002, 18.438...</td>
       <td>pitch</td>
       <td></td>
       <td>23872559</td>
       <td>multi</td>
+      <td></td>
+      <td>private</td>
+      <td></td>
+      <td></td>
+      <td>...</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td></td>
+      <td>MULTIPOLYGON (((18.4668783 -33.9376852, 18.467...</td>
+      <td>dog_park</td>
+      <td>Arnold Street Dog Park</td>
+      <td>27959230</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>no</td>
+      <td></td>
+      <td>...</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+<p>2 rows × 39 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- REC (recreation_grounds)</span>
+<span class="n">gdf_rec</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">process_osm_geoms</span><span class="p">(</span>
+    <span class="s2">&quot;/vsimem/greenR.geojson&quot;</span><span class="p">,</span> 
+    <span class="n">input_pbf</span><span class="p">,</span>
+    <span class="s2">&quot;multipolygons&quot;</span><span class="p">,</span> 
+    <span class="c1">#&quot;leisure IN (&#39;park&#39;, garden&#39;, &#39;nature_reserve&#39;, &#39;common&#39;, &#39;grass&#39;, &#39;pitch&#39;)&quot;, </span>
+    <span class="s2">&quot;landuse IS NOT NULL&quot;</span><span class="p">,</span> 
+    <span class="n">combined_ageom</span>
+<span class="p">)</span>
+
+<span class="n">green_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;recreation_ground&#39;</span><span class="p">]</span>
+
+<span class="c1"># This checks: &quot;Is the value in the leisure column one of the items in my list?&quot;</span>
+<span class="n">gdf_rec</span> <span class="o">=</span> <span class="n">gdf_rec</span><span class="p">[</span><span class="n">gdf_rec</span><span class="p">[</span><span class="s1">&#39;landuse&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">green_types</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">gdf_rec</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>amenity</th>
+      <th>barrier</th>
+      <th>geometry</th>
+      <th>landuse</th>
+      <th>name</th>
+      <th>osm_id</th>
+      <th>type</th>
+      <th>religion</th>
+      <th>industrial</th>
+      <th>lit</th>
+      <th>...</th>
+      <th>healthcare:speciality</th>
+      <th>opening_hours</th>
+      <th>website</th>
+      <th>wikidata</th>
+      <th>plant</th>
+      <th>layer</th>
+      <th>access</th>
+      <th>operator</th>
+      <th>wikimedia_commons</th>
+      <th>wikipedia</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>28</th>
+      <td></td>
+      <td></td>
+      <td>MULTIPOLYGON (((18.4470339 -33.9313863, 18.447...</td>
+      <td>recreation_ground</td>
+      <td>Victoria Walk Recreation Ground</td>
+      <td>476408305</td>
+      <td></td>
       <td></td>
       <td></td>
       <td></td>
@@ -2464,13 +2589,13 @@ We add features to our home-baked visualization; <em>namely: roads and parks. We
       <td></td>
     </tr>
     <tr>
-      <th>5</th>
+      <th>57</th>
       <td></td>
       <td></td>
-      <td>MULTIPOLYGON (((18.4423637 -33.9280685, 18.442...</td>
-      <td>park</td>
-      <td>Trafalgar Park</td>
-      <td>32441919</td>
+      <td>MULTIPOLYGON (((18.4409331 -33.9335742, 18.440...</td>
+      <td>recreation_ground</td>
+      <td>Upper Searle Street Park</td>
+      <td>1029537289</td>
       <td></td>
       <td></td>
       <td></td>
@@ -2489,8 +2614,18 @@ We add features to our home-baked visualization; <em>namely: roads and parks. We
     </tr>
   </tbody>
 </table>
-<p>2 rows × 41 columns</p>
+<p>2 rows × 38 columns</p>
 </div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- combine</span>
+<span class="n">gdf_green_spaces</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">gdf_green</span><span class="p">,</span> <span class="n">gdf_rec</span><span class="p">],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">gdf_green_spaces</span> <span class="o">=</span> <span class="n">gdf_green_spaces</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;osm_id&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">gdf_green_spaces</span><span class="o">.</span><span class="n">crs</span> <span class="o">=</span> <span class="s2">&quot;EPSG:4326&quot;</span>
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -2500,18 +2635,18 @@ We add features to our home-baked visualization; <em>namely: roads and parks. We
     <span class="n">file</span><span class="p">,</span>
     <span class="n">buildings_gdf</span><span class="o">=</span><span class="n">gdf</span><span class="p">,</span>
     <span class="n">roads_gdf</span><span class="o">=</span><span class="n">gdf_roads</span><span class="p">,</span>   
-    <span class="n">green_gdf</span><span class="o">=</span><span class="n">gdf_green</span><span class="p">,</span>
+    <span class="n">green_gdf</span><span class="o">=</span><span class="n">gdf_green_spaces</span><span class="p">,</span>
     <span class="n">center</span><span class="o">=</span><span class="n">xy</span><span class="p">,</span>
     <span class="n">offline</span><span class="o">=</span><span class="kc">True</span>            <span class="c1"># toggle home-bakery   </span>
 <span class="p">)</span>
     
 <span class="c1">#- uncomment. will open in a new browser window. Jupyter security restrictions prevent opening here. </span>
-<span class="c1">#webbrowser.open(&#39;file://&#39; + os.path.realpath(file))</span>
+<span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;file://&#39;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">file</span><span class="p">))</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;./result/interactiveAlt.html&#39;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
 </pre></div>
 </div>
 </div>
@@ -2522,10 +2657,936 @@ We add features to our home-baked visualization; <em>namely: roads and parks. We
 <li><p><code class="docutils literal notranslate"><span class="pre">Ctrl</span> <span class="pre">left-click</span> <span class="pre">drag-up</span></code>, <code class="docutils literal notranslate"><span class="pre">-down</span></code>, <code class="docutils literal notranslate"><span class="pre">-left</span></code> and <code class="docutils literal notranslate"><span class="pre">-right</span></code> to rotate and so-on and</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">+</span></code> next to Backspace zoom-in and <code class="docutils literal notranslate"><span class="pre">-</span></code> next to <code class="docutils literal notranslate"><span class="pre">+</span></code> zoom-out.</p></li>
 </ul>
-<p><strong>Now you do your community.</strong> ~ If your area needs <a class="reference external" href="https://en.wikipedia.org/wiki/OpenStreetMap">OpenStreetMap</a>  data and you want to contribute please follow the <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Beginners%27_guide">Guide</a>.</p>
+</section>
+<section id="even-further-examples-of-spatial-data-science-access-to-green-space">
+<h1>4. Even further examples of Spatial Data Science <em>(access to green space)</em>:<a class="headerlink" href="#even-further-examples-of-spatial-data-science-access-to-green-space" title="Link to this heading">#</a></h1>
+<div class="alert alert-block alert-warning"><b></b>
+<p>Let’s attempt to understand how easily people can <strong>access green and recreational space</strong>.</p>
+</div>
+<p><a class="reference external" href="https://sdgs.un.org/goals/goal11"><strong>SDG 11: Make cities and human settlements inclusive, safe, resilient and sustainable</strong></a> includes access to public spaces as an important component of sustainable urban development. <strong><a class="reference external" href="https://sdgs.un.org/goals/goal11#targets_and_indicators">SDG indicator 11.7.1</a></strong> measures the share of the population with convenient access to open public spaces.</p>
+<p>A commonly used planning benchmark is 400 metres: people are considered to have convenient access when they live within approximately 400 m of an open public space. However, a simple 400 m radius <strong>measures proximity,</strong> <em><strong>rather than accessibility</strong></em>. It does not account for the distribution of population, the size or capacity of different spaces, or the fact that people may have access to several spaces while others may have none.</p>
+<div class="alert alert-block alert-danger"><b> </b>
+<p><em>think of an apartment block housing 600 people with only one small park across the road while on the other side of the community the same size recreational space would typically serve 35 people</em></p>
+</div>
+<p>With <em><strong>geo3D</strong></em>, because we are working with grandular - highly detailed, local data, we can explore what a more spatially explicit <a class="reference external" href="https://unstats.un.org/sdgs/metadata/"><strong>Tier 3 local indicator</strong></a> might look like at a community level.</p>
+<p>Rather than simply asking <em>‘Is a green space within 400 m?’</em>, we use <strong>Enhanced Two-Step Floating Catchment Area (E2SFCA)</strong> analysis to investigate the relationship between <strong>population, residential buildings and available green / recreational space</strong>.</p>
+<div class="alert alert-block alert-info"><b></b>
+<p><strong>E2SFCA</strong> is the work of <a class="reference external" href="https://pubmed.ncbi.nlm.nih.gov/19576837/"><strong>(Luo &amp; Qi, 2009)</strong></a> and accounts for <em><strong>supply, demand, and incorporates distance-decay effects</strong></em>, allowing accessibility to reflect not only whether green space is within a catchment (proximity), but also <strong>how accessibility changes with distance</strong>.</p>
+<p>The result is a more <strong>nuanced local indicator</strong> of access to public green space: not simply <em>how close is the nearest park?</em>, but <em>how much accessible green space is available to the people who live here?</em></p>
+</div>
+<p>We can therefore calculate indicators such as:</p>
+<ul class="simple">
+<li><p>Green-space <strong>accessibility score</strong> using <strong>E2SFCA</strong></p></li>
+<li><p>Spatial <strong>inequality in access</strong> - identifying areas where demand for green space is high relative to available supply.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- look roads </span>
+<span class="n">gdf_roads</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>geometry</th>
+      <th>highway</th>
+      <th>name</th>
+      <th>osm_id</th>
+      <th>z_order</th>
+      <th>bridge</th>
+      <th>lanes</th>
+      <th>layer</th>
+      <th>maxspeed</th>
+      <th>name:etymology:wikidata</th>
+      <th>...</th>
+      <th>cycleway:right</th>
+      <th>parking:left</th>
+      <th>parking:left:orientation</th>
+      <th>crossing:island</th>
+      <th>tactile_paving</th>
+      <th>informal</th>
+      <th>handrail</th>
+      <th>ramp</th>
+      <th>indoor</th>
+      <th>level</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>LINESTRING (18.4342734 -33.9196189, 18.4321211...</td>
+      <td>motorway</td>
+      <td>Nelson Mandela Boulevard</td>
+      <td>4252036</td>
+      <td>29</td>
+      <td>yes</td>
+      <td>2</td>
+      <td>1</td>
+      <td>80</td>
+      <td>Q8023</td>
+      <td>...</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>LINESTRING (18.4330495 -33.9248143, 18.4330235...</td>
+      <td>motorway</td>
+      <td>Nelson Mandela Boulevard</td>
+      <td>4252037</td>
+      <td>39</td>
+      <td>yes</td>
+      <td>2</td>
+      <td>2</td>
+      <td>80</td>
+      <td>Q8023</td>
+      <td>...</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+<p>2 rows × 116 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- first clean the road dataset. remove unnecessary features. were walking ONLY.</span>
+
+<span class="c1"># 1. Exclude motorways, trunks, construction, and proposed highways (matches SQL `highway NOT IN (...)`)</span>
+<span class="n">excluded_highways</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;motorway&#39;</span><span class="p">,</span> <span class="s1">&#39;motorway_link&#39;</span><span class="p">,</span> 
+    <span class="s1">&#39;trunk&#39;</span><span class="p">,</span> <span class="s1">&#39;trunk_link&#39;</span><span class="p">,</span> 
+    <span class="s1">&#39;construction&#39;</span><span class="p">,</span> <span class="s1">&#39;proposed&#39;</span>
+<span class="p">}</span>
+
+<span class="c1"># Filter out non-walkable highway types</span>
+<span class="n">gdf_roads_clean</span> <span class="o">=</span> <span class="n">gdf_roads</span><span class="p">[</span><span class="o">~</span><span class="n">gdf_roads</span><span class="p">[</span><span class="s1">&#39;highway&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">excluded_highways</span><span class="p">)]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># 2. Filter out explicit &#39;foot=no&#39; restrictions if column exists</span>
+<span class="k">if</span> <span class="s1">&#39;foot&#39;</span> <span class="ow">in</span> <span class="n">gdf_roads_clean</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">gdf_roads_clean</span> <span class="o">=</span> <span class="n">gdf_roads_clean</span><span class="p">[</span><span class="n">gdf_roads_clean</span><span class="p">[</span><span class="s1">&#39;foot&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;no&#39;</span><span class="p">]</span>
+
+<span class="c1"># 3. Filter out explicit &#39;access=private&#39; restrictions if column exists</span>
+<span class="k">if</span> <span class="s1">&#39;access&#39;</span> <span class="ow">in</span> <span class="n">gdf_roads_clean</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">gdf_roads_clean</span> <span class="o">=</span> <span class="n">gdf_roads_clean</span><span class="p">[</span><span class="n">gdf_roads_clean</span><span class="p">[</span><span class="s1">&#39;access&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;private&#39;</span><span class="p">]</span>
+
+<span class="c1"># 4. Check &#39;other_tags&#39; string column directly if &#39;foot&#39;/&#39;access&#39; were not elevated</span>
+<span class="k">if</span> <span class="s1">&#39;other_tags&#39;</span> <span class="ow">in</span> <span class="n">gdf_roads_clean</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">gdf_roads_clean</span> <span class="o">=</span> <span class="n">gdf_roads_clean</span><span class="p">[</span>
+        <span class="o">~</span><span class="n">gdf_roads_clean</span><span class="p">[</span><span class="s1">&#39;other_tags&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="s1">&#39;&quot;foot&quot;=&gt;&quot;no&quot;|&quot;access&quot;=&gt;&quot;private&quot;&#39;</span><span class="p">,</span> <span class="n">na</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="p">]</span>
+
+<span class="n">gdf_roads</span> <span class="o">=</span> <span class="n">gdf_roads_clean</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_roads</span><span class="o">.</span><span class="n">crs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Geographic 2D CRS: EPSG:4326&gt;
+Name: WGS 84
+Axis Info [ellipsoidal]:
+- Lat[north]: Geodetic latitude (degree)
+- Lon[east]: Geodetic longitude (degree)
+Area of Use:
+- name: World.
+- bounds: (-180.0, -90.0, 180.0, 90.0)
+Datum: World Geodetic System 1984 ensemble
+- Ellipsoid: WGS 84
+- Prime Meridian: Greenwich
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- project</span>
+<span class="n">gdf_roads</span> <span class="o">=</span> <span class="n">gdf_roads</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">crs</span><span class="p">[</span><span class="mi">7</span><span class="p">:])</span>
+<span class="n">gdf_roads</span><span class="o">.</span><span class="n">crs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Projected CRS: EPSG:32734&gt;
+Name: WGS 84 / UTM zone 34S
+Axis Info [cartesian]:
+- E[east]: Easting (metre)
+- N[north]: Northing (metre)
+Area of Use:
+- name: Between 18°E and 24°E, southern hemisphere between 80°S and equator, onshore and offshore. Angola. Botswana. Democratic Republic of the Congo (Zaire). Namibia. South Africa. Zambia.
+- bounds: (18.0, -80.0, 24.0, 0.0)
+Coordinate Operation:
+- name: UTM zone 34S
+- method: Transverse Mercator
+Datum: World Geodetic System 1984 ensemble
+- Ellipsoid: WGS 84
+- Prime Meridian: Greenwich
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- look green </span>
+<span class="n">gdf_green_spaces</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>building</th>
+      <th>geometry</th>
+      <th>leisure</th>
+      <th>name</th>
+      <th>osm_id</th>
+      <th>sport</th>
+      <th>surface</th>
+      <th>access</th>
+      <th>wheelchair</th>
+      <th>operator</th>
+      <th>...</th>
+      <th>construction</th>
+      <th>opening_date</th>
+      <th>depot</th>
+      <th>healthcare</th>
+      <th>healthcare:speciality</th>
+      <th>wikidata</th>
+      <th>plant</th>
+      <th>layer</th>
+      <th>wikimedia_commons</th>
+      <th>wikipedia</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td></td>
+      <td>MULTIPOLYGON (((18.4392484 -33.9360002, 18.438...</td>
+      <td>pitch</td>
+      <td></td>
+      <td>23872559</td>
+      <td>multi</td>
+      <td></td>
+      <td>private</td>
+      <td></td>
+      <td></td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td></td>
+      <td>MULTIPOLYGON (((18.4668783 -33.9376852, 18.467...</td>
+      <td>dog_park</td>
+      <td>Arnold Street Dog Park</td>
+      <td>27959230</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>no</td>
+      <td></td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>2 rows × 62 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- look green </span>
+<span class="n">gdf_green_spaces</span><span class="o">.</span><span class="n">crs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Geographic 2D CRS: EPSG:4326&gt;
+Name: WGS 84
+Axis Info [ellipsoidal]:
+- Lat[north]: Geodetic latitude (degree)
+- Lon[east]: Geodetic longitude (degree)
+Area of Use:
+- name: World.
+- bounds: (-180.0, -90.0, 180.0, 90.0)
+Datum: World Geodetic System 1984 ensemble
+- Ellipsoid: WGS 84
+- Prime Meridian: Greenwich
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Keep green spaces within study-area only</span>
+<span class="n">gdf_green_spaces</span> <span class="o">=</span> <span class="n">gdf_green_spaces</span><span class="p">[</span>
+    <span class="n">gdf_green_spaces</span><span class="p">[</span><span class="s2">&quot;geometry&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">geom</span><span class="p">:</span> <span class="n">geom</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">geom</span><span class="o">.</span><span class="n">intersects</span><span class="p">(</span><span class="n">combined_ageom</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- remove all green_space where access=private. keep rows where &#39;access&#39; is NOT equal to &#39;private&#39; (or is null/unspecified)</span>
+<span class="k">if</span> <span class="s1">&#39;access&#39;</span> <span class="ow">in</span> <span class="n">gdf_green_spaces</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">gdf_green_spaces</span> <span class="o">=</span> <span class="n">gdf_green_spaces</span><span class="p">[</span><span class="n">gdf_green_spaces</span><span class="p">[</span><span class="s1">&#39;access&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;private&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- project</span>
+<span class="n">gdf_green_spaces</span> <span class="o">=</span> <span class="n">gdf_green_spaces</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">crs</span><span class="p">[</span><span class="mi">7</span><span class="p">:])</span>
+<span class="n">gdf_green_spaces</span><span class="o">.</span><span class="n">crs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Projected CRS: EPSG:32734&gt;
+Name: WGS 84 / UTM zone 34S
+Axis Info [cartesian]:
+- E[east]: Easting (metre)
+- N[north]: Northing (metre)
+Area of Use:
+- name: Between 18°E and 24°E, southern hemisphere between 80°S and equator, onshore and offshore. Angola. Botswana. Democratic Republic of the Congo (Zaire). Namibia. South Africa. Zambia.
+- bounds: (18.0, -80.0, 24.0, 0.0)
+Coordinate Operation:
+- name: UTM zone 34S
+- method: Transverse Mercator
+Datum: World Geodetic System 1984 ensemble
+- Ellipsoid: WGS 84
+- Prime Meridian: Greenwich
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">gdf_green_spaces</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>building</th>
+      <th>geometry</th>
+      <th>leisure</th>
+      <th>name</th>
+      <th>osm_id</th>
+      <th>sport</th>
+      <th>surface</th>
+      <th>access</th>
+      <th>wheelchair</th>
+      <th>operator</th>
+      <th>...</th>
+      <th>construction</th>
+      <th>opening_date</th>
+      <th>depot</th>
+      <th>healthcare</th>
+      <th>healthcare:speciality</th>
+      <th>wikidata</th>
+      <th>plant</th>
+      <th>layer</th>
+      <th>wikimedia_commons</th>
+      <th>wikipedia</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>2</th>
+      <td></td>
+      <td>MULTIPOLYGON (((263579.1000686879 6242873.1597...</td>
+      <td>park</td>
+      <td>Trafalgar Park</td>
+      <td>32441919</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>City of Cape Town</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td></td>
+      <td>MULTIPOLYGON (((264769.3552854536 6242002.1264...</td>
+      <td>park</td>
+      <td>Queens Park Sports Ground</td>
+      <td>476408297</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>City of Cape Town</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>2 rows × 62 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- we have overlapping green space. there are leisure=pitch that fall within recreation_ground and playgrounds that are within parks etc.</span>
+<span class="c1">#- we remove the smaller from the larger.</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">deduct_overlapping_green_geoms</span><span class="p">(</span><span class="n">gdf_green_spaces</span><span class="p">,</span> <span class="n">containment_threshold</span><span class="o">=</span><span class="mf">0.85</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Identifies nested green space geometries and drops smaller features </span>
+<span class="sd">    if they are predominantly contained within a larger feature.</span>
+<span class="sd">    </span>
+<span class="sd">    Preserves all OSM attributes/tags of the larger parent features.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">gdf_green_spaces</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    
+    <span class="c1"># 1. Calculate unprojected area in degrees for relative comparison &amp; sort (largest last)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;calc_area&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">g</span><span class="p">:</span> <span class="n">g</span><span class="o">.</span><span class="n">area</span> <span class="k">if</span> <span class="n">g</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">g</span><span class="o">.</span><span class="n">is_empty</span> <span class="k">else</span> <span class="mf">0.0</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;calc_area&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="n">geoms</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">geoms</span><span class="p">)</span>
+    <span class="n">drop_indices</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+    
+    <span class="c1"># 2. Compare smaller geometries against larger ones</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="n">g_small</span> <span class="o">=</span> <span class="n">geoms</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">g_small</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">g_small</span><span class="o">.</span><span class="n">is_empty</span> <span class="ow">or</span> <span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;calc_area&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">drop_indices</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="k">continue</span>
+            
+        <span class="n">area_small</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;calc_area&#39;</span><span class="p">]</span>
+        
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+            <span class="c1"># Skip if the larger feature j was already marked for removal by an even bigger parent</span>
+            <span class="k">if</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">drop_indices</span><span class="p">:</span>
+                <span class="k">continue</span>
+                
+            <span class="n">g_large</span> <span class="o">=</span> <span class="n">geoms</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">g_large</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">g_large</span><span class="o">.</span><span class="n">is_empty</span><span class="p">:</span>
+                <span class="k">continue</span>
+                
+            <span class="c1"># Check bounding box / spatial intersection</span>
+            <span class="k">if</span> <span class="n">g_small</span><span class="o">.</span><span class="n">intersects</span><span class="p">(</span><span class="n">g_large</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="c1"># Direct topological containment or area overlap check</span>
+                    <span class="k">if</span> <span class="n">g_large</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">g_small</span><span class="p">):</span>
+                        <span class="n">drop_indices</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+                        <span class="k">break</span>
+                    
+                    <span class="n">intersection_area</span> <span class="o">=</span> <span class="n">g_small</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">g_large</span><span class="p">)</span><span class="o">.</span><span class="n">area</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">intersection_area</span> <span class="o">/</span> <span class="n">area_small</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">containment_threshold</span><span class="p">:</span>
+                        <span class="n">drop_indices</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>  <span class="c1"># Delete smaller child feature</span>
+                        <span class="k">break</span>  <span class="c1"># Stop checking this small feature once dropped</span>
+                <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+                    <span class="k">pass</span>
+
+    <span class="c1"># 3. Drop marked smaller features, keeping larger features with intact OSM tags</span>
+    <span class="n">keep_indices</span> <span class="o">=</span> <span class="p">[</span><span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="k">if</span> <span class="n">idx</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">drop_indices</span><span class="p">]</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">keep_indices</span><span class="p">]</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    
+    <span class="c1"># Clean up temporary column</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;calc_area&#39;</span><span class="p">])</span>
+    
+    <span class="k">return</span> <span class="n">df</span>
+
+<span class="n">gdf_green_spaces</span> <span class="o">=</span> <span class="n">deduct_overlapping_green_geoms</span><span class="p">(</span><span class="n">gdf_green_spaces</span><span class="p">)</span>
+<span class="n">gdf_green_spaces</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>building</th>
+      <th>geometry</th>
+      <th>leisure</th>
+      <th>name</th>
+      <th>osm_id</th>
+      <th>sport</th>
+      <th>surface</th>
+      <th>access</th>
+      <th>wheelchair</th>
+      <th>operator</th>
+      <th>...</th>
+      <th>construction</th>
+      <th>opening_date</th>
+      <th>depot</th>
+      <th>healthcare</th>
+      <th>healthcare:speciality</th>
+      <th>wikidata</th>
+      <th>plant</th>
+      <th>layer</th>
+      <th>wikimedia_commons</th>
+      <th>wikipedia</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td></td>
+      <td>MULTIPOLYGON (((264294.8602626142 6242786.9278...</td>
+      <td>pitch</td>
+      <td>Woodstock Skate Park</td>
+      <td>894593836</td>
+      <td>skateboard</td>
+      <td>concrete</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td></td>
+      <td>MULTIPOLYGON (((264383.9622736181 6243103.0797...</td>
+      <td>park</td>
+      <td>Treaty Park</td>
+      <td>835605375</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+    </tr>
+  </tbody>
+</table>
+<p>2 rows × 62 columns</p>
+</div></div></div>
+</div>
+<div class="alert alert-block alert-success"><b>Spatial Accessibility Index ($A_i$) — E2SFCA</b></div>
+<p>We use the Enhanced Two-Step Floating Catchment Area method to measure green space accessibility per building.</p>
+<p><strong>Step 1: Park Capacity-to-Demand Ratio (<span class="math notranslate nohighlight">\(R_j\)</span>)</strong>
+$<span class="math notranslate nohighlight">\(R_j = \frac{S_j}{\sum_{k \in \{d_{kj} \le d_0\}} P_k \cdot W_r}\)</span>$</p>
+<p><strong>Step 2: Accessibility Score (<span class="math notranslate nohighlight">\(A_i\)</span>)</strong>
+$<span class="math notranslate nohighlight">\(A_i = \sum_{j \in \{d_{ij} \le d_0\}} R_j \cdot W_r\)</span>$</p>
+<div class="alert alert-block alert-warning">
+<p><sub><em><strong>Theoretical Framework:</strong> The Enhanced Two-Step Floating Catchment Area (E2SFCA) method accounts for both supply capacities (park area, <span class="math notranslate nohighlight">\(S_j\)</span>) and population demand (<span class="math notranslate nohighlight">\(P_k\)</span>), while applying continuous distance decay (<span class="math notranslate nohighlight">\(W_r\)</span>) within sub-zones of a travel threshold (<span class="math notranslate nohighlight">\(d_0\)</span>). — based on <a class="reference external" href="https://pubmed.ncbi.nlm.nih.gov/19576837/">Luo &amp; Qi (2009)</a>. We adapt this formulation using network street distances and a Gaussian decay weights matrix <span class="math notranslate nohighlight">\(W(d)\)</span> bounded at an 800m walking threshold.</em></sub></p>
+</div>
+<div class="alert alert-block alert-danger"><b>Your Participation!</b> 
+<p><strong>Fill in the <code class="docutils literal notranslate"><span class="pre">cutoff</span></code> distance and continuous decay parameters below</strong></p>
+</div>
+<p>As a <strong>‘rule-of-thumb’</strong> for pedestrian green space accessibility: a standard 10-minute walk threshold is set to <code class="docutils literal notranslate"><span class="pre">cutoff</span> <span class="pre">=</span> <span class="pre">800</span></code> meters, while an extended 15-minute neighborhood catchment uses <code class="docutils literal notranslate"><span class="pre">cutoff</span> <span class="pre">=</span> <span class="pre">1200</span></code> meters.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cutoff</span> <span class="o">=</span> <span class="mi">800</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- calculate the area of each green space</span>
+<span class="n">gdf_green_spaces</span><span class="p">[</span><span class="s1">&#39;area_m2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">gdf_green_spaces</span><span class="p">[</span><span class="s1">&#39;geometry&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">geom</span><span class="p">:</span> <span class="n">geom</span><span class="o">.</span><span class="n">area</span> <span class="k">if</span> <span class="n">geom</span> <span class="k">else</span> <span class="mf">0.0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="road-network-graph">
+<h2>Road Network Graph<a class="headerlink" href="#road-network-graph" title="Link to this heading">#</a></h2>
+<p>Simple proximity analysis employ <strong>straight-line (Euclidean) distances</strong> to understand access. This measure significantly <strong>overestimates accessibility</strong> by ignoring real-world urban barriers, street topography, and pedestrian pathways.</p>
+<p>With <em><strong>geo3D</strong></em> we <strong>route across a network graph</strong> and model <em>actual walking paths</em> along the road network, to deliver an accurate assessment of how residents navigate to green spaces.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head text-center"><p><strong>Euclidean</strong> <em>-straight line-</em> <strong>distance</strong> <br>with regular boundary</p></th>
+<th class="head text-center"><p><strong>Network graph distance</strong><br>with irregular, <em>realistic</em> catchment area</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><img alt="left" src="../_images/left.jpg" /></p></td>
+<td class="text-center"><p><img alt="right" src="../_images/right.jpg" /></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- build street network graph</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">build_graph_from_gdf</span><span class="p">(</span><span class="n">gdf_roads</span><span class="p">)</span>
+<span class="n">G</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;networkx.classes.graph.Graph at 0x1810b0610&gt;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="alert alert-block alert-info"><b>A quick reminder</b><br>
+<br>
+<p><a class="reference external" href="https://adriankriger.github.io/geo3D/"><em><strong>geo3D</strong></em></a> is a <strong>hands-on, grassroots, place-based learning tool</strong> for geography and sustainable development education. The <a class="reference external" href="https://adriankriger.github.io/geo3D/"><em><strong>geo3D</strong></em></a> framework is intended to be executed alongside <strong>direct knowledge of, and engagement with, the community being investigated</strong>.</p>
+<p>While not strictly required, mapping access points — such as gates and entrances to parks and recreation grounds — in <a class="reference external" href="https://www.openstreetmap.org/about"><strong>OpenStreetMap</strong></a> is <strong>strongly recommended</strong>. These points allow the routing function to account for where people can enter a green space, rather than relying on its centre as a proxy for access.</p>
+<p><strong>Local knowledge matters:</strong> mapping known entrances helps <em>ground-truth</em> the model, improve the <em>representation</em> of real-world accessibility and strengthen the <em>downstream analysis</em>.</p>
+</div><div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- harvest gates and entrances from PBF</span>
+<span class="n">gdf_gates</span> <span class="o">=</span> <span class="n">city3D</span><span class="o">.</span><span class="n">process_osm_geoms</span><span class="p">(</span>
+    <span class="s2">&quot;/vsimem/gates.geojson&quot;</span><span class="p">,</span> 
+    <span class="n">input_pbf</span><span class="p">,</span>
+    <span class="s2">&quot;points&quot;</span><span class="p">,</span>  
+    <span class="s2">&quot;other_tags LIKE &#39;%</span><span class="se">\&quot;</span><span class="s2">barrier</span><span class="se">\&quot;</span><span class="s2">=&gt;</span><span class="se">\&quot;</span><span class="s2">gate</span><span class="se">\&quot;</span><span class="s2">%&#39; OR other_tags LIKE &#39;%</span><span class="se">\&quot;</span><span class="s2">entrance</span><span class="se">\&quot;</span><span class="s2">%&#39; OR other_tags LIKE &#39;%</span><span class="se">\&quot;</span><span class="s2">barrier</span><span class="se">\&quot;</span><span class="s2">=&gt;</span><span class="se">\&quot;</span><span class="s2">entrance</span><span class="se">\&quot;</span><span class="s2">%&#39;&quot;</span><span class="p">,</span>
+    <span class="n">combined_ageom</span>
+<span class="p">)</span>
+
+<span class="n">gdf_gates</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="c1">#- project</span>
+<span class="n">gdf_gates</span> <span class="o">=</span> <span class="n">gdf_gates</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="n">crs</span><span class="p">[</span><span class="mi">7</span><span class="p">:])</span>
+<span class="n">gdf_gates</span><span class="o">.</span><span class="n">crs</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Projected CRS: EPSG:32734&gt;
+Name: WGS 84 / UTM zone 34S
+Axis Info [cartesian]:
+- E[east]: Easting (metre)
+- N[north]: Northing (metre)
+Area of Use:
+- name: Between 18°E and 24°E, southern hemisphere between 80°S and equator, onshore and offshore. Angola. Botswana. Democratic Republic of the Congo (Zaire). Namibia. South Africa. Zambia.
+- bounds: (18.0, -80.0, 24.0, 0.0)
+Coordinate Operation:
+- name: UTM zone 34S
+- method: Transverse Mercator
+Datum: World Geodetic System 1984 ensemble
+- Ellipsoid: WGS 84
+- Prime Meridian: Greenwich
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#--we only want buildings people live in (homes). building=house or =apartment or =residential, etc.</span>
+<span class="n">gdf_blds</span> <span class="o">=</span> <span class="n">blds</span><span class="p">[</span><span class="n">blds</span><span class="p">[</span><span class="s2">&quot;building&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">([</span><span class="s1">&#39;house&#39;</span><span class="p">,</span> <span class="s1">&#39;semidetached_house&#39;</span><span class="p">,</span> <span class="s1">&#39;terrace&#39;</span><span class="p">,</span> <span class="s1">&#39;terraced&#39;</span><span class="p">,</span> <span class="s1">&#39;apartments&#39;</span><span class="p">,</span> <span class="s1">&#39;residential&#39;</span><span class="p">,</span> <span class="s1">&#39;dormitory&#39;</span><span class="p">,</span> <span class="s1">&#39;cabin&#39;</span><span class="p">,</span> <span class="s1">&#39;student&#39;</span><span class="p">])]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- calculate e2sfca accessibility index</span>
+<span class="n">city3D</span><span class="o">.</span><span class="n">calculate_e2sfca_geo3d</span><span class="p">(</span>
+    <span class="n">gdf_blds</span><span class="p">,</span> 
+    <span class="n">gdf_green_spaces</span><span class="p">,</span> 
+    <span class="n">G</span><span class="p">,</span> 
+    <span class="n">gdf_gates</span><span class="p">,</span>
+    <span class="n">pop_col</span><span class="o">=</span><span class="s1">&#39;pop&#39;</span><span class="p">,</span> 
+    <span class="n">park_area_col</span><span class="o">=</span><span class="s1">&#39;area_m2&#39;</span><span class="p">,</span> 
+    <span class="n">cutoff</span><span class="o">=</span><span class="n">cutoff</span>
+<span class="p">)</span>
+
+<span class="n">gdf_blds</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>id</th>
+      <th>osm_id</th>
+      <th>address</th>
+      <th>building</th>
+      <th>building:levels</th>
+      <th>amenity</th>
+      <th>building_height</th>
+      <th>plus_code</th>
+      <th>ground_height</th>
+      <th>roof_height</th>
+      <th>...</th>
+      <th>solar_ids</th>
+      <th>generator:method</th>
+      <th>has_solar</th>
+      <th>solar_mwh</th>
+      <th>node</th>
+      <th>green_acc_score</th>
+      <th>nearest_destination_node</th>
+      <th>accessible_parks_json</th>
+      <th>nearest_green_space_name</th>
+      <th>green_acc_norm</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>osm_12249345</td>
+      <td>12249345</td>
+      <td>Church  Square 34 Dickson Street 7915 Woodstoc...</td>
+      <td>apartments</td>
+      <td>6.0</td>
+      <td>NaN</td>
+      <td>18.1</td>
+      <td>4FRW3FC2+R5G</td>
+      <td>9.70</td>
+      <td>27.80</td>
+      <td>...</td>
+      <td>[]</td>
+      <td>[]</td>
+      <td>False</td>
+      <td>229.153430</td>
+      <td>(264383.8747952104, 6242895.84286894)</td>
+      <td>2.208412</td>
+      <td>(264309.721512114, 6242761.492747152)</td>
+      <td>[{"name": "Woodstock Skate Park", "distance_m"...</td>
+      <td>Woodstock Skate Park</td>
+      <td>0.180678</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>osm_12286281</td>
+      <td>12286281</td>
+      <td>Cissie Gool House Victoria Walk Woodstock 7925...</td>
+      <td>residential</td>
+      <td>4.0</td>
+      <td>NaN</td>
+      <td>12.5</td>
+      <td>4FRW3C9X+5F5</td>
+      <td>29.01</td>
+      <td>41.51</td>
+      <td>...</td>
+      <td>[]</td>
+      <td>[]</td>
+      <td>False</td>
+      <td>857.074246</td>
+      <td>(264142.863365642, 6242454.115819459)</td>
+      <td>5.664208</td>
+      <td>(264011.4427269581, 6242442.432811847)</td>
+      <td>[{"name": "Golders Green Park", "distance_m": ...</td>
+      <td>Golders Green Park</td>
+      <td>0.463410</td>
+    </tr>
+  </tbody>
+</table>
+<p>2 rows × 36 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- look at the first row, column:accessible_parks_json to see all green space that contribute towards the index | its to much to print on the map</span>
+<span class="n">gdf_blds</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">accessible_parks_json</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;[{&quot;name&quot;: &quot;Woodstock Skate Park&quot;, &quot;distance_m&quot;: 168.400000}, {&quot;name&quot;: &quot;Treaty Park&quot;, &quot;distance_m&quot;: 241.800000}, {&quot;name&quot;: &quot;Woodstock Town Hall Park&quot;, &quot;distance_m&quot;: 247.900000}, {&quot;name&quot;: &quot;Fairview Road Park&quot;, &quot;distance_m&quot;: 394.400000}, {&quot;name&quot;: &quot;Victoria Walk Recreation Ground&quot;, &quot;distance_m&quot;: 629.400000}, {&quot;name&quot;: &quot;Sussex Street Park&quot;, &quot;distance_m&quot;: 684.200000}, {&quot;name&quot;: &quot;Beyers Road Park&quot;, &quot;distance_m&quot;: 700.300000}, {&quot;name&quot;: &quot;Golders Green Park&quot;, &quot;distance_m&quot;: 755.900000}]&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- project to wgs84 for interactive plot</span>
+<span class="n">gdf_blds</span> <span class="o">=</span> <span class="n">gdf_blds</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="mi">4326</span><span class="p">)</span>
+<span class="n">gdf_roads</span> <span class="o">=</span> <span class="n">gdf_roads</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="mi">4326</span><span class="p">)</span>
+<span class="n">gdf_green_spaces</span> <span class="o">=</span> <span class="n">gdf_green_spaces</span><span class="o">.</span><span class="n">to_crs</span><span class="p">(</span><span class="mi">4326</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#- a visualisation is always helpful</span>
+<span class="n">file</span> <span class="o">=</span> <span class="s1">&#39;./result/interactiveAltRecAccess.html&#39;</span> <span class="c1"># will name and save html here</span>
+
+<span class="n">city3D</span><span class="o">.</span><span class="n">create_maplibre_3DrecViz</span><span class="p">(</span>
+    <span class="n">file</span><span class="p">,</span>
+    <span class="n">buildings_gdf</span><span class="o">=</span><span class="n">gdf_blds</span><span class="p">,</span>
+    <span class="n">roads_gdf</span><span class="o">=</span><span class="n">gdf_roads</span><span class="p">,</span>   
+    <span class="n">green_gdf</span><span class="o">=</span><span class="n">gdf_green_spaces</span><span class="p">,</span>
+    <span class="n">center</span><span class="o">=</span><span class="n">xy</span><span class="p">,</span>
+    <span class="n">offline</span><span class="o">=</span><span class="kc">True</span>           <span class="c1"># Toggle for Full Bakery mode   </span>
+<span class="p">)</span>
+    
+<span class="c1">#- will open in a new browser window. Jupyter security restrictions prevent opening in binder. </span>
+<span class="c1">#webbrowser.open(&#39;file://&#39; + os.path.realpath(file))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&#39;./result/interactiveAltRecAccess.html&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<iframe src="../_static/interactiveAltRecAccess.html" width="100%" height="600" frameborder="0"></iframe><div class="alert alert-block alert-danger"><b>Warning!</b>
+<p>This analysis is <strong>constrained to the modelled area</strong> and therefore does not represent the full accessibility context of the surrounding community.</p>
+<p>A more representative analysis would <strong>extend the study area beyond its boundary</strong> to include a buffer and <strong>a portion of neighbouring communities</strong>, allowing people and green spaces outside the immediate modelled area to contribute to the accessibility calculation.</p>
+<blockquote>
+<div><p><strong>We do not live in isolation.</strong> Residents do not necessarily use recreational facilities within their own neighbourhood only; they may travel to facilities in neighbouring areas. The boundaries of the model therefore constrain what this analysis can tell us about actual accessibility.</p>
+</div></blockquote>
+</div><p><strong>Now you do your community.</strong> ~ If your area needs <a class="reference external" href="https://en.wikipedia.org/wiki/OpenStreetMap">OpenStreetMap</a>  data and you want to contribute please follow the <a class="reference external" href="https://wiki.openstreetmap.org/wiki/Beginners%27_guide">Guide</a>.</p>
+</section>
 </section>
 <section id="possible-secondary-and-tertiary-level-conversations-starters">
-<h1>4. Possible Secondary and Tertiary level <em>‘conversations starters’</em><a class="headerlink" href="#possible-secondary-and-tertiary-level-conversations-starters" title="Link to this heading">#</a></h1>
+<h1>5. Possible Secondary and Tertiary level <em>‘conversations starters’</em><a class="headerlink" href="#possible-secondary-and-tertiary-level-conversations-starters" title="Link to this heading">#</a></h1>
 <div class="alert alert-block alert-success"><b>communicate and exchange ideas and understanding</b></div><div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p><strong>Topic</strong></p></th>
@@ -2632,7 +3693,11 @@ We add features to our home-baked visualization; <em>namely: roads and parks. We
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#interactive-visualization">3. Interactive Visualization</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#possible-secondary-and-tertiary-level-conversations-starters">4. Possible Secondary and Tertiary level <em>‘conversations starters’</em></a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#even-further-examples-of-spatial-data-science-access-to-green-space">4. Even further examples of Spatial Data Science <em>(access to green space)</em>:</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#road-network-graph">Road Network Graph</a></li>
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#possible-secondary-and-tertiary-level-conversations-starters">5. Possible Secondary and Tertiary level <em>‘conversations starters’</em></a></li>
 </ul>
 
   </nav></div>
