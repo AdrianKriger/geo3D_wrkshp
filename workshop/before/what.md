@@ -124,7 +124,7 @@ The `iframe` above illustrates building stock differentiated by colour. A school
 
 A LoD1 City Model, while basic, offers many advantages over 2D datasets. These may be used for shadow analyses, line of sight predictions, flood simulation, or more advanced quantitative evaluations such as well as simulating noise propagation {cite}`Biljecki2015`.
 
-*geo3D* illustrates **both basic and advanced applications**. Population estimation, the calculation of BVPC and an green space accessibility index are easily possible with little to no external resources while simulating wind, and  Universal Thermal Comfort (UTCI) require external software.
+*geo3D* illustrates **both basic and advanced applications**. Population estimation, the calculation of BVPC and a green space accessibility index are easily possible with little to no external resources while simulating wind, and  Universal Thermal Comfort (UTCI) require external software.
 
 With the coming revolution in air traffic control, to accommodate newer forms of air services (delivery drones and urban air mobility), an accurate *digital* representation of the built environment will become crucial. A 3D City Model is one component for the effective air space management of the future<sup>**</sup>.
 
